@@ -8,10 +8,12 @@ import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 import { useShopStore } from '../store/shopStore';
 import { useShopPath } from '../hooks/useShopPath';
+import { useShopContent } from '../hooks/useShopContent';
 
 export default function Catalog() {
   const { currentShop } = useShopStore();
   const sp = useShopPath();
+  const content = useShopContent();
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -144,7 +146,7 @@ export default function Catalog() {
             className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full bg-white/[0.04] border border-white/[0.08] backdrop-blur-xl mb-8"
           >
             <Sparkles className="w-3.5 h-3.5 text-green-neon animate-pulse" />
-            <span className="text-zinc-400 text-xs font-semibold uppercase tracking-wider">L'Innovation N10 est ici</span>
+            <span className="text-zinc-400 text-xs font-semibold uppercase tracking-wider">{content.catalog.badge}</span>
           </motion.div>
 
           <div className="space-y-5">
@@ -153,8 +155,8 @@ export default function Catalog() {
               whileInView={{ opacity: 1, y: 0 }}
               className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold tracking-tighter leading-none mb-8"
             >
-              ARCHIVES <br />
-              <span className="not-italic text-green-neon glow-green">MOLECULE</span>
+              {content.catalog.hero_title_line1} <br />
+              <span className="not-italic text-green-neon glow-green">{content.catalog.hero_title_line2}</span>
             </motion.h1>
 
             <motion.p
@@ -163,7 +165,7 @@ export default function Catalog() {
               transition={{ delay: 0.15 }}
               className="text-base md:text-lg text-zinc-400 max-w-xl mx-auto font-serif italic leading-relaxed"
             >
-              Explorez une curatoriale sans compromis des extractions les plus pures et des molécules de synthèse maîtrisée.
+              {content.catalog.hero_subtitle}
             </motion.p>
           </div>
 
@@ -450,13 +452,13 @@ export default function Catalog() {
             <div className="relative z-10 px-8 md:px-14 py-14 flex flex-col lg:flex-row items-center justify-between gap-10">
               <div className="max-w-lg space-y-5 text-center lg:text-left">
                 <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-green-neon/10 border border-green-neon/15 text-green-neon text-xs font-semibold uppercase tracking-wider">
-                  BudTender IA Connecté
+                  {content.catalog.section_ai_badge}
                 </div>
                 <h3 className="text-3xl md:text-4xl font-serif font-bold leading-tight uppercase">
-                  TROUVEZ VOTRE <br /> <span className="text-green-neon">FRÉQUENCE.</span>
+                  {content.catalog.section_ai_title_line1} <br /> <span className="text-green-neon">{content.catalog.section_ai_title_line2}</span>
                 </h3>
                 <p className="text-zinc-500 text-sm md:text-base max-w-sm mx-auto lg:mx-0">
-                  Laissez notre technologie d'analyse vous guider vers le produit parfaitement calibré pour vos besoins.
+                  {content.catalog.section_ai_subtitle}
                 </p>
               </div>
 
@@ -468,7 +470,7 @@ export default function Catalog() {
                   }}
                   className="flex-1 lg:flex-none px-8 py-4 bg-green-neon text-black font-semibold rounded-2xl hover:shadow-[0_0_20px_rgba(57,255,20,0.3)] active:scale-[0.98] transition-all text-sm"
                 >
-                  Lancer le Diagnostic
+                  {content.catalog.section_ai_cta}
                 </button>
                 <Link
                   to="/contact"

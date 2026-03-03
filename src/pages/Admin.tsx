@@ -58,10 +58,11 @@ import AdminBudTenderTab from '../components/admin/AdminBudTenderTab';
 import AdminPOSTab from '../components/admin/AdminPOSTab';
 import ProductImageUpload from '../components/admin/ProductImageUpload';
 import AdminThemeTab from '../components/admin/AdminThemeTab';
+import AdminContentTab from '../components/admin/AdminContentTab';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
-type Tab = 'dashboard' | 'products' | 'categories' | 'orders' | 'stock' | 'customers' | 'settings' | 'theme' | 'subscriptions' | 'reviews' | 'analytics' | 'promo_codes' | 'recommendations' | 'budtender' | 'referrals' | 'pos';
+type Tab = 'dashboard' | 'products' | 'categories' | 'orders' | 'stock' | 'customers' | 'settings' | 'theme' | 'content' | 'subscriptions' | 'reviews' | 'analytics' | 'promo_codes' | 'recommendations' | 'budtender' | 'referrals' | 'pos';
 
 interface DashboardStats {
   totalRevenue: number;
@@ -232,6 +233,7 @@ export default function Admin() {
       case 'customers': await loadCustomers(); break;
       case 'settings': await loadSettings(); break;
       case 'theme': break; // handled by AdminThemeTab
+      case 'content': break; // handled by AdminContentTab
       case 'subscriptions': break; // handled by AdminSubscriptionsTab
       case 'reviews': break; // handled by AdminReviewsTab
       case 'analytics': break; // handled by AdminAnalyticsTab
@@ -1095,6 +1097,7 @@ export default function Admin() {
                   group: 'Système',
                   items: [
                     { key: 'theme' as Tab, label: 'Thème & Design', icon: Palette },
+                    { key: 'content' as Tab, label: 'Textes & Contenu', icon: Hash },
                     { key: 'settings' as Tab, label: 'Paramètres', icon: Settings },
                     { key: 'budtender' as Tab, label: 'BudTender IA', icon: Leaf },
                   ],
@@ -2417,6 +2420,11 @@ export default function Admin() {
                 {/* ── Theme & Design tab ── */}
                 {tab === 'theme' && !isLoading && (
                   <AdminThemeTab />
+                )}
+
+                {/* ── Content tab ── */}
+                {tab === 'content' && !isLoading && (
+                  <AdminContentTab />
                 )}
 
                 {/* ── Referrals tab ── */}

@@ -5,6 +5,7 @@ import SEO from "../components/SEO";
 import { useShopStore } from "../store/shopStore";
 import { useSettingsStore } from "../store/settingsStore";
 import { useShopPath } from "../hooks/useShopPath";
+import { useShopContent } from "../hooks/useShopContent";
 
 /**
  * ShopAbout — Page "Notre Boutique" dynamique, affichant les infos du shop actuel.
@@ -13,6 +14,7 @@ export default function ShopAbout() {
     const { currentShop } = useShopStore();
     const settings = useSettingsStore((s) => s.settings);
     const shopPath = useShopPath();
+    const content = useShopContent();
 
     if (!currentShop) return null;
 
@@ -22,23 +24,23 @@ export default function ShopAbout() {
     const values = [
         {
             icon: <ShieldCheck className="w-7 h-7" style={{ color: primaryColor }} />,
-            title: "Transparence",
-            desc: "Nous publions les certificats d'analyse de chaque lot pour garantir pureté et conformité."
+            title: content.about.value_1_title,
+            desc: content.about.value_1_desc
         },
         {
             icon: <Award className="w-7 h-7" style={{ color: primaryColor }} />,
-            title: "Exigence",
-            desc: "Une sélection drastique des producteurs européens les plus qualifiés."
+            title: content.about.value_2_title,
+            desc: content.about.value_2_desc
         },
         {
             icon: <Users className="w-7 h-7" style={{ color: primaryColor }} />,
-            title: "Accompagnement",
-            desc: "Nos conseillers sont formés pour vous guider vers la routine adaptée à vos besoins."
+            title: content.about.value_3_title,
+            desc: content.about.value_3_desc
         },
         {
             icon: <Leaf className="w-7 h-7" style={{ color: primaryColor }} />,
-            title: "Éthique",
-            desc: "Des cultures 100% organiques, sans pesticides ni agents chimiques."
+            title: content.about.value_4_title,
+            desc: content.about.value_4_desc
         }
     ];
 
@@ -70,15 +72,14 @@ export default function ShopAbout() {
                             style={{ color: primaryColor }}
                         >
                             <Sparkles className="w-4 h-4" />
-                            Notre ADN
+                            {content.about.badge}
                         </div>
                         <h1 className="text-5xl md:text-7xl font-serif font-bold tracking-tighter leading-none">
-                            L'EXPÉRIENCE <br />
+                            {content.about.hero_title_line1} <br />
                             <span className="italic" style={{ color: primaryColor }}>{shopName.toUpperCase()}.</span>
                         </h1>
                         <p className="text-xl text-zinc-400 max-w-2xl mx-auto font-light leading-relaxed pt-4">
-                            Plus qu'un point de vente, un espace dédié à la sérénité
-                            et à l'excellence naturelle.
+                            {content.about.hero_subtitle}
                         </p>
                     </motion.div>
                 </div>
@@ -89,9 +90,9 @@ export default function ShopAbout() {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-20 space-y-3">
                         <h2 className="text-4xl md:text-5xl font-serif font-black">
-                            Nos <span style={{ color: primaryColor }}>Piliers</span>
+                            {content.about.section_values_title.split(' ').slice(0, -1).join(' ')} <span style={{ color: primaryColor }}>{content.about.section_values_title.split(' ').slice(-1)}</span>
                         </h2>
-                        <p className="text-zinc-500 text-lg">Les valeurs qui définissent chaque décision chez {shopName}.</p>
+                        <p className="text-zinc-500 text-lg">{content.about.section_values_subtitle} {shopName}.</p>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -124,8 +125,8 @@ export default function ShopAbout() {
                     className="max-w-4xl mx-auto text-center space-y-10"
                 >
                     <h2 className="text-5xl md:text-7xl font-serif font-black tracking-tight">
-                        VENEZ NOUS <br />
-                        <span className="italic" style={{ color: primaryColor }}>RENDRE VISITE.</span>
+                        {content.about.cta_title.split(' ').slice(0, -2).join(' ')} <br />
+                        <span className="italic" style={{ color: primaryColor }}>{content.about.cta_title.split(' ').slice(-2).join(' ')}</span>
                     </h2>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
@@ -166,14 +167,14 @@ export default function ShopAbout() {
                             className="px-10 py-5 font-black rounded-2xl text-black transition-transform hover:scale-105 flex items-center justify-center gap-3"
                             style={{ backgroundColor: primaryColor }}
                         >
-                            Nous contacter
+                            {content.about.cta_primary}
                             <ArrowRight className="w-5 h-5" />
                         </Link>
                         <Link
                             to={shopPath("/catalogue")}
                             className="px-10 py-5 bg-white/5 border border-white/10 text-white font-bold rounded-2xl hover:bg-white/10 transition-all flex items-center justify-center gap-3"
                         >
-                            Voir le catalogue
+                            {content.about.cta_secondary}
                         </Link>
                     </div>
                 </motion.div>

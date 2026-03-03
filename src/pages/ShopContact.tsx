@@ -5,6 +5,7 @@ import SEO from "../components/SEO";
 import { useShopStore } from "../store/shopStore";
 import { useSettingsStore } from "../store/settingsStore";
 import { useShopPath } from "../hooks/useShopPath";
+import { useShopContent } from "../hooks/useShopContent";
 
 /**
  * ShopContact — Page contact propre au shop actuel.
@@ -14,6 +15,7 @@ export default function ShopContact() {
     const { currentShop } = useShopStore();
     const settings = useSettingsStore((s) => s.settings);
     const shopPath = useShopPath();
+    const content = useShopContent();
     const [sent, setSent] = useState(false);
 
     if (!currentShop) return null;
@@ -52,7 +54,7 @@ export default function ShopContact() {
                         style={{ color: primaryColor }}
                     >
                         <MessageCircle className="w-4 h-4" />
-                        Nous Contacter
+                        {content.contact.badge}
                     </motion.div>
 
                     <motion.h1
@@ -61,8 +63,8 @@ export default function ShopContact() {
                         transition={{ delay: 0.1 }}
                         className="text-5xl md:text-7xl font-serif font-black tracking-tighter leading-none"
                     >
-                        PARLONS <br />
-                        <span className="italic" style={{ color: primaryColor }}>ENSEMBLE.</span>
+                        {content.contact.hero_title_line1} <br />
+                        <span className="italic" style={{ color: primaryColor }}>{content.contact.hero_title_line2}</span>
                     </motion.h1>
 
                     <motion.p
@@ -71,8 +73,7 @@ export default function ShopContact() {
                         transition={{ delay: 0.2 }}
                         className="text-lg text-zinc-400 max-w-xl mx-auto font-light"
                     >
-                        Une question sur un produit, un conseil personnalisé ou une suggestion ?
-                        L'équipe {shopName} est à votre écoute.
+                        {content.contact.hero_subtitle}
                     </motion.p>
                 </div>
             </section>
@@ -155,9 +156,9 @@ export default function ShopContact() {
                         >
                             <div className="relative z-10 space-y-4">
                                 <Sparkles className="w-8 h-8" style={{ color: primaryColor }} />
-                                <h3 className="text-xl font-black">Besoin de conseils ?</h3>
+                                <h3 className="text-xl font-black">{content.contact.budtender_box_title}</h3>
                                 <p className="text-zinc-400 text-sm leading-relaxed">
-                                    Notre BudTender IA est disponible 24/7 pour répondre à toutes vos questions sur nos produits.
+                                    {content.contact.budtender_box_desc}
                                 </p>
                                 <p className="text-xs font-bold uppercase tracking-widest" style={{ color: primaryColor }}>
                                     Cliquez sur le widget en bas à droite ✦
@@ -178,10 +179,10 @@ export default function ShopContact() {
 
                             <div className="space-y-3 relative z-10">
                                 <h2 className="text-3xl font-serif font-black">
-                                    Envoyez-nous <br />
-                                    <span className="italic" style={{ color: primaryColor }}>un message</span>
+                                    {content.contact.form_title.split(' ').slice(0, -1).join(' ')} <br />
+                                    <span className="italic" style={{ color: primaryColor }}>{content.contact.form_title.split(' ').slice(-1)}</span>
                                 </h2>
-                                <p className="text-zinc-500 text-sm">Nous vous répondrons dans les meilleurs délais.</p>
+                                <p className="text-zinc-500 text-sm">{content.contact.form_subtitle}</p>
                             </div>
 
                             {sent ? (
@@ -193,8 +194,8 @@ export default function ShopContact() {
                                     <div className="w-16 h-16 rounded-full mx-auto flex items-center justify-center" style={{ backgroundColor: `${primaryColor}20` }}>
                                         <Send className="w-7 h-7" style={{ color: primaryColor }} />
                                     </div>
-                                    <h3 className="text-2xl font-bold">Message envoyé !</h3>
-                                    <p className="text-zinc-400 text-sm">Merci, nous reviendrons vers vous rapidement.</p>
+                                    <h3 className="text-2xl font-bold">{content.contact.success_title}</h3>
+                                    <p className="text-zinc-400 text-sm">{content.contact.success_desc}</p>
                                 </motion.div>
                             ) : (
                                 <form className="space-y-6 relative z-10" onSubmit={handleSubmit}>
@@ -257,7 +258,7 @@ export default function ShopContact() {
                                         style={{ backgroundColor: primaryColor }}
                                     >
                                         <Send className="w-5 h-5" />
-                                        ENVOYER LE MESSAGE
+                                        {content.contact.send_button}
                                     </button>
                                 </form>
                             )}

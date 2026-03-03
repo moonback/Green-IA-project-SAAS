@@ -106,6 +106,13 @@ export interface Shop {
       animations_enabled: boolean;
       preset: string;
     };
+    content?: {
+      home?: Record<string, string>;
+      about?: Record<string, string>;
+      contact?: Record<string, string>;
+      quality?: Record<string, string>;
+      catalog?: Record<string, string>;
+    };
     [key: string]: any;
   };
   subscription_plan: 'free' | 'pro' | 'enterprise';

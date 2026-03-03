@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { ArrowRight, Leaf, ShoppingBag, Star, Sparkles, Package } from 'lucide-react';
 import { useShopStore } from '../store/shopStore';
 import { useShopPath } from '../hooks/useShopPath';
+import { useShopContent } from '../hooks/useShopContent';
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import SEO from '../components/SEO';
@@ -11,6 +12,7 @@ import type { Product, Category } from '../lib/types';
 export default function ShopHome() {
     const { currentShop } = useShopStore();
     const shopPath = useShopPath();
+    const content = useShopContent();
     const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -87,7 +89,7 @@ export default function ShopHome() {
 
                         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-xl text-xs font-black uppercase tracking-[0.3em]" style={{ color: primaryColor }}>
                             <Leaf className="w-4 h-4" />
-                            Boutique CBD
+                            {content.home.badge}
                         </div>
 
                         <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold tracking-tighter leading-none">
@@ -95,8 +97,7 @@ export default function ShopHome() {
                         </h1>
 
                         <p className="text-xl text-zinc-400 max-w-2xl mx-auto font-light leading-relaxed">
-                            Votre destination premium pour des produits CBD de qualité supérieure.
-                            Conseils personnalisés et sélection rigoureuse.
+                            {content.home.hero_subtitle}
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
@@ -106,14 +107,14 @@ export default function ShopHome() {
                                 style={{ backgroundColor: primaryColor }}
                             >
                                 <ShoppingBag className="w-5 h-5" />
-                                Voir le Catalogue
+                                {content.home.cta_primary}
                                 <ArrowRight className="w-5 h-5" />
                             </Link>
                             <Link
                                 to={shopPath('/boutique')}
                                 className="inline-flex items-center gap-3 px-10 py-5 font-bold rounded-2xl bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-all"
                             >
-                                Notre Histoire
+                                {content.home.cta_secondary}
                             </Link>
                         </div>
                     </motion.div>
@@ -125,8 +126,8 @@ export default function ShopHome() {
                 <section className="py-20">
                     <div className="page-block">
                         <div className="text-center mb-16 space-y-3">
-                            <h2 className="text-4xl md:text-5xl font-serif font-black">Nos <span style={{ color: primaryColor }}>Catégories</span></h2>
-                            <p className="text-zinc-500 text-lg">Explorez notre sélection par univers</p>
+                            <h2 className="text-4xl md:text-5xl font-serif font-black">{content.home.section_categories_title.split(' ').slice(0, -1).join(' ')} <span style={{ color: primaryColor }}>{content.home.section_categories_title.split(' ').slice(-1)}</span></h2>
+                            <p className="text-zinc-500 text-lg">{content.home.section_categories_subtitle}</p>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -174,9 +175,9 @@ export default function ShopHome() {
                         <div className="space-y-2">
                             <h2 className="text-4xl font-serif font-black text-white">
                                 <Star className="inline w-8 h-8 mr-2" style={{ color: primaryColor }} />
-                                Sélection du moment
+                                {content.home.section_featured_title}
                             </h2>
-                            <p className="text-zinc-500">Les produits phares choisis par notre équipe</p>
+                            <p className="text-zinc-500">{content.home.section_featured_subtitle}</p>
                         </div>
                         <Link
                             to={shopPath('/catalogue')}
@@ -277,14 +278,13 @@ export default function ShopHome() {
                                     <Sparkles className="w-8 h-8" style={{ color: primaryColor }} />
                                 </div>
                                 <h3 className="text-3xl md:text-4xl font-serif font-black">
-                                    Votre conseiller <span style={{ color: primaryColor }}>IA personnel</span>
+                                    {content.home.section_ai_title}
                                 </h3>
                                 <p className="text-zinc-400 text-lg max-w-xl mx-auto leading-relaxed">
-                                    Notre BudTender intelligent vous guide vers les produits parfaits
-                                    selon vos besoins, votre expérience et vos préférences.
+                                    {content.home.section_ai_subtitle}
                                 </p>
                                 <p className="text-sm font-bold uppercase tracking-widest" style={{ color: primaryColor }}>
-                                    Cliquez sur le widget en bas à droite pour commencer ✦
+                                    {content.home.section_ai_cta}
                                 </p>
                             </div>
                         </motion.div>

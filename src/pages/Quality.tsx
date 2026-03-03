@@ -1,28 +1,34 @@
 import { motion } from "motion/react";
 import { ShieldCheck, Cpu, Lock, Globe, Zap, Server, Database, Sparkles, Code, Terminal } from "lucide-react";
 import SEO from "../components/SEO";
+import { useShopContent } from "../hooks/useShopContent";
+import { useShopStore } from "../store/shopStore";
 
 export default function Quality() {
+  const content = useShopContent();
+  const { currentShop } = useShopStore();
+  const primaryColor = currentShop?.settings?.primary_color || '#39ff14';
+
   const pillars = [
     {
-      title: "Isolation Multi-Tenant",
+      title: content.quality.pillar_1_title,
       icon: Lock,
-      detail: "Chaque boutique garde ses données séparées. Vos informations restent privées et protégées."
+      detail: content.quality.pillar_1_desc
     },
     {
-      title: "IA BudTender certifiée",
+      title: content.quality.pillar_2_title,
       icon: Cpu,
-      detail: "Nos modèles sont entraînés sur des milliers de références botaniques et pharmacologiques pour un conseil ultra-précis."
+      detail: content.quality.pillar_2_desc
     },
     {
-      title: "Infrastructure Global Cloud",
+      title: content.quality.pillar_3_title,
       icon: Globe,
-      detail: "Une plateforme rapide et stable, disponible quand vous en avez besoin pour vendre sans interruption."
+      detail: content.quality.pillar_3_desc
     },
     {
-      title: "Sécurité & RGPD",
+      title: content.quality.pillar_4_title,
       icon: ShieldCheck,
-      detail: "Des règles de sécurité solides pour travailler sereinement avec votre équipe et vos clients."
+      detail: content.quality.pillar_4_desc
     },
   ];
 
@@ -45,9 +51,10 @@ export default function Quality() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-neon/10 border border-green-neon/20 text-green-neon text-xs font-black uppercase tracking-widest mb-10"
+            style={{ color: primaryColor, borderColor: `${primaryColor}33`, backgroundColor: `${primaryColor}1a` }}
           >
             <Terminal className="w-4 h-4" />
-            Infrastructure Grade Entreprise
+            {content.quality.badge}
           </motion.div>
 
           <motion.h1
@@ -55,8 +62,8 @@ export default function Quality() {
             animate={{ opacity: 1, y: 0 }}
             className="text-5xl md:text-8xl font-serif font-black tracking-tighter leading-none mb-10"
           >
-            LA QUALITÉ QUI <br />
-            <span className="text-green-neon italic glow-green">RASSURE VOS CLIENTS.</span>
+            {content.quality.hero_title_line1} <br />
+            <span className="italic glow-green" style={{ color: primaryColor }}>{content.quality.hero_title_line2}</span>
           </motion.h1>
 
           <motion.p
@@ -65,7 +72,7 @@ export default function Quality() {
             transition={{ delay: 0.2 }}
             className="text-xl md:text-2xl text-zinc-400 max-w-3xl mx-auto font-light leading-relaxed mb-12"
           >
-            Avec Green IA, vous profitez d'un outil fiable, simple à utiliser, et adapté aux besoins réels des boutiques CBD.
+            {content.quality.hero_subtitle}
           </motion.p>
         </div>
       </section>
@@ -82,8 +89,8 @@ export default function Quality() {
               transition={{ delay: idx * 0.1 }}
               className="bg-zinc-900/50 border border-zinc-800 p-10 rounded-[2.5rem] hover:border-green-neon/30 transition-all group"
             >
-              <div className="w-16 h-16 rounded-2xl bg-green-neon/10 flex items-center justify-center mb-8 group-hover:scale-110 group-hover:bg-green-neon/20 transition-all duration-500">
-                <item.icon className="w-8 h-8 text-green-neon" />
+              <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-all duration-500" style={{ backgroundColor: `${primaryColor}1a` }}>
+                <item.icon className="w-8 h-8" style={{ color: primaryColor }} />
               </div>
               <h3 className="text-lg font-black uppercase tracking-wider mb-4">{item.title}</h3>
               <p className="text-sm text-zinc-500 font-light leading-relaxed">
@@ -107,12 +114,11 @@ export default function Quality() {
               className="space-y-10"
             >
               <div className="space-y-4">
-                <h2 className="text-4xl md:text-6xl font-serif font-black">Isolation des Données <br /> <span className="text-green-neon italic">Zéro Compromis.</span></h2>
+                <h2 className="text-4xl md:text-6xl font-serif font-black">{content.quality.data_isolation_title.split(' ').slice(0, -2).join(' ')} <br /> <span className="text-green-neon italic" style={{ color: primaryColor }}>{content.quality.data_isolation_title.split(' ').slice(-2).join(' ')}</span></h2>
               </div>
               <div className="space-y-8">
                 <p className="text-lg text-zinc-400 leading-relaxed font-light">
-                  Chaque tenant (boutique) est encapsulé dans son propre environnement logique au niveau de la base de données PostgreSQL.
-                  Nos règles de sécurité empêchent toute confusion entre boutiques : vos ventes et vos clients restent bien séparés.
+                  {content.quality.data_isolation_desc}
                 </p>
                 <div className="grid gap-6">
                   <div className="flex gap-5 p-8 bg-zinc-900 border border-zinc-800 rounded-3xl">
@@ -198,12 +204,11 @@ export default function Quality() {
               className="space-y-10"
             >
               <div className="space-y-4">
-                <h2 className="text-4xl md:text-5xl font-serif font-black">Un outil pensé pour <br /> <span className="text-green-neon italic">les commerçants CBD.</span></h2>
+                <h2 className="text-4xl md:text-5xl font-serif font-black">{content.quality.ai_excellence_title.split(' ').slice(0, -3).join(' ')} <br /> <span className="text-green-neon italic" style={{ color: primaryColor }}>{content.quality.ai_excellence_title.split(' ').slice(-3).join(' ')}</span></h2>
               </div>
               <div className="space-y-8">
                 <p className="text-lg text-zinc-400 leading-relaxed font-light">
-                  Notre BudTender n'est pas un simple script. C'est un moteur sémantique qui comprend l'intention du client.
-                  En analysant les retours clients et les stocks en temps réel, il adapte son discours pour maximiser la satisfaction et la récurrence.
+                  {content.quality.ai_excellence_desc}
                 </p>
 
                 <div className="bg-zinc-900 border border-zinc-800 p-12 rounded-[3.5rem] relative overflow-hidden group">
@@ -235,10 +240,9 @@ export default function Quality() {
         <div className="p-16 bg-gradient-to-br from-zinc-900 to-zinc-950 border border-zinc-800 rounded-[4rem] text-center space-y-10 shadow-2xl">
           <Zap className="w-16 h-16 text-green-neon mx-auto animate-pulse" />
           <div className="space-y-5">
-            <h3 className="text-3xl md:text-4xl font-serif font-black">Performance sans Temps Mort</h3>
+            <h3 className="text-3xl md:text-4xl font-serif font-black">{content.quality.trust_banner_title}</h3>
             <p className="text-zinc-400 max-w-2xl mx-auto font-light leading-relaxed text-lg">
-              Optimisé pour la vitesse mobile et les terminaux de vente légers.
-              Votre boutique charge en moins d'une seconde, n'importe où, n'importe quand.
+              {content.quality.trust_banner_desc}
             </p>
           </div>
         </div>
