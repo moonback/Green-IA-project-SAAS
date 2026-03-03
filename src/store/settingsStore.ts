@@ -67,8 +67,9 @@ export const useSettingsStore = create<SettingsStore>((set, get) => ({
         // Fallback sur l'ancienne table pour la rétrocompatibilité (période de transition)
         try {
             const { data, error } = await supabase.from('store_settings').select('*');
+            if (error) throw error;
             if (!error && data && data.length > 0) {
-                const obj = data.reduce((acc: Record<string, any>, row: { key: string; value: any }) => {
+                const obj = data.reduce((acc: Record<string, unknown>, row: { key: string; value: unknown }) => {
                     acc[row.key] = row.value;
                     return acc;
                 }, {});

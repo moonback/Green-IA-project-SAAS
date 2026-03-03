@@ -11,6 +11,8 @@ import SplashScreen from "./components/SplashScreen";
 // ── Pages SaaS (globales, hors shop) ──
 const Home = lazy(() => import("./pages/Home"));
 const Login = lazy(() => import("./pages/Login"));
+const ShopLogin = lazy(() => import("./pages/ShopLogin"));
+const ShopRegister = lazy(() => import("./pages/ShopRegister"));
 const RegisterShop = lazy(() => import("./pages/RegisterShop"));
 const SolutionSaaS = lazy(() => import("./pages/SolutionSaaS"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword"));
@@ -31,6 +33,7 @@ const Cart = lazy(() => import("./pages/Cart"));
 const Checkout = lazy(() => import("./pages/Checkout"));
 const OrderConfirmation = lazy(() => import("./pages/OrderConfirmation"));
 const Account = lazy(() => import("./pages/Account"));
+const ShopClientAccount = lazy(() => import("./pages/ShopClientAccount"));
 const Orders = lazy(() => import("./pages/Orders"));
 const Addresses = lazy(() => import("./pages/Addresses"));
 const Profile = lazy(() => import("./pages/Profile"));
@@ -98,7 +101,8 @@ export default function App() {
               <Route path="produits" element={<Products />} />
               <Route path="qualite" element={<Quality />} />
               <Route path="contact" element={<ShopContact />} />
-              <Route path="connexion" element={<Login />} />
+              <Route path="connexion" element={<ShopLogin />} />
+              <Route path="inscription" element={<ShopRegister />} />
               <Route path="reset-password" element={<ResetPassword />} />
               <Route path="mentions-legales" element={<Legal />} />
 
@@ -111,7 +115,7 @@ export default function App() {
               <Route element={<ProtectedRoute />}>
                 <Route path="commande" element={<Checkout />} />
                 <Route path="commande/confirmation" element={<OrderConfirmation />} />
-                <Route path="compte" element={<Account />} />
+                <Route path="compte" element={<ShopClientAccount />} />
                 <Route path="compte/commandes" element={<Orders />} />
                 <Route path="compte/adresses" element={<Addresses />} />
                 <Route path="compte/abonnements" element={<Subscriptions />} />

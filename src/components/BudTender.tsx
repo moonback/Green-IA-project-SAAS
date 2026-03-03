@@ -130,7 +130,7 @@ async function callAI(
     answers: Answers,
     products: Product[],
     settings: BudTenderSettings,
-    history: { role: string; content: string }[] = [],
+    history: { role: 'user' | 'assistant'; content: string }[] = [],
     context?: string
 ): Promise<string | null> {
     const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
@@ -222,7 +222,7 @@ async function callAI(
         if (currentShop && responseText) {
             supabase.from('ai_usage_logs').insert({
                 shop_id: currentShop.id,
-                user_id: (useAuthStore.getState().user as any)?.id,
+                user_id: useAuthStore.getState().user?.id,
                 interaction_type: 'quiz',
                 tokens_estimate: responseText.length / 4
             }).then();
@@ -341,14 +341,14 @@ export default function BudTender() {
         }
         // Save current messages to persistent storage
         if (messages.length > 0) {
-            memory.saveChatHistory(messages as any);
+            memory.saveChatHistory(messages);
         }
     }, [messages, isTyping]);
 
     // Load persisted chat history on mount (only once)
     useEffect(() => {
         if (!hasTriedLoad.current && memory.chatHistory.length > 0 && messages.length === 0) {
-            setMessages(memory.chatHistory as any);
+            setMessages(memory.chatHistory as Message[]);
             hasTriedLoad.current = true;
         } else if (memory.chatHistory.length === 0) {
             hasTriedLoad.current = true;
@@ -587,7 +587,7 @@ export default function BudTender() {
         const history = messages
             .filter(m => m.text && !m.isResult)
             .map(m => ({
-                role: m.sender === 'user' ? 'user' : 'assistant' as any,
+                role: (m.sender === 'user' ? 'user' : 'assistant') as 'user' | 'assistant',
                 content: m.text || ''
             }));
 
@@ -858,7 +858,7 @@ export default function BudTender() {
             if (currentShop) {
                 supabase.from('ai_usage_logs').insert({
                     shop_id: currentShop.id,
-                    user_id: (useAuthStore.getState().user as any)?.id,
+                    user_id: useAuthStore.getState().user?.id,
                     interaction_type: 'chat',
                     tokens_estimate: responseText.length / 4 // Rough estimate
                 }).then();
