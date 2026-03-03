@@ -6,16 +6,27 @@ import { useShopStore } from '../store/shopStore';
  * ShopResolver — Résout le shop via le slug dans l'URL.
  * Charge le currentShop dans le store Zustand avant de rendre les routes enfants.
  */
+const RESERVED_SLUGS = ['admin', 'pos', '404', 'catalogue', 'qualite', 'contact', 'connexion', 'ouvrir-boutique', 'reset-password', 'mentions-legales', 'compte', 'profil', 'commandes', 'favorites', 'parrainage', 'addresses', 'abonnements', 'fidelite', 'avis'];
+
 export default function ShopResolver() {
     const { shopSlug } = useParams<{ shopSlug: string }>();
     const { currentShop, isLoading, error, fetchShopBySlug } = useShopStore();
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (shopSlug && (!currentShop || currentShop.slug !== shopSlug)) {
+        if (!shopSlug) return;
+
+        // Si le slug est réservé (ex: /compte, /admin) mais qu'il a atterri ici,
+        // c'est qu'il n'existe pas de route globale correspondante.
+        if (RESERVED_SLUGS.includes(shopSlug)) {
+            navigate('/404', { replace: true });
+            return;
+        }
+
+        if (!currentShop || currentShop.slug !== shopSlug) {
             fetchShopBySlug(shopSlug);
         }
-    }, [shopSlug, currentShop, fetchShopBySlug]);
+    }, [shopSlug, currentShop, fetchShopBySlug, navigate]);
 
     // Redirect to 404 if shop not found
     useEffect(() => {

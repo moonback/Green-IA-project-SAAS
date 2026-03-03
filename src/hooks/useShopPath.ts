@@ -13,6 +13,7 @@ export function useShopPath() {
 
     return (path: string = '') => {
         const cleanPath = path.startsWith('/') ? path : `/${path}`;
+        if (!shopSlug) return cleanPath;
         return `/${shopSlug}${cleanPath}`;
     };
 }

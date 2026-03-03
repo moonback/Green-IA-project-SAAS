@@ -24,6 +24,9 @@ import ToastContainer from "./Toast";
 import { useCartStore } from "../store/cartStore";
 import { useAuthStore } from "../store/authStore";
 import { useSettingsStore } from "../store/settingsStore";
+import { useShopStore } from "../store/shopStore";
+
+const RESERVED_SLUGS = ['admin', 'pos', '404', 'catalogue', 'qualite', 'contact', 'connexion', 'ouvrir-boutique', 'reset-password', 'mentions-legales', 'compte', 'profil', 'commandes', 'favorites', 'parrainage', 'addresses', 'abonnements', 'fidelite', 'avis'];
 
 export default function Layout() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -36,10 +39,16 @@ export default function Layout() {
   const openSidebar = useCartStore((s) => s.openSidebar);
   const { user, profile, signOut } = useAuthStore();
   const settings = useSettingsStore((s) => s.settings);
+  const currentShop = useShopStore((s) => s.currentShop);
 
   // Helper: construit un chemin relatif au shop ou global
-  const sp = (path: string) => shopSlug ? `/${shopSlug}${path}` : path;
-  const isShopContext = !!shopSlug;
+  const sp = (path: string) => (shopSlug && !RESERVED_SLUGS.includes(shopSlug)) ? `/${shopSlug}${path}` : path;
+
+  // Chemin pour l'admin : utilise le slug de l'URL (si valide), ou le slug du shop chargé, ou fallback
+  const effectiveSlug = (shopSlug && !RESERVED_SLUGS.includes(shopSlug)) ? shopSlug : currentShop?.slug;
+  const adminPath = effectiveSlug ? `/${effectiveSlug}/admin` : "/admin";
+
+  const isShopContext = !!shopSlug && !RESERVED_SLUGS.includes(shopSlug);
 
   // Close menus on route change and scroll to top
   useEffect(() => {
@@ -184,7 +193,7 @@ export default function Layout() {
                           </Link>
                           {profile?.is_admin && (
                             <Link
-                              to={sp("/admin")}
+                              to={adminPath}
                               className="flex items-center gap-3 px-4 py-3 text-xs font-bold text-green-neon hover:bg-green-neon/10 rounded-xl transition-all"
                             >
                               <ShieldCheck className="h-4 w-4" />
@@ -329,6 +338,9 @@ export default function Layout() {
                     <p className="text-zinc-500 text-[10px] font-bold uppercase tracking-widest">Connecté en tant que</p>
                     <p className="text-white font-serif font-black text-lg">{profile?.full_name}</p>
                     <Link to={sp("/compte")} onClick={() => setIsMenuOpen(false)} className="bg-white/5 py-4 rounded-2xl text-xs font-bold text-white border border-white/5">Console Management</Link>
+                    {profile?.is_admin && (
+                      <Link to={adminPath} onClick={() => setIsMenuOpen(false)} className="bg-green-neon/10 py-4 rounded-2xl text-xs font-bold text-green-neon border border-green-neon/20">Gestion Boutiques</Link>
+                    )}
                     <button onClick={() => { signOut(); setIsMenuOpen(false); }} className="text-red-400 py-3 text-xs font-bold">Déconnexion</button>
                   </div>
                 ) : (

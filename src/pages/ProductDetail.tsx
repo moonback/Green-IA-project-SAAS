@@ -29,6 +29,8 @@ import SEO from '../components/SEO';
 import RelatedProducts from '../components/RelatedProducts';
 import FrequentlyBoughtTogether from '../components/FrequentlyBoughtTogether';
 import { useSettingsStore } from '../store/settingsStore';
+import { useShopStore } from '../store/shopStore';
+import { useShopPath } from '../hooks/useShopPath';
 
 const FREQUENCY_LABELS: Record<SubscriptionFrequency, string> = {
   weekly: 'Chaque semaine',
@@ -40,6 +42,8 @@ export default function ProductDetail() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const { user } = useAuthStore();
+  const { currentShop } = useShopStore();
+  const sp = useShopPath();
 
   const [product, setProduct] = useState<Product | null>(null);
   const [bundleItems, setBundleItems] = useState<BundleItem[]>([]);
@@ -75,15 +79,20 @@ export default function ProductDetail() {
 
   useEffect(() => {
     if (!slug) return;
-    supabase
+    const query = supabase
       .from('products')
       .select('*, category:categories(*)')
       .eq('slug', slug)
-      .eq('is_active', true)
-      .single()
+      .eq('is_active', true);
+
+    if (currentShop) {
+      query.eq('shop_id', currentShop.id);
+    }
+
+    query.single()
       .then(({ data, error }) => {
         if (error || !data) {
-          navigate('/catalogue', { replace: true });
+          navigate(sp('/catalogue'), { replace: true });
           return;
         }
         const p = data as Product;
@@ -257,7 +266,7 @@ export default function ProductDetail() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-4 text-xs uppercase tracking-wider text-zinc-600 mb-12">
-          <Link to="/catalogue" className="flex items-center gap-2 hover:text-green-neon transition-colors">
+          <Link to={sp('/catalogue')} className="flex items-center gap-2 hover:text-green-neon transition-colors">
             <ArrowLeft className="w-4 h-4" />
             Archives
           </Link>

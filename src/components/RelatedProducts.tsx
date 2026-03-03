@@ -5,6 +5,8 @@ import { ShoppingCart, Sparkles, Package, Star } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { Product } from '../lib/types';
 import { useCartStore } from '../store/cartStore';
+import { useShopStore } from '../store/shopStore';
+import { useShopPath } from '../hooks/useShopPath';
 
 interface RelatedProductsProps {
     productId: string;
@@ -21,6 +23,8 @@ export default function RelatedProducts({
     const [loading, setLoading] = useState(true);
     const addItem = useCartStore((s) => s.addItem);
     const openSidebar = useCartStore((s) => s.openSidebar);
+    const { currentShop } = useShopStore();
+    const sp = useShopPath();
 
     useEffect(() => {
         if (!productId) return;
@@ -37,7 +41,11 @@ export default function RelatedProducts({
         );
 
         if (!rpcError && rpcData && rpcData.length > 0) {
-            setProducts(rpcData as Product[]);
+            // Further filter RPC data by shop_id if needed (though RPC should ideally handle it)
+            const filteredRpc = currentShop
+                ? rpcData.filter((p: any) => p.shop_id === currentShop.id)
+                : rpcData;
+            setProducts(filteredRpc as Product[]);
             setLoading(false);
             return;
         }
@@ -59,7 +67,7 @@ export default function RelatedProducts({
             return;
         }
 
-        const { data: fallback } = await supabase
+        const query = supabase
             .from('products')
             .select('*')
             .eq('category_id', catId)
@@ -68,6 +76,12 @@ export default function RelatedProducts({
             .neq('id', productId)
             .order('is_featured', { ascending: false })
             .limit(4);
+
+        if (currentShop) {
+            query.eq('shop_id', currentShop.id);
+        }
+
+        const { data: fallback } = await query;
 
         setProducts((fallback ?? []) as Product[]);
         setLoading(false);
@@ -146,7 +160,7 @@ export default function RelatedProducts({
                             ) : null}
 
                             {/* Image */}
-                            <Link to={`/catalogue/${product.slug}`} className="block aspect-[4/5] overflow-hidden bg-zinc-800/50">
+                            <Link to={sp(`/catalogue/${product.slug}`)} className="block aspect-[4/5] overflow-hidden bg-zinc-800/50">
                                 <img
                                     src={product.image_url ?? 'https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=400'}
                                     alt={product.name}
@@ -157,7 +171,7 @@ export default function RelatedProducts({
                             {/* Info */}
                             <div className="p-3 flex flex-col flex-1">
                                 <Link
-                                    to={`/catalogue/${product.slug}`}
+                                    to={sp(`/catalogue/${product.slug}`)}
                                     className="font-semibold text-sm text-white hover:text-green-neon transition-colors line-clamp-2 flex-1"
                                 >
                                     {product.name}

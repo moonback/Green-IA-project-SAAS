@@ -72,6 +72,18 @@ export default function App() {
             <Route path="ouvrir-boutique" element={<RegisterShop />} />
             <Route path="reset-password" element={<ResetPassword />} />
             <Route path="mentions-legales" element={<Legal />} />
+            <Route path="404" element={<NotFound />} />
+
+            {/* Account (SaaS Global context) */}
+            <Route path="compte" element={<Account />} />
+            <Route path="compte/commandes" element={<Orders />} />
+            <Route path="compte/adresses" element={<Addresses />} />
+            <Route path="compte/abonnements" element={<Subscriptions />} />
+            <Route path="compte/fidelite" element={<LoyaltyHistory />} />
+            <Route path="compte/avis" element={<MyReviews />} />
+            <Route path="compte/favoris" element={<Favorites />} />
+            <Route path="compte/parrainage" element={<Referrals />} />
+            <Route path="compte/profil" element={<Profile />} />
           </Route>
 
           {/* ═══ Routes de boutique (préfixées par /:shopSlug) ═══ */}
