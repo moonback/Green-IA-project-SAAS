@@ -11,6 +11,8 @@ import SplashScreen from "./components/SplashScreen";
 // ── Pages SaaS (globales, hors shop) ──
 const Home = lazy(() => import("./pages/Home"));
 const Login = lazy(() => import("./pages/Login"));
+const ShopLogin = lazy(() => import("./pages/ShopLogin"));
+const ShopRegister = lazy(() => import("./pages/ShopRegister"));
 const RegisterShop = lazy(() => import("./pages/RegisterShop"));
 const SolutionSaaS = lazy(() => import("./pages/SolutionSaaS"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword"));
@@ -98,7 +100,8 @@ export default function App() {
               <Route path="produits" element={<Products />} />
               <Route path="qualite" element={<Quality />} />
               <Route path="contact" element={<ShopContact />} />
-              <Route path="connexion" element={<Login />} />
+              <Route path="connexion" element={<ShopLogin />} />
+              <Route path="inscription" element={<ShopRegister />} />
               <Route path="reset-password" element={<ResetPassword />} />
               <Route path="mentions-legales" element={<Legal />} />
 
