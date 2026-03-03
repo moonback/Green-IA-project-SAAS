@@ -29,8 +29,8 @@ export default function Quality() {
   return (
     <div className="min-h-screen bg-zinc-950 text-white font-sans">
       <SEO
-        title="Excellence Technologique — Green Mood SaaS"
-        description="Découvrez l'infrastructure de pointe de Green Mood. Sécurité multi-tenant, IA spécialisée et performance cloud pour votre business CBD."
+        title="Excellence Technologique — Green IA SaaS"
+        description="Découvrez l'infrastructure de pointe de Green IA. Sécurité multi-tenant, IA spécialisée et performance cloud pour votre business CBD."
       />
 
       {/* ────────── Hero Section : Tech Focus ────────── */}

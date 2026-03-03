@@ -1,7 +1,7 @@
-# 🌿 Green Mood CBD Shop - Règles pour l'Assistant IA (Dev Guidelines)
+# 🌿 Green IA CBD Shop - Règles pour l'Assistant IA (Dev Guidelines)
 
 ## 1. Contexte du Projet
-**Green Mood CBD Shop** est une Single Page Application (SPA) e-commerce conçue pour une boutique physique. L'objectif est de présenter les produits CBD de qualité (fleurs, résines, huiles), de rassurer quant à la légalité (THC < 0,3%) et de faciliter l'achat (Click & Collect, Livraison). L'accent est mis sur une interface utilisateur premium, animée et performante.
+**Green IA CBD Shop** est une Single Page Application (SPA) e-commerce conçue pour une boutique physique. L'objectif est de présenter les produits CBD de qualité (fleurs, résines, huiles), de rassurer quant à la légalité (THC < 0,3%) et de faciliter l'achat (Click & Collect, Livraison). L'accent est mis sur une interface utilisateur premium, animée et performante.
 
 ## 2. Stack Technique
 - **Frontend** : React 19, Vite 6, TypeScript

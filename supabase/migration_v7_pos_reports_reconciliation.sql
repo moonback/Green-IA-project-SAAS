@@ -1,5 +1,5 @@
 -- ═══════════════════════════════════════════════════════════════════
--- Green Mood CBD — Migration V7 (POS Reports Reconciliation & Breakdown)
+-- Green IA CBD — Migration V7 (POS Reports Reconciliation & Breakdown)
 -- Adds cash counting and product sales details to POS closing reports
 -- ═══════════════════════════════════════════════════════════════════
 

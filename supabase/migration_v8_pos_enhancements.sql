@@ -1,5 +1,5 @@
 -- ═══════════════════════════════════════════════════════════════════
--- Green Mood CBD — Migration V8 (POS Enhancements)
+-- Green IA CBD — Migration V8 (POS Enhancements)
 -- Adds create_pos_customer RPC for in-store customer creation
 -- ═══════════════════════════════════════════════════════════════════
 

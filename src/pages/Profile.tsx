@@ -136,7 +136,7 @@ export default function Profile() {
 
     return (
         <div className="min-h-screen bg-zinc-950 text-white pt-24 pb-32">
-            <SEO title="Paramètres Profil — L'Excellence Green Mood" description="Gérez vos informations personnelles et préférences de bien-être." />
+            <SEO title="Paramètres Profil — L'Excellence Green IA" description="Gérez vos informations personnelles et préférences de bien-être." />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -275,8 +275,8 @@ export default function Profile() {
                             type="button"
                             onClick={() => setShowBudTender(!showBudTender)}
                             className={`w-full group relative overflow-hidden rounded-[3rem] border transition-all duration-500 ${showBudTender
-                                    ? 'bg-white/[0.02] border-green-neon/20 p-8 md:p-12'
-                                    : 'bg-gradient-to-br from-green-neon/[0.04] via-white/[0.02] to-emerald-500/[0.03] border-white/5 hover:border-green-neon/30 p-8 md:p-10'
+                                ? 'bg-white/[0.02] border-green-neon/20 p-8 md:p-12'
+                                : 'bg-gradient-to-br from-green-neon/[0.04] via-white/[0.02] to-emerald-500/[0.03] border-white/5 hover:border-green-neon/30 p-8 md:p-10'
                                 }`}
                         >
                             {/* Glow background */}
@@ -289,8 +289,8 @@ export default function Profile() {
                             <div className="relative flex items-center justify-between">
                                 <div className="flex items-center gap-4">
                                     <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-500 ${showBudTender
-                                            ? 'bg-green-neon/15 border border-green-neon/30 shadow-[0_0_20px_rgba(57,255,20,0.1)]'
-                                            : 'bg-green-neon/10 border border-green-neon/20 group-hover:shadow-[0_0_25px_rgba(57,255,20,0.15)] group-hover:border-green-neon/40'
+                                        ? 'bg-green-neon/15 border border-green-neon/30 shadow-[0_0_20px_rgba(57,255,20,0.1)]'
+                                        : 'bg-green-neon/10 border border-green-neon/20 group-hover:shadow-[0_0_25px_rgba(57,255,20,0.15)] group-hover:border-green-neon/40'
                                         }`}>
                                         <SlidersHorizontal className={`w-5 h-5 text-green-neon transition-transform duration-500 ${showBudTender ? 'rotate-90' : 'group-hover:rotate-12'
                                             }`} />

@@ -1,6 +1,6 @@
-# 🧭 Guide d'Implémentation SaaS — Green Mood
+# 🧭 Guide d'Implémentation SaaS — Green IA
 
-Ce document détaille les étapes techniques nécessaires pour transformer Green Mood d'une application unique en une plateforme SaaS Multi-tenant.
+Ce document détaille les étapes techniques nécessaires pour transformer Green IA d'une application unique en une plateforme SaaS Multi-tenant.
 
 ## 🛠 Stack Technique Cible
 - **Frontend** : React 19 + Vite + Tailwind CSS
@@ -119,7 +119,7 @@ Transformez l'IA en moteur de vente personnalisé pour chaque boutique.
 - Taux de conversion.
 - État des stocks par boutique.
 
-### Pour l'Admin (Green Mood)
+### Pour l'Admin (Green IA)
 - MRR (Monthly Recurring Revenue).
 - Nombre de shops actifs.
 - Usage global des crédits Gemini (Coûts vs Revenus).

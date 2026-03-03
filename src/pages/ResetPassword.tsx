@@ -32,7 +32,7 @@ export default function ResetPassword() {
 
     return (
         <div className="min-h-screen bg-black flex items-center justify-center px-4 py-16 font-sans">
-            <SEO title="Nouveau mot de passe — Green Mood" description="Mise à jour sécurisée de vos accès." />
+            <SEO title="Nouveau mot de passe — Green IA" description="Mise à jour sécurisée de vos accès." />
 
             <motion.div
                 initial={{ opacity: 0, y: 20 }}

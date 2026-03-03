@@ -1,5 +1,5 @@
 -- ═══════════════════════════════════════════════════════════════════
--- Green Mood CBD — Migration V6 (POS Advanced Features)
+-- Green IA CBD — Migration V6 (POS Advanced Features)
 -- Barcode Scanner Support & Bundle Optimization
 -- ═══════════════════════════════════════════════════════════════════
 

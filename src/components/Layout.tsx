@@ -319,7 +319,7 @@ export default function Layout() {
                 <Link to={isShopContext ? sp('/') : '/'} className="flex items-center group" onClick={() => setIsMenuOpen(false)}>
                   <div className="relative">
                     <div className="absolute inset-0 blur-2xl bg-green-neon/20 rounded-full scale-150" />
-                    <img src="/logo.png" alt="Green Mood SaaS" className="h-16 md:h-20 w-auto object-contain relative z-10" />
+                    <img src="/logo.png" alt="Green IA SaaS" className="h-16 md:h-20 w-auto object-contain relative z-10" />
                   </div>
                 </Link>
                 <button
@@ -450,10 +450,10 @@ export default function Layout() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-16 md:gap-12 mb-20">
             {/* Brand */}
             <div className="space-y-6">
-              <Link to={isShopContext ? sp('/') : '/'} className="flex items-center group" aria-label="Green Mood SaaS">
+              <Link to={isShopContext ? sp('/') : '/'} className="flex items-center group" aria-label="Green IA SaaS">
                 <img
                   src="/logo.png"
-                  alt="Green Mood SaaS"
+                  alt="Green IA SaaS"
                   className="h-12 w-auto object-contain transition-all duration-500 group-hover:glow-logo"
                 />
               </Link>
@@ -510,7 +510,7 @@ export default function Layout() {
           </div>
 
           <div className="border-t border-white/[0.04] pt-10 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-600">
-            <p>&copy; {new Date().getFullYear()} Green Mood SaaS. Global Node Infrastructure.</p>
+            <p>&copy; {new Date().getFullYear()} Green IA SaaS. Global Node Infrastructure.</p>
             <div className="flex gap-8">
               <Link to="/mentions-legales" className="hover:text-green-neon transition-colors">Politique de Confidentialité</Link>
               <Link to="/mentions-legales" className="hover:text-green-neon transition-colors">Termes SaaS</Link>

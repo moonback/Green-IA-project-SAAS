@@ -7,7 +7,7 @@ export default function Contact() {
   return (
     <div className="min-h-screen bg-zinc-950 text-white pb-32 font-sans">
       <SEO
-        title="Contactez Green Mood SaaS | Support & Démo"
+        title="Contactez Green IA SaaS | Support & Démo"
         description="Besoin d'une démonstration de notre IA BudTender ? Un problème technique ? Notre équipe d'experts SaaS CBD est à votre écoute."
       />
 
@@ -69,15 +69,15 @@ export default function Contact() {
                   desc: "Une équipe technique dédiée pour vos déploiements.",
                   icon: Headphones,
                   color: "text-blue-400",
-                  link: "mailto:support@greenmood.io",
+                  link: "mailto:support@greenIA.io",
                   label: "Ouvrir un ticket"
                 },
                 {
                   title: "Partenariats Shop",
-                  desc: "Rejoignez l'écosystème Green Mood en tant que partenaire.",
+                  desc: "Rejoignez l'écosystème Green IA en tant que partenaire.",
                   icon: Building2,
                   color: "text-purple-400",
-                  link: "mailto:partners@greenmood.io",
+                  link: "mailto:partners@greenIA.io",
                   label: "Devenir partenaire"
                 }
               ].map((item, i) => (
@@ -155,7 +155,7 @@ export default function Contact() {
                   <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500 ml-4">Détails de votre Projet</label>
                   <textarea
                     rows={6}
-                    placeholder="Comment Green Mood peut-il aider votre business aujourd'hui ?"
+                    placeholder="Comment Green IA peut-il aider votre business aujourd'hui ?"
                     className="w-full bg-black border border-zinc-800 rounded-[2.5rem] px-8 py-6 text-white placeholder-zinc-700 focus:outline-none focus:border-green-neon transition-all resize-none"
                   ></textarea>
                 </div>
@@ -177,7 +177,7 @@ export default function Contact() {
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12 text-center md:text-left">
           <div className="space-y-2">
             <h4 className="text-xl font-serif font-black flex items-center gap-3 justify-center md:justify-start">
-              <Globe className="w-6 h-6 text-green-neon" /> GREEN MOOD NETWORK
+              <Globe className="w-6 h-6 text-green-neon" /> GREEN IA NETWORK
             </h4>
             <p className="text-zinc-600 text-sm">L'écosystème CBD le plus avancé d'Europe.</p>
           </div>

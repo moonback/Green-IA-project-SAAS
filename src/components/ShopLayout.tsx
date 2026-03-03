@@ -479,10 +479,10 @@ export default function ShopLayout() {
                     </div>
 
                     <div className="border-t border-white/[0.04] pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-bold uppercase tracking-[0.15em] text-zinc-600">
-                        <p>&copy; {new Date().getFullYear()} {shopName}. Propulsé par Green Mood SaaS.</p>
+                        <p>&copy; {new Date().getFullYear()} {shopName}. Propulsé par Green IA SaaS.</p>
                         <div className="flex gap-6">
                             <Link to={sp("/mentions-legales")} className="hover:text-white transition-colors">Mentions Légales</Link>
-                            <a href="/" className="hover:text-white transition-colors" style={{ color: primaryColor }}>Green Mood Platform</a>
+                            <a href="/" className="hover:text-white transition-colors" style={{ color: primaryColor }}>Green IA Platform</a>
                         </div>
                     </div>
                 </div>

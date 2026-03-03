@@ -49,7 +49,7 @@ export default function SolutionSaaS() {
     return (
         <div className="min-h-screen bg-zinc-950 text-white overflow-hidden">
             <SEO
-                title="Solution SaaS | Green Mood Infrastructure Cloud"
+                title="Solution SaaS | Green IA Infrastructure Cloud"
                 description="Découvrez l'infrastructure la plus avancée du marché pour le retail CBD. Centralisez votre gestion, automatisez vos ventes avec l'IA."
             />
 
@@ -85,7 +85,7 @@ export default function SolutionSaaS() {
                         transition={{ delay: 0.1 }}
                         className="text-zinc-400 text-lg md:text-xl max-w-3xl mx-auto font-light leading-relaxed"
                     >
-                        Green Mood n'est pas qu'un simple site web, c'est un moteur technologique
+                        Green IA n'est pas qu'un simple site web, c'est un moteur technologique
                         complet qui gère l'inventaire, les clients et l'intelligence artificielle
                         pour des centaines de boutiques simultanément.
                     </motion.p>
@@ -195,7 +195,7 @@ export default function SolutionSaaS() {
                         DÉPLOYEZ EN <span className="text-green-neon">QUELQUES CLICS.</span>
                     </h2>
                     <p className="text-zinc-500 text-xl font-light">
-                        Oubliez les installations complexes. Chaque boutique Green Mood est
+                        Oubliez les installations complexes. Chaque boutique Green IA est
                         automatiquement isolée dans son propre environnement sécurisé,
                         permettant une scalabilité infinie.
                     </p>

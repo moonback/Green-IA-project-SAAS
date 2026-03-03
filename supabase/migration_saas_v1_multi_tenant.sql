@@ -1,6 +1,6 @@
 -- ═══════════════════════════════════════════════════════════════════════════
 -- 🧭 SAAS MIGRATION — PHASE 1 : FONDATIONS MULTI-TENANT
--- Transforme Green Mood d'une application unique en plateforme SaaS.
+-- Transforme Green IA d'une application unique en plateforme SaaS.
 -- ═══════════════════════════════════════════════════════════════════════════
 
 -- 1. Table des Boutiques (Tenants)

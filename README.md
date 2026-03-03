@@ -1,8 +1,8 @@
-# 🌿 Green Mood CBD
+# 🌿 Green IA CBD
 
 > Une expérience e-commerce premium dédiée au bien-être, propulsée par l'intelligence artificielle.
 
-Green Mood CBD est une plateforme e-commerce moderne spécialisée dans la vente de produits CBD de haute qualité. Elle intègre un **BudTender IA** (basé sur Google Gemini) capable de conseiller les clients en temps réel via une interface vocale et textuelle, offrant une expérience d'achat personnalisée et experte.
+Green IA CBD est une plateforme e-commerce moderne spécialisée dans la vente de produits CBD de haute qualité. Elle intègre un **BudTender IA** (basé sur Google Gemini) capable de conseiller les clients en temps réel via une interface vocale et textuelle, offrant une expérience d'achat personnalisée et experte.
 
 ---
 

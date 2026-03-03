@@ -1,6 +1,6 @@
 # 📖 Documentation API
 
-Green Mood CBD utilise principalement les APIs de Supabase (Post-gREST) et des fonctions personnalisées (RPC).
+Green IA CBD utilise principalement les APIs de Supabase (Post-gREST) et des fonctions personnalisées (RPC).
 
 ## 🗄️ Supabase Remote Procedure Calls (RPC)
 

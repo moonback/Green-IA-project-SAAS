@@ -1,5 +1,5 @@
 -- ═══════════════════════════════════════════════════════════════════
--- Green Mood CBD — Migration V2 (Additive)
+-- Green IA CBD — Migration V2 (Additive)
 -- Run AFTER migration.sql in: Supabase Dashboard > SQL Editor
 -- Tables: user_ai_preferences, budtender_interactions, wishlists, product_images
 -- ═══════════════════════════════════════════════════════════════════

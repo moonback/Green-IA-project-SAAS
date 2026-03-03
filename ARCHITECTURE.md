@@ -1,6 +1,6 @@
 # 🏗️ Architecture du Projet
 
-Ce document détaille l'organisation technique et les choix architecturaux de Green Mood CBD.
+Ce document détaille l'organisation technique et les choix architecturaux de Green IA CBD.
 
 ## 📱 Frontend
 

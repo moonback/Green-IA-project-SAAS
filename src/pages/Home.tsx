@@ -55,7 +55,7 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-zinc-950 text-white overflow-hidden font-sans selection:bg-green-neon selection:text-black">
       <SEO
-        title="Green Mood SaaS | L'Infrastructure Intelligence Artificielle pour le Retail CBD"
+        title="Green IA SaaS | L'Infrastructure Intelligence Artificielle pour le Retail CBD"
         description="Propulsez votre entreprise CBD avec le premier SaaS IA-Native. BudTender intelligent, gestion multi-boutique, POS intégré et sécurité bancaire."
       />
 
@@ -89,7 +89,7 @@ export default function Home() {
             </h1>
 
             <p className="text-zinc-400 text-lg md:text-2xl max-w-3xl mx-auto font-light leading-relaxed mb-16 px-4">
-              Green Mood est le premier <span className="text-white font-medium">SaaS Cloud-Native</span> conçu pour l'industrie du CBD.
+              Green IA est le premier <span className="text-white font-medium">SaaS Cloud-Native</span> conçu pour l'industrie du CBD.
               Centralisez vos opérations, sécurisez vos data et automatisez vos ventes grâce à l'IA.
             </p>
 
@@ -122,7 +122,7 @@ export default function Home() {
                 </div>
                 <div className="flex-1 flex justify-center">
                   <div className="px-4 py-1.5 bg-black/40 rounded-lg border border-white/[0.04] text-[9px] font-mono text-zinc-500 uppercase tracking-widest flex items-center gap-2">
-                    <Lock className="w-2.5 h-2.5" /> greenmood-console.cloud
+                    <Lock className="w-2.5 h-2.5" /> greenIA-console.cloud
                   </div>
                 </div>
               </div>

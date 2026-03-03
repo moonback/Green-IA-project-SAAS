@@ -86,7 +86,7 @@ export default function Login() {
   return (
     <>
       <SEO
-        title={mode === 'login' ? 'Connexion — Green Mood CBD' : 'Créer un compte — Green Mood CBD'}
+        title={mode === 'login' ? 'Connexion — Green IA CBD' : 'Créer un compte — Green IA CBD'}
         description="Connectez-vous ou créez un compte pour accéder à votre historique de commandes et programme de fidélité."
       />
 
@@ -112,7 +112,7 @@ export default function Login() {
                 <img src="/logo.png" alt="Logo" className="w-8 h-8 rounded-full" />
               </div>
               <span className="text-2xl font-serif font-black text-white tracking-tight">
-                GREEN <span className="text-green-neon">MOOD</span>
+                GREEN <span className="text-green-neon">IA</span>
               </span>
             </Link>
           </motion.div>
@@ -160,7 +160,7 @@ export default function Login() {
             animate={{ opacity: 1 }}
             className="relative z-10 pt-8 border-t border-white/10"
           >
-            <p className="text-zinc-500 text-xs">© 2026 Green Mood SaaS Platform. Tous droits réservés.</p>
+            <p className="text-zinc-500 text-xs">© 2026 Green IA SaaS Platform. Tous droits réservés.</p>
           </motion.div>
         </div>
 
@@ -178,7 +178,7 @@ export default function Login() {
             {/* Header for mobile only or small screens */}
             <div className="lg:hidden text-center mb-10">
               <img src="/logo.png" alt="Logo" className="w-20 h-20 rounded-full mx-auto mb-4 border-2 border-green-neon shadow-[0_0_20px_rgba(20,229,148,0.3)]" />
-              <h1 className="text-3xl font-serif font-bold text-white">Green Mood</h1>
+              <h1 className="text-3xl font-serif font-bold text-white">Green IA</h1>
             </div>
 
             <div className="mb-8">
@@ -376,7 +376,7 @@ export default function Login() {
             </div>
 
             <p className="text-center text-zinc-600 text-[10px] mt-8 uppercase tracking-tighter">
-              En continuant, vous confirmez avoir 18 ans révolus. — Green Mood Secure Identity
+              En continuant, vous confirmez avoir 18 ans révolus. — Green IA Secure Identity
             </p>
           </motion.div>
         </div>

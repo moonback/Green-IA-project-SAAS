@@ -85,7 +85,7 @@ export default function RegisterShop() {
 
     return (
         <div className="min-h-screen bg-black text-white selection:bg-green-neon selection:text-black">
-            <SEO title="Ouvrir ma boutique — Green Mood SaaS" description="Rejoignez la plateforme SaaS CBD n°1 et lancez votre boutique avec IA." />
+            <SEO title="Ouvrir ma boutique — Green IA SaaS" description="Rejoignez la plateforme SaaS CBD n°1 et lancez votre boutique avec IA." />
 
             <div className="max-w-6xl mx-auto px-6 py-12 lg:py-20 grid lg:grid-cols-2 gap-16 items-center">
 
@@ -96,7 +96,7 @@ export default function RegisterShop() {
                             <Building2 className="w-5 h-5 text-black" />
                         </div>
                         <span className="text-xl font-serif font-black tracking-tight group-hover:text-green-neon transition-colors">
-                            GREEN <span className="text-green-neon">MOOD</span> BUSINESS
+                            GREEN <span className="text-green-neon">IA</span> BUSINESS
                         </span>
                     </Link>
 
@@ -201,7 +201,7 @@ export default function RegisterShop() {
                                                             type="text"
                                                             value={shopName}
                                                             onChange={(e) => handleNameChange(e.target.value)}
-                                                            placeholder="ex: Green Mood Paris"
+                                                            placeholder="ex: Green IA Paris"
                                                             className="w-full bg-black/40 border border-zinc-700 rounded-2xl pl-12 pr-4 py-4 focus:border-green-neon outline-none transition-all"
                                                         />
                                                     </div>
@@ -218,7 +218,7 @@ export default function RegisterShop() {
                                                             placeholder="mon-shop-cbd"
                                                             className="w-full bg-black/40 border border-zinc-700 rounded-2xl pl-12 pr-4 py-4 focus:border-green-neon outline-none transition-all"
                                                         />
-                                                        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] text-zinc-600 font-mono">.greenmood.saas</span>
+                                                        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] text-zinc-600 font-mono">.greenIA.saas</span>
                                                     </div>
                                                 </div>
                                             </div>

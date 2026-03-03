@@ -1,6 +1,6 @@
 # 🤝 Contribution au Projet
 
-Merci de l'intérêt que vous portez à Green Mood CBD ! Voici quelques directives pour contribuer au projet de manière efficace.
+Merci de l'intérêt que vous portez à Green IA CBD ! Voici quelques directives pour contribuer au projet de manière efficace.
 
 ## 🛠️ Setup Local
 

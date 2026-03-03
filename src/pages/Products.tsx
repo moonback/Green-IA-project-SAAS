@@ -52,9 +52,9 @@ export default function Products() {
   return (
     <div className="min-h-screen bg-zinc-950 text-white overflow-hidden pb-32">
       <SEO
-        title="N10 Innovation : Puissance & Intensité — Green Mood Shop"
+        title="N10 Innovation : Puissance & Intensité — Green IA Shop"
         description="Le N10 est un dérivé du THC, avec une teneur en tétrahydrocannabinol plus faible. Cette molécule est plus puissante et plus intense que le CBNO. Découvrez l'excellence."
-        keywords="N10, dérivé THC, CBD puissant, CBNO vs N10, innovation cannabinoïde, Green Mood N10"
+        keywords="N10, dérivé THC, CBD puissant, CBNO vs N10, innovation cannabinoïde, Green IA N10"
         schema={productsSchema}
       />
 
@@ -65,7 +65,7 @@ export default function Products() {
           <img
             src="/images/presentation-cbd.png"
             className="w-full h-full object-cover opacity-100 filter grayscale blur-[2px]"
-            alt="N10 Mood"
+            alt="N10 IA"
           />
           {/* <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/20 via-zinc-950/60 to-zinc-950" />
           <div className="absolute inset-0 bg-gradient-to-r from-zinc-950/40 via-transparent to-zinc-950/40" /> */}
@@ -268,7 +268,7 @@ export default function Products() {
             <ShoppingBag className="w-16 h-16 text-green-neon mx-auto animate-bounce-slow" />
             <div className="space-y-4">
               <h2 className="text-5xl md:text-7xl font-serif font-black text-white italic">
-                L'expérience <br /> Green Mood <span className="text-green-neon not-italic font-sans">Online.</span>
+                L'expérience <br /> Green IA <span className="text-green-neon not-italic font-sans">Online.</span>
               </h2>
               <p className="text-xl text-zinc-400 font-light max-w-2xl mx-auto leading-relaxed">
                 Profitez du Click & Collect rapide à Paris ou de la livraison

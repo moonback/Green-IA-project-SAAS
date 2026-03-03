@@ -259,8 +259,8 @@ export default function ProductDetail() {
   return (
     <div className="min-h-screen bg-zinc-950 text-white pt-24 pb-32">
       <SEO
-        title={`${product.name} — Excellence Green Mood`}
-        description={product.description ?? `Découvrez ${product.name} par Green Mood. L'excellence du CBD.`}
+        title={`${product.name} — Excellence Green IA`}
+        description={product.description ?? `Découvrez ${product.name} par Green IA. L'excellence du CBD.`}
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -115,7 +115,7 @@ export default function Catalog() {
   return (
     <div className="min-h-screen bg-zinc-950 text-white pb-24">
       <SEO
-        title="Archives N10 & CBD — L'Excellence Green Mood"
+        title="Archives N10 & CBD — L'Excellence Green IA"
         description="Explorez l'univers moléculaire du N10 et des meilleurs extraits de CBD. Livraison discrète et Click & Collect."
       />
 

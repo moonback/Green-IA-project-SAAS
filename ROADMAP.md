@@ -1,4 +1,4 @@
-# 🧭 Roadmap Stratégique — Green Mood SaaS
+# 🧭 Roadmap Stratégique — Green IA SaaS
 
 ![Roadmap Banner](./roadmap_banner.png)
 
@@ -6,7 +6,7 @@
 > ![Progress](https://geps.dev/progress/15)
 > *15% des objectifs SaaS atteints*
 
-> Une roadmap SaaS structurée, réaliste et directement alignée avec les ambitions de **Green Mood**. Ce plan permet de transformer une application locale en un véritable SaaS scalable, monétisable et intégrant l'IA.
+> Une roadmap SaaS structurée, réaliste et directement alignée avec les ambitions de **Green IA**. Ce plan permet de transformer une application locale en un véritable SaaS scalable, monétisable et intégrant l'IA.
 
 ---
 
@@ -30,7 +30,7 @@
 
 ```mermaid
 gantt
-    title Planning de Déploiement Green Mood SaaS
+    title Planning de Déploiement Green IA SaaS
     dateFormat  YYYY-WW
     axisFormat  %W
     
@@ -166,7 +166,7 @@ gantt
 
 ### 📍 PHASE 7 — Dashboard SaaS Admin
 > [!NOTE]
-> **Objectif :** Centraliser le pilotage du business pour l'owner de Green Mood.
+> **Objectif :** Centraliser le pilotage du business pour l'owner de Green IA.
 
 - [ ] **Super Admin Dashboard :** MRR, Churn, Usage IA global, Logs boutiques.
 - [ ] **Client Dashboard :** Consommation, Modification de plan en 1 clic.

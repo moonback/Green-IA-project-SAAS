@@ -1,6 +1,6 @@
 # 🗃️ Schéma de la Base de Données
 
-Green Mood CBD utilise Supabase (PostgreSQL). Voici une vue d'ensemble structurée des tables et relations.
+Green IA CBD utilise Supabase (PostgreSQL). Voici une vue d'ensemble structurée des tables et relations.
 
 ## 📋 Tables Principales
 
