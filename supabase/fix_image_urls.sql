@@ -1,7 +1,7 @@
 -- ═══════════════════════════════════════════════════════════════════════════
--- 🖼️ FIX : Mise à jour des URLs d'images produits (Unsplash → Pexels)
--- Les photo IDs Unsplash du seed initial donnaient des 404.
--- Ces URLs Pexels sont stables, libres de droits et fiables.
+-- 🖼️ FIX : Mise à jour des URLs d'images produits (Remplacement IDs 404)
+-- Les URLs Pexels 7520894 et 7520899 ne sont plus disponibles.
+-- Remplacées par des IDs stables et vérifiés.
 -- ═══════════════════════════════════════════════════════════════════════════
 
 -- ─── Catégories ───────────────────────────────────────────────────────────────
@@ -23,7 +23,7 @@ WHERE slug = 'amnesia-haze';
 UPDATE public.products SET image_url = 'https://images.pexels.com/photos/7667734/pexels-photo-7667734.jpeg?auto=compress&cs=tinysrgb&w=800'
 WHERE slug = 'gelato';
 
-UPDATE public.products SET image_url = 'https://images.pexels.com/photos/7520894/pexels-photo-7520894.jpeg?auto=compress&cs=tinysrgb&w=800'
+UPDATE public.products SET image_url = 'https://images.pexels.com/photos/7667911/pexels-photo-7667911.jpeg?auto=compress&cs=tinysrgb&w=800'
 WHERE slug = 'white-widow';
 
 UPDATE public.products SET image_url = 'https://images.pexels.com/photos/7667911/pexels-photo-7667911.jpeg?auto=compress&cs=tinysrgb&w=800'
@@ -40,7 +40,7 @@ WHERE slug = 'jaune-mousseux';
 UPDATE public.products SET image_url = 'https://images.pexels.com/photos/6862365/pexels-photo-6862365.jpeg?auto=compress&cs=tinysrgb&w=800'
 WHERE slug = 'filtre-x3';
 
-UPDATE public.products SET image_url = 'https://images.pexels.com/photos/7520899/pexels-photo-7520899.jpeg?auto=compress&cs=tinysrgb&w=800'
+UPDATE public.products SET image_url = 'https://images.pexels.com/photos/7667734/pexels-photo-7667734.jpeg?auto=compress&cs=tinysrgb&w=800'
 WHERE slug = 'ice-o-lator';
 
 -- ─── Huiles & Infusions ───────────────────────────────────────────────────────
@@ -59,11 +59,5 @@ WHERE slug = 'infusion-digestion';
 
 -- ─── Bundle ───────────────────────────────────────────────────────────────────
 
-UPDATE public.products SET image_url = 'https://images.pexels.com/photos/4021983/pexels-photo-4021983.jpeg?auto=compress&cs=tinysrgb&w=800'
+UPDATE public.products SET image_url = 'https://images.pexels.com/photos/7667727/pexels-photo-7667727.jpeg?auto=compress&cs=tinysrgb&w=800'
 WHERE slug = 'pack-nuit-paisible';
-
--- ═══════════════════════════════════════════════════════════════════════════
--- ✅ Toutes les images sont maintenant sur Pexels (CDN stable, HTTPS, gratuit)
--- Le composant ProductCard.tsx a aussi été mis à jour avec un onError fallback
--- pour afficher automatiquement une image placeholder si une URL est invalide.
--- ═══════════════════════════════════════════════════════════════════════════

@@ -1338,6 +1338,9 @@ function AdminPOSTab({
                                                             <img
                                                                 src={product.image_url}
                                                                 alt={product.name}
+                                                                onError={(e) => {
+                                                                    (e.target as HTMLImageElement).src = 'https://images.pexels.com/photos/6588619/pexels-photo-6588619.jpeg?auto=compress&cs=tinysrgb&w=800';
+                                                                }}
                                                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                                                             />
                                                         ) : (
