@@ -147,32 +147,14 @@ export default function Quality() {
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              className="relative aspect-square rounded-[3rem] overflow-hidden border border-zinc-800 bg-zinc-900 p-6 shadow-2xl"
+              className="relative aspect-square rounded-[3rem] overflow-hidden border border-zinc-800"
             >
-              <div className="w-full h-full bg-black rounded-2xl p-8 font-mono text-xs text-green-neon/70 overflow-hidden leading-relaxed">
-                <div className="text-zinc-500 mb-4">-- PostgreSQL Multi-tenant Security</div>
-                <div>CREATE POLICY shop_isolation_policy ON public.orders</div>
-                <div>FOR ALL TO authenticated</div>
-                <div>USING (</div>
-                <div className="pl-4">shop_id IN (</div>
-                <div className="pl-8 text-white font-bold">SELECT shop_id FROM public.shop_members WHERE user_id = auth.uid()</div>
-                <div className="pl-4">)</div>
-                <div>);</div>
-                <div className="mt-8 opacity-50">-- Ensuring perfect data isolation --</div>
-                <div className="flex gap-2 mt-4">
-                  <Zap className="w-4 h-4 animate-pulse" />
-                  <span>Security Policy Active</span>
-                </div>
-                <div className="mt-20 flex flex-col gap-2">
-                  <div className="h-1 bg-green-neon/20 w-full rounded-full overflow-hidden">
-                    <motion.div initial={{ x: '-100%' }} animate={{ x: '100%' }} transition={{ duration: 2, repeat: Infinity }} className="h-full bg-green-neon w-1/3" />
-                  </div>
-                  <div className="h-1 bg-green-neon/20 w-3/4 rounded-full overflow-hidden">
-                    <motion.div initial={{ x: '-100%' }} animate={{ x: '100%' }} transition={{ duration: 2.5, repeat: Infinity, delay: 0.5 }} className="h-full bg-green-neon w-1/3" />
-                  </div>
-                </div>
-              </div>
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-zinc-900 to-transparent h-20" />
+              <img
+                src={content.quality.deep_dive_image}
+                className="w-full h-full object-cover opacity-90 hover:scale-110 transition-transform duration-700"
+                alt="Architecture Sécurisée"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent" />
             </motion.div>
           </div>
 

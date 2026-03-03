@@ -54,10 +54,12 @@ export default function ShopAbout() {
             {/* Hero */}
             <section className="relative min-h-[50vh] flex items-center justify-center pt-24 px-4 overflow-hidden">
                 <div className="absolute inset-0 z-0">
-                    <div
-                        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full blur-[200px] opacity-15"
-                        style={{ background: primaryColor }}
+                    <img
+                        src={content.about.hero_image}
+                        className="w-full h-full object-cover opacity-20 filter grayscale"
+                        alt=""
                     />
+                    <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/40 via-zinc-950/80 to-zinc-950" />
                 </div>
 
                 <div className="relative z-10 max-w-5xl mx-auto text-center space-y-6">

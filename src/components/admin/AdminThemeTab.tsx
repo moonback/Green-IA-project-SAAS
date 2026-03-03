@@ -7,6 +7,8 @@ import {
 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { useShopStore } from '../../store/shopStore';
+import ImageUpload from './ImageUpload';
+import { Store } from 'lucide-react';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -418,12 +420,16 @@ export default function AdminThemeTab() {
     const [theme, setTheme] = useState<ShopTheme>(DEFAULT_THEME);
     const [isSaving, setIsSaving] = useState(false);
     const [saveSuccess, setSaveSuccess] = useState(false);
-    const [activeSection, setActiveSection] = useState<'presets' | 'colors' | 'typography' | 'layout' | 'advanced'>('presets');
+    const [logoUrl, setLogoUrl] = useState<string | null>(null);
+    const [activeSection, setActiveSection] = useState<'presets' | 'identity' | 'colors' | 'typography' | 'layout' | 'advanced'>('presets');
     const [showPreview, setShowPreview] = useState(true);
     const [hasChanges, setHasChanges] = useState(false);
 
-    // Load existing theme from shop settings
+    // Load existing theme and logo from shop
     useEffect(() => {
+        if (currentShop?.logo_url) {
+            setLogoUrl(currentShop.logo_url);
+        }
         if (currentShop?.settings?.theme) {
             setTheme({ ...DEFAULT_THEME, ...currentShop.settings.theme });
         } else if (currentShop?.settings?.primary_color) {
@@ -466,7 +472,10 @@ export default function AdminThemeTab() {
 
             const { error } = await supabase
                 .from('shops')
-                .update({ settings: newSettings })
+                .update({
+                    settings: newSettings,
+                    logo_url: logoUrl
+                })
                 .eq('id', currentShop.id);
 
             if (error) throw error;
@@ -498,6 +507,7 @@ export default function AdminThemeTab() {
 
     const SECTIONS = [
         { key: 'presets', label: 'Thèmes prédéfinis', icon: Wand2 },
+        { key: 'identity', label: 'Identité', icon: Store },
         { key: 'colors', label: 'Couleurs', icon: Palette },
         { key: 'typography', label: 'Typographie', icon: Type },
         { key: 'layout', label: 'Design & Mise en page', icon: Layout },
@@ -521,8 +531,8 @@ export default function AdminThemeTab() {
                     <button
                         onClick={() => setShowPreview(!showPreview)}
                         className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider border transition-all ${showPreview
-                                ? 'bg-white/10 border-white/20 text-white'
-                                : 'bg-white/[0.04] border-white/[0.08] text-zinc-400 hover:text-white'
+                            ? 'bg-white/10 border-white/20 text-white'
+                            : 'bg-white/[0.04] border-white/[0.08] text-zinc-400 hover:text-white'
                             }`}
                     >
                         <Eye className="w-3.5 h-3.5" />
@@ -574,8 +584,8 @@ export default function AdminThemeTab() {
                                 key={key}
                                 onClick={() => setActiveSection(key)}
                                 className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all ${activeSection === key
-                                        ? 'bg-white/10 text-white border border-white/20'
-                                        : 'text-zinc-500 hover:text-zinc-300 border border-transparent hover:bg-white/[0.04]'
+                                    ? 'bg-white/10 text-white border border-white/20'
+                                    : 'text-zinc-500 hover:text-zinc-300 border border-transparent hover:bg-white/[0.04]'
                                     }`}
                             >
                                 <Icon className="w-3.5 h-3.5" />
@@ -597,8 +607,8 @@ export default function AdminThemeTab() {
                                             whileTap={{ scale: 0.97 }}
                                             onClick={() => applyPreset(preset)}
                                             className={`relative flex flex-col items-start gap-2 p-4 rounded-2xl border transition-all text-left overflow-hidden ${isActive
-                                                    ? 'border-white/30 bg-white/10 shadow-[0_4px_20px_rgba(255,255,255,0.08)]'
-                                                    : 'border-white/[0.07] bg-white/[0.03] hover:border-white/15 hover:bg-white/[0.06]'
+                                                ? 'border-white/30 bg-white/10 shadow-[0_4px_20px_rgba(255,255,255,0.08)]'
+                                                : 'border-white/[0.07] bg-white/[0.03] hover:border-white/15 hover:bg-white/[0.06]'
                                                 }`}
                                         >
                                             {/* Gradient top bar */}
@@ -637,6 +647,28 @@ export default function AdminThemeTab() {
                                 <Sparkles className="w-3.5 h-3.5 text-zinc-500" />
                                 Appliquez un thème prédéfini puis affinez selon vos préférences dans les autres onglets.
                             </p>
+                        </Section>
+                    )}
+
+                    {/* ── Identity ── */}
+                    {activeSection === 'identity' && (
+                        <Section title="Identité de la boutique" icon={Store}>
+                            <div className="space-y-6">
+                                <div>
+                                    <p className="text-xs font-black uppercase tracking-widest text-zinc-500 mb-3">Logo de la boutique</p>
+                                    <ImageUpload
+                                        value={logoUrl}
+                                        onChange={(url) => {
+                                            setLogoUrl(url);
+                                            setHasChanges(true);
+                                        }}
+                                        aspectRatio="square"
+                                    />
+                                    <p className="text-[10px] text-zinc-600 mt-2">
+                                        Format recommandé : Carré (512x512px). PNG transparent préféré.
+                                    </p>
+                                </div>
+                            </div>
                         </Section>
                     )}
 
@@ -707,8 +739,8 @@ export default function AdminThemeTab() {
                                             key={font.value}
                                             onClick={() => updateTheme({ font_family: font.value })}
                                             className={`w-full flex items-center justify-between p-4 rounded-xl border transition-all ${isSelected
-                                                    ? 'border-white/25 bg-white/10'
-                                                    : 'border-white/[0.07] bg-white/[0.03] hover:border-white/15'
+                                                ? 'border-white/25 bg-white/10'
+                                                : 'border-white/[0.07] bg-white/[0.03] hover:border-white/15'
                                                 }`}
                                         >
                                             <div className="flex flex-col items-start gap-0.5">
@@ -760,8 +792,8 @@ export default function AdminThemeTab() {
                                             key={value}
                                             onClick={() => updateTheme({ border_radius: value as ShopTheme['border_radius'] })}
                                             className={`flex flex-col items-center gap-2 p-4 rounded-xl border transition-all ${theme.border_radius === value
-                                                    ? 'border-white/25 bg-white/10 text-white'
-                                                    : 'border-white/[0.07] bg-white/[0.03] text-zinc-400 hover:border-white/15'
+                                                ? 'border-white/25 bg-white/10 text-white'
+                                                : 'border-white/[0.07] bg-white/[0.03] text-zinc-400 hover:border-white/15'
                                                 }`}
                                         >
                                             <div
@@ -788,8 +820,8 @@ export default function AdminThemeTab() {
                                             key={value}
                                             onClick={() => updateTheme({ button_style: value as ShopTheme['button_style'] })}
                                             className={`flex flex-col items-center gap-2 p-4 rounded-xl border transition-all ${theme.button_style === value
-                                                    ? 'border-white/25 bg-white/10'
-                                                    : 'border-white/[0.07] bg-white/[0.03] hover:border-white/15'
+                                                ? 'border-white/25 bg-white/10'
+                                                : 'border-white/[0.07] bg-white/[0.03] hover:border-white/15'
                                                 }`}
                                         >
                                             <div
@@ -825,8 +857,8 @@ export default function AdminThemeTab() {
                                             key={value}
                                             onClick={() => updateTheme({ nav_style: value as ShopTheme['nav_style'] })}
                                             className={`flex items-center gap-3 p-3 rounded-xl border transition-all text-left ${theme.nav_style === value
-                                                    ? 'border-white/25 bg-white/10'
-                                                    : 'border-white/[0.07] bg-white/[0.03] hover:border-white/15'
+                                                ? 'border-white/25 bg-white/10'
+                                                : 'border-white/[0.07] bg-white/[0.03] hover:border-white/15'
                                                 }`}
                                         >
                                             <div
@@ -860,8 +892,8 @@ export default function AdminThemeTab() {
                                             key={value}
                                             onClick={() => updateTheme({ card_style: value as ShopTheme['card_style'] })}
                                             className={`flex items-center gap-3 p-3 rounded-xl border transition-all text-left ${theme.card_style === value
-                                                    ? 'border-white/25 bg-white/10'
-                                                    : 'border-white/[0.07] bg-white/[0.03] hover:border-white/15'
+                                                ? 'border-white/25 bg-white/10'
+                                                : 'border-white/[0.07] bg-white/[0.03] hover:border-white/15'
                                                 }`}
                                         >
                                             {theme.card_style === value && <Check className="w-3.5 h-3.5 text-green-400" />}
@@ -888,8 +920,8 @@ export default function AdminThemeTab() {
                                             key={value}
                                             onClick={() => updateTheme({ hero_style: value as ShopTheme['hero_style'] })}
                                             className={`flex items-center gap-3 p-3 rounded-xl border transition-all text-left ${theme.hero_style === value
-                                                    ? 'border-white/25 bg-white/10'
-                                                    : 'border-white/[0.07] bg-white/[0.03] hover:border-white/15'
+                                                ? 'border-white/25 bg-white/10'
+                                                : 'border-white/[0.07] bg-white/[0.03] hover:border-white/15'
                                                 }`}
                                         >
                                             {theme.hero_style === value && <Check className="w-3.5 h-3.5 text-green-400 flex-shrink-0" />}
@@ -902,25 +934,16 @@ export default function AdminThemeTab() {
                                 </div>
 
                                 {(theme.hero_style === 'image' || theme.hero_style === 'overlay') && (
-                                    <div className="mt-3">
-                                        <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-2">URL de l'image hero</p>
-                                        <div className="flex gap-2">
-                                            <input
-                                                type="url"
-                                                value={theme.hero_image_url || ''}
-                                                onChange={(e) => updateTheme({ hero_image_url: e.target.value || null })}
-                                                placeholder="https://... (image haute résolution)"
-                                                className="flex-1 bg-zinc-800 border border-white/[0.08] rounded-xl px-3 py-2.5 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-white/20 transition-colors"
-                                            />
-                                            {theme.hero_image_url && (
-                                                <button
-                                                    onClick={() => updateTheme({ hero_image_url: null })}
-                                                    className="p-2.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500/20 transition-colors"
-                                                >
-                                                    <X className="w-4 h-4" />
-                                                </button>
-                                            )}
-                                        </div>
+                                    <div className="mt-4">
+                                        <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-3">Image de vitrine (Hero)</p>
+                                        <ImageUpload
+                                            value={theme.hero_image_url}
+                                            onChange={(url) => updateTheme({ hero_image_url: url })}
+                                            aspectRatio="wide"
+                                        />
+                                        <p className="text-[10px] text-zinc-600 mt-2">
+                                            Recommandé : 1920x800px ou plus.
+                                        </p>
                                     </div>
                                 )}
                             </div>
@@ -983,8 +1006,8 @@ export default function AdminThemeTab() {
                                                 key={value}
                                                 onClick={() => updateTheme({ logo_position: value as ShopTheme['logo_position'] })}
                                                 className={`flex items-center gap-3 p-3 rounded-xl border transition-all ${theme.logo_position === value
-                                                        ? 'border-white/25 bg-white/10'
-                                                        : 'border-white/[0.07] bg-white/[0.03] hover:border-white/15'
+                                                    ? 'border-white/25 bg-white/10'
+                                                    : 'border-white/[0.07] bg-white/[0.03] hover:border-white/15'
                                                     }`}
                                             >
                                                 {theme.logo_position === value && <Check className="w-3.5 h-3.5 text-green-400" />}

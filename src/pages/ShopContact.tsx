@@ -40,10 +40,12 @@ export default function ShopContact() {
             {/* Hero */}
             <section className="relative pt-32 pb-16 px-4 overflow-hidden">
                 <div className="absolute inset-0 z-0">
-                    <div
-                        className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[300px] rounded-full blur-[150px] opacity-10"
-                        style={{ background: primaryColor }}
+                    <img
+                        src={content.contact.hero_image}
+                        className="w-full h-full object-cover opacity-20 filter grayscale"
+                        alt=""
                     />
+                    <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/40 via-zinc-950/80 to-zinc-950" />
                 </div>
 
                 <div className="max-w-5xl mx-auto text-center space-y-6 relative z-10">

@@ -131,7 +131,7 @@ export default function Catalog() {
             className="w-full h-full"
           >
             <img
-              src="/images/products-flower.png"
+              src={content.catalog.hero_image}
               alt="Molécule N10 d'exception"
               className="w-full h-full object-cover opacity-60 blur-[2px]"
             />

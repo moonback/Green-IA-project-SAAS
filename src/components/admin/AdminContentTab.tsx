@@ -7,6 +7,7 @@ import {
 import { supabase } from '../../lib/supabase';
 import { useShopStore } from '../../store/shopStore';
 import { DEFAULT_SHOP_CONTENT, ShopContent } from '../../hooks/useShopContent';
+import ImageUpload from './ImageUpload';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -19,7 +20,14 @@ const PAGE_FIELDS: Record<PageKey, {
     icon: React.ElementType;
     emoji: string;
     desc: string;
-    fields: { key: string; label: string; hint?: string; multiline?: boolean }[];
+    fields: {
+        key: string;
+        label: string;
+        hint?: string;
+        multiline?: boolean;
+        type?: 'text' | 'textarea' | 'image';
+        aspectRatio?: 'square' | 'video' | 'wide' | 'any';
+    }[];
 }> = {
     home: {
         label: 'Vitrine',
@@ -50,6 +58,7 @@ const PAGE_FIELDS: Record<PageKey, {
             { key: 'hero_title_line1', label: 'Titre hero (ligne 1)' },
             { key: 'hero_title_line2', label: 'Titre hero (ligne 2, accentuée)' },
             { key: 'hero_subtitle', label: 'Sous-titre hero', multiline: true },
+            { key: 'hero_image', label: 'Image hero catalogue', type: 'image', aspectRatio: 'wide' },
             { key: 'section_ai_badge', label: 'Badge encart IA' },
             { key: 'section_ai_title_line1', label: 'Titre encart IA (ligne 1)' },
             { key: 'section_ai_title_line2', label: 'Titre encart IA (ligne 2, accentuée)' },
@@ -79,6 +88,7 @@ const PAGE_FIELDS: Record<PageKey, {
             { key: 'cta_title', label: 'Titre CTA visite', hint: 'ex: VENEZ NOUS RENDRE VISITE.' },
             { key: 'cta_primary', label: 'Bouton CTA principal' },
             { key: 'cta_secondary', label: 'Bouton CTA secondaire' },
+            { key: 'hero_image', label: 'Image de fond hero', type: 'image', aspectRatio: 'wide' },
         ],
     },
     contact: {
@@ -98,6 +108,7 @@ const PAGE_FIELDS: Record<PageKey, {
             { key: 'send_button', label: 'Texte bouton envoi' },
             { key: 'success_title', label: 'Message succès — Titre' },
             { key: 'success_desc', label: 'Message succès — Texte' },
+            { key: 'hero_image', label: 'Image de fond hero', type: 'image', aspectRatio: 'wide' },
         ],
     },
     quality: {
@@ -122,6 +133,7 @@ const PAGE_FIELDS: Record<PageKey, {
             { key: 'data_isolation_desc', label: 'Isolation — Description', multiline: true },
             { key: 'ai_excellence_title', label: 'Excellence IA — Titre' },
             { key: 'ai_excellence_desc', label: 'Excellence IA — Description', multiline: true },
+            { key: 'deep_dive_image', label: 'Grande image d\'illustration', type: 'image', aspectRatio: 'wide' },
             { key: 'trust_banner_title', label: 'Bannière Confiance — Titre' },
             { key: 'trust_banner_desc', label: 'Bannière Confiance — Description', multiline: true },
         ],
@@ -135,6 +147,8 @@ function ContentField({
     value,
     defaultValue,
     multiline,
+    type = 'text',
+    aspectRatio = 'any',
     hint,
     onChange,
 }: {
@@ -142,6 +156,8 @@ function ContentField({
     value: string;
     defaultValue: string;
     multiline?: boolean;
+    type?: 'text' | 'textarea' | 'image';
+    aspectRatio?: 'square' | 'video' | 'wide' | 'any';
     hint?: string;
     onChange: (v: string) => void;
 }) {
@@ -169,7 +185,13 @@ function ContentField({
                 )}
             </div>
 
-            {multiline ? (
+            {type === 'image' ? (
+                <ImageUpload
+                    value={value || defaultValue}
+                    onChange={(url) => onChange(url || '')}
+                    aspectRatio={aspectRatio as any}
+                />
+            ) : multiline ? (
                 <textarea
                     rows={3}
                     value={value}
@@ -433,13 +455,15 @@ export default function AdminContentTab() {
 
                     {/* Fields */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {activePageDef.fields.map(({ key, label, hint, multiline }) => (
-                            <div key={key} className={multiline ? 'md:col-span-2' : ''}>
+                        {activePageDef.fields.map(({ key, label, hint, multiline, type, aspectRatio }) => (
+                            <div key={key} className={multiline || type === 'image' ? 'md:col-span-2' : ''}>
                                 <ContentField
                                     label={label}
                                     value={activeContent[key] ?? activeDefaults[key]}
                                     defaultValue={activeDefaults[key]}
                                     multiline={multiline}
+                                    type={type as any}
+                                    aspectRatio={aspectRatio as any}
                                     hint={hint}
                                     onChange={(v) => updateField(activePage, key, v)}
                                 />

@@ -65,9 +65,16 @@ export default function ShopHome() {
             {/* Hero */}
             <section className="relative min-h-[60vh] flex items-center justify-center pt-24 px-4 overflow-hidden">
                 <div className="absolute inset-0 z-0">
-                    <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/60 via-zinc-950/80 to-zinc-950" />
+                    {currentShop.settings?.theme?.hero_image_url && (
+                        <img
+                            src={currentShop.settings.theme.hero_image_url}
+                            className="w-full h-full object-cover opacity-30"
+                            alt=""
+                        />
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/40 via-zinc-950/80 to-zinc-950" />
                     <div
-                        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[200px] opacity-20"
+                        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[200px] opacity-15"
                         style={{ background: primaryColor }}
                     />
                 </div>

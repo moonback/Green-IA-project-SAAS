@@ -42,6 +42,7 @@ export interface ShopContent {
         value_4_desc: string;
         cta_primary: string;
         cta_secondary: string;
+        hero_image: string;
     };
 
     // Page Contact (ShopContact)
@@ -57,6 +58,7 @@ export interface ShopContent {
         send_button: string;
         success_title: string;
         success_desc: string;
+        hero_image: string;
     };
 
     quality: {
@@ -78,6 +80,7 @@ export interface ShopContent {
         ai_excellence_desc: string;
         trust_banner_title: string;
         trust_banner_desc: string;
+        deep_dive_image: string;
     };
 
     // Page Catalogue (Catalog)
@@ -91,6 +94,7 @@ export interface ShopContent {
         section_ai_title_line2: string;
         section_ai_subtitle: string;
         section_ai_cta: string;
+        hero_image: string;
     };
 }
 
@@ -128,6 +132,7 @@ export const DEFAULT_SHOP_CONTENT: ShopContent = {
         value_4_desc: 'Des cultures 100% organiques, sans pesticides ni agents chimiques.',
         cta_primary: 'Nous contacter',
         cta_secondary: 'Voir le catalogue',
+        hero_image: 'https://images.unsplash.com/photo-1556740758-90de374c12ad?auto=format&fit=crop&q=80&w=2070',
     },
 
     contact: {
@@ -142,6 +147,7 @@ export const DEFAULT_SHOP_CONTENT: ShopContent = {
         send_button: 'ENVOYER LE MESSAGE',
         success_title: 'Message envoyé !',
         success_desc: 'Merci, nous reviendrons vers vous rapidement.',
+        hero_image: 'https://images.unsplash.com/photo-1534536281715-e28d76689b4d?auto=format&fit=crop&q=80&w=2070',
     },
 
     quality: {
@@ -163,6 +169,7 @@ export const DEFAULT_SHOP_CONTENT: ShopContent = {
         ai_excellence_desc: "Notre BudTender n'est pas un simple script. C'est un moteur sémantique qui comprend l'intention du client. En analysant les retours clients et les stocks en temps réel, il adapte son discours pour maximiser la satisfaction et la récurrence.",
         trust_banner_title: 'Performance sans Temps Mort',
         trust_banner_desc: "Optimisé pour la vitesse mobile et les terminaux de vente légers. Votre boutique charge en moins d'une seconde, n'importe où, n'importe quand.",
+        deep_dive_image: 'https://images.unsplash.com/photo-1550751827-4bd374c3d58b?auto=format&fit=crop&q=80&w=2070',
     },
 
     catalog: {
@@ -170,6 +177,7 @@ export const DEFAULT_SHOP_CONTENT: ShopContent = {
         hero_title_line1: 'ARCHIVES',
         hero_title_line2: 'MOLECULE',
         hero_subtitle: 'Explorez une curatoriale sans compromis des extractions les plus pures et des molécules de synthèse maîtrisée.',
+        hero_image: 'https://images.unsplash.com/photo-1516528387618-afa90b13e000?auto=format&fit=crop&q=80&w=2070',
         section_ai_badge: 'BudTender IA Connecté',
         section_ai_title_line1: 'TROUVEZ VOTRE',
         section_ai_title_line2: 'FRÉQUENCE.',
