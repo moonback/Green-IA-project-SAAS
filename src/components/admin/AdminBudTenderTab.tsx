@@ -10,6 +10,7 @@ import {
     PieChart, Pie
 } from 'recharts';
 import { supabase } from '../../lib/supabase';
+import { useShopStore } from '../../store/shopStore';
 
 import { BudTenderSettings, BUDTENDER_DEFAULTS, BUDTENDER_LS_KEY } from '../../lib/budtenderSettings';
 
@@ -122,18 +123,40 @@ export default function AdminBudTenderTab() {
     const [saved, setSaved] = useState(false);
     const [activeTab, setActiveTab] = useState<'general' | 'ai' | 'memory' | 'quiz' | 'stats'>('general');
     const [isLoadingStats, setIsLoadingStats] = useState(false);
-    const [stats, setStats] = useState({
-        interactionTypes: [] as { name: string; value: number }[],
-        topQuestions: [] as { question: string; count: number }[],
+    interface AdminStats {
+        interactionTypes: { name: string; value: number }[];
+        topQuestions: { question: string; count: number }[];
+        satisfaction: { positive: number; negative: number; score: number };
+        conversion: { rate: number; buyersCount: number; quizCount: number };
+        quota: { current: number; limit: number; plan: 'free' | 'pro' | 'enterprise' };
+    }
+
+    const [stats, setStats] = useState<AdminStats>({
+        interactionTypes: [],
+        topQuestions: [],
         satisfaction: { positive: 0, negative: 0, score: 0 },
-        conversion: { rate: 0, buyersCount: 0, quizCount: 0 }
+        conversion: { rate: 0, buyersCount: 0, quizCount: 0 },
+        quota: { current: 0, limit: 100, plan: 'free' }
     });
 
     // Load settings from Supabase (and fallback to localStorage) on mount
     useEffect(() => {
         const load = async () => {
             try {
-                // 1. Try Supabase
+                const { currentShop } = useShopStore.getState();
+
+                // 1. Priorité aux réglages SaaS du Shop
+                if (currentShop?.settings?.budtender_config) {
+                    setSettings({
+                        ...BUDTENDER_DEFAULTS,
+                        ...currentShop.settings.budtender_config,
+                        ai_tone: currentShop.settings.ai_tone || (currentShop.settings.budtender_config as any).ai_tone,
+                        ai_instructions: currentShop.settings.ai_instructions || (currentShop.settings.budtender_config as any).ai_instructions
+                    });
+                    return;
+                }
+
+                // 2. Fallback table store_settings
                 const { data } = await supabase
                     .from('store_settings')
                     .select('value')
@@ -143,7 +166,7 @@ export default function AdminBudTenderTab() {
                 if (data?.value) {
                     setSettings({ ...BUDTENDER_DEFAULTS, ...data.value });
                 } else {
-                    // 2. Fallback to localStorage
+                    // 3. Fallback to localStorage
                     const raw = localStorage.getItem(BUDTENDER_LS_KEY);
                     if (raw) setSettings({ ...BUDTENDER_DEFAULTS, ...JSON.parse(raw) });
                 }
@@ -213,7 +236,8 @@ export default function AdminBudTenderTab() {
                 }
             });
 
-            // 2. Conversion calculation
+            // 2. Conversion calculation and Quota Prep
+            const { currentShop } = useShopStore.getState();
             const usersWithQuiz = new Set(interactions
                 .filter(i => i.interaction_type === 'chat_session' || i.interaction_type === 'recommendation')
                 .map(i => i.user_id)
@@ -236,8 +260,31 @@ export default function AdminBudTenderTab() {
                     rate: quizCount > 0 ? Math.round((buyersCount / quizCount) * 100) : 0,
                     buyersCount,
                     quizCount
+                },
+                quota: {
+                    current: 0,
+                    limit: currentShop?.subscription_plan === 'pro' ? 2000 : currentShop?.subscription_plan === 'enterprise' ? 100000 : 100,
+                    plan: (currentShop?.subscription_plan || 'free') as 'free' | 'pro' | 'enterprise'
                 }
             });
+
+            // 3. Quota current usage
+            if (currentShop) {
+                const startOfMonth = new Date();
+                startOfMonth.setDate(1);
+                startOfMonth.setHours(0, 0, 0, 0);
+
+                const { count: usageCount } = await supabase
+                    .from('ai_usage_logs')
+                    .select('id', { count: 'exact', head: true })
+                    .eq('shop_id', currentShop.id)
+                    .gte('created_at', startOfMonth.toISOString());
+
+                setStats(s => ({
+                    ...s,
+                    quota: { ...s.quota, current: usageCount || 0 }
+                }));
+            }
         } catch (err) {
             console.error('[AdminBudTenderTab] loadStats error:', err);
         } finally {
@@ -252,27 +299,49 @@ export default function AdminBudTenderTab() {
     const handleSave = async () => {
         setIsSaving(true);
         try {
+            const { currentShop } = useShopStore.getState();
+
             // Keep localStorage as local cache
             localStorage.setItem(BUDTENDER_LS_KEY, JSON.stringify(settings));
 
-            // Sync the entire configuration to Supabase
-            // We use two keys: one for quick check (enabled) and one for full config
-            await Promise.all([
-                supabase.from('store_settings').upsert(
-                    [{ key: 'budtender_enabled', value: settings.enabled, updated_at: new Date().toISOString() }],
-                    { onConflict: 'key' }
-                ),
-                supabase.from('store_settings').upsert(
-                    [{ key: 'budtender_config', value: settings, updated_at: new Date().toISOString() }],
-                    { onConflict: 'key' }
-                )
-            ]);
+            if (currentShop) {
+                // Sync to Shops table (SaaS way)
+                const newSettings = {
+                    ...currentShop.settings,
+                    budtender_config: settings,
+                    ai_enabled: settings.enabled,
+                    ai_tone: settings.ai_tone,
+                    ai_instructions: settings.ai_instructions
+                };
+
+                const { error } = await supabase
+                    .from('shops')
+                    .update({ settings: newSettings })
+                    .eq('id', currentShop.id);
+
+                if (error) throw error;
+
+                // Refresh shop store
+                useShopStore.getState().fetchShop(currentShop.id);
+            } else {
+                // Legacy way (store_settings)
+                await Promise.all([
+                    supabase.from('store_settings').upsert(
+                        [{ key: 'budtender_enabled', value: settings.enabled, updated_at: new Date().toISOString() }],
+                        { onConflict: 'key' }
+                    ),
+                    supabase.from('store_settings').upsert(
+                        [{ key: 'budtender_config', value: settings, updated_at: new Date().toISOString() }],
+                        { onConflict: 'key' }
+                    )
+                ]);
+            }
 
             setSaved(true);
             setTimeout(() => setSaved(false), 3000);
         } catch (err) {
             console.error('[AdminBudTenderTab] save error:', err);
-            alert("Erreur lors de la sauvegarde en base de données.");
+            alert("Erreur lors de la sauvegarde.");
         } finally {
             setIsSaving(false);
         }
@@ -445,12 +514,61 @@ export default function AdminBudTenderTab() {
                                         onChange={(v) => update({ ai_max_tokens: v })}
                                         hint="~300 tokens ≈ 2-3 phrases. Augmenter pour des conseils plus détaillés."
                                     />
+
+                                    <div className="space-y-2 pt-2 border-t border-zinc-800">
+                                        <label className="text-xs text-zinc-400 font-medium uppercase tracking-wider block">
+                                            Ton de l'IA (Personnalité)
+                                        </label>
+                                        <select
+                                            value={settings.ai_tone || 'expert'}
+                                            onChange={(e) => update({ ai_tone: e.target.value })}
+                                            className={INPUT}
+                                        >
+                                            <option value="expert">🎓 Expert Bienveillant (Défaut)</option>
+                                            <option value="friendly">👋 Ami Décontracté</option>
+                                            <option value="medical">🩺 Médical & Factuel</option>
+                                            <option value="premium">💎 Luxe & Sophistiqué</option>
+                                            <option value="puck">⚡ Puck (Dynamique & Taquin)</option>
+                                        </select>
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <label className="text-xs text-zinc-400 font-medium uppercase tracking-wider block">
+                                            Instructions métier personnalisées
+                                        </label>
+                                        <textarea
+                                            rows={5}
+                                            value={settings.ai_instructions || ''}
+                                            onChange={(e) => update({ ai_instructions: e.target.value })}
+                                            className={INPUT + ' resize-none font-mono text-[11px]'}
+                                            placeholder="Ex: Ne jamais mentionner l'usage récréatif. Toujours suggérer un accompagnement avec du miel..."
+                                        />
+                                        <p className="text-[10px] text-zinc-600 italic">
+                                            Ces instructions seront injectées dans le prompt système de l'IA lors de chaque conseil.
+                                        </p>
+                                    </div>
                                 </div>
 
                                 <div className="bg-amber-500/5 border border-amber-500/20 rounded-xl p-4 flex gap-3">
                                     <Info className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
-                                    <div className="text-xs text-zinc-400 space-y-1">
+                                    <div className="text-xs text-zinc-400 space-y-2">
                                         <p>La clé API OpenRouter est configurée via la variable <code className="text-amber-400 bg-zinc-800 px-1.5 py-0.5 rounded font-mono">VITE_OPENROUTER_API_KEY</code> dans le fichier <code className="text-amber-400 bg-zinc-800 px-1.5 py-0.5 rounded font-mono">.env</code>.</p>
+
+                                        <div className="pt-2 border-t border-amber-500/10 mt-2">
+                                            <div className="flex items-center justify-between mb-1.5">
+                                                <span className="font-bold text-amber-400 uppercase tracking-widest text-[10px]">Quota Mensuel IA (Appels)</span>
+                                                <span className="text-[10px] text-zinc-500 font-bold uppercase">{stats.quota.current} / {stats.quota.limit}</span>
+                                            </div>
+                                            <div className="w-full h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                                                <div
+                                                    className="h-full bg-amber-500 transition-all duration-1000"
+                                                    style={{ width: `${Math.min(100, (stats.quota.current / stats.quota.limit) * 100)}%` }}
+                                                />
+                                            </div>
+                                            <p className="mt-2 text-[10px] italic">
+                                                Votre forfait <strong>{stats.quota.plan.toUpperCase()}</strong> permet jusqu'à {stats.quota.limit.toLocaleString()} requêtes par mois.
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </Section>

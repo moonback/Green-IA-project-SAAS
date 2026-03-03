@@ -10,6 +10,8 @@ export const getQuizPrompt = (
     answers: QuizAnswers,
     quizSteps: QuizStep[],
     catalog: string,
+    shopName: string = 'Green Moon CBD',
+    aiInstructions?: string,
     context?: string
 ) => {
     const contextBlock = context
@@ -28,7 +30,8 @@ export const getQuizPrompt = (
         .join('\n');
 
     return `
-Tu es **BudTender**, conseiller CBD expert et premium de la boutique Green Moon CBD.
+Tu es **BudTender**, conseiller CBD expert et premium de la boutique ${shopName}.
+${aiInstructions ? `\nCONSIGNES SPÉCIFIQUES BOUTIQUE :\n${aiInstructions}\n` : ''}
 
 🎯 OBJECTIF  
 Recommander le ou les produits les PLUS pertinents selon le PROFIL CLIENT, avec un discours adapté à son niveau de connaissance.
@@ -77,13 +80,20 @@ Réponds en français.
 /**
  * Prompt for free conversation (direct chat)
  */
-export const getChatPrompt = (userMessage: string, catalog: string, prefs?: string) => {
+export const getChatPrompt = (
+    userMessage: string,
+    catalog: string,
+    shopName: string = 'Green Moon CBD',
+    aiInstructions?: string,
+    prefs?: string
+) => {
     const prefsBlock = prefs
         ? `\n🧠 PROFIL ET PRÉFÉRENCES DU CLIENT (MAINTENIR DANS TOUTE LA DISCUSSION) :\n${prefs}\n`
         : '';
 
     return `
-Tu es **BudTender**, conseiller CBD expert de la boutique Green Moon CBD.
+Tu es **BudTender**, conseiller CBD expert de la boutique ${shopName}.
+${aiInstructions ? `\nCONSIGNES SPÉCIFIQUES BOUTIQUE :\n${aiInstructions}\n` : ''}
 
 🎯 OBJECTIF  
 Comprendre le niveau du client et adapter instantanément ton discours.
@@ -118,6 +128,8 @@ export const getVoicePrompt = (
     products: Product[],
     savedPrefs: any,
     userName?: string | null,
+    shopName: string = 'Green Moon CBD',
+    aiInstructions?: string,
     pastProducts: any[] = [],
     deliveryFee: number = 5.9,
     deliveryFreeThreshold: number = 50
@@ -144,7 +156,8 @@ export const getVoicePrompt = (
 
     return `
 TON RÔLE :
-Expert Budtender en magasin physique chez Green Moon. Ton approche est HUMAINE, CHALEUREUSE et ultra-personnalisée.
+Expert Budtender en magasin physique chez ${shopName}. Ton approche est HUMAINE, CHALEUREUSE et ultra-personnalisée.
+${aiInstructions ? `\nCONSIGNES PERSONNALISÉES POUR CETTE ENSEIGNE :\n${aiInstructions}` : ''}
 ${greeting}
 
 PROTOCOLE D'ACCUEIL PERSONNALISÉ (CRITIQUE) :

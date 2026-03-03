@@ -63,6 +63,29 @@ export interface Profile {
   referral_code: string | null;
   referred_by_id: string | null;
   is_admin: boolean;
+  current_shop_id: string | null;
+  avatar_url: string | null;
+  created_at: string;
+}
+
+export interface Shop {
+  id: string;
+  owner_id: string;
+  name: string;
+  slug: string;
+  logo_url: string | null;
+  settings: {
+    primary_color?: string;
+    currency?: string;
+    ai_enabled?: boolean;
+    ai_tone?: 'expert' | 'friendly' | 'casual';
+    ai_instructions?: string;
+    store_address?: string;
+    store_hours?: string;
+    [key: string]: any;
+  };
+  subscription_plan: 'free' | 'pro' | 'enterprise';
+  subscription_status: string;
   created_at: string;
 }
 

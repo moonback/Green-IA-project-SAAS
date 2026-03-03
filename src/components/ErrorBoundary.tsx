@@ -94,7 +94,7 @@ class ErrorBoundary extends Component<Props, State> {
                         </div>
 
                         <div className="mt-12 flex items-center justify-center gap-2 opacity-30 grayscale hover:grayscale-0 transition-all cursor-default group">
-                            <img src="/logo.jpeg" alt="Green Moon" className="w-6 h-6 rounded-lg group-hover:rotate-12 transition-transform duration-500" />
+                            <img src="/logo.png" alt="Green Moon" className="w-6 h-6 rounded-lg group-hover:rotate-12 transition-transform duration-500" />
                             <span className="text-[10px] font-black uppercase tracking-widest text-white">Green Moon System</span>
                         </div>
                     </motion.div>

@@ -1,7 +1,8 @@
 import { create } from 'zustand';
 import { Session, User } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
-import { Profile } from '../lib/types';
+import { Profile, Shop } from '../lib/types';
+import { useShopStore } from './shopStore';
 
 interface AuthStore {
   user: User | null;
@@ -10,10 +11,11 @@ interface AuthStore {
   isLoading: boolean;
   initialize: () => void;
   signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string, fullName: string) => Promise<void>;
+  signUp: (email: string, password: string, fullName: string, referralCode?: string, metadata?: any) => Promise<void>;
   signOut: () => Promise<void>;
   fetchProfile: (userId: string) => Promise<void>;
   setProfile: (profile: Profile | null) => void;
+  resetPassword: (email: string) => Promise<void>;
 }
 
 export const useAuthStore = create<AuthStore>((set, get) => ({
@@ -51,7 +53,15 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
       return;
     }
 
-    if (data) set({ profile: data as Profile });
+    if (data) {
+      const profile = data as Profile;
+      set({ profile });
+
+      // Load shop context if available
+      if (profile.current_shop_id) {
+        useShopStore.getState().fetchShop(profile.current_shop_id);
+      }
+    }
   },
 
   setProfile: (profile: Profile | null) => set({ profile }),
@@ -61,7 +71,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
     if (error) throw error;
   },
 
-  signUp: async (email, password, fullName, referralCode?: string) => {
+  signUp: async (email, password, fullName, referralCode?: string, metadata?: any) => {
     let referredById: string | null = null;
 
     if (referralCode) {
@@ -81,7 +91,8 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
       password,
       options: {
         data: {
-          full_name: fullName
+          full_name: fullName,
+          ...metadata
         }
       },
     });
@@ -136,6 +147,14 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
 
   signOut: async () => {
     await supabase.auth.signOut();
+    useShopStore.getState().clearShop();
     set({ user: null, profile: null, session: null });
+  },
+
+  resetPassword: async (email: string) => {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    if (error) throw error;
   },
 }));

@@ -19,11 +19,13 @@ import {
 } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import { useSettingsStore } from '../store/settingsStore';
+import { useShopPath } from '../hooks/useShopPath';
 import SEO from '../components/SEO';
 
 export default function Account() {
   const { profile, user, signOut } = useAuthStore();
   const { settings } = useSettingsStore();
+  const sp = useShopPath();
 
   const initials = profile?.full_name
     ? profile.full_name
@@ -39,28 +41,28 @@ export default function Account() {
       icon: Package,
       label: 'Historique des Commandes',
       description: 'SUIVRE VOS EXQUISES SÉLECTIONS',
-      to: '/compte/commandes',
+      to: sp('/compte/commandes'),
       accent: 'from-zinc-500/5 to-zinc-500/2',
     },
     {
       icon: MapPin,
       label: 'Carnet d\'Adresses',
       description: 'GÉRER VOS LIEUX DE DESTINATION',
-      to: '/compte/adresses',
+      to: sp('/compte/adresses'),
       accent: 'from-zinc-500/5 to-zinc-500/2',
     },
     {
       icon: Coins,
       label: 'Programme Privilège',
       description: `${profile?.loyalty_points ?? 0} POINTS D'EXCELLENCE`,
-      to: '/compte/fidelite',
+      to: sp('/compte/fidelite'),
       accent: 'from-yellow-500/5 to-yellow-500/2',
     },
     {
       icon: RefreshCw,
       label: 'Abonnements Maîtrisés',
       description: 'LIVRAISONS RÉCURRENTES AUTOMATISÉES',
-      to: '/compte/abonnements',
+      to: sp('/compte/abonnements'),
       accent: 'from-green-neon/5 to-green-neon/2',
       enabled: settings.subscriptions_enabled,
     },
@@ -68,28 +70,28 @@ export default function Account() {
       icon: Star,
       label: 'Mes Impressions',
       description: 'PARTAGER VOTRE EXPÉRIENCE SENSORIELLE',
-      to: '/compte/avis',
+      to: sp('/compte/avis'),
       accent: 'from-zinc-500/5 to-zinc-500/2',
     },
     {
       icon: Users,
       label: 'Parrainage & Carats',
       description: 'GAGNEZ 500 PTS PAR AMI INVITÉ',
-      to: '/compte/parrainage',
+      to: sp('/compte/parrainage'),
       accent: 'from-purple-500/5 to-purple-500/2',
     },
     {
       icon: Heart,
       label: 'Mes Favoris',
       description: 'VOS PRODUITS COUP DE CŒUR',
-      to: '/compte/favoris',
+      to: sp('/compte/favoris'),
       accent: 'from-red-500/5 to-red-500/2',
     },
     {
       icon: Settings,
       label: 'Paramètres Profil',
       description: 'VOS INFORMATIONS PERSONNELLES',
-      to: '/compte/profil',
+      to: sp('/compte/profil'),
       accent: 'from-zinc-500/5 to-zinc-500/2',
     }
   ].filter(t => t.enabled !== false);

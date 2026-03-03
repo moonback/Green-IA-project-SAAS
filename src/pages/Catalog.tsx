@@ -6,8 +6,12 @@ import { Category, Product } from '../lib/types';
 import ProductCard from '../components/ProductCard';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
+import { useShopStore } from '../store/shopStore';
+import { useShopPath } from '../hooks/useShopPath';
 
 export default function Catalog() {
+  const { currentShop } = useShopStore();
+  const sp = useShopPath();
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -22,14 +26,22 @@ export default function Catalog() {
 
   useEffect(() => {
     async function load() {
+      const categoryQuery = supabase.from('categories').select('*').eq('is_active', true).order('sort_order');
+      const productQuery = supabase
+        .from('products')
+        .select('*, category:categories(*)')
+        .eq('is_active', true)
+        .order('is_featured', { ascending: false })
+        .order('name');
+
+      if (currentShop) {
+        categoryQuery.eq('shop_id', currentShop.id);
+        productQuery.eq('shop_id', currentShop.id);
+      }
+
       const [{ data: cats }, { data: prods }] = await Promise.all([
-        supabase.from('categories').select('*').eq('is_active', true).order('sort_order'),
-        supabase
-          .from('products')
-          .select('*, category:categories(*)')
-          .eq('is_active', true)
-          .order('is_featured', { ascending: false })
-          .order('name'),
+        categoryQuery,
+        productQuery,
       ]);
       setCategories((cats as Category[]) ?? []);
 

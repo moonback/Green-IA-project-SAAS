@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import type { FormEvent } from 'react';
 import type { ElementType } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
@@ -153,6 +153,7 @@ const LABEL = 'block text-xs text-zinc-400 mb-1 font-medium uppercase tracking-w
 // ─── Component ───────────────────────────────────────────────────────────────
 
 export default function Admin() {
+  const { shopSlug } = useParams<{ shopSlug: string }>();
   const [tab, setTab] = useState<Tab>('dashboard');
 
   // ── Data ──
@@ -1001,7 +1002,7 @@ export default function Admin() {
             <div className="px-4 py-4 border-b border-zinc-800/60">
               <div className="flex items-center gap-3">
                 <img
-                  src="/logo.jpeg"
+                  src="/logo.png"
                   alt="Green Mood"
                   className="h-10 w-auto object-contain"
                   style={{ filter: 'drop-shadow(0 0 6px rgba(57,255,20,0.5))' }}
@@ -1092,7 +1093,7 @@ export default function Admin() {
             {/* Sidebar footer */}
             <div className="px-3 py-4 border-t border-zinc-800 space-y-2">
               <Link
-                to="/"
+                to={`/${shopSlug}`}
                 className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-green-neon hover:bg-green-neon/10 transition-all border border-green-neon/20"
               >
                 <ArrowLeft className="w-4 h-4" />
@@ -1127,11 +1128,11 @@ export default function Admin() {
               </div>
               <div className="ml-auto flex items-center gap-2">
                 <Link
-                  to="/"
+                  to={`/${shopSlug}`}
                   className="flex items-center gap-2 text-sm text-zinc-400 hover:text-green-neon bg-zinc-900 border border-zinc-800 hover:border-green-neon/30 px-3 py-2 rounded-xl transition-all"
                 >
-                  <ArrowLeft className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline text-xs">Quitter l'admin</span>
+                  <Eye className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline text-xs">Voir le site</span>
                 </Link>
                 {stats && stats.ordersPending > 0 && (
                   <button

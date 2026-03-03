@@ -8,6 +8,7 @@ import { useToastStore } from '../store/toastStore';
 import { useWishlistStore } from '../store/wishlistStore';
 import StockBadge from './StockBadge';
 import StarRating from './StarRating';
+import { useShopPath } from '../hooks/useShopPath';
 
 // Image de remplacement si l'URL produit est invalide / 404
 const FALLBACK_IMG = 'https://images.pexels.com/photos/4041392/pexels-photo-4041392.jpeg?auto=compress&cs=tinysrgb&w=800';
@@ -22,6 +23,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   const addToast = useToastStore((s) => s.addToast);
   const toggleWishlist = useWishlistStore((s) => s.toggleItem);
   const isWished = useWishlistStore((s) => s.hasItem(product.id));
+  const sp = useShopPath();
 
   const handleToggleWishlist = (e: MouseEvent) => {
     e.preventDefault();
@@ -97,7 +99,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       </div>
 
       {/* Image — aspect 4:5 coherent with product detail */}
-      <Link to={`/catalogue/${product.slug}`} className="block aspect-[4/5] overflow-hidden bg-zinc-800/50">
+      <Link to={sp(`/catalogue/${product.slug}`)} className="block aspect-[4/5] overflow-hidden bg-zinc-800/50">
         <img
           src={product.image_url ?? FALLBACK_IMG}
           alt={product.name}
@@ -126,7 +128,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         {/* Name */}
         <Link
-          to={`/catalogue/${product.slug}`}
+          to={sp(`/catalogue/${product.slug}`)}
           className="block font-serif font-semibold text-base text-white leading-snug line-clamp-1 group-hover:text-green-neon transition-colors duration-300"
         >
           {product.name}
