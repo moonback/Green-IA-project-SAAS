@@ -4,6 +4,7 @@ import { PastProduct, SavedPrefs } from './useBudTenderMemory';
 import { supabase } from '../lib/supabase';
 import { generateEmbedding } from '../lib/embeddings';
 import { getVoicePrompt } from '../lib/budtenderPrompts';
+import { useShopStore } from '../store/shopStore';
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
@@ -161,10 +162,14 @@ export function useGeminiLiveVoice({
     const searchResultsRef = useRef<Product[]>([]);
 
     const buildSystemPrompt = useCallback((): string => {
+        const { currentShop } = useShopStore.getState();
+
         return getVoicePrompt(
             productsRef.current,
             savedPrefs,
             userName,
+            currentShop?.name || 'Green Moon CBD',
+            currentShop?.settings?.ai_instructions,
             pastProducts,
             deliveryFee,
             deliveryFreeThreshold
@@ -470,11 +475,13 @@ export function useGeminiLiveVoice({
                                 if (!p) {
                                     console.warn(`[Voice] Product not found locally: "${prodName}", trying Supabase…`);
                                     try {
+                                        const { currentShop } = useShopStore.getState();
                                         const { data } = await supabase
                                             .from('products')
                                             .select('*, category:categories(slug, name)')
                                             .ilike('name', `%${prodName}%`)
                                             .eq('is_active', true)
+                                            .eq('shop_id', currentShop?.id) // SaaS Isolation
                                             .limit(1)
                                             .maybeSingle();
                                         if (data) p = data as Product;
@@ -561,10 +568,12 @@ export function useGeminiLiveVoice({
                                 try {
                                     console.info(`[Voice] search_catalog: "${query}"`);
                                     const embedding = await generateEmbedding(query);
+                                    const { currentShop } = useShopStore.getState();
                                     const { data, error: rpcError } = await supabase.rpc('match_products', {
                                         query_embedding: embedding,
                                         match_threshold: 0.1,
-                                        match_count: 10
+                                        match_count: 10,
+                                        p_shop_id: currentShop?.id // Pass shop_id to RPC
                                     });
 
                                     if (rpcError) throw rpcError;

@@ -77,6 +77,10 @@ export interface Shop {
     primary_color?: string;
     currency?: string;
     ai_enabled?: boolean;
+    ai_tone?: 'expert' | 'friendly' | 'casual';
+    ai_instructions?: string;
+    store_address?: string;
+    store_hours?: string;
     [key: string]: any;
   };
   subscription_plan: 'free' | 'pro' | 'enterprise';

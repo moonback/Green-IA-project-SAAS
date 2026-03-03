@@ -14,6 +14,7 @@ import { BudTenderWidget, BudTenderMessage, BudTenderTypingIndicator, BudTenderF
 import VoiceAdvisor from './VoiceAdvisor';
 import { generateEmbedding } from '../lib/embeddings';
 import { useAuthStore } from '../store/authStore';
+import { useShopStore } from '../store/shopStore';
 
 // ─── Shared types and logic imported ───
 
@@ -150,9 +151,18 @@ async function callAI(
         })
         .join('\n');
 
+    const { currentShop } = useShopStore.getState();
+
     const systemPromptMessage = {
         role: 'system',
-        content: getQuizPrompt(answers, settings.quiz_steps, catalog, context)
+        content: getQuizPrompt(
+            answers,
+            settings.quiz_steps,
+            catalog,
+            currentShop?.name || 'Green Moon CBD',
+            currentShop?.settings?.ai_instructions,
+            context
+        )
     };
 
     const messages = [
@@ -574,11 +584,13 @@ export default function BudTender() {
         const { user } = useAuthStore.getState();
         if (user && scored.length > 0) {
             try {
+                const { currentShop } = useShopStore.getState();
                 const { error } = await supabase.from('budtender_interactions').insert({
                     user_id: user.id,
                     interaction_type: 'recommendation',
                     recommended_products: scored.map(p => p.id),
                     quiz_answers: finalAnswers,
+                    shop_id: currentShop?.id,
                     created_at: new Date().toISOString()
                 });
                 if (error) console.error('[BudTender] Recommendation log error:', error);
@@ -650,10 +662,12 @@ export default function BudTender() {
         try {
             console.log('[BudTender RAG] Semantic search for:', text);
             const embedding = await generateEmbedding(text);
+            const { currentShop } = useShopStore.getState();
             const { data, error: rpcError } = await supabase.rpc('match_products', {
                 query_embedding: embedding,
                 match_threshold: 0.1,
-                match_count: 10
+                match_count: 10,
+                p_shop_id: currentShop?.id
             });
 
             if (rpcError) throw rpcError;
@@ -719,7 +733,14 @@ export default function BudTender() {
             userContext += `Préférences: ${entries.join(' | ')}`;
         }
 
-        const systemPrompt = getChatPrompt(text, catalog, userContext);
+        const { currentShop } = useShopStore.getState();
+        const systemPrompt = getChatPrompt(
+            text,
+            catalog,
+            currentShop?.name || 'Green Moon CBD',
+            currentShop?.settings?.ai_instructions,
+            userContext
+        );
 
         // Build history for OpenRouter (OpenAI format)
         // IMPORTANT: Roles must alternate and not be empty
