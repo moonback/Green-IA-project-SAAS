@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Mail, Lock, User, Eye, EyeOff, LayoutDashboard, Store, CheckCircle, ArrowRight, Github, ArrowLeft } from 'lucide-react';
 import { supabase } from '../lib/supabase';
@@ -11,6 +11,7 @@ type Mode = 'login' | 'register';
 
 export default function Login() {
   const navigate = useNavigate();
+  const { shopSlug } = useParams<{ shopSlug: string }>();
   const { signIn, signUp, resetPassword } = useAuthStore();
 
   const [mode, setMode] = useState<Mode>('login');
@@ -27,7 +28,7 @@ export default function Login() {
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
-        options: { redirectTo: window.location.origin }
+        options: { redirectTo: window.location.origin + (shopSlug ? `/${shopSlug}/compte` : '/compte') }
       });
       if (error) throw error;
     } catch (err: any) {
@@ -60,7 +61,11 @@ export default function Login() {
     try {
       if (mode === 'login') {
         await signIn(email, password);
-        navigate('/compte');
+        if (shopSlug) {
+          navigate(`/${shopSlug}/compte`);
+        } else {
+          navigate('/compte');
+        }
       } else {
         if (!fullName.trim()) {
           setError('Le prénom et nom sont requis.');

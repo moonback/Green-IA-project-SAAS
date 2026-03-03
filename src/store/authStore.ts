@@ -57,10 +57,6 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
       const profile = data as Profile;
       set({ profile });
 
-      // Load shop context if available
-      if (profile.current_shop_id) {
-        useShopStore.getState().fetchShop(profile.current_shop_id);
-      }
     }
   },
 
