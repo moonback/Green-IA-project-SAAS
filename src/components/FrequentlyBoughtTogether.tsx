@@ -6,6 +6,8 @@ import { Product } from '../lib/types';
 import { useCartStore } from '../store/cartStore';
 import { useToastStore } from '../store/toastStore';
 
+const FALLBACK_IMG = 'https://images.pexels.com/photos/4041392/pexels-photo-4041392.jpeg?auto=compress&cs=tinysrgb&w=200';
+
 interface Props {
   productId: string;
   categoryId: string;
@@ -79,16 +81,20 @@ export default function FrequentlyBoughtTogether({ productId, categoryId, curren
             <motion.button
               whileTap={{ scale: 0.97 }}
               onClick={() => toggleProduct(product.id)}
-              className={`flex items-center gap-3 p-3 rounded-xl border transition-all ${
-                selected.has(product.id)
-                  ? 'bg-white/[0.05] border-green-neon/30'
-                  : 'bg-white/[0.02] border-white/[0.06] opacity-50'
-              }`}
+              className={`flex items-center gap-3 p-3 rounded-xl border transition-all ${selected.has(product.id)
+                ? 'bg-white/[0.05] border-green-neon/30'
+                : 'bg-white/[0.02] border-white/[0.06] opacity-50'
+                }`}
             >
               <div className="w-12 h-12 rounded-lg overflow-hidden bg-zinc-800 flex-shrink-0">
                 <img
-                  src={product.image_url ?? 'https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=100'}
+                  src={product.image_url ?? FALLBACK_IMG}
                   alt={product.name}
+                  loading="lazy"
+                  onError={(e) => {
+                    const t = e.currentTarget;
+                    if (t.src !== FALLBACK_IMG) t.src = FALLBACK_IMG;
+                  }}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -96,11 +102,10 @@ export default function FrequentlyBoughtTogether({ productId, categoryId, curren
                 <p className="text-xs font-semibold text-white line-clamp-1">{product.name}</p>
                 <p className="text-xs text-green-neon font-bold">{product.price.toFixed(2)} €</p>
               </div>
-              <div className={`w-5 h-5 rounded-md border flex-shrink-0 flex items-center justify-center ${
-                selected.has(product.id)
-                  ? 'bg-green-neon border-green-neon text-black'
-                  : 'border-white/20'
-              }`}>
+              <div className={`w-5 h-5 rounded-md border flex-shrink-0 flex items-center justify-center ${selected.has(product.id)
+                ? 'bg-green-neon border-green-neon text-black'
+                : 'border-white/20'
+                }`}>
                 {selected.has(product.id) && (
                   <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
