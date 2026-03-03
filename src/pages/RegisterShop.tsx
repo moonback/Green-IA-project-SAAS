@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { Store, Globe, Mail, Lock, CheckCircle2, ArrowRight, ShieldCheck, Sparkles, Building2 } from 'lucide-react';
+import { Store, Globe, Mail, Lock, CheckCircle2, ArrowRight, ShieldCheck, Sparkles, Building2, Rocket, Crown } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
 import SEO from '../components/SEO';
@@ -130,7 +130,17 @@ export default function RegisterShop() {
                 <div className="relative">
                     <div className="absolute -inset-1 bg-gradient-to-r from-green-neon/20 to-emerald-500/20 rounded-3xl blur-2xl opacity-50" />
 
-                    <div className="relative bg-zinc-900 border border-zinc-800 rounded-3xl p-8 lg:p-10 shadow-2xl overflow-hidden">
+                    <div className="relative bg-gradient-to-b from-zinc-900 to-zinc-950 border border-green-neon/20 rounded-3xl p-8 lg:p-10 shadow-[0_0_50px_rgba(20,229,148,0.06)] overflow-hidden">
+                        <div className="absolute -top-20 -right-14 w-52 h-52 rounded-full bg-green-neon/10 blur-3xl pointer-events-none" />
+                        <div className="absolute -bottom-20 -left-14 w-52 h-52 rounded-full bg-emerald-400/10 blur-3xl pointer-events-none" />
+
+                        <div className="relative mb-8 flex items-center justify-between gap-3 border border-green-neon/20 bg-green-neon/5 rounded-2xl px-4 py-3">
+                            <div className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-green-neon">
+                                <Rocket className="w-4 h-4" />
+                                Onboarding Shop Pro
+                            </div>
+                            <span className="text-[10px] font-semibold text-zinc-400">Configuration en ~2 min</span>
+                        </div>
 
                         {/* Success View */}
                         <AnimatePresence mode="wait">
@@ -221,6 +231,11 @@ export default function RegisterShop() {
                                                         <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] text-zinc-600 font-mono">.greenIA.saas</span>
                                                     </div>
                                                 </div>
+
+                                                <div className="rounded-2xl border border-zinc-800 bg-black/30 px-4 py-3">
+                                                    <p className="text-[10px] uppercase tracking-widest text-zinc-500 mb-1">Aperçu URL</p>
+                                                    <p className="text-sm font-bold text-white">green-ia.app/<span className="text-green-neon">{shopSlug || 'votre-shop'}</span></p>
+                                                </div>
                                             </div>
 
                                             <button
@@ -252,7 +267,10 @@ export default function RegisterShop() {
                                                                 <h3 className="font-bold text-lg">{p.name}</h3>
                                                                 <p className="text-2xl font-black text-green-neon">{p.price}<span className="text-xs text-zinc-500 font-normal">/mois</span></p>
                                                             </div>
-                                                            {selectedPlan === p.id && <CheckCircle2 className="w-5 h-5 text-green-neon" />}
+                                                            <div className="flex items-center gap-2">
+                                                                {p.id === 'pro' && <Crown className="w-4 h-4 text-amber-300" />}
+                                                                {selectedPlan === p.id && <CheckCircle2 className="w-5 h-5 text-green-neon" />}
+                                                            </div>
                                                         </div>
                                                         <ul className="space-y-2">
                                                             {p.features.map((f, i) => (
@@ -314,6 +332,13 @@ export default function RegisterShop() {
                                                     {error}
                                                 </div>
                                             )}
+
+                                            <div className="rounded-2xl border border-zinc-800 bg-black/30 px-4 py-3 text-xs text-zinc-400 space-y-1">
+                                                <p className="font-bold text-zinc-200">Récapitulatif</p>
+                                                <p>Boutique: <span className="text-white">{shopName || '—'}</span></p>
+                                                <p>Slug: <span className="text-green-neon">/{shopSlug || '—'}</span></p>
+                                                <p>Plan: <span className="text-white">{selectedPlan === 'pro' ? 'Expansion' : 'Essentiel'}</span></p>
+                                            </div>
 
                                             <div className="flex gap-4">
                                                 <button onClick={() => setStep(2)} className="flex-1 bg-zinc-800 text-white font-bold py-4 rounded-2xl">Retour</button>
