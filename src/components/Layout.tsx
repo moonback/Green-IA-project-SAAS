@@ -108,7 +108,7 @@ export default function Layout() {
               {/* Left spacer for desktop symmetry, Mobile menu button for mobile */}
               <div className="flex-1 lg:flex items-center hidden">
                 <span className="text-[10px] uppercase tracking-[0.3em] text-zinc-500 font-bold hidden xl:block">
-                  Premium CBD Experience
+                  Premium SaaS CBD Experience
                 </span>
               </div>
 
@@ -130,7 +130,7 @@ export default function Layout() {
                   <img
                     src="/logo.png"
                     alt="Green Mood CBD Shop"
-                    className="h-38 md:h-40 w-auto object-contain transition-all duration-700 group-hover:scale-105 group-hover:glow-logo"
+                    className="h-30 md:h-32 w-auto object-contain transition-all duration-700 group-hover:scale-105 group-hover:glow-logo"
                   />
                 </Link>
               </div>
