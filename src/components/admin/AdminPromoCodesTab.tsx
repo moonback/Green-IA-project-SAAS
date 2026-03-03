@@ -4,6 +4,7 @@ import {
     Tag, Plus, Pencil, Trash2, X, CheckCircle2, Clock, Loader2, ToggleLeft, ToggleRight,
 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
+import { useShopStore } from '../../store/shopStore';
 
 interface PromoCode {
     id: string;
@@ -31,6 +32,7 @@ const EMPTY_FORM = {
 };
 
 export default function AdminPromoCodesTab() {
+    const { currentShop } = useShopStore();
     const [codes, setCodes] = useState<PromoCode[]>([]);
     const [loading, setLoading] = useState(true);
     const [showForm, setShowForm] = useState(false);
@@ -40,16 +42,18 @@ export default function AdminPromoCodesTab() {
     const [saveError, setSaveError] = useState('');
 
     const fetchCodes = async () => {
+        if (!currentShop) return;
         setLoading(true);
         const { data } = await supabase
             .from('promo_codes')
             .select('*')
+            .eq('shop_id', currentShop.id)
             .order('created_at', { ascending: false });
         if (data) setCodes(data as PromoCode[]);
         setLoading(false);
     };
 
-    useEffect(() => { fetchCodes(); }, []);
+    useEffect(() => { fetchCodes(); }, [currentShop]);
 
     const openCreate = () => {
         setEditing(null);
@@ -91,6 +95,7 @@ export default function AdminPromoCodesTab() {
             max_uses: form.max_uses ? parseInt(form.max_uses) : null,
             expires_at: form.expires_at ? new Date(form.expires_at).toISOString() : null,
             is_active: form.is_active,
+            shop_id: currentShop?.id,
         };
 
         let error;
@@ -260,8 +265,8 @@ export default function AdminPromoCodesTab() {
                                         type="button"
                                         onClick={() => setForm({ ...form, is_active: !form.is_active })}
                                         className={`flex items-center gap-2 px-3 py-2 rounded-xl border text-sm font-medium transition-all ${form.is_active
-                                                ? 'bg-green-neon/10 border-green-neon/30 text-green-neon'
-                                                : 'bg-zinc-800 border-zinc-700 text-zinc-400'
+                                            ? 'bg-green-neon/10 border-green-neon/30 text-green-neon'
+                                            : 'bg-zinc-800 border-zinc-700 text-zinc-400'
                                             }`}
                                     >
                                         {form.is_active ? <ToggleRight className="w-4 h-4" /> : <ToggleLeft className="w-4 h-4" />}
@@ -360,8 +365,8 @@ export default function AdminPromoCodesTab() {
                                         </td>
                                         <td className="px-4 py-3">
                                             <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${statusOk
-                                                    ? 'bg-green-neon/10 text-green-neon border border-green-neon/20'
-                                                    : 'bg-zinc-800 text-zinc-500 border border-zinc-700'
+                                                ? 'bg-green-neon/10 text-green-neon border border-green-neon/20'
+                                                : 'bg-zinc-800 text-zinc-500 border border-zinc-700'
                                                 }`}>
                                                 {statusOk ? <CheckCircle2 className="w-3 h-3" /> : <X className="w-3 h-3" />}
                                                 {expired ? 'Expiré' : full ? 'Épuisé' : code.is_active ? 'Actif' : 'Inactif'}

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { RefreshCw, Truck, Pause, Play, X, ChevronDown, ChevronUp, ShoppingBag } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
+import { useShopStore } from '../../store/shopStore';
 import type { Subscription, SubscriptionFrequency } from '../../lib/types';
 
 const FREQUENCY_LABELS: Record<SubscriptionFrequency, string> = {
@@ -20,6 +21,7 @@ interface SubWithRelations extends Subscription {
 }
 
 export default function AdminSubscriptionsTab() {
+  const { currentShop } = useShopStore();
   const [subscriptions, setSubscriptions] = useState<SubWithRelations[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isTriggering, setIsTriggering] = useState<string | null>(null);
@@ -28,13 +30,15 @@ export default function AdminSubscriptionsTab() {
 
   useEffect(() => {
     loadSubscriptions();
-  }, []);
+  }, [currentShop]);
 
   async function loadSubscriptions() {
+    if (!currentShop) return;
     setIsLoading(true);
     const { data } = await supabase
       .from('subscriptions')
       .select('*, product:products(id, name, price, image_url), profile:profiles(id, full_name)')
+      .eq('shop_id', currentShop.id)
       .order('next_delivery_date', { ascending: true });
     setSubscriptions((data as SubWithRelations[]) ?? []);
     setIsLoading(false);
@@ -62,6 +66,7 @@ export default function AdminSubscriptionsTab() {
           payment_status: 'paid',
           status: 'processing',
           notes: `Commande automatique — abonnement ${FREQUENCY_LABELS[sub.frequency]}`,
+          shop_id: currentShop.id,
         })
         .select()
         .single();
@@ -133,8 +138,8 @@ export default function AdminSubscriptionsTab() {
               key={f}
               onClick={() => setStatusFilter(f)}
               className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-colors ${statusFilter === f
-                  ? 'bg-green-neon text-white'
-                  : 'bg-zinc-800 text-zinc-400 hover:text-white'
+                ? 'bg-green-neon text-white'
+                : 'bg-zinc-800 text-zinc-400 hover:text-white'
                 }`}
             >
               {f === 'all' ? 'Tous' : STATUS_CONFIG[f].label}

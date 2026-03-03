@@ -263,14 +263,14 @@ export default function Admin() {
       { data: recentOrders },
       { data: monthOrders },
     ] = await Promise.all([
-      supabase.from('orders').select('total').eq('payment_status', 'paid'),
-      supabase.from('orders').select('id').gte('created_at', startOfToday),
-      supabase.from('orders').select('id').in('status', ['pending', 'paid', 'processing']),
-      supabase.from('products').select('id').gt('stock_quantity', 0).lte('stock_quantity', 5),
-      supabase.from('products').select('id').eq('stock_quantity', 0),
-      supabase.from('profiles').select('id'),
-      supabase.from('orders').select('*, order_items(*), profile:profiles(*, addresses(*)), address:addresses(*)').order('created_at', { ascending: false }).limit(8),
-      supabase.from('orders').select('total').eq('payment_status', 'paid').gte('created_at', startOfMonth),
+      supabase.from('orders').select('total').eq('payment_status', 'paid').eq('shop_id', currentShop?.id),
+      supabase.from('orders').select('id').gte('created_at', startOfToday).eq('shop_id', currentShop?.id),
+      supabase.from('orders').select('id').in('status', ['pending', 'paid', 'processing']).eq('shop_id', currentShop?.id),
+      supabase.from('products').select('id').gt('stock_quantity', 0).lte('stock_quantity', 5).eq('shop_id', currentShop?.id),
+      supabase.from('products').select('id').eq('stock_quantity', 0).eq('shop_id', currentShop?.id),
+      supabase.from('orders').select('user_id', { count: 'exact', head: true }).not('user_id', 'is', null).eq('shop_id', currentShop?.id),
+      supabase.from('orders').select('*, order_items(*), profile:profiles(*, addresses(*)), address:addresses(*)').eq('shop_id', currentShop?.id).order('created_at', { ascending: false }).limit(8),
+      supabase.from('orders').select('total').eq('payment_status', 'paid').gte('created_at', startOfMonth).eq('shop_id', currentShop?.id),
     ]);
     setStats({
       totalRevenue: (allOrders ?? []).reduce((s, o) => s + Number(o.total), 0),
@@ -288,7 +288,7 @@ export default function Admin() {
   const loadProducts = async () => {
     let query = supabase.from('products').select('*, category:categories(*)').order('name');
     if (currentShop) {
-      query = query.or(`shop_id.eq.${currentShop.id},shop_id.is.null`);
+      query = query.eq('shop_id', currentShop.id);
     }
     const { data } = await query;
     setProducts((data as Product[]) ?? []);
@@ -297,27 +297,34 @@ export default function Admin() {
   const loadCategories = async () => {
     let query = supabase.from('categories').select('*').order('sort_order');
     if (currentShop) {
-      query = query.or(`shop_id.eq.${currentShop.id},shop_id.is.null`);
+      query = query.eq('shop_id', currentShop.id);
     }
     const { data } = await query;
     setCategories((data as Category[]) ?? []);
   };
 
   const loadOrders = async () => {
-    const { data } = await supabase
+    let query = supabase
       .from('orders')
       .select('*, order_items(*), profile:profiles(*, addresses(*)), address:addresses(*)')
       .order('created_at', { ascending: false })
       .limit(200);
+
+    if (currentShop) {
+      query = query.eq('shop_id', currentShop.id);
+    }
+
+    const { data } = await query;
     setOrders((data as Order[]) ?? []);
   };
 
   const loadStock = async () => {
     const [{ data: prods }, { data: movs }] = await Promise.all([
-      supabase.from('products').select('id, name, stock_quantity, is_available').order('name'),
+      supabase.from('products').select('id, name, stock_quantity, is_available').eq('shop_id', currentShop?.id).order('name'),
       supabase
         .from('stock_movements')
         .select('*, product:products(name)')
+        .eq('shop_id', currentShop?.id)
         .order('created_at', { ascending: false })
         .limit(200),
     ]);
@@ -326,7 +333,12 @@ export default function Admin() {
   };
 
   const loadCustomers = async () => {
-    const { data } = await supabase.from('profiles').select('*').order('created_at', { ascending: false });
+    if (!currentShop) return;
+    const { data } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('shop_id', currentShop.id)
+      .order('created_at', { ascending: false });
     setCustomers((data as Profile[]) ?? []);
   };
 

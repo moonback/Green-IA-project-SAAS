@@ -27,13 +27,13 @@ export default function ShopHome() {
                         .select('*, category:categories(slug, name)')
                         .eq('is_active', true)
                         .eq('is_featured', true)
-                        .or(`shop_id.eq.${currentShop.id},shop_id.is.null`)
+                        .eq('shop_id', currentShop.id)
                         .limit(8),
                     supabase
                         .from('categories')
                         .select('*')
                         .eq('is_active', true)
-                        .or(`shop_id.eq.${currentShop.id},shop_id.is.null`)
+                        .eq('shop_id', currentShop.id)
                         .order('sort_order')
                 ]);
 

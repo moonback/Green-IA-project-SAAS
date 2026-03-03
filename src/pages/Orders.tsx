@@ -7,6 +7,7 @@ import { Order, OrderItem } from '../lib/types';
 import { useAuthStore } from '../store/authStore';
 import { useCartStore } from '../store/cartStore';
 import { useToastStore } from '../store/toastStore';
+import { useShopStore } from '../store/shopStore';
 import SEO from '../components/SEO';
 
 const STATUS_LABELS: Record<string, { label: string; color: string }> = {
@@ -21,6 +22,7 @@ const STATUS_LABELS: Record<string, { label: string; color: string }> = {
 
 export default function Orders() {
   const { user } = useAuthStore();
+  const { currentShop } = useShopStore();
   const addItem = useCartStore((s) => s.addItem);
   const openSidebar = useCartStore((s) => s.openSidebar);
   const addToast = useToastStore((s) => s.addToast);
@@ -39,7 +41,8 @@ export default function Orders() {
       .select('*, category:categories(*)')
       .in('id', productIds)
       .eq('is_active', true)
-      .eq('is_available', true);
+      .eq('is_available', true)
+      .eq('shop_id', order.shop_id || currentShop?.id); // Ensure same shop
 
     if (!products || products.length === 0) {
       addToast({ message: 'Les produits de cette commande ne sont plus disponibles', type: 'error' });
@@ -68,16 +71,22 @@ export default function Orders() {
 
   useEffect(() => {
     if (!user) return;
-    supabase
+    let query = supabase
       .from('orders')
       .select('*, order_items(*)')
-      .eq('user_id', user.id)
+      .eq('user_id', user.id);
+
+    if (currentShop) {
+      query = query.eq('shop_id', currentShop.id);
+    }
+
+    query
       .order('created_at', { ascending: false })
       .then(({ data }) => {
         setOrders((data as Order[]) ?? []);
         setIsLoading(false);
       });
-  }, [user]);
+  }, [user, currentShop]);
 
   return (
     <div className="min-h-screen bg-zinc-950 text-white pt-24 pb-32">

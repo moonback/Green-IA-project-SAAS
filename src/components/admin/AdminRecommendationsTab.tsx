@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Sparkles, Trash2, Plus, Search, X, Loader2, ArrowUpDown } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
+import { useShopStore } from '../../store/shopStore';
 import { Product } from '../../lib/types';
 
 interface Recommendation {
@@ -13,6 +14,7 @@ interface Recommendation {
 }
 
 export default function AdminRecommendationsTab() {
+    const { currentShop } = useShopStore();
     const [products, setProducts] = useState<Product[]>([]);
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
     const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
@@ -24,15 +26,17 @@ export default function AdminRecommendationsTab() {
 
     // Load products list once
     useEffect(() => {
+        if (!currentShop) return;
         supabase
             .from('products')
             .select('id, name, slug, image_url, price, category_id, is_bundle, is_active, is_available, is_featured, stock_quantity, cbd_percentage, thc_max, weight_grams, original_value, created_at')
             .eq('is_active', true)
+            .eq('shop_id', currentShop.id)
             .order('name')
             .then(({ data }) => {
                 if (data) setProducts(data as Product[]);
             });
-    }, []);
+    }, [currentShop]);
 
     const loadRecommendations = async (product: Product) => {
         setSelectedProduct(product);
@@ -133,8 +137,8 @@ export default function AdminRecommendationsTab() {
                                 key={p.id}
                                 onClick={() => loadRecommendations(p)}
                                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-left transition-all ${selectedProduct?.id === p.id
-                                        ? 'bg-green-neon/10 border border-green-neon/25 text-white'
-                                        : 'hover:bg-zinc-800/80 text-zinc-300 border border-transparent'
+                                    ? 'bg-green-neon/10 border border-green-neon/25 text-white'
+                                    : 'hover:bg-zinc-800/80 text-zinc-300 border border-transparent'
                                     }`}
                             >
                                 {p.image_url && (

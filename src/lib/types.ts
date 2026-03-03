@@ -142,6 +142,7 @@ export interface Order {
   viva_order_code: string | null;
   payment_status: PaymentStatus;
   notes: string | null;
+  shop_id: string;
   created_at: string;
   // joined
   address?: Address;
@@ -167,6 +168,7 @@ export interface StockMovement {
   quantity_change: number;
   type: 'sale' | 'restock' | 'adjustment' | 'return';
   note: string | null;
+  shop_id: string;
   created_at: string;
   // joined
   product?: Product;
@@ -205,6 +207,7 @@ export interface LoyaltyTransaction {
   points: number;
   balance_after: number;
   note: string | null;
+  shop_id: string | null;
   created_at: string;
   // joined
   order?: Pick<Order, 'id' | 'created_at' | 'total'>;
@@ -221,6 +224,7 @@ export interface Subscription {
   frequency: SubscriptionFrequency;
   next_delivery_date: string;
   status: SubscriptionStatus;
+  shop_id: string;
   created_at: string;
   // joined
   product?: Product;
@@ -245,6 +249,7 @@ export interface Review {
   comment: string | null;
   is_verified: boolean;
   is_published: boolean;
+  shop_id: string;
   created_at: string;
   // joined
   profile?: Pick<Profile, 'full_name'>;

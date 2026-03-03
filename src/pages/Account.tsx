@@ -30,6 +30,7 @@ import { useSettingsStore } from '../store/settingsStore';
 import { useShopPath } from '../hooks/useShopPath';
 import { supabase } from '../lib/supabase';
 import { Shop } from '../lib/types';
+import { useShopStore } from '../store/shopStore';
 import SEO from '../components/SEO';
 
 export default function Account() {
@@ -37,13 +38,16 @@ export default function Account() {
   const { settings } = useSettingsStore();
   const sp = useShopPath();
   const [userShops, setUserShops] = useState<Shop[]>([]);
+  const [orderCount, setOrderCount] = useState(0);
   const [isLoadingShops, setIsLoadingShops] = useState(true);
+  const { currentShop } = useShopStore();
 
   useEffect(() => {
     if (user) {
       fetchUserShops();
+      fetchOrderCount();
     }
-  }, [user]);
+  }, [user, currentShop]);
 
   const fetchUserShops = async () => {
     try {
@@ -62,6 +66,21 @@ export default function Account() {
     }
   };
 
+  const fetchOrderCount = async () => {
+    if (!user) return;
+    let query = supabase
+      .from('orders')
+      .select('id', { count: 'exact', head: true })
+      .eq('user_id', user.id);
+
+    if (currentShop) {
+      query = query.eq('shop_id', currentShop.id);
+    }
+
+    const { count } = await query;
+    setOrderCount(count || 0);
+  };
+
   const initials = profile?.full_name
     ? profile.full_name
       .split(' ')
@@ -74,7 +93,7 @@ export default function Account() {
   const stats = [
     { label: 'Points Privilège', value: profile?.loyalty_points ?? 0, icon: Coins, color: 'text-yellow-500' },
     { label: 'Boutiques Actives', value: userShops.length, icon: LayoutDashboard, color: 'text-green-neon' },
-    { label: 'Commandes Totales', value: 0, icon: Package, color: 'text-blue-500' },
+    { label: 'Commandes Totales', value: orderCount, icon: Package, color: 'text-blue-500' },
   ];
 
   const quotas = [
@@ -84,10 +103,10 @@ export default function Account() {
   ];
 
   return (
-    <div className="min-h-scxreen bg-zinc-950 text-white pt-32 pb-40">
+    <div className="min-h-screen bg-zinc-950 text-white pt-32 pb-40">
       <SEO title="Console Pro — Green IA SaaS" description="Gérez votre infrastructure CBD et vos boutiques." />
 
-      <div className="max-w-12xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* ── HEADER DASHBOARD ── */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-16">

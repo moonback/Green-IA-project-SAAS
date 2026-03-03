@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Tag, CheckCircle2, X, Loader2 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { useShopStore } from '../store/shopStore';
 
 export interface AppliedPromo {
     code: string;
@@ -19,6 +20,7 @@ interface PromoCodeInputProps {
 }
 
 export default function PromoCodeInput({ subtotal, onApply, applied }: PromoCodeInputProps) {
+    const { currentShop } = useShopStore();
     const [input, setInput] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -34,6 +36,7 @@ export default function PromoCodeInput({ subtotal, onApply, applied }: PromoCode
             .select('*')
             .eq('code', code)
             .eq('is_active', true)
+            .eq('shop_id', currentShop?.id)
             .single();
 
         setLoading(false);

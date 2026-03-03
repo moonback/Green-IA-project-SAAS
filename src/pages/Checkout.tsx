@@ -7,6 +7,7 @@ import { Address } from '../lib/types';
 import { useCartStore } from '../store/cartStore';
 import { useAuthStore } from '../store/authStore';
 import { useSettingsStore } from '../store/settingsStore';
+import { useShopStore } from '../store/shopStore';
 import SEO from '../components/SEO';
 import PromoCodeInput, { AppliedPromo } from '../components/PromoCodeInput';
 
@@ -23,6 +24,7 @@ export default function Checkout() {
     total,
   } = useCartStore();
   const { settings } = useSettingsStore();
+  const { currentShop } = useShopStore();
 
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [selectedAddress, setSelectedAddress] = useState<string | null>(null);
@@ -108,6 +110,7 @@ export default function Checkout() {
           promo_discount: promoDiscount,
           payment_status: 'pending',
           status: 'pending',
+          shop_id: currentShop?.id,
         })
         .select()
         .single();
@@ -126,17 +129,7 @@ export default function Checkout() {
 
       await supabase.from('order_items').insert(orderItems);
 
-      // 3. Simulate payment (Viva Wallet placeholder)
-      // TODO: Replace with real Viva Wallet integration when account is ready
-      // const response = await fetch('/api/payment/create-order', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ orderId: order.id, amount: Math.round(tot * 100), ... })
-      // });
-      // const { orderCode } = await response.json();
-      // window.location.href = `https://www.vivapayments.com/web/checkout?ref=${orderCode}`;
-
-      // Simulation : mark as paid directly
+      // 3. Simulation : mark as paid directly
       await supabase
         .from('orders')
         .update({ payment_status: 'paid', status: 'processing', viva_order_code: `SIM-${order.id.slice(0, 8)}` })
@@ -144,7 +137,6 @@ export default function Checkout() {
 
       // 4. Decrement stock
       for (const item of items) {
-        // Direct update (decrement_stock RPC can be added to Supabase later)
         await supabase
           .from('products')
           .update({ stock_quantity: Math.max(0, item.product.stock_quantity - item.quantity) })
@@ -156,6 +148,7 @@ export default function Checkout() {
           quantity_change: -item.quantity,
           type: 'sale',
           note: `Commande ${order.id.slice(0, 8)}`,
+          shop_id: currentShop?.id,
         });
       }
 
@@ -174,6 +167,7 @@ export default function Checkout() {
           type: 'earned',
           points: pointsEarned,
           balance_after: newBalance,
+          shop_id: currentShop?.id,
           note: `Commande #${order.id.slice(0, 8).toUpperCase()}`,
         });
       }
@@ -186,6 +180,7 @@ export default function Checkout() {
           type: 'redeemed',
           points: pointsRedeemed,
           balance_after: newBalance,
+          shop_id: currentShop?.id,
           note: `Utilisation de ${pointsRedeemed} pts (−${pointsValue.toFixed(2)} €)`,
         });
       }
@@ -199,18 +194,15 @@ export default function Checkout() {
 
       // --- Referral Reward Logic ---
       if (profile?.referred_by_id && settings.referral_program_enabled) {
-        // Check if this is the user's first paid order
         const { count } = await supabase
           .from('orders')
           .select('*', { count: 'exact', head: true })
           .eq('user_id', user.id)
-          .eq('payment_status', 'paid');
+          .eq('payment_status', 'paid')
+          .eq('shop_id', currentShop?.id);
 
-        // If count is 1 (this order), it's the first one
         if (count === 1) {
           const REWARD_POINTS = settings.referral_reward_points || 500;
-
-          // 1. Update referral status
           const { data: referral } = await supabase
             .from('referrals')
             .update({
@@ -220,11 +212,11 @@ export default function Checkout() {
             })
             .eq('referee_id', user.id)
             .eq('status', 'joined')
+            .eq('shop_id', currentShop?.id)
             .select()
             .single();
 
           if (referral) {
-            // 2. Credit the referrer
             const { data: referrerProfile } = await supabase
               .from('profiles')
               .select('loyalty_points')
@@ -238,23 +230,22 @@ export default function Checkout() {
                 .update({ loyalty_points: newReferrerBalance })
                 .eq('id', profile.referred_by_id);
 
-              // 3. Log transaction for referrer
               await supabase.from('loyalty_transactions').insert({
                 user_id: profile.referred_by_id,
-                type: 'referral', // This type needs to be handled in LoyaltyHistory
+                type: 'referral',
                 points: REWARD_POINTS,
                 balance_after: newReferrerBalance,
+                shop_id: currentShop?.id,
                 note: `Récompense de parrainage : ${profile.full_name || 'Un ami'} a passé sa 1ère commande !`
               });
             }
           }
         }
       }
-      // --- End Referral Logic ---
 
-      // 6. Clear cart and redirect
       clearCart();
-      navigate(`/commande/confirmation?id=${order.id}`);
+      const confirmationPath = currentShop ? `/${currentShop.slug}/commande/confirmation` : '/commande/confirmation';
+      navigate(`${confirmationPath}?id=${order.id}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Une erreur est survenue. Veuillez réessayer.');
     } finally {
@@ -263,7 +254,8 @@ export default function Checkout() {
   };
 
   if (items.length === 0) {
-    navigate('/panier');
+    const cartPath = currentShop ? `/${currentShop.slug}/panier` : '/panier';
+    navigate(cartPath);
     return null;
   }
 
@@ -272,11 +264,9 @@ export default function Checkout() {
       <SEO title="Finalisation — L'Excellence Green IA" description="Finalisez votre commande Green IA CBD." />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-        {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-10">
           <div className="space-y-4">
-            <Link to="/panier" className="inline-flex items-center gap-2 text-zinc-500 hover:text-green-neon text-xs font-semibold uppercase tracking-wider transition-colors mb-2">
+            <Link to={currentShop ? `/${currentShop.slug}/panier` : "/panier"} className="inline-flex items-center gap-2 text-zinc-500 hover:text-green-neon text-xs font-semibold uppercase tracking-wider transition-colors mb-2">
               <ArrowLeft className="w-4 h-4" />
               Retour au Panier
             </Link>
@@ -286,7 +276,6 @@ export default function Checkout() {
           </div>
         </div>
 
-        {/* Checkout Stepper */}
         <div className="mb-12">
           <div className="flex items-center justify-between max-w-lg mx-auto">
             {[
@@ -315,11 +304,7 @@ export default function Checkout() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-
-          {/* Main Form Area */}
           <div className="lg:col-span-8 space-y-8">
-
-            {/* Delivery Methods Panel */}
             <div className="bg-white/[0.03] border border-white/[0.06] rounded-3xl p-6 md:p-8 space-y-8">
               <h2 className="text-xl font-serif font-bold flex items-center gap-4">
                 <span className="w-8 h-8 rounded-full bg-green-neon text-black text-xs flex items-center justify-center font-bold">01</span>
@@ -383,7 +368,6 @@ export default function Checkout() {
               </AnimatePresence>
             </div>
 
-            {/* Address Selection (Delivery only) */}
             {deliveryType === 'delivery' && (
               <div className="bg-white/[0.03] border border-white/[0.06] rounded-3xl p-6 md:p-8 space-y-8">
                 <h2 className="text-xl font-serif font-bold flex items-center gap-4">
@@ -429,46 +413,35 @@ export default function Checkout() {
                       animate={{ opacity: 1, scale: 1 }}
                       className="bg-zinc-900/80 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-5 md:p-6 space-y-6"
                     >
-                      <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Ajout Coordonnées</h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <input
-                          placeholder="Libellé (ex: Domicile)"
-                          value={newAddress.label}
-                          onChange={(e) => setNewAddress({ ...newAddress, label: e.target.value })}
-                          className="bg-white/5 border border-white/[0.06] rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-green-neon transition-all"
-                        />
-                        <input
-                          placeholder="Adresse complète"
-                          value={newAddress.street}
-                          onChange={(e) => setNewAddress({ ...newAddress, street: e.target.value })}
-                          className="bg-white/5 border border-white/[0.06] rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-green-neon transition-all"
-                        />
+                      <input
+                        placeholder="Libellé (ex: Domicile)"
+                        value={newAddress.label}
+                        onChange={(e) => setNewAddress({ ...newAddress, label: e.target.value })}
+                        className="w-full bg-white/5 border border-white/[0.06] rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-green-neon transition-all"
+                      />
+                      <input
+                        placeholder="Adresse complète"
+                        value={newAddress.street}
+                        onChange={(e) => setNewAddress({ ...newAddress, street: e.target.value })}
+                        className="w-full bg-white/5 border border-white/[0.06] rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-green-neon transition-all"
+                      />
+                      <div className="grid grid-cols-2 gap-4">
                         <input
                           placeholder="Code postal"
                           value={newAddress.postal_code}
                           onChange={(e) => setNewAddress({ ...newAddress, postal_code: e.target.value })}
-                          className="bg-white/5 border border-white/[0.06] rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-green-neon transition-all"
+                          className="w-full bg-white/5 border border-white/[0.06] rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-green-neon transition-all"
                         />
                         <input
                           placeholder="Ville"
                           value={newAddress.city}
                           onChange={(e) => setNewAddress({ ...newAddress, city: e.target.value })}
-                          className="bg-white/5 border border-white/[0.06] rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-green-neon transition-all"
+                          className="w-full bg-white/5 border border-white/[0.06] rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-green-neon transition-all"
                         />
                       </div>
                       <div className="flex gap-4 pt-2">
-                        <button
-                          onClick={handleSaveAddress}
-                          className="flex-1 bg-white text-black font-semibold uppercase tracking-wider py-4 rounded-xl hover:bg-green-neon transition-all text-sm"
-                        >
-                          Enregistrer
-                        </button>
-                        <button
-                          onClick={() => setShowAddressForm(false)}
-                          className="px-8 text-zinc-500 hover:text-white text-xs font-semibold uppercase tracking-wider transition-colors"
-                        >
-                          Annuler
-                        </button>
+                        <button onClick={handleSaveAddress} className="flex-1 bg-white text-black font-semibold uppercase tracking-wider py-4 rounded-xl hover:bg-green-neon transition-all text-sm">Enregistrer</button>
+                        <button onClick={() => setShowAddressForm(false)} className="px-8 text-zinc-500 hover:text-white text-xs font-semibold uppercase tracking-wider transition-colors">Annuler</button>
                       </div>
                     </motion.div>
                   )}
@@ -476,41 +449,18 @@ export default function Checkout() {
               </div>
             )}
 
-            {/* Promo & Loyalty */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="bg-white/[0.03] border border-white/[0.06] rounded-3xl p-6 md:p-8 space-y-6">
-                <h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-6 flex items-center gap-3">
-                  <Sparkles className="w-4 h-4 text-green-neon" />
-                  CODE PRIVILÈGE
-                </h2>
-                <PromoCodeInput
-                  subtotal={sub}
-                  onApply={setAppliedPromo}
-                  applied={appliedPromo}
-                />
+                <PromoCodeInput subtotal={sub} onApply={setAppliedPromo} applied={appliedPromo} />
               </div>
 
               {profile && profile.loyalty_points >= 100 && (
-                <div className="bg-white/[0.03] border border-white/[0.06] rounded-3xl p-6 md:p-8 space-y-6 relative overflow-hidden group">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-400/5 blur-[50px] -z-10 group-hover:bg-yellow-400/10 transition-all duration-1000" />
-                  <h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-6 flex items-center gap-3">
-                    <Coins className="w-4 h-4 text-yellow-400" />
-                    FIDÉLITÉ MASTER
-                  </h2>
+                <div className="bg-white/[0.03] border border-white/[0.06] rounded-3xl p-6 md:p-8 space-y-6">
                   <label className="flex items-center gap-4 cursor-pointer p-6 bg-yellow-400/5 rounded-2xl border border-yellow-400/10 hover:bg-yellow-400/10 transition-all">
-                    <input
-                      type="checkbox"
-                      checked={usePoints}
-                      onChange={(e) => setUsePoints(e.target.checked)}
-                      className="w-6 h-6 rounded-lg accent-yellow-400 bg-zinc-900 border-white/[0.08]"
-                    />
+                    <input type="checkbox" checked={usePoints} onChange={(e) => setUsePoints(e.target.checked)} className="w-6 h-6 rounded-lg accent-yellow-400" />
                     <div className="space-y-1">
-                      <span className="text-xs font-semibold uppercase tracking-wider text-white block">
-                        Utiliser {profile.loyalty_points} Points
-                      </span>
-                      <span className="text-xs text-yellow-400 font-mono tracking-widest">
-                        VALEUR: −{pointsValue.toFixed(2)}€
-                      </span>
+                      <span className="text-xs font-semibold uppercase tracking-wider text-white block">Utiliser {profile.loyalty_points} Points</span>
+                      <span className="text-xs text-yellow-400 font-mono tracking-widest">VALEUR: −{pointsValue.toFixed(2)}€</span>
                     </div>
                   </label>
                 </div>
@@ -518,11 +468,8 @@ export default function Checkout() {
             </div>
           </div>
 
-          {/* Right Summary Panel */}
           <div className="lg:col-span-4 space-y-6">
-            <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.08] rounded-3xl p-6 md:p-8 space-y-10 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-40 h-40 bg-green-neon/5 blur-[60px] -z-10" />
-
+            <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.08] rounded-3xl p-6 md:p-8 space-y-10">
               <div className="space-y-4">
                 <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-500">RESUMÉ SÉLECTION</h3>
                 <div className="space-y-4 max-h-[300px] overflow-y-auto pr-2 scrollbar-hide">
@@ -532,9 +479,7 @@ export default function Checkout() {
                         <p className="text-xs font-semibold uppercase tracking-wider text-white truncate">{product.name}</p>
                         <p className="text-xs font-mono text-zinc-500">PIÈCES: {quantity}</p>
                       </div>
-                      <span className="text-sm font-serif font-bold flex-shrink-0">
-                        {(product.price * quantity).toFixed(2)}€
-                      </span>
+                      <span className="text-sm font-serif font-bold flex-shrink-0">{(product.price * quantity).toFixed(2)}€</span>
                     </div>
                   ))}
                 </div>
@@ -549,54 +494,23 @@ export default function Checkout() {
                   <span>Expédition</span>
                   <span className="text-green-neon">{fee === 0 ? 'Gratuit' : `${fee.toFixed(2)} €`}</span>
                 </div>
-                {pointsValue > 0 && (
-                  <div className="flex justify-between text-yellow-500 text-xs uppercase tracking-widest">
-                    <span>Fidélité</span>
-                    <span>−{pointsValue.toFixed(2)} €</span>
-                  </div>
-                )}
-                {promoDiscount > 0 && (
-                  <div className="flex justify-between text-green-neon text-xs uppercase tracking-widest">
-                    <span>Code {appliedPromo?.code}</span>
-                    <span>−{promoDiscount.toFixed(2)} €</span>
-                  </div>
-                )}
+                {pointsValue > 0 && <div className="flex justify-between text-yellow-500 text-xs uppercase tracking-widest"><span>Fidélité</span><span>−{pointsValue.toFixed(2)} €</span></div>}
+                {promoDiscount > 0 && <div className="flex justify-between text-green-neon text-xs uppercase tracking-widest"><span>Code {appliedPromo?.code}</span><span>−{promoDiscount.toFixed(2)} €</span></div>}
                 <div className="flex justify-between items-end pt-6 border-t border-white/[0.08]">
                   <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-1">TOTAL MASTER</span>
-                  <span className="text-3xl font-serif font-bold text-white">
-                    {tot.toFixed(2)}<span className="text-green-neon text-lg ml-1">€</span>
-                  </span>
+                  <span className="text-3xl font-serif font-bold text-white">{tot.toFixed(2)}<span className="text-green-neon text-lg ml-1">€</span></span>
                 </div>
               </div>
 
-              {error && (
-                <div className="bg-red-900/10 border border-red-500/20 rounded-2xl p-4 text-red-500 text-xs font-medium uppercase tracking-widest text-center">
-                  Error: {error}
-                </div>
-              )}
+              {error && <div className="bg-red-900/10 border border-red-500/20 rounded-2xl p-4 text-red-500 text-xs font-medium uppercase tracking-widest text-center">{error}</div>}
 
               <div className="space-y-4">
-                <button
-                  onClick={handleOrder}
-                  disabled={isSubmitting}
-                  className="w-full bg-green-neon text-black font-semibold uppercase tracking-widest py-4 rounded-2xl hover:shadow-[0_0_20px_rgba(57,255,20,0.3)] active:scale-[0.98] transition-all flex items-center justify-center gap-3"
-                >
+                <button onClick={handleOrder} disabled={isSubmitting} className="w-full bg-green-neon text-black font-semibold uppercase tracking-widest py-4 rounded-2xl hover:shadow-[0_0_20px_rgba(57,255,20,0.3)] flex items-center justify-center gap-3">
                   <CreditCard className="w-5 h-5" />
                   {isSubmitting ? 'TRAITEMENT EN COURS…' : `REGLER ${tot.toFixed(2)} €`}
                 </button>
-
-                <div className="flex items-center justify-center gap-3 py-2 opacity-40">
-                  <ShieldCheck className="w-4 h-4 text-green-neon" />
-                  <span className="text-xs font-medium uppercase tracking-wider">Paiement Securisé</span>
-                </div>
               </div>
             </div>
-
-            <p className="text-xs text-zinc-600 text-center leading-relaxed uppercase px-6">
-              {profile ? `CRÉDIT FIDÉLITÉ À VENIR: +${Math.floor(tot)} POINTS` : ''}
-              <br />
-              <span className="opacity-50">Validation immédiate en mode démonstration.</span>
-            </p>
           </div>
         </div>
       </div>

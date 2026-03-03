@@ -13,9 +13,11 @@ import {
 import { supabase } from '../../lib/supabase';
 import { Referral } from '../../lib/types';
 import { useSettingsStore } from '../../store/settingsStore';
+import { useShopStore } from '../../store/shopStore';
 import { Save, Settings as SettingsIcon } from 'lucide-react';
 
 export default function AdminReferralsTab() {
+    const { currentShop } = useShopStore();
     const [referrals, setReferrals] = useState<Referral[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
@@ -32,9 +34,10 @@ export default function AdminReferralsTab() {
 
     useEffect(() => {
         loadAllReferrals();
-    }, []);
+    }, [currentShop]);
 
     async function loadAllReferrals() {
+        if (!currentShop) return;
         setIsLoading(true);
         const { data } = await supabase
             .from('referrals')
@@ -43,6 +46,7 @@ export default function AdminReferralsTab() {
         referrer:profiles!referrer_id(full_name, referral_code),
         referee:profiles!referee_id(full_name, email, created_at)
       `)
+            .eq('shop_id', currentShop.id)
             .order('created_at', { ascending: false });
 
         if (data) setReferrals(data as any[]);

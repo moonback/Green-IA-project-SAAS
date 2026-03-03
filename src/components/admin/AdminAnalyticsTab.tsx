@@ -15,6 +15,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { supabase } from '../../lib/supabase';
+import { useShopStore } from '../../store/shopStore';
 import type {
   RevenueDataPoint,
   TopProduct,
@@ -73,6 +74,7 @@ function ChartCard({ title, children }: { title: string; children: React.ReactNo
 }
 
 export default function AdminAnalyticsTab() {
+  const { currentShop } = useShopStore();
   const [range, setRange] = useState<AnalyticsRange>('30d');
   const [isLoading, setIsLoading] = useState(true);
   const [revenueData, setRevenueData] = useState<RevenueDataPoint[]>([]);
@@ -93,9 +95,10 @@ export default function AdminAnalyticsTab() {
 
   useEffect(() => {
     loadAnalytics();
-  }, [range]);
+  }, [range, currentShop]);
 
   async function loadAnalytics() {
+    if (!currentShop) return;
     setIsLoading(true);
     const days = range === '7d' ? 7 : range === '30d' ? 30 : 90;
     const since = new Date();
@@ -112,19 +115,23 @@ export default function AdminAnalyticsTab() {
         .from('orders')
         .select('id, total, created_at, user_id')
         .eq('payment_status', 'paid')
+        .eq('shop_id', currentShop.id)
         .gte('created_at', sinceISO)
         .order('created_at'),
       supabase
         .from('orders')
         .select('status, created_at')
+        .eq('shop_id', currentShop.id)
         .gte('created_at', sinceISO),
       supabase
         .from('profiles')
         .select('created_at')
+        .eq('shop_id', currentShop.id)
         .gte('created_at', sinceISO),
       supabase
         .from('budtender_interactions')
         .select('*')
+        .eq('shop_id', currentShop.id)
         .gte('created_at', sinceISO),
     ]);
 

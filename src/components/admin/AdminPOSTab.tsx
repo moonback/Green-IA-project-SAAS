@@ -37,6 +37,7 @@ import {
     Tag,
 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
+import { useShopStore } from '../../store/shopStore';
 import { Product, Category, Profile } from '../../lib/types';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -228,6 +229,7 @@ function AdminPOSTab({
     storePhone = '01 23 45 67 89',
     onExit,
 }: AdminPOSTabProps) {
+    const { currentShop } = useShopStore();
     // ── Product catalogue ──
     const [products, setProducts] = useState<Product[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
@@ -464,6 +466,7 @@ function AdminPOSTab({
                     .select('*')
                     .eq('sku', sku)
                     .eq('is_active', true)
+                    .eq('shop_id', currentShop?.id)
                     .single();
                 if (data) {
                     addToCart(data as Product);
@@ -501,15 +504,16 @@ function AdminPOSTab({
 
     // ── Load data ──
     const loadProducts = useCallback(async () => {
+        if (!currentShop) return;
         setIsLoadingProducts(true);
         const [{ data: prods }, { data: cats }] = await Promise.all([
-            supabase.from('products').select('*').eq('is_active', true).order('name'),
-            supabase.from('categories').select('*').order('sort_order'),
+            supabase.from('products').select('*').eq('is_active', true).eq('shop_id', currentShop.id).order('name'),
+            supabase.from('categories').select('*').eq('shop_id', currentShop.id).order('sort_order'),
         ]);
         setProducts((prods as Product[]) ?? []);
         setCategories((cats as Category[]) ?? []);
         setIsLoadingProducts(false);
-    }, []);
+    }, [currentShop]);
 
     const loadTodayStats = useCallback(async () => {
         const todayStr = getBusinessDate();
@@ -524,6 +528,7 @@ function AdminPOSTab({
             .from('orders')
             .select('total')
             .eq('delivery_type', 'in_store')
+            .eq('shop_id', currentShop?.id)
             .gte('created_at', bStart.toISOString())
             .lt('created_at', bEnd.toISOString());
 
@@ -536,6 +541,7 @@ function AdminPOSTab({
             .from('pos_reports')
             .select('id')
             .eq('date', todayStr)
+            .eq('shop_id', currentShop?.id)
             .maybeSingle();
 
         setIsSessionClosed(!!report);
@@ -631,6 +637,7 @@ function AdminPOSTab({
                     status: 'delivered',
                     notes: `[POS] Vente en boutique${selectedCustomer ? ` (Client: ${selectedCustomer.full_name})` : ''} — Paiement: ${paymentMethod === 'cash' ? 'Espèces' : paymentMethod === 'card' ? 'Carte' : 'Mobile'
                         }`,
+                    shop_id: currentShop?.id,
                 })
                 .select()
                 .single();
@@ -703,6 +710,7 @@ function AdminPOSTab({
                         product_id: line.product.id,
                         quantity_change: -line.quantity,
                         type: 'sale',
+                        shop_id: currentShop?.id,
                         note: `[POS] Vente boutique #${order.id.slice(0, 8).toUpperCase()}`,
                     });
                 }
@@ -726,6 +734,7 @@ function AdminPOSTab({
                         type: 'earned',
                         points: earned,
                         balance_after: (selectedCustomer.loyalty_points || 0) + earned,
+                        shop_id: currentShop?.id,
                         note: `[POS] Vente boutique #${order.id.slice(0, 8).toUpperCase()}`,
                     });
                 }
@@ -736,6 +745,7 @@ function AdminPOSTab({
                         type: 'redeemed',
                         points: redeemed,
                         balance_after: newPoints,
+                        shop_id: currentShop?.id,
                         note: `[POS] Utilisation points en boutique #${order.id.slice(0, 8).toUpperCase()}`,
                     });
                 }
@@ -788,6 +798,7 @@ function AdminPOSTab({
                     order_items (quantity)
                 `)
                 .eq('delivery_type', 'in_store')
+                .eq('shop_id', currentShop?.id)
                 .gte('created_at', bStart.toISOString())
                 .lt('created_at', bEnd.toISOString());
 
@@ -856,6 +867,7 @@ function AdminPOSTab({
                     items_sold: reportData.itemsSold,
                     order_count: reportData.orderCount,
                     product_breakdown: reportData.productBreakdown,
+                    shop_id: currentShop?.id,
                     cash_counted: parseFloat(cashCounted) || 0,
                     cash_difference: (parseFloat(cashCounted) || 0) - reportData.cashTotal,
                     closed_at: new Date().toISOString(),
@@ -879,21 +891,23 @@ function AdminPOSTab({
     const loadHistory = async () => {
         setIsLoadingHistory(true);
         try {
-            const { data: reports, error } = await supabase
+            const { data, error } = await supabase
                 .from('pos_reports')
-                .select('*')
+                .select('date, items_sold, total_sales')
+                .eq('shop_id', currentShop?.id)
                 .order('date', { ascending: false })
                 .limit(30);
 
             if (error) throw error;
 
-            setHistoryDays(reports.map(r => ({
-                date: r.date,
-                total: r.total_sales,
-                count: r.order_count,
-                // store whole record if needed later
-                ...r
-            })));
+            if (data) {
+                const history = data.map((r: any) => ({
+                    date: r.date,
+                    total: r.total_sales,
+                    count: r.items_sold
+                }));
+                setHistoryDays(history);
+            }
         } catch (err) {
             console.error(err);
         } finally {

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Eye, EyeOff, Trash2, CheckCircle, Clock, RefreshCw } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
+import { useShopStore } from '../../store/shopStore';
 import type { Review } from '../../lib/types';
 import StarRating from '../StarRating';
 
@@ -10,19 +11,22 @@ interface ReviewWithRelations extends Omit<Review, 'product'> {
 }
 
 export default function AdminReviewsTab() {
+  const { currentShop } = useShopStore();
   const [reviews, setReviews] = useState<ReviewWithRelations[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'pending' | 'published'>('all');
 
   useEffect(() => {
     loadReviews();
-  }, []);
+  }, [currentShop]);
 
   async function loadReviews() {
+    if (!currentShop) return;
     setIsLoading(true);
     const { data } = await supabase
       .from('reviews')
       .select('*, product:products(id, name), profile:profiles(id, full_name)')
+      .eq('shop_id', currentShop.id)
       .order('created_at', { ascending: false });
     setReviews((data as ReviewWithRelations[]) ?? []);
     setIsLoading(false);

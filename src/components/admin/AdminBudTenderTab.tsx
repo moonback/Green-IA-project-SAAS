@@ -118,6 +118,7 @@ function SliderField({
 // ─── Main component ──────────────────────────────────────────────────────────
 
 export default function AdminBudTenderTab() {
+    const { currentShop } = useShopStore();
     const [settings, setSettings] = useState<BudTenderSettings>(BUDTENDER_DEFAULTS);
     const [isSaving, setIsSaving] = useState(false);
     const [saved, setSaved] = useState(false);
@@ -143,7 +144,6 @@ export default function AdminBudTenderTab() {
     useEffect(() => {
         const load = async () => {
             try {
-                const { currentShop } = useShopStore.getState();
 
                 // 1. Priorité aux réglages SaaS du Shop
                 if (currentShop?.settings?.budtender_config) {
@@ -175,7 +175,7 @@ export default function AdminBudTenderTab() {
             }
         };
         load();
-    }, []);
+    }, [currentShop]);
 
     // Load stats when switching to stats tab
     useEffect(() => {
@@ -198,11 +198,13 @@ export default function AdminBudTenderTab() {
                 supabase
                     .from('budtender_interactions')
                     .select('*')
+                    .eq('shop_id', currentShop?.id)
                     .gte('created_at', sinceISO),
                 supabase
                     .from('orders')
                     .select('user_id')
                     .eq('payment_status', 'paid')
+                    .eq('shop_id', currentShop?.id)
                     .gte('created_at', sinceISO)
             ]);
 
@@ -237,7 +239,6 @@ export default function AdminBudTenderTab() {
             });
 
             // 2. Conversion calculation and Quota Prep
-            const { currentShop } = useShopStore.getState();
             const usersWithQuiz = new Set(interactions
                 .filter(i => i.interaction_type === 'chat_session' || i.interaction_type === 'recommendation')
                 .map(i => i.user_id)
