@@ -31,6 +31,7 @@ const Favorites = lazy(() => import("./pages/Favorites"));
 const Referrals = lazy(() => import("./pages/Referrals"));
 const POSPage = lazy(() => import("./pages/POSPage"));
 const RegisterShop = lazy(() => import("./pages/RegisterShop"));
+const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 function PageLoader() {
@@ -70,6 +71,7 @@ export default function App() {
             <Route path="contact" element={<Contact />} />
             <Route path="mentions-legales" element={<Legal />} />
             <Route path="connexion" element={<Login />} />
+            <Route path="reset-password" element={<ResetPassword />} />
             <Route path="ouvrir-boutique" element={<RegisterShop />} />
 
             {/* Catalogue en ligne */}

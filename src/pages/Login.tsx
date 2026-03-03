@@ -183,10 +183,13 @@ export default function Login() {
 
             <div className="mb-8">
               <h2 className="text-3xl font-serif font-bold text-white mb-2">
-                {mode === 'login' ? 'Bon retour !' : 'Rejoindre l\'aventure'}
+                {isForgotMode ? 'Paramètres d\'accès' : (mode === 'login' ? 'Bon retour !' : 'Rejoindre l\'aventure')}
               </h2>
               <p className="text-zinc-400">
-                {mode === 'login' ? 'Authentifiez-vous pour accéder à votre espace.' : 'Créez votre compte en quelques instants.'}
+                {isForgotMode
+                  ? 'Saisissez votre email pour recevoir un lien de réinitialisation.'
+                  : (mode === 'login' ? 'Authentifiez-vous pour accéder à votre espace.' : 'Créez votre compte en quelques instants.')
+                }
               </p>
             </div>
 
@@ -194,21 +197,32 @@ export default function Login() {
               {/* Animated corner accent */}
               <div className="absolute top-0 right-0 w-24 h-24 bg-green-neon/10 blur-2xl group-hover:bg-green-neon/20 transition-all duration-700" />
 
-              {/* Tabs */}
-              <div className="flex mb-8 bg-black/40 rounded-2xl p-1.5 border border-zinc-800/50">
-                {(['login', 'register'] as Mode[]).map((m) => (
-                  <button
-                    key={m}
-                    onClick={() => { setMode(m); setError(''); setSuccess(''); }}
-                    className={`flex-1 py-3 rounded-xl text-sm font-semibold transition-all duration-300 ${mode === m
-                      ? 'bg-green-neon text-black shadow-[0_4px_15px_rgba(20,229,148,0.4)]'
-                      : 'text-zinc-500 hover:text-white'
-                      }`}
-                  >
-                    {m === 'login' ? 'Connexion' : 'Inscription'}
-                  </button>
-                ))}
-              </div>
+              {/* Tabs (Hidden in forgot mode) */}
+              {!isForgotMode && (
+                <div className="flex mb-8 bg-black/40 rounded-2xl p-1.5 border border-zinc-800/50">
+                  {(['login', 'register'] as Mode[]).map((m) => (
+                    <button
+                      key={m}
+                      onClick={() => { setMode(m); setError(''); setSuccess(''); }}
+                      className={`flex-1 py-3 rounded-xl text-sm font-semibold transition-all duration-300 ${mode === m
+                        ? 'bg-green-neon text-black shadow-[0_4px_15px_rgba(20,229,148,0.4)]'
+                        : 'text-zinc-500 hover:text-white'
+                        }`}
+                    >
+                      {m === 'login' ? 'Connexion' : 'Inscription'}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {isForgotMode && (
+                <button
+                  onClick={() => setIsForgotMode(false)}
+                  className="flex items-center gap-2 text-zinc-500 hover:text-white mb-6 text-sm font-medium transition-colors"
+                >
+                  <ArrowLeft className="w-4 h-4" /> Retour à la connexion
+                </button>
+              )}
 
               <form onSubmit={handleSubmit} className="space-y-5">
                 {mode === 'register' && (
@@ -305,7 +319,7 @@ export default function Login() {
                     <span className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin" />
                   ) : (
                     <>
-                      {mode === 'login' ? 'Se connecter' : 'Confirmer l\'inscription'}
+                      {isForgotMode ? 'Envoyer le lien' : (mode === 'login' ? 'Se connecter' : 'Confirmer l\'inscription')}
                       <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </>
                   )}
@@ -313,17 +327,33 @@ export default function Login() {
               </form>
 
               {/* Social Login Divider */}
-              <div className="relative my-8 text-center">
-                <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-zinc-800"></div></div>
-                <span className="relative z-10 bg-[#161616] px-4 text-[10px] text-zinc-600 uppercase tracking-widest font-bold">Ou continuer avec</span>
-              </div>
+              {!isForgotMode && (
+                <>
+                  <div className="relative my-8 text-center">
+                    <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-zinc-800"></div></div>
+                    <span className="relative z-10 bg-[#161616] px-4 text-[10px] text-zinc-600 uppercase tracking-widest font-bold">Ou continuer avec</span>
+                  </div>
 
-              <div className="grid grid-cols-1 gap-3">
-                <button className="flex items-center justify-center gap-3 bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-bold py-3.5 rounded-2xl transition-all">
-                  <img src="https://www.google.com/favicon.ico" className="w-4 h-4 grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100" />
-                  Google
-                </button>
-              </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <button
+                      type="button"
+                      onClick={() => handleSocialLogin('google')}
+                      className="flex items-center justify-center gap-3 bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-bold py-3.5 rounded-2xl transition-all group"
+                    >
+                      <img src="https://www.google.com/favicon.ico" className="w-4 h-4 grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100" />
+                      Google
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleSocialLogin('github')}
+                      className="flex items-center justify-center gap-3 bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-bold py-3.5 rounded-2xl transition-all group"
+                    >
+                      <Github className="w-4 h-4 text-zinc-500 group-hover:text-white" />
+                      GitHub
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
 
             {/* SaaS Section for Professionals */}

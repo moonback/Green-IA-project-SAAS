@@ -128,7 +128,7 @@ export default function Layout() {
                 <Link to="/" className="flex items-center group relative z-[1000]" aria-label="Green Mood CBD Shop — Accueil">
                   <div className="absolute -inset-8 bg-green-neon/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                   <img
-                    src="/logo.png"
+                    src="/logo.jpeg"
                     alt="Green Mood CBD Shop"
                     className="h-30 md:h-32 w-auto object-contain transition-all duration-700 group-hover:scale-105 group-hover:glow-logo"
                   />
