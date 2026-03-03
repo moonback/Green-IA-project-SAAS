@@ -1,121 +1,130 @@
-# 🗃️ DB_SCHEMA
+# Architecture et Schéma de la Base de Données
 
-Description fonctionnelle du schéma Supabase utilisé par Green IA SaaS.
+Ce document présente l'organisation de la base de données PostgreSQL (hébergée sur **Supabase**) pour la plateforme E-commerce Multi-tenant **Green Moon**.
 
-> Source technique : `supabase/schema_complet.sql` + migrations SaaS incrémentales du dossier `supabase/`.
+## 🏗️ Philosophie et Multi-tenant
 
----
-
-## 1) Vue globale
-
-Le modèle est organisé en 6 domaines :
-1. Catalogue
-2. Commande & logistique
-3. Compte client & fidélité
-4. IA & personnalisation
-5. POS & reporting
-6. Multi-tenant SaaS
+Le modèle cible est un **logiciel en tant que service (SaaS)**. Chaque marchand/utilisateur pro possède une "boutique" isolée. Cette isolation technique n'est pas effectuée par la création d'une base de données par client, mais via un **Row Level Security (RLS)** systématique basé sur la notion de propriété (table `shops`, `owner_id`, et les clés étrangères associées) pour toutes les données sensibles.
 
 ---
 
-## 2) Tables principales
+## 👥 1. Utilisateurs, Marchands et Boutiques
 
-## 2.1 Catalogue
+### `auth.users` (Table système Supabase)
+Gère l'authentification (email/mot de passe, sessions JWT). Les données applicatives n'y sont pas ajoutées.
 
-| Table | Rôle | Champs clés |
-|---|---|---|
-| `categories` | Catégories produits | `slug`, `name`, `sort_order`, `is_active`, `shop_id` |
-| `products` | Produits vendus | `category_id`, `slug`, `price`, `stock_quantity`, `attributes`, `embedding`, `shop_id` |
-| `product_images` | Galerie produit | `product_id`, `image_url`, `sort_order` |
-| `bundle_items` | Composition bundles | `bundle_id`, `product_id`, `quantity` |
-| `product_recommendations` | Recos manuelles | `product_id`, `recommended_id`, `sort_order` |
+### `public.profiles`
+**Extension des utilisateurs (Clients et Marchands)**
+- `id` (UUID, FK `auth.users.id`) 
+- `full_name`, `phone`, `avatar_url` (Informations textuelles)
+- `role` ('client', 'merchant', 'admin') : Détermine le niveau d'accessibilité.
+- Points de fidélité et parrainage (`loyalty_points`).
 
-## 2.2 Commerce
+### `public.shops` (Nouveau)
+**Boutiques des marchands SaaS**
+- `id` (UUID) 
+- `slug` (Unique, utilisé dans l'URL `/:shopSlug`)
+- `owner_id` (UUID, FK `profiles.id`)
+- `name`, `logo_url`, `theme` (JSON pour le CSS Custom)
+- `is_active` (Statut d'abonnement/visibilité du store SaaS).
 
-| Table | Rôle | Champs clés |
-|---|---|---|
-| `orders` | Entête commande | `user_id`, `status`, `payment_status`, `total`, `delivery_type`, `shop_id` |
-| `order_items` | Lignes commande | `order_id`, `product_id`, `quantity`, `unit_price`, `total_price` |
-| `addresses` | Adresses client | `user_id`, `street`, `postal_code`, `is_default` |
-| `stock_movements` | Journal de stock | `product_id`, `quantity_change`, `type`, `shop_id` |
-| `promo_codes` | Promotions | `code`, `discount_type`, `discount_value`, `max_uses`, `uses_count`, `shop_id` |
-
-## 2.3 Clients, fidélité, relationnel
-
-| Table | Rôle | Champs clés |
-|---|---|---|
-| `profiles` | Extension `auth.users` | `full_name`, `is_admin`, `loyalty_points`, `referral_code`, `current_shop_id` |
-| `wishlists` | Favoris utilisateur | `user_id`, `product_id` |
-| `reviews` | Avis vérifiés | `product_id`, `user_id`, `order_id`, `rating`, `is_published`, `shop_id` |
-| `loyalty_transactions` | Historique points | `user_id`, `type`, `points`, `balance_after`, `shop_id` |
-| `referrals` | Parrainage | `referrer_id`, `referee_id`, `status`, `points_awarded` |
-| `subscriptions` | Abonnements produit | `user_id`, `product_id`, `frequency`, `next_delivery_date`, `status`, `shop_id` |
-| `subscription_orders` | Commandes liées abonnements | `subscription_id`, `order_id` |
-
-## 2.4 IA & personnalisation
-
-| Table | Rôle | Champs clés |
-|---|---|---|
-| `user_ai_preferences` | Préférences utilisateur IA | `goal`, `experience_level`, `extra_prefs` |
-| `budtender_interactions` | Historique interactions IA | `interaction_type`, `quiz_answers`, `recommended_products`, `feedback` |
-| `ai_usage_logs` | Suivi consommation IA | `shop_id`, `user_id`, `tokens`, `request_type`, `created_at` |
-| `store_settings` | Configuration boutique/IA | `key`, `value`, `shop_id` |
-
-## 2.5 POS
-
-| Table | Rôle | Champs clés |
-|---|---|---|
-| `pos_reports` | Clôtures caisse / reporting | `date`, `total_sales`, `cash_total`, `card_total`, `shop_id` |
-
-## 2.6 SaaS multi-tenant
-
-| Table | Rôle | Champs clés |
-|---|---|---|
-| `shops` | Tenant boutique | `owner_id`, `name`, `slug`, `settings`, `subscription_plan` |
-| `shop_members` | Membres et rôles | `shop_id`, `user_id`, `role` |
-
-> **Note sur `shops.settings`** : Stocke un objet JSONB contenant le thème (`primary_color`, `font_family`, etc.) et le layout (`home`, `about`, `quality` avec leurs listes de sections et paramètres spécifiques).
+### `public.store_settings`
+Configuration globale du magasin.
+- `key` (Clé textuelle)
+- `value` (JSON, ex: configuration du thème complet).
 
 ---
 
-## 3) Relations clés
+## 🛒 2. Catalogue de Produits
 
-- `products.category_id → categories.id`
-- `orders.user_id → profiles.id`
-- `order_items.order_id → orders.id`
-- `order_items.product_id → products.id`
-- `reviews.order_id → orders.id`
-- `subscriptions.product_id → products.id`
-- `subscription_orders.subscription_id → subscriptions.id`
-- `shop_members.shop_id → shops.id`
-- Tables métier → `shop_id → shops.id` (isolation multi-tenant)
+Afin que le catalogue "Green Moon" originel reste distinct, chaque marchand peut gérer son catalogue. Pour le multi-tenant, `products` est idéalement lié à un `shop_id`.
 
----
+### `public.categories`
+- `id`, `name`, `slug`
+- Identifie les collections : "Fleurs", "Résines", "Concentrés", "Accessoires".
 
-## 4) Fonctions SQL / RPC importantes
+### `public.products`
+La pièce centrale du E-commerce.
+- `id` (UUID), `shop_id` (UUID, Optionnel si produit global SaaS, Obligatoire si produit marchand)
+- `category_id` (FK `categories.id`)
+- `name`, `slug`, `description` (Texte)
+- `price`, `stock` (Numérique)
+- `thc_level`, `cbd_level` (Données spécifiques)
+- `image_url` (Stockée dans Supabase Storage)
+- boolean flags: `is_featured`, `is_new`, `is_active`.
 
-| Fonction | Rôle |
-|---|---|
-| `sync_bundle_stock(p_bundle_id)` | Recalcule automatiquement le stock bundle |
-| `increment_promo_uses(code_text)` | Incrémente le compteur d’utilisation promo |
-| `match_products(query_embedding, match_threshold, match_count)` | Recherche vectorielle produits |
-| `create_pos_customer(p_full_name, p_phone)` | Crée un client depuis POS |
-| `get_product_recommendations(...)` | Retourne recommandations/fallback produit |
-
----
-
-## 5) RLS (Row Level Security)
-
-- RLS est activé sur les tables métier sensibles.
-- Lecture publique autorisée pour une partie du catalogue (produits/catégories).
-- Écriture réservée aux profils autorisés (admin ou membre shop selon politiques).
-- En contexte SaaS, les politiques doivent filtrer sur le shop de l’utilisateur connecté.
+### Modèles annexes (Merchandising)
+- `product_images` : Galerie d'images secondaires par produit.
+- `bundle_items` : Relie des produits complémentaires (Pack).
+- `product_recommendations` : IA ou suggestions manuelles par produit.
 
 ---
 
-## 6) Indexation et performance
+## 📦 3. Ventes et Commandes
 
-- Index vectoriel activé via extension `vector` pour les embeddings.
-- Index dédiés (`sku`, JSONB prefs, etc.) présents sur champs critiques.
-- Recommandation : ajouter des index composites sur `(shop_id, created_at)` pour reporting à grande échelle.
+### `public.orders`
+Gère la validation du panier et le paiement.
+- `id` (UUID), `shop_id` (UUID)
+- `user_id` (FK `profiles.id`)
+- Champs récapitulatifs : `total_amount`, `subtotal`, `shipping_cost`, `discount_amount`.
+- Traçabilité : `status` ('pending', 'paid', 'shipped', 'cancelled', 'refunded').
+- Informations de livraison : `shipping_address`, `contact_email`.
+- Historique des "Points gagnés" / "Points utilisés".
 
+### `public.order_items`
+Lignes de commande associées à une `order`.
+- `id`, `order_id` (FK `orders.id`)
+- `product_id` (FK `products.id`)
+- `quantity` (Int)
+- `unit_price`, `total_price` (Numérique à l'instant T).
+
+### `public.addresses`
+Carnet d'adresses dé-normalisé (Utilisateurs finaux).
+- `user_id` (FK `profiles.id`)
+- `title`, `full_name`, `street`, `city`, `postal_code`, `country`, `is_default`.
+
+---
+
+## 🔁 4. Abonnements (Achats récurrents)
+
+### `public.subscriptions`
+- `id`, `user_id`
+- `product_id`
+- `interval` ('weekly', 'biweekly', 'monthly')
+- `next_renewal_date`
+- `status` ('active', 'paused', 'cancelled', 'payment_failed')
+
+### `public.subscription_orders`
+Table de jonction (Associe une "Génération d'Abonnement" au ticket de Caisse de la commande liée).
+- `subscription_id`, `order_id`
+
+---
+
+## 💬 5. Engagement Client (Avis, Favoris, Fidelité)
+
+- `public.reviews` : Notes (rating 1-5) et commentaires sur un produit post-commande. `is_verified` (bool).
+- `public.wishlists` : Association (Produit / Utilisateur) pour la liste d'envie.
+- `public.referrals` : Tableau de bord de Parrainage (Lien entre parrain, filleul, et état de la récompense).
+
+---
+
+## 🤖 6. Budtender AI
+
+### `public.budtender_interactions`
+Historise les chats entre l'IA `Gemini` et le client pour maintenir le contexte.
+- `id`
+- `user_id` (Ou session invité anonyme)
+- `shop_id` (Contexte du catalogue marchand)
+- `query`, `response` (Textes), `suggested_products` (JSON).
+- `created_at`
+
+---
+
+## 🔒 Row Level Security (RLS) - Sécurité
+1. **Accès Public** : Accès globalement gratuit "En Lecture" (`SELECT`) pour les `products`, `categories`, `reviews` vérifiées (Sous réserve de l'activité du Shop).
+2. **Accès Utilisateur Authentifié (Clients)** :
+   - `SELECT`, `UPDATE` de ses propres `profiles`.
+   - `SELECT`, `INSERT` de ses propres `orders` (`WHERE user_id = auth.uid()`).
+3. **Accès Marchand (Admin/POS)** :
+   - Peut créer (`INSERT`), modifier (`UPDATE`), ou lire (`SELECT`) TOUT le catalogue là où `shop_id` correspond au sien.
+   - Accès aux statistiques, POS, et configurations via un trigger de rôle ou via les Policies PostgreSQL (`store_settings`, vues agrégées des ventes).

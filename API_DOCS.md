@@ -1,143 +1,66 @@
-# 📡 API_DOCS
+# Documentation API (Client / Supabase)
 
-Le projet expose principalement une API de données via **Supabase PostgREST** + **RPC SQL**, consommée côté frontend avec `@supabase/supabase-js`.
+L'application **Green Moon SaaS** ne possède par de serveur backend monolithique. Le frontend consomme les données via l'API **PostgREST** de **Supabase** et les API tierces (Gemini, Viva Wallet).
 
----
+## 🔒 1. Authentification (Supabase Auth)
 
-## 1) Authentification
+L'API de gestion des utilisateurs passe par le client Supabase JavaScript : `supabase.auth`.
 
-### 1.1 Supabase Auth (client-side)
+### `signUp(email, password, metadata)`
+Inscription d'un nouvel utilisateur/marchand. Des flags (ex: `is_merchant: true`) et le nom de la boutique (`shop_slug`) peuvent être passés dans les metadata. Ces données modifient la Table `profiles` de PostgreSQL automatiquement.
 
-| Action | Méthode SDK | Description |
-|---|---|---|
-| Connexion | `supabase.auth.signInWithPassword` | Login email/mot de passe |
-| Inscription | `supabase.auth.signUp` | Création utilisateur + metadata |
-| Session courante | `supabase.auth.getSession` | Récupère la session JWT |
-| Listener auth | `supabase.auth.onAuthStateChange` | Synchro login/logout |
-| Déconnexion | `supabase.auth.signOut` | Termine la session |
-| Reset password | `supabase.auth.resetPasswordForEmail` | Flux de réinitialisation |
+### `signInWithPassword(email, password)`
+Authentifie l'utilisateur, retourne une session et déclenche le refresh du store de l'utilisateur concerné.
 
-### 1.2 Headers HTTP (appel REST brut)
+### `signOut()`
+Assure la déconnexion locale et invalide le jeton sur le backend.
 
-```http
-apikey: <SUPABASE_ANON_KEY>
-Authorization: Bearer <JWT>
-```
+### `resetPasswordForEmail(email)`
+Génération d'un lien de réinitialisation sécurisé de type "magic link".
 
 ---
 
-## 2) Collections (tables) utilisées côté application
+## 🗄️ 2. Base de Données (Endpoints PostgREST)
 
-## 2.1 Public / catalogue
-- `categories`
-- `products`
-- `product_images`
-- `product_recommendations`
-- `bundle_items`
+Supabase expose chaque table sous forme de route RESTFUL (`/rest/v1/[table]`).
+Via le module JavaScript : `supabase.from('NOM_DE_TABLE')`.
 
-## 2.2 Compte client
-- `profiles`
-- `addresses`
-- `wishlists`
-- `reviews`
-- `referrals`
-- `loyalty_transactions`
-- `subscriptions`
-- `subscription_orders`
+### `profiles` (Utilisateurs et Marchands)
+- **GET (Select)** : `supabase.from('profiles').select('*')` pour le fetch des informations de points de fidélité.
+- **PATCH (Update)** : Permet aux marchands et clients d'éditer leurs informations de compte ou préférences.
 
-## 2.3 Commande / caisse
-- `orders`
-- `order_items`
-- `promo_codes`
-- `stock_movements`
-- `pos_reports`
+### `shops` / `store_settings` (Multi-tenant)
+- Permet de résoudre la configuration (`theme`, `colors`, `name`) liée à la boutique consultée (`/:shopSlug`).
+- **Endpoint clés** : Récupérer le contenu par un slug ou l'ID associé à l'utilisateur courant (pour l'admin).
 
-## 2.4 IA / personnalisation
-- `user_ai_preferences`
-- `budtender_interactions`
-- `ai_usage_logs`
-- `store_settings`
+### `products` & `categories`
+- **GET avec Filtres** : `supabase.from('products').select('*, categories(*)').eq('shop_id', id)` 
+  Récupère les items du catalogue liés à une boutique spécifique. Supporte la pagination, recherche textuelle et filtrage par prix ou catégories de produit (ex: "Fleurs", "Résines", "Concentrés", etc).
 
-## 2.5 Multi-tenant
-- `shops`
-- `shop_members`
+### `orders` & `order_items`
+- **POST (Insert)** : Action finale du Checkout. Nécessite l'insertion d'une nouvelle `order` puis de multiples `order_items`. 
+- **GET (Historique)** : Filtrage sur `auth.uid()` pour les clients, et sur profil "Marchand" (ou ID boutique) pour le dashboard Admin & POS.
+
+### `subscriptions` (Abonnements)
+- Les requêtes permettant au client de consulter ou résilier ses commandes "récurrentes" et générer des cycles automatiques (planifié côté backend).
 
 ---
 
-## 3) Endpoints REST Supabase (forme HTTP)
+## 🤖 3. Budtender Intelligence Artificielle (Gemini API)
 
-> Format standard PostgREST (exemples indicatifs).
+Le frontend utilise `@google/genai` pour communiquer avec l'API Gemini.
 
-### 3.1 Produits
-- `GET /rest/v1/products?select=*&is_active=eq.true`
-- `GET /rest/v1/products?slug=eq.<slug>&select=*`
-- `PATCH /rest/v1/products?id=eq.<id>` (admin)
-
-### 3.2 Catégories
-- `GET /rest/v1/categories?select=*&is_active=eq.true&order=sort_order`
-- `POST /rest/v1/categories` (admin)
-
-### 3.3 Commandes
-- `POST /rest/v1/orders`
-- `POST /rest/v1/order_items`
-- `GET /rest/v1/orders?user_id=eq.<uid>&select=*,order_items(*)`
-- `PATCH /rest/v1/orders?id=eq.<id>` (admin / process)
-
-### 3.4 Profil et adresses
-- `GET /rest/v1/profiles?id=eq.<uid>&select=*`
-- `PATCH /rest/v1/profiles?id=eq.<uid>`
-- `GET /rest/v1/addresses?user_id=eq.<uid>`
-- `POST /rest/v1/addresses`
+### `Google Gen AI API` (ex: `models/gemini-2.5-flash`)
+- **Appel** : Service AI connecté nativement côté client.
+- **Fonctions** : Fournir une assistance pour la navigation produit et émettre des recommandations (potentiellement multimodales - texte, voix). Le SDK initie les `sessions` websockets et les échanges asynchrones sans intermédiaire.
+- **Sécurité** : La clé cliente nécessite un whitelisting du domaine (`APP_URL`) sous Google Cloud Console pour limiter les fuites en production.
 
 ---
 
-## 4) Fonctions RPC disponibles
+## 💳 4. Paiement (Viva Wallet)
 
-| RPC | Paramètres | Retour | Usage |
-|---|---|---|---|
-| `match_products` | `query_embedding`, `match_threshold`, `match_count` | table products + `similarity` | Recherche vectorielle IA |
-| `sync_bundle_stock` | `p_bundle_id` | void | Sync stock d’un bundle |
-| `increment_promo_uses` | `code_text` | void | Incrémente usage code promo |
-| `create_pos_customer` | `p_full_name`, `p_phone` | `uuid` utilisateur créé | Création client en caisse |
-| `get_product_recommendations` | selon implémentation SQL | liste produits | Reco croisées/fallback |
-
----
-
-## 5) Flux API clés
-
-### 5.1 Checkout e-commerce
-1. Lecture panier local + produits.
-2. `INSERT orders`.
-3. `INSERT order_items`.
-4. Mises à jour stocks (`products`, `stock_movements`, `sync_bundle_stock`).
-5. Fidélité (`profiles`, `loyalty_transactions`).
-6. Promo (`increment_promo_uses`) si code actif.
-
-### 5.2 BudTender IA
-1. Message utilisateur.
-2. Embedding de la requête (si recherche sémantique).
-3. Appel RPC `match_products`.
-4. Affichage recommandations et éventuel ajout panier.
-5. Logging interaction (`budtender_interactions` / `ai_usage_logs`).
-
-### 5.3 Onboarding boutique
-1. Création shop (table `shops`).
-2. Lien owner/membre (`shop_members`).
-3. Affectation `current_shop_id` profil.
-4. Accès routes via `/:shopSlug`.
-
-### 5.4 Personnalisation Boutique
-1. Administration charge `currentShop.settings`.
-2. Édition locale via `AdminLayoutTab` ou `AdminThemeTab`.
-3. `UPDATE shops SET settings = ... WHERE id = ...`.
-4. Propagation immédiate via le store Zustand.
-
----
-
-## 6) Règles de sécurité API
-
-- Toujours filtrer par `shop_id` ou contexte du shop courant.
-- Respecter RLS (ne pas supposer un accès global côté client).
-- Réserver write admin (catalogue, reporting, paramétrages) aux profils autorisés.
-- Ne pas exposer de secrets serveur en variables `VITE_*`.
-
+### Création d'un Ordre de Paiement (Smart Checkout)
+L'intégration (en frontend ou Edge Function le cas échéant) demande la communication avec les serveurs Viva Wallet.
+- **Endpoint Viva API** : POST `/api/orders`
+- **Payload** : Montant (`amount`), Source (`sourceCode`), Détails clients.
+- Devrait répondre avec un identifiant de session redirigeant l'utilisateur sur une URL sécurisée d'encaissement, ou affichant l'iFrame locale de Viva Wallet au moment du panier.

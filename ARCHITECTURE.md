@@ -1,110 +1,78 @@
-# 🏗️ ARCHITECTURE
+# Architecture Système et Logicielle
 
-## 1) Vue d’ensemble
+Ce document présente l'architecture globale de **Green Moon SaaS**, une plateforme E-commerce Multi-tenant.
 
-Green IA est une SPA React connectée directement à Supabase (PostgreSQL + Auth + RLS).  
-Le modèle est **frontend riche + backend data-centric** : la logique critique métier est en SQL (fonctions RPC, triggers, RLS), le frontend orchestre les flux utilisateur.
+## 🏗️ Vue d'ensemble
+
+Le projet suit une architecture dite **Client Lourd / BaaS (Backend as a Service)**, sans serveur applicatif Python, Node.js, ou PHP intermédiaire complexe. La logique "backend" se trouve très majoritairement gérée par **Supabase**.
 
 ```mermaid
-flowchart LR
-  U[Utilisateur Web] --> FE[Frontend React/Vite]
-  FE --> SA[Supabase Auth]
-  FE --> DB[(Supabase Postgres)]
-  FE --> ST[Supabase Storage]
-  FE --> RPC[RPC SQL]
-  FE --> G[Gemini API
-  (chat + voix + embeddings)]
-  DB --> RLS[RLS Policies]
-  DB --> TG[Triggers / Fonctions SQL]
+graph TD
+    Client[Navigateur / Utilisateur Client]
+    Merchant[Navigateur / Marchand Admin]
+    
+    subgraph Frontend React Vite / TypeScript / Tailwind css v4
+        App[Router Principal]
+        SaaS[Pages Globales SaaS]
+        Shop[Boutiques /:shopSlug]
+        Admin[Dashboard Admin / Pos]
+        State[Zustand Stores]
+        App --> SaaS
+        App --> Shop
+        Shop --> Admin
+        SaaS -.-> State
+        Shop -.-> State
+    end
+    
+    subgraph Backend Services Supabase
+        Auth[Supabase Auth]
+        DB[(PostgreSQL)]
+        RLS[Row Level Security]
+        Storage[Supabase Storage Images]
+    end
+    
+    subgraph External APIs
+        Gemini[Google Gemini AI / Budtender]
+        Payment[Passerelle Viva Wallet]
+    end
+
+    Client --> App
+    Merchant --> App
+    
+    State <--> Auth
+    State <--> DB
+    State <--> Storage
+    State <--> Gemini
+    State <--> Payment
+    
+    Auth -.-> RLS
+    DB -.-> RLS
 ```
 
----
+## 🖥️ Frontend (React & TypeScript)
 
-## 2) Frontend
+- **SPA (Single Page Application)** : Livrée via un CDN (Vercel ou équivalent) offrant un temps de chargement minime.
+- **Routing Dynamique** : Les chemins root `/` ou non préfixés affichent le site vitrine/SaaS (Home, Inscription...). Les chemins préfixés `/:shopSlug` (ex: `/ma-boutique/produits`) redirigent l'utilisateur vers le store spécifique d'un marchand. 
+- **Stores Zustand** : Pour limiter le passage infernal de "Props", les états comme l'authentification (`useAuthStore`), les paniers (`useCartStore`) ou la personnalisation de la boutique (`useThemeStore`) sont centralisés avec Zustand.
+- **Hooks & Composants UI** : La conception est modulaire. Les composants de base (boutons multiples, loaders) sont indépendants des composants complexes (tunnel de commande, interface IA).
 
-### 2.1 Organisation
-- `src/App.tsx` : routing principal global + boutique (`/:shopSlug`).
-- `src/pages/*` : pages métier (vitrine, checkout, compte, admin, POS).
-- `src/components/*` : composants réutilisables et modules complexes (BudTender, admin tabs).
-- `src/store/*` : stores Zustand (auth, shop, cart, wishlist, settings).
-- `src/hooks/*` : hooks métier (voix Gemini live, mémoire IA, résolution contexte boutique).
-- `src/lib/*` : client Supabase, types, prompts IA, embeddings, constantes.
+## ⚙️ Backend as a Service (Supabase)
 
-### 2.2 Routage
-- **Routes globales** : `/`, `/solution`, `/connexion`, etc.
-- **Routes boutique** : `/:shopSlug/...` avec `ShopResolver`.
-- **Routes protégées** : `ProtectedRoute` pour compte/commande.
-- **Routes admin/POS** : `AdminRoute` pour `/:shopSlug/admin` et `/:shopSlug/pos`.
+Supabase encapsule notre base de données PostgreSQL derrière des règles de sécurité.
 
-### 2.3 Gestion d’état
-- `authStore` : session Supabase + profil utilisateur.
-- `shopStore` : boutique courante (`currentShop`) résolue par slug, incluant les paramètres de thème et de mise en page.
-- `cartStore`, `wishlistStore`, `settingsStore`, `toastStore` : état métier local.
+- **PostgREST** : Au lieu d'écrire des API CRUD (Create, Read, Update, Delete) à la main (avec Express.js/Nest.js par exemple), le frontend tape directement et de façon asynchrone dans les tables Supabase (ex: `supabase.from('products').select('*')`).
+- **PostgreSQL et RLS (Row Level Security)** : Essentiel pour le multi-tenant. Les policies PostgreSQL garantissent qu'un client ne voit que ses commandes et qu'un Marchand ne gère que les produits de sa propre boutique (grâce à l'id du profil de la boutique affiliée).
+- **Trigger(s) SQL** : Utilisés pour la synchronisation automatique (ex: Création d'un profil automatiquement lorsqu'un utilisateur s'inscrit, mise à jour de timestamps, décrémentation des stocks etc.).
+- **Auth & Storage** : Supabase gère entièrement le système de JWT (via magic link, e-mail/mot de passe), ainsi que l'hébergement des médias (images produits, bannières marchands).
 
----
+## 🤖 Intelligence Artificielle (Budtender)
 
-## 3) Backend (Supabase)
+- **Intégration** : Réalisée via `@google/genai`. 
+- **Rôle** : Recommander des articles en temps réel de manière vocale ou textuelle (Gemini Live API), en s'appuyant potentiellement sur le contexte de la boutique naviguée par le client. Le navigateur crée la connexion websocket au service LLM, ce qui décharge d'autant l'application.
 
-### 3.1 Services utilisés
-- **PostgreSQL** : source de vérité métier.
-- **Auth** : email/password + session JWT côté client.
-- **Storage** : bucket d’images produits (`product-images`).
-- **RLS** : contrôle d’accès table par table.
-- **RPC SQL** : logique métier serveur (stocks bundles, recommandations, POS, promo).
+## 💳 Paiements (Viva Wallet Integration)
+L'intégration native des processus de paiements (Smart Checkout via Viva Wallet ou intégration API stricte) se gère via des environnements de "sandbox" pour les environnements de test et une validation sécurisée. 
 
-### 3.2 Stratégie multi-tenant
-- Table `shops` + `shop_members` pour représenter les tenants et rôles.
-- Colonnes `shop_id` ajoutées aux tables métier.
-- Trigger SQL pour auto-assigner `shop_id` sur insert.
-- Politiques RLS d’isolation par appartenance au shop.
-- Stockage de la configuration UI (sections, thèmes) dans `shops.settings` (format JSONB).
-
----
-
-## 4) Base de données et logique métier
-
-### 4.1 Domaines métiers principaux
-1. **Catalogue** : categories, products, product_images, bundle_items, product_recommendations.
-2. **Commerce** : orders, order_items, addresses, promo_codes, stock_movements.
-3. **Client** : profiles, wishlists, reviews, referrals, loyalty_transactions, subscriptions.
-4. **IA / Analytics** : user_ai_preferences, budtender_interactions, ai_usage_logs, pos_reports.
-
-### 4.2 Logique SQL critique
-- `sync_bundle_stock(p_bundle_id)` : recalcul automatique stock bundle.
-- `increment_promo_uses(code_text)` : incrément usage code promo.
-- `match_products(...)` : recherche vectorielle par similarité embedding.
-- `create_pos_customer(...)` : création client depuis POS (contrôle admin).
-
----
-
-## 5) IA BudTender
-
-### 5.1 Composants
-- `src/components/BudTender.tsx` : UI conversationnelle principale.
-- `src/hooks/useGeminiLiveVoice.ts` : gestion WebSocket Gemini Live (audio in/out).
-- `src/lib/embeddings.ts` + `scripts/sync-embeddings.ts` : vectorisation produits.
-
-### 5.2 Flux IA
-1. L’utilisateur lance une session chat/voix.
-2. Le frontend construit un prompt contextualisé (shop + préférences + catalogue).
-3. La recherche peut utiliser `match_products` via embedding pour réponses pertinentes.
-4. Interactions et consommation peuvent être journalisées en base.
-
----
-
-## 6) Sécurité
-
-- RLS activé sur tables sensibles.
-- Auth JWT Supabase pour accès authentifié.
-- Séparation visiteur/public vs utilisateur connecté vs admin.
-- Contrainte importante : ne jamais contourner `shop_id` dans les nouvelles requêtes.
-
----
-
-## 7) Déploiement et opérations
-
-- Build frontend via Vite (`npm run build`).
-- Déploiement cible via Vercel (`vercel.json`).
-- Migrations SQL versionnées dans `supabase/`.
-- Recommandation : pipeline CI avec checks TypeScript + tests de non-régression SQL.
-
+## 🛡️ Sécurité
+1. Aucune clé API secrète de type Write (Gemini, Supabase Service Role) n'est partagée côté client. Seule les clés publiques/anonymes sont exposées (`VITE_SUPABASE_ANON_KEY`).
+2. Row Level Security : Bloque les requêtes non authentifiées ou dont le jeton (token JWT) ne correspond pas à l'appartenance de la donnée appelée (notamment pour l'admin/multi-tenant).

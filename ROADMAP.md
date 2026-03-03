@@ -1,79 +1,47 @@
-# 🗺️ ROADMAP
+# Roadmap - Green Moon SaaS
 
-Roadmap orientée produit et architecture pour faire évoluer Green IA de l’état actuel (MVP SaaS) vers une version industrialisée.
+Cette feuille de route définit la direction et l'évolution globale de la plateforme E-Commerce **Green Moon SaaS**.
 
----
+## 🚀 Étape Principale : MVP (Minimum Viable Product)
+**Statut: En Développement**
 
-## 1) État actuel (MVP)
-
-✅ En place :
-- Frontend multi-routes (global + shop slug).
-- E-commerce complet (catalogue, panier, checkout, compte).
-- Dashboard admin + POS.
-- Fondations multi-tenant (`shops`, `shop_members`, `shop_id`).
-- BudTender IA (chat/voix) + recherche vectorielle.
-- Fidélité, parrainage, abonnements, avis.
-- **Éditeur de layout dynamique** (sections paramétrables, réorganisation).
-- **Thèmes & Branding** (couleurs, logo, polices).
+L'objectif initial est d'établir la base technique pour le déploiement de multiples boutiques fonctionnelles de façon totalement isolée (Multi-tenant).
+- [x] Déploiement du socle (React, TypeScript, Vite, Tailwind CSS v4).
+- [x] Initialisation de la Base de données (Supabase) + gestion des rôles (RLS/Auth).
+- [x] Thème personnalisable par les marchands (couleurs, logo).
+- [x] Parcours Client basique (Authentification, Catalogue, Panier, et gestion des adresses).
+- [ ] Connecteur complet de Paiement Viva Wallet.
+- [x] Dashboard Administrateur (Boutique) et création de produits.
+- [x] Interface IA 'Budtender' (POC avec Google Gemini).
 
 ---
 
-## 2) Prochaine étape — V1 (court terme : 4 à 8 semaines)
+## 🏗️ Version 1.0 (Lancement de la plateforme)
+Une fois le MVP consolidé, la priorité est de stabiliser la création et la configuration d'une boutique fluide, et d'optimiser l'expérience utilisateur et marchand.
 
-## 2.1 Fiabilisation plateforme
-- [ ] Stabiliser toutes les politiques RLS multi-tenant (audit complet).
-- [ ] Formaliser les migrations (ordre unique + rollback).
-- [ ] Ajouter monitoring erreurs front + SQL (Sentry/Logtail/etc.).
-
-## 2.2 Qualité logicielle
-- [ ] Ajouter tests unitaires sur stores/hooks critiques.
-- [ ] Ajouter tests d’intégration checkout et admin (Playwright).
-- [ ] CI stricte : typecheck + tests + lint markdown/docs.
-
-## 2.3 Paiement et conformité
-- [ ] Finaliser intégration paiement online (Viva ou Stripe).
-- [ ] Gestion des statuts de paiement robustes (webhooks + retries).
-- [ ] Durcir conformité RGPD (droit export/suppression compte).
-
-## 2.4 Produit SaaS
-- [ ] Onboarding guidé création boutique (wizard no-code).
-- [ ] Templates de catalogue de démarrage par segment.
-- ✅ Paramètres branding shop (logo, couleurs, domaine custom).
+- [ ] **Onboarding Marchand Automatisé** : Interface de création de boutique SaaS avec guidage étape par étape (Step-by-step Wizard).
+- [x] **Point of Sale (POS)** : Interface web rapide et conçue pour une utilisation en point de vente physique par le marchand.
+- [ ] **Internationalisation (i18n)** : Prise en charge initiale FR / EN et multi-devises basiques.
+- [x] **Système de Fidélité et Parrainage** : Mise en place des points, conversion en codes promotionnels et parrainage (invitations).
+- [ ] **Emailing Transactionnel** : Intégration Brevo, Resend, ou SendGrid (via Edge Functions Supabase) pour l'envoi des confirmations de compte, de commandes.
+- [ ] **Analyse et Reporting Basique** : Graphiques rudimentaires des ventes dans le Dashboard Admin (via Recharts).
 
 ---
 
-## 3) V1.5 (moyen terme : 2 à 4 mois)
+## 📈 Évolution / V2 (Personnalisation Avancée et Fonctionnalités Pro)
+Après le lancement, de nouvelles fonctionnalités Premium permettront d'attirer des E-commerçants exigeants.
 
-## 3.1 IA monétisable
-- [ ] Quotas IA par plan (`free/pro/enterprise`) avec blocage propre.
-- [ ] Dashboard usage IA par boutique (messages, sessions, coût estimé).
-- [ ] Fine-tuning prompts par persona/shop.
-
-## 3.2 Capacités commerciales
-- [ ] Coupons avancés (segments, périodes, exclusions, one-shot).
-- [ ] Campagnes CRM (email/SMS) déclenchées par événements.
-- [ ] Analytics business plus poussées (LTV, cohortes, rétention).
-
-## 3.3 Ops multi-boutiques
-- [ ] Super-admin global (pilotage de toutes les boutiques).
-- [ ] Gestion rôles avancée (RBAC détaillé owner/admin/staff).
-- [ ] Mécanisme support interne + impersonation sécurisée.
+- [ ] **Générateur de Pages (Drag & Drop)** : Amélioration du système de template de boutique au lieu des composants pré-listés, pour donner une structure 100% personnalisable au layout d'un marchand.
+- [ ] **Ventes par Abonnements et "Bundles"** : Packs et récurrences complètes.
+- [ ] **Synchronisation des Stocks multi-boutiques/dépôts**.
+- [ ] **Intégration Transporteurs (B2C)** : Mondial Relay, Colissimo (via des agrégateurs d'API comme Sendcloud).
+- [ ] **Budtender Avancé (RAG + Contexte visuel)** : Le conseiller virtuel aura connaissance du stock en direct, de toutes les caractéristiques d'un produit spécifique et pourra potentiellement "voir" un produit envoyé en photo.
 
 ---
 
-## 4) Vision long terme
-
-- [ ] Multi-langue + multi-devise complète.
-- [ ] White-label complet (domaine + branding + widgets embarquables).
-- [ ] API publique documentée pour intégrateurs externes.
-- [ ] Marketplace d’extensions (plugins IA / fidélité / marketing).
-
----
-
-## 5) Priorisation recommandée
-
-1. **Sécurité & stabilité** (RLS, paiements, CI).
-2. **Onboarding SaaS** (time-to-value).
-3. **Monétisation IA** (quotas/plan).
-4. **Scalabilité produit** (super-admin, observabilité).
-
+## 🌟 Vision Long Terme (Marketplace & Écosystème Global)
+L'intégration communautaire au travers de Green Moon.
+- [ ] **Super App Mobile** (PWA ou React Native) commune à tous les vendeurs pour l'achat finalisé.
+- [ ] **Partage des évaluations / avis inter-boutiques**.
+- [ ] **Comptabilité intégrée**.
+- [ ] **Extension API / Webhooks** : Mettre en place des Webhooks pour la connexion vers d'autres outils (Zapier, Notion, Shopify etc.).

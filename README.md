@@ -1,209 +1,98 @@
-# 🌿 Green IA SaaS
+# Green Moon SaaS - Plateforme de Boutiques E-Commerce
 
-Plateforme **SaaS e-commerce CBD multi-boutiques** avec vitrine, tunnel d’achat, espace client, administration et terminal POS.  
-Le projet s’appuie sur **React + Supabase** et intègre un **BudTender IA** (chat + voix temps réel via Gemini) pour accompagner les recommandations produit.
+**Green Moon SaaS** est une plateforme multi-tenant permettant de déployer, gérer et personnaliser des boutiques e-commerce B2B/B2C avec un écosystème complet. De la gestion du catalogue à un "Budtender" piloté par l'IA, cette solution connecte les marchands à leurs clients finaux.
 
----
+## 🚀 Fonctionnalités Principales (MVP)
 
-## 1) Stack technique
+- **Architecture Multi-tenant** : Une plateforme globale avec des sous-boutiques (`/:shopSlug`) accessibles indépendamment.
+- **Vente & Catalogue** : Affichage des produits, gestion des catégories, des paniers et processus de commande (Checkout).
+- **IA Conversationnelle (Budtender)** : Support client vocal ou texte en temps réel alimenté par Gemini AI.
+- **Espaces Utilisateurs & Marchands** : Profils clients, historiques de commandes, gestion des adresses. Panel Admin pour les marchands et POS (Point of Sale).
+- **Fidélisation & Parrainage** : Historique des points de fidélité et gestion des parrainages.
+- **Personnalisation de Boutique (Thème)** : Les marchands peuvent modifier l'apparence de leur boutique, les couleurs et les composants via un espace d'administration dédié.
 
-| Couche | Technologies |
-|---|---|
-| Frontend | React 19, TypeScript, Vite 6, React Router 7 |
-| UI / Design | Tailwind CSS 4, Motion, Lucide React, Recharts |
-| Data / Backend | Supabase (PostgreSQL, Auth, Storage, RPC SQL, RLS) |
-| State management | Zustand |
-| IA | Google Gemini (`@google/genai`), embeddings + Gemini Live Voice |
-| Scripts techniques | TSX + script Node `scripts/sync-embeddings.ts` |
-| Déploiement | Vercel (`vercel.json`) + build Vite |
+## 🛠️ Stack Technique
 
----
+- **Frontend** : React 19, TypeScript, Vite, React Router v7
+- **Styling** : Tailwind CSS v4, Lucide React (Icônes), Framer Motion (Animations)
+- **Gestion d'État** : Zustand
+- **Backend & Base de Données** : Supabase (PostgreSQL, Authentification, Storage, RLS)
+- **Intelligence Artificielle** : Google Gemini API (`@google/genai`)
+- **Paiement (sandbox)** : Viva Wallet
 
-## 2) Fonctionnalités principales (MVP)
+## 📋 Prérequis
 
-### Expérience boutique
-- Catalogue multi-catégories, pages produit, recommandations et bundles.
-- Panier, checkout, confirmation de commande.
-- Gestion compte client : profil, commandes, adresses, favoris, fidélité, parrainage, avis.
+- Node.js (v20 ou plus récent recommandé)
+- Un compte Supabase (Bascule en PUG / Base de données hébergée)
+- Un compte Google AI Studio (pour la clé API Gemini)
 
-### Expérience SaaS multi-tenant
-- Résolution d’une boutique par slug (`/:shopSlug`).
-- Isolation des données par boutique (`shop_id`) via politiques RLS.
-- Pages globales (marketing SaaS) et pages boutique coexistantes.
+## ⚙️ Configuration & Installation
 
-### Expérience admin / opérations
-- Tableau de bord admin (stocks, commandes, analytics, avis, recommandations, abonnements, parrainage).
-- Éditeur de mise en page dynamique (Drag & Drop des sections, personnalisation des contenus).
-- POS (point de vente) avec clôtures (`pos_reports`).
-- Paramétrage de la boutique et de l’IA (prompts/instructions).
-
-### IA BudTender
-- Recommandations conversationnelles.
-- Recherche vectorielle produit (embeddings).
-- Session vocale temps réel via WebSocket Gemini Live.
-- Journalisation usage IA (`ai_usage_logs`, `budtender_interactions`).
-
----
-
-## 3) Prérequis
-
-- **Node.js 20+** (18 minimum)
-- **npm** (inclus avec Node)
-- **Compte Supabase** + projet actif
-- **Supabase CLI** (recommandé pour migrations locales)
-- **Clé API Gemini** (AI Studio)
-
-Optionnel :
-- Compte Vercel pour déploiement
-- Environnement Viva Wallet pour paiements
-
----
-
-## 4) Installation & configuration (pas à pas)
-
-### 4.1 Cloner et installer
-
+**1. Cloner le dépôt**
 ```bash
-git clone <url-du-repo>
-cd Green-IA-project-SAAS
+git clone https://github.com/votre-organisation/Green-Moon-project---SAAS.git
+cd Green-Moon-project---SAAS
+```
+
+**2. Installer les dépendances**
+```bash
 npm install
 ```
 
-### 4.2 Configurer l’environnement
-
+**3. Configurer les variables d'environnement**
+Créez un fichier `.env` à la racine de votre projet en copiant l'exemple :
 ```bash
 cp .env.example .env
 ```
+Remplissez le fichier `.env` :
+- `GEMINI_API_KEY` et `VITE_GEMINI_API_KEY` : Clés API depuis Google AI Studio.
+- `VITE_SUPABASE_URL` et `VITE_SUPABASE_ANON_KEY` : URL et Clé publique depuis votre projet Supabase.
+- Clés de paiement (Viva Wallet, etc) au besoin.
 
-Renseigner au minimum :
+**4. Configurer Supabase**
+- Exécutez les scripts SQL fournis dans `/supabase` dans votre dashboard Supabase (le fichier principal étant généralement `schema_complet.sql`, accompagné des scripts de migrations comme `migration_saas_vX...`).
 
-```env
-VITE_SUPABASE_URL=
-VITE_SUPABASE_ANON_KEY=
-VITE_GEMINI_API_KEY=
-```
+## 🖥️ Lancement du Projet
 
-Voir la section [Variables d’environnement](#8-variables-denvironnement) pour la liste complète.
-
-### 4.3 Initialiser la base de données
-
-Deux approches possibles :
-
-1. **Schéma consolidé (rapide)** : exécuter `supabase/schema_complet.sql` sur une base vierge.
-2. **Migrations incrémentales (recommandé en équipe)** : appliquer les fichiers SQL du dossier `supabase/` dans l’ordre de version.
-
-### 4.4 Vérifier le typage
-
-```bash
-npm run lint
-```
-
----
-
-## 5) Lancer le projet
-
-### Développement
-
+**Environnement de Développement :**
 ```bash
 npm run dev
 ```
+Ouvre un serveur local sur `http://localhost:3000`.
 
-Serveur dev sur `http://localhost:3000`.
-
-### Production (build local)
-
+**Environnement de Production (Build) :**
 ```bash
 npm run build
 npm run preview
 ```
 
----
-
-## 6) Scripts utiles
-
-```bash
-npm run dev       # lance Vite en mode développement
-npm run build     # build production
-npm run preview   # preview du build
-npm run lint      # type-check TypeScript
-npm run clean     # supprime dist/
-```
-
-Script opérationnel :
-
-```bash
-npx tsx scripts/sync-embeddings.ts
-```
-
-Ce script calcule les embeddings manquants de `products.embedding` via Gemini.
-
----
-
-## 7) Structure du projet
+## 📁 Structure du Projet
 
 ```text
 .
-├── public/                  # Assets statiques (images, service worker, audio worklet)
-├── scripts/                 # Scripts techniques (sync embeddings)
 ├── src/
-│   ├── components/          # UI partagée + modules admin + budtender
-│   ├── hooks/               # Hooks métier (voix IA, mémoire, shop)
-│   ├── lib/                 # Clients, types, prompts, constantes
-│   ├── pages/               # Pages routes (globales + boutique + admin)
-│   ├── store/               # Stores Zustand (auth, shop, panier, settings...)
-│   ├── App.tsx              # Routing principal
-│   └── main.tsx             # Bootstrap React
-├── supabase/                # Schéma SQL + migrations + correctifs RLS
-├── docs/                    # Documentation complémentaire
-├── ARCHITECTURE.md
-├── API_DOCS.md
-├── DB_SCHEMA.md
-├── ROADMAP.md
-├── CONTRIBUTING.md
-└── README.md
+│   ├── components/      # Composants UI réutilisables (Layouts, Boutons, Modales...)
+│   ├── hooks/           # Custom React Hooks (useAuth, useCart...)
+│   ├── lib/             # Services externes (Supabase Client, Utilities)
+│   ├── pages/           # Vues principales de l'application (Globales & Sous-boutiques)
+│   ├── store/           # Stores Zustand (Auth, Cart, Navigation...)
+│   ├── App.tsx          # Configuration globale du routage (React Router)
+│   └── main.tsx         # Point d'entrée de l'application
+├── supabase/            # Scripts SQL, migrations, et politiques RLS de la BD
+├── public/              # Fichiers statiques et assets graphiques
+├── README.md            # Ce fichier
+├── ARCHITECTURE.md      # Documentation de l'architecture logicielle
+├── API_DOCS.md          # Documentation des interactions API
+├── DB_SCHEMA.md         # Description de la base de données
+└── .cursorrules         # Règles et contexte pour l'assistant IA
 ```
 
----
+## 🤝 Bonnes pratiques de contribution
 
-## 8) Variables d’environnement
+Consultez le fichier `CONTRIBUTING.md` pour des instructions détaillées sur la manière de contribuer, de créer des Pull Requests et le style de code (TypeScript strict, Tailwind).
 
-| Variable | Requise | Description |
-|---|---|---|
-| `VITE_SUPABASE_URL` | ✅ | URL du projet Supabase |
-| `VITE_SUPABASE_ANON_KEY` | ✅ | Clé anon publique Supabase |
-| `VITE_GEMINI_API_KEY` | ✅ (IA) | Clé Gemini utilisée côté front (voix + embeddings) |
-| `GEMINI_API_KEY` | ⚠️ contexte | Variable exposée dans la config Vite (compatibilité AI Studio) |
-| `APP_URL` | ⚠️ | URL publique de l’app (callbacks / liens) |
-| `VITE_VIVA_WALLET_BASE_URL` | optionnelle | Base URL Viva Wallet |
-| `VITE_VIVA_CLIENT_ID` | optionnelle | Client ID Viva |
-| `VITE_VIVA_CLIENT_SECRET` | optionnelle | Secret Viva (ne pas exposer côté client en prod) |
-| `VIVA_MERCHANT_ID` | optionnelle | Merchant Viva |
-| `VIVA_API_KEY` | optionnelle | API key Viva |
+Toute nouvelle fonctionnalité impliquant des changements en base de données doit être accompagnée du fichier `.sql` descriptif correspondant placé dans `/supabase/`.
 
-> ✅ Ne jamais commiter de `.env` réel. Utiliser uniquement `.env.example` comme template.
+## 📜 Licence
 
----
-
-## 9) Documentation complémentaire
-
-- [`ARCHITECTURE.md`](./ARCHITECTURE.md) : architecture technique détaillée.
-- [`API_DOCS.md`](./API_DOCS.md) : endpoints, RPC, authentification.
-- [`DB_SCHEMA.md`](./DB_SCHEMA.md) : tables, relations, politiques RLS.
-- [`ROADMAP.md`](./ROADMAP.md) : plan MVP → V1 → vision.
-- [`CONTRIBUTING.md`](./CONTRIBUTING.md) : règles de contribution.
-
----
-
-## 10) Bonnes pratiques de contribution
-
-1. Créer une branche dédiée (`feat/...`, `fix/...`, `docs/...`).
-2. Garder les PR petites et atomiques.
-3. Vérifier `npm run lint` avant commit.
-4. Documenter tout changement de schéma Supabase dans `supabase/` + docs associées.
-5. Respecter l’isolation multi-tenant (`shop_id`, RLS) dans toute nouvelle fonctionnalité.
-
----
-
-## 11) Licence
-
-Ce projet est distribué sous licence **MIT**. Voir [`LICENSE`](./LICENSE).
+Distribué sous la licence MIT. Voir `LICENSE` pour plus d'informations.

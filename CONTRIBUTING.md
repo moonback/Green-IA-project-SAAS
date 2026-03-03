@@ -1,90 +1,51 @@
-# 🤝 CONTRIBUTING
+# Document de Contribution (CONTRIBUTING.md)
 
-Merci pour votre contribution à Green IA SaaS.
-
----
-
-## 1) Principes généraux
-
-- Faire des changements **petits, lisibles, testables**.
-- Préserver la **sécurité multi-tenant** (ne jamais casser l’isolation `shop_id` + RLS).
-- Documenter toute évolution structurante (API, DB, architecture).
+Merci de l'intérêt que vous portez à l'évolution de la plateforme E-Commerce Saas **Green Moon**.
+Ce guide fournit les lignes directrices et "Best Practices" afin  de garantir que la base de code demeure lisible, de haute qualité, sécurisée et pérenne.
 
 ---
 
-## 2) Setup local
+## 🏗️ Architecture et Philosophie Globale du Projet
 
-```bash
-npm install
-cp .env.example .env
-npm run dev
-```
+Le projet E-Commerce SaaS Green Moon adopte une architecture dite **Client Lourd React (Vite)** avec un Backend-as-a-Service (**Supabase**). Ce dernier gère l'authentification (Auth), le Rôle-Level-Security (RLS), la persistance PostgreSQL et le stockage (Storage). Le Routing s'effectue dynamiquement côté client avec `react-router-dom`, en isolant nativement les parties globales (Landing, Login Global, Comptes maîtres) des parties propres à une boutique donnée (préfixe URI `/:shopSlug`).
 
-Vérification minimale avant PR :
+## 🧱 Normes de Code (Styleguide)
 
-```bash
-npm run lint
-npm run build
-```
+Afin d'assurer une cohérence absolue : 
 
----
+1. **TypeScript Obligatoire** : 
+   - Chaque Props d'un composant doit être typée formellement via une `interface` spécifique. Pas de `any` ; `unknown` si nécessaire.
+   - Préférez un fichier `.ts` annexe pour mutualiser les Types récurrents.
+2. **Framework et Routage** :
+   - Exploitez React v19.
+   - Les appels `Link`, `useNavigate`, ou les `loaders` se feront _toujours_ par le prisme de React Router v7.
+3. **Styles (Tailwind CSS v4)** :
+   - Évitez au possible les fichiers `.css` personnalisés en dehors des cas très spécifiques (Animations globales complexes).  Privilégiez la composition (Utility Classes) native dans l'attribut `className` des JSX.
+   - Les designs "Green Moon" privilégient le **Dark Mode natif (verre dépoli, thèmes sombre / Zinc)** et utilisent Lucide React pour les icônes.
+4. **Zustand pour l'État Global** :
+   - Évitez le "Prop Drilling". Pour stocker durablement des items (Panier, Session Auth, Préférences contextuelles de boutique), configurez un store sous `src/store`.
+5. **Gestion de Cas d'Erreur** : 
+   - Attrapez scrupuleusement les exceptions réseaux `try { ... } catch (err)` sans écraser le call stack et proposez une alerte/toast visuel explicite à l'utilisateur (rien dans la console).
 
-## 3) Workflow Git recommandé
+## 🚀 Bonnes pratiques React / Frontend
+- **Hooks Personnalisés** : Séparez la logique de rendu et de vue via l'extraction des comportements complexes dans `/hooks`.
+- **Nommage** :
+  - **Dossiers et Fichiers Communs** : Utilisez le `kebab-case` ou le `camelCase`.
+  - **Fichiers React (Composants et Pages)** : Employez obligatoirement le `PascalCase.tsx` (ex: `ProductCard.tsx`).
+  - **Variables JavaScript** : En `camelCase`. Constantes globales (ex: les rôles base de données) en `SCREAMING_SNAKE_CASE`.
+- Divisez les gros composants UI en plus petits blocs réutilisables (Atomisation).
 
-1. Créer une branche :
-   - `feat/<sujet>`
-   - `fix/<sujet>`
-   - `docs/<sujet>`
-2. Commits atomiques et explicites.
-3. Ouvrir une PR avec :
-   - contexte/problème,
-   - solution,
-   - impacts DB/API,
-   - plan de test.
+## 🗄️ Modifications Backend & Base de Données
+Si une Pull Request requiert une modification de la base (Table, Fonction, Trigger ou Vue PostgreSQL) :
+1. Créez **strictement** le script SQL explicite sous le dossier `/supabase/` (ex: `migration_saas_vX_description.sql`).
+2. Ne confondez pas le Backend "Global" avec le "Store" (Garantir l'intégrité de RLS par *shop_id*).  Ne "bypass" jamais la Row Level Security.
+3. Ne stockez jamais d'identifiants API ni de secrets côté client. Passez via `/supabase/edge-functions/` ou équivalent côté infra.
 
-### Convention de commit (Conventional Commits)
-- `feat:` nouvelle fonctionnalité
-- `fix:` correction bug
-- `docs:` documentation
-- `refactor:` refonte sans changement fonctionnel
-- `chore:` maintenance
+## 🤝 Workflow de la Pull Request
+1. **Branching** : Créez une nouvelle branche depuis la branche `main` (ex: `feature/cart-update` ou `fix/login-bug`).
+2. **Commit** : Adoptez des messages clairs et structurés (ex: `feat(cart): implement multi-shop persistence`).
+3. **Tests et Intégration Continue (CI)** : Assurez-vous en local de l'absence d'erreurs TypeScript via `npm run lint`.
+4. **Revue** : Demandez au mainteneur du projet (ou un autre collaborateur) la validation avant le "Squash and Merge".
 
----
-
-## 4) Standards de code
-
-### Frontend
-- TypeScript strict (éviter `any`).
-- Composants fonctionnels + hooks.
-- Préférer les stores Zustand existants au state dupliqué.
-- Garder la logique métier lourde hors composants UI quand possible.
-
-### Supabase / SQL
-- Toute modif DB doit être ajoutée dans `supabase/` (migration dédiée).
-- Documenter les nouvelles tables/champs/RPC dans `DB_SCHEMA.md` et `API_DOCS.md`.
-- Vérifier les politiques RLS associées à chaque nouvelle table.
-
-### UX/UI
-- Respecter la cohérence visuelle (Tailwind existant).
-- Vérifier responsive desktop/mobile.
-- Garder l’accessibilité de base (labels, contraste, focus).
-
----
-
-## 5) Checklist PR
-
-- [ ] Code compilable (`npm run lint`)
-- [ ] Build OK (`npm run build`)
-- [ ] Pas de secrets ajoutés
-- [ ] Docs mises à jour si besoin
-- [ ] Migrations SQL testées sur environnement de dev
-- [ ] Impacts multi-tenant vérifiés
-
----
-
-## 6) Bonnes pratiques sécurité
-
-- Ne pas exposer de secret serveur dans des variables `VITE_*`.
-- Ne pas faire confiance au frontend pour l’autorisation (s’appuyer sur RLS/RPC).
-- Éviter les requêtes globales sans contrainte de shop dans les vues privées.
-
+## ❓ En cas de problème
+Ouvrez une **Issue** GitHub décrivant précisément les étapes de reproduction, le navigateur et l'environnement concernés, avant de soumettre une PR si le comportement ou le contour fonctionnel attendu du bug n'est pas certain.
