@@ -1,63 +1,109 @@
-# 🏗️ Architecture du Projet
+# 🏗️ ARCHITECTURE
 
-Ce document détaille l'organisation technique et les choix architecturaux de Green IA CBD.
+## 1) Vue d’ensemble
 
-## 📱 Frontend
-
-L'application est une **Single Page Application (SPA)** construite avec **React 19** et **Vite**.
-
-### Organisation des dossiers
-- `src/pages/` : Contient les composants de haut niveau représentant les routes.
-- `src/components/` : Composants UI atomiques et complexes.
-- `src/store/` : Gestion de l'état global via **Zustand**. Sépare les préoccupations (Auth, Cart, Settings).
-- `src/hooks/` : Encapsulation de la logique réutilisable (ex: `useGeminiLiveVoice`).
-
-### Gestion de l'état
-- **AuthStore** : Gère la session utilisateur avec Supabase Auth.
-- **CartStore** : Persistance locale du panier.
-- **SettingsStore** : Paramètres globaux de la boutique récupérés depuis la DB.
-
----
-
-## ☁️ Backend (BaaS)
-
-Nous utilisons **Supabase** comme solution Backend-as-a-Service.
-
-### Services utilisés
-1. **PostgreSQL** : Base de données relationnelle principale.
-2. **Supabase Auth** : Gestion des inscriptions, connexions et RLS (Row Level Security).
-3. **Supabase Storage** : Hébergement des images produits via des buckets publics.
-4. **Supabase Edge Functions** : (Optionnel) Pour les traitements lourds ou secrets (ex: intégration paiement Viva Wallet).
-
-### Sécurité (RLS)
-Chaque table est protégée par des politiques de **Row Level Security** :
-- Lecture publique pour les produits et catégories.
-- Lecture/Écriture restreinte à l'utilisateur pour son profil et ses commandes.
-- Accès total pour les administrateurs (`is_admin = true`).
-
----
-
-## 🤖 Intelligence Artificielle
-
-L'intégration de l'IA est le coeur de l'innovation du projet.
-
-### Google Gemini AI
-- **Modèle** : Gemini 2.0 (via Multimodal Live API).
-- **Intégration** : Communication via WebSockets pour une interaction vocale à faible latence.
-- **Fonctions (Tools)** : L'IA peut appeler des fonctions pour interagir avec l'application (ex: `add_to_cart`).
-
----
-
-## 📡 Flux de Données
+Green IA est une SPA React connectée directement à Supabase (PostgreSQL + Auth + RLS).  
+Le modèle est **frontend riche + backend data-centric** : la logique critique métier est en SQL (fonctions RPC, triggers, RLS), le frontend orchestre les flux utilisateur.
 
 ```mermaid
-graph TD
-    Client[Navigateur / React] <--> |Auth / REST / Realtime| Supabase[Supabase Platform]
-    Client <--> |WebSocket| Gemini[Google Gemini AI]
-    Supabase <--> |DB Queries| Postgres[(PostgreSQL)]
-    Gemini -.-> |Tool Calls| Client
-    Client --> |Update Cart| Supabase
+flowchart LR
+  U[Utilisateur Web] --> FE[Frontend React/Vite]
+  FE --> SA[Supabase Auth]
+  FE --> DB[(Supabase Postgres)]
+  FE --> ST[Supabase Storage]
+  FE --> RPC[RPC SQL]
+  FE --> G[Gemini API
+  (chat + voix + embeddings)]
+  DB --> RLS[RLS Policies]
+  DB --> TG[Triggers / Fonctions SQL]
 ```
 
-## 🔐 Authentification
-Le flux d'authentification utilise les JWT fournis par Supabase. Le hook `useAuthStore` initialise la session au chargement de l'application (`App.tsx`).
+---
+
+## 2) Frontend
+
+### 2.1 Organisation
+- `src/App.tsx` : routing principal global + boutique (`/:shopSlug`).
+- `src/pages/*` : pages métier (vitrine, checkout, compte, admin, POS).
+- `src/components/*` : composants réutilisables et modules complexes (BudTender, admin tabs).
+- `src/store/*` : stores Zustand (auth, shop, cart, wishlist, settings).
+- `src/hooks/*` : hooks métier (voix Gemini live, mémoire IA, résolution contexte boutique).
+- `src/lib/*` : client Supabase, types, prompts IA, embeddings, constantes.
+
+### 2.2 Routage
+- **Routes globales** : `/`, `/solution`, `/connexion`, etc.
+- **Routes boutique** : `/:shopSlug/...` avec `ShopResolver`.
+- **Routes protégées** : `ProtectedRoute` pour compte/commande.
+- **Routes admin/POS** : `AdminRoute` pour `/:shopSlug/admin` et `/:shopSlug/pos`.
+
+### 2.3 Gestion d’état
+- `authStore` : session Supabase + profil utilisateur.
+- `shopStore` : boutique courante (`currentShop`) résolue par slug.
+- `cartStore`, `wishlistStore`, `settingsStore`, `toastStore` : état métier local.
+
+---
+
+## 3) Backend (Supabase)
+
+### 3.1 Services utilisés
+- **PostgreSQL** : source de vérité métier.
+- **Auth** : email/password + session JWT côté client.
+- **Storage** : bucket d’images produits (`product-images`).
+- **RLS** : contrôle d’accès table par table.
+- **RPC SQL** : logique métier serveur (stocks bundles, recommandations, POS, promo).
+
+### 3.2 Stratégie multi-tenant
+- Table `shops` + `shop_members` pour représenter les tenants et rôles.
+- Colonnes `shop_id` ajoutées aux tables métier.
+- Trigger SQL pour auto-assigner `shop_id` sur insert.
+- Politiques RLS d’isolation par appartenance au shop.
+
+---
+
+## 4) Base de données et logique métier
+
+### 4.1 Domaines métiers principaux
+1. **Catalogue** : categories, products, product_images, bundle_items, product_recommendations.
+2. **Commerce** : orders, order_items, addresses, promo_codes, stock_movements.
+3. **Client** : profiles, wishlists, reviews, referrals, loyalty_transactions, subscriptions.
+4. **IA / Analytics** : user_ai_preferences, budtender_interactions, ai_usage_logs, pos_reports.
+
+### 4.2 Logique SQL critique
+- `sync_bundle_stock(p_bundle_id)` : recalcul automatique stock bundle.
+- `increment_promo_uses(code_text)` : incrément usage code promo.
+- `match_products(...)` : recherche vectorielle par similarité embedding.
+- `create_pos_customer(...)` : création client depuis POS (contrôle admin).
+
+---
+
+## 5) IA BudTender
+
+### 5.1 Composants
+- `src/components/BudTender.tsx` : UI conversationnelle principale.
+- `src/hooks/useGeminiLiveVoice.ts` : gestion WebSocket Gemini Live (audio in/out).
+- `src/lib/embeddings.ts` + `scripts/sync-embeddings.ts` : vectorisation produits.
+
+### 5.2 Flux IA
+1. L’utilisateur lance une session chat/voix.
+2. Le frontend construit un prompt contextualisé (shop + préférences + catalogue).
+3. La recherche peut utiliser `match_products` via embedding pour réponses pertinentes.
+4. Interactions et consommation peuvent être journalisées en base.
+
+---
+
+## 6) Sécurité
+
+- RLS activé sur tables sensibles.
+- Auth JWT Supabase pour accès authentifié.
+- Séparation visiteur/public vs utilisateur connecté vs admin.
+- Contrainte importante : ne jamais contourner `shop_id` dans les nouvelles requêtes.
+
+---
+
+## 7) Déploiement et opérations
+
+- Build frontend via Vite (`npm run build`).
+- Déploiement cible via Vercel (`vercel.json`).
+- Migrations SQL versionnées dans `supabase/`.
+- Recommandation : pipeline CI avec checks TypeScript + tests de non-régression SQL.
+
