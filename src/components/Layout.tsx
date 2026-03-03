@@ -139,10 +139,7 @@ export default function Layout() {
                     className="h-12 md:h-30 w-auto object-contain transition-transform duration-700 group-hover:scale-110 drop-shadow-[0_0_15px_rgba(57,255,20,0.3)]"
                   />
                 </div>
-                <div className="hidden sm:flex flex-col">
-                  <span className="text-sm font-serif font-black tracking-tighter text-white leading-none uppercase italic">Green Moon</span>
-                  <span className="text-[10px] font-black text-green-neon uppercase tracking-widest leading-none mt-1 opacity-80">SaaS Platform</span>
-                </div>
+
               </Link>
             </div>
 
