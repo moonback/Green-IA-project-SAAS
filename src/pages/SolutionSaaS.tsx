@@ -47,20 +47,20 @@ export default function SolutionSaaS() {
     ];
 
     return (
-        <div className="min-h-screen bg-zinc-950 text-white overflow-hidden">
+        <div className="min-h-screen bg-brand-950 text-white overflow-hidden">
             <SEO
                 title="Solution SaaS | Green IA Infrastructure Cloud"
                 description="Découvrez l'infrastructure la plus avancée du marché pour le retail CBD. Centralisez votre gestion, automatisez vos ventes avec l'IA."
             />
 
             {/* ─── Hero Section ─── */}
-            <section className="relative pt-40 pb-20 px-5 overflow-hidden">
+            <section className="app-section relative pt-28 sm:pt-32 overflow-hidden">
                 <div className="absolute inset-0 pointer-events-none">
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-green-neon/5 blur-[120px] rounded-full opacity-30" />
                     <div className="absolute top-20 right-0 w-96 h-96 bg-emerald-500/10 blur-[100px] rounded-full" />
                 </div>
 
-                <div className="relative z-10 max-w-7xl mx-auto text-center space-y-8">
+                <div className="relative z-10 page-block text-center space-y-8">
                     <motion.div
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}

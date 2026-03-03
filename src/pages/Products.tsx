@@ -50,7 +50,7 @@ export default function Products() {
   ];
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white overflow-hidden pb-32">
+    <div className="min-h-screen bg-brand-950 text-white overflow-hidden pb-32">
       <SEO
         title="N10 Innovation : Puissance & Intensité — Green IA Shop"
         description="Le N10 est un dérivé du THC, avec une teneur en tétrahydrocannabinol plus faible. Cette molécule est plus puissante et plus intense que le CBNO. Découvrez l'excellence."
@@ -144,7 +144,7 @@ export default function Products() {
 
       {/* Main Collections */}
       <section className="relative z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-40">
+        <div className="page-block space-y-24">
           {categories.map((cat, index) => (
             <div key={cat.id} className="relative">
               {/* Background text for depth */}
@@ -236,7 +236,7 @@ export default function Products() {
 
       {/* Global Commitment Bar */}
       <section className="mt-40 py-20 bg-zinc-900/30 border-y border-white/5">
-        <div className="max-w-7xl mx-auto px-4 flex flex-wrap justify-around gap-12 text-center">
+        <div className="page-block flex flex-wrap justify-around gap-8 text-center">
           {[
             { icon: <ShieldCheck className="w-8 h-8 text-green-neon mx-auto mb-4" />, title: "Légalité", text: "Taux THC < 0.3%" },
             { icon: <Leaf className="h-8 w-8 text-green-neon mx-auto mb-4" />, title: "Naturel", text: "Culture organique" },

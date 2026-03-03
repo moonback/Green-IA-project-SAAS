@@ -72,7 +72,7 @@ export default function ShopLayout() {
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                     {/* Top Bar */}
-                    <div className="flex items-center justify-between h-18 md:h-20">
+                    <div className="flex items-center justify-between h-20 md:h-24">
 
                         {/* Mobile Menu */}
                         <div className="lg:hidden">
@@ -105,7 +105,7 @@ export default function ShopLayout() {
                                 <h1 className="text-lg font-black text-white tracking-tight leading-none group-hover:text-green-400 transition-colors">
                                     {shopName}
                                 </h1>
-                                <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-zinc-500">
+                                <p className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-500">
                                     Boutique CBD
                                 </p>
                             </div>
@@ -120,7 +120,7 @@ export default function ShopLayout() {
                                     <Link
                                         key={link.path}
                                         to={link.path}
-                                        className={`relative px-5 py-2 text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-500 rounded-full group ${isActive
+                                        className={`relative px-5 py-2 text-xs font-black uppercase tracking-[0.2em] transition-all duration-500 rounded-full group ${isActive
                                             ? "text-black"
                                             : "text-zinc-500 hover:text-white"
                                             }`}
@@ -161,7 +161,7 @@ export default function ShopLayout() {
                                     <motion.span
                                         initial={{ scale: 0 }}
                                         animate={{ scale: 1 }}
-                                        className="absolute -top-1 -right-1 w-5 h-5 rounded-full text-[10px] font-black flex items-center justify-center text-black shadow-[0_0_15px_rgba(255,255,255,0.3)] relative z-20"
+                                        className="absolute -top-1 -right-1 w-5 h-5 rounded-full text-xs font-black flex items-center justify-center text-black shadow-[0_0_15px_rgba(255,255,255,0.3)] relative z-20"
                                         style={{ backgroundColor: primaryColor }}
                                     >
                                         {itemCount}
@@ -187,10 +187,10 @@ export default function ShopLayout() {
                                             )}
                                         </div>
                                         <div className="hidden lg:flex flex-col items-start pr-3">
-                                            <span className="text-[10px] font-black text-white uppercase tracking-tighter leading-none mb-0.5">
+                                            <span className="text-xs font-black text-white uppercase tracking-tighter leading-none mb-0.5">
                                                 {profile?.full_name?.split(" ")[0] ?? "Profil"}
                                             </span>
-                                            <span className="text-[8px] font-bold text-zinc-500 uppercase tracking-widest leading-none">
+                                            <span className="text-[11px] font-bold text-zinc-500 uppercase tracking-widest leading-none">
                                                 Connecté
                                             </span>
                                         </div>
@@ -207,9 +207,9 @@ export default function ShopLayout() {
                                             >
                                                 {/* Profile Info Section */}
                                                 <div className="px-4 py-4 mb-2 bg-white/[0.03] rounded-2xl border border-white/[0.05]">
-                                                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 mb-1">Session Magasin</p>
+                                                    <p className="text-xs font-black uppercase tracking-[0.2em] text-zinc-500 mb-1">Session Magasin</p>
                                                     <h3 className="text-white font-serif font-black text-lg leading-tight mb-1">{profile?.full_name}</h3>
-                                                    <p className="text-[10px] text-zinc-400 truncate opacity-60">{user.email}</p>
+                                                    <p className="text-xs text-zinc-400 truncate opacity-60">{user.email}</p>
                                                 </div>
 
                                                 <div className="space-y-1">
@@ -263,7 +263,7 @@ export default function ShopLayout() {
                                                                     <ShieldCheck className="h-5 w-5 text-black" />
                                                                 </div>
                                                                 <div className="flex flex-col">
-                                                                    <span className="text-[10px] font-black uppercase tracking-tight" style={{ color: primaryColor }}>Management</span>
+                                                                    <span className="text-xs font-black uppercase tracking-tight" style={{ color: primaryColor }}>Management</span>
                                                                     <span className="text-xs font-bold text-white">Gestion Boutique</span>
                                                                 </div>
                                                             </div>
@@ -274,7 +274,7 @@ export default function ShopLayout() {
 
                                                 <button
                                                     onClick={signOut}
-                                                    className="w-full mt-2 flex items-center gap-3 px-4 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-red-400/70 hover:text-red-400 hover:bg-red-400/5 rounded-2xl transition-all group"
+                                                    className="w-full mt-2 flex items-center gap-3 px-4 py-4 text-xs font-black uppercase tracking-[0.2em] text-red-400/70 hover:text-red-400 hover:bg-red-400/5 rounded-2xl transition-all group"
                                                 >
                                                     <LogOut className="h-3.5 w-3.5 group-hover:-translate-x-1 transition-transform" />
                                                     Fermer la session
@@ -286,7 +286,7 @@ export default function ShopLayout() {
                             ) : (
                                 <Link
                                     to={sp("/connexion")}
-                                    className="hidden md:flex items-center gap-3 px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-[0.15em] transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:shadow-[0_0_30px_rgba(255,255,255,0.1)] text-black"
+                                    className="hidden md:flex items-center gap-3 px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-[0.15em] transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:shadow-[0_0_30px_rgba(255,255,255,0.1)] text-black"
                                     style={{ backgroundColor: primaryColor }}
                                 >
                                     <User className="w-3.5 h-3.5" />
@@ -326,7 +326,7 @@ export default function ShopLayout() {
                                     </div>
                                     <div className="flex flex-col">
                                         <span className="text-sm font-black text-white uppercase tracking-wider leading-none mb-0.5">{shopName}</span>
-                                        <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.2em] leading-none">Boutique Officielle</span>
+                                        <span className="text-xs font-bold text-zinc-500 uppercase tracking-[0.2em] leading-none">Boutique Officielle</span>
                                     </div>
                                 </Link>
                                 <button
@@ -341,7 +341,7 @@ export default function ShopLayout() {
                             {/* Navigation links */}
                             <nav className="flex-1 overflow-y-auto px-6 py-10 relative z-10">
                                 <div className="space-y-4">
-                                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-600 ml-4 mb-2">Navigation</p>
+                                    <p className="text-xs font-black uppercase tracking-[0.3em] text-zinc-600 ml-4 mb-2">Navigation</p>
                                     {navLinks.map((link, i) => (
                                         <motion.div
                                             key={link.path}
@@ -372,9 +372,9 @@ export default function ShopLayout() {
                             <div className="px-6 pb-10 pt-6 border-t border-white/[0.06] bg-zinc-950/60 backdrop-blur-2xl relative z-10">
                                 {user && isRegisteredToShop ? (
                                     <div className="space-y-4 text-center">
-                                        <p className="text-zinc-500 text-[10px] font-bold uppercase tracking-widest leading-none">Session Ouverte</p>
+                                        <p className="text-zinc-500 text-xs font-bold uppercase tracking-widest leading-none">Session Ouverte</p>
                                         <p className="text-white font-serif font-black text-xl leading-none mb-1">{profile?.full_name}</p>
-                                        <p className="text-[10px] text-zinc-600 font-bold uppercase tracking-wider mb-4 truncate">{user.email}</p>
+                                        <p className="text-xs text-zinc-600 font-bold uppercase tracking-wider mb-4 truncate">{user.email}</p>
                                         <div className="grid grid-cols-2 gap-3">
                                             <Link
                                                 to={sp("/compte")}
@@ -382,7 +382,7 @@ export default function ShopLayout() {
                                                 className="flex flex-col items-center gap-2 p-5 bg-white/[0.04] border border-white/[0.06] rounded-3xl hover:bg-white/[0.08] transition-colors"
                                             >
                                                 <User className="w-5 h-5 text-zinc-400" />
-                                                <span className="text-[10px] font-black uppercase tracking-widest text-zinc-300">Compte</span>
+                                                <span className="text-xs font-black uppercase tracking-widest text-zinc-300">Compte</span>
                                             </Link>
                                             {isOwner && (
                                                 <Link
@@ -391,13 +391,13 @@ export default function ShopLayout() {
                                                     className="flex flex-col items-center gap-2 p-5 bg-green-neon/5 border border-green-neon/10 rounded-3xl"
                                                 >
                                                     <ShieldCheck className="w-5 h-5 text-green-neon" />
-                                                    <span className="text-[10px] font-black uppercase tracking-widest text-green-neon">Admin</span>
+                                                    <span className="text-xs font-black uppercase tracking-widest text-green-neon">Admin</span>
                                                 </Link>
                                             )}
                                         </div>
                                         <button
                                             onClick={() => { signOut(); setIsMenuOpen(false); }}
-                                            className="w-full py-2 text-[10px] font-black uppercase tracking-[0.3em] text-red-400/60 hover:text-red-400 transition-colors"
+                                            className="w-full py-2 text-xs font-black uppercase tracking-[0.3em] text-red-400/60 hover:text-red-400 transition-colors"
                                         >
                                             Déconnexion
                                         </button>
@@ -419,7 +419,7 @@ export default function ShopLayout() {
             </motion.header>
 
             {/* Main Content */}
-            <main className="flex-grow">
+            <main className="flex-grow page-content-shell">
                 <Outlet />
             </main>
 
@@ -481,7 +481,7 @@ export default function ShopLayout() {
                         </div>
                     </div>
 
-                    <div className="border-t border-white/[0.04] pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-bold uppercase tracking-[0.15em] text-zinc-600">
+                    <div className="border-t border-white/[0.04] pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-bold uppercase tracking-[0.15em] text-zinc-600">
                         <p>&copy; {new Date().getFullYear()} {shopName}. Propulsé par Green IA SaaS.</p>
                         <div className="flex gap-6">
                             <Link to={sp("/mentions-legales")} className="hover:text-white transition-colors">Mentions Légales</Link>

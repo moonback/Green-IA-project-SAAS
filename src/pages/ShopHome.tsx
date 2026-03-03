@@ -54,7 +54,7 @@ export default function ShopHome() {
     const primaryColor = currentShop.settings?.primary_color || '#39ff14';
 
     return (
-        <div className="min-h-screen bg-zinc-950 text-white pb-20">
+        <div className="min-h-screen bg-brand-950 text-white pb-20">
             <SEO
                 title={`${currentShop.name} — Boutique CBD`}
                 description={`Découvrez la sélection premium de ${currentShop.name}. Produits CBD de qualité, conseils IA personnalisés.`}
@@ -123,7 +123,7 @@ export default function ShopHome() {
             {/* Categories */}
             {categories.length > 0 && (
                 <section className="py-20">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="page-block">
                         <div className="text-center mb-16 space-y-3">
                             <h2 className="text-4xl md:text-5xl font-serif font-black">Nos <span style={{ color: primaryColor }}>Catégories</span></h2>
                             <p className="text-zinc-500 text-lg">Explorez notre sélection par univers</p>
@@ -169,7 +169,7 @@ export default function ShopHome() {
 
             {/* Featured Products */}
             <section className="py-20 bg-zinc-900/30">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="page-block">
                     <div className="flex items-center justify-between mb-12">
                         <div className="space-y-2">
                             <h2 className="text-4xl font-serif font-black text-white">
