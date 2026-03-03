@@ -56,15 +56,17 @@ export default function RegisterShop() {
         setError('');
 
         try {
-            // 1. Sign up user
-            // Note: We use the existing signUp which creates the profile
+            // 1. Sign up user (Atomically creates Shop + Member + Profile via Trigger)
             const { data: authData, error: signUpError } = await supabase.auth.signUp({
                 email,
                 password,
                 options: {
                     data: {
-                        full_name: `${shopName} Owner`,
-                        is_shop_registration: true
+                        full_name: `${shopName} Gérant`,
+                        is_shop_registration: true,
+                        shop_name: shopName,
+                        shop_slug: shopSlug,
+                        shop_plan: selectedPlan
                     }
                 }
             });
@@ -72,43 +74,8 @@ export default function RegisterShop() {
             if (signUpError) throw signUpError;
             if (!authData.user) throw new Error("Erreur lors de la création du compte.");
 
-            // 2. Create the shop
-            const { data: shop, error: shopError } = await supabase
-                .from('shops')
-                .insert({
-                    owner_id: authData.user.id,
-                    name: shopName,
-                    slug: shopSlug,
-                    subscription_plan: selectedPlan,
-                    settings: {
-                        primary_color: '#10b981',
-                        ai_enabled: true,
-                        ai_tone: 'expert'
-                    }
-                })
-                .select()
-                .single();
-
-            if (shopError) throw shopError;
-
-            // 3. Add owner as member
-            const { error: memberError } = await supabase
-                .from('shop_members')
-                .insert({
-                    shop_id: shop.id,
-                    user_id: authData.user.id,
-                    role: 'owner'
-                });
-
-            if (memberError) throw memberError;
-
-            // 4. Update profile with current shop
-            await supabase
-                .from('profiles')
-                .update({ current_shop_id: shop.id, is_admin: true })
-                .eq('id', authData.user.id);
-
-            setStep(4); // Success step
+            // Étape 4 (Succès) directement car le trigger a tout fait en une transaction
+            setStep(4);
         } catch (err: any) {
             setError(err.message || "Une erreur est survenue.");
         } finally {
