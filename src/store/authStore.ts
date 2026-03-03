@@ -66,19 +66,10 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
     const { data: authData, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) throw error;
 
-    // Si on se connecte depuis un Shop spécifique, on lie le profil à ce shop
-    // Cela permet aux utilisateurs globaux d'accéder à l'espace de ce shop sans être rejetés.
+    // Toujours recharger le profil mais ne jamais re-binder automatiquement
+    // un utilisateur à un autre shop au moment du login (isolation multi-tenant).
     if (authData.user) {
-      const currentShop = useShopStore.getState().currentShop;
-      if (currentShop) {
-        await supabase
-          .from('profiles')
-          .update({ current_shop_id: currentShop.id })
-          .eq('id', authData.user.id);
-
-        // Raffraichir le profil
-        await useAuthStore.getState().fetchProfile(authData.user.id);
-      }
+      await useAuthStore.getState().fetchProfile(authData.user.id);
     }
   },
 
