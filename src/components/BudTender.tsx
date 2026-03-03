@@ -177,6 +177,16 @@ async function callAI(
 
     const modelToUse = settings.ai_model || 'google/gemini-2.0-flash-lite-preview-02-05:free';
 
+    // --- SAAS: Check Quota ---
+    if (currentShop) {
+        const { data: hasQuota, error: quotaErr } = await supabase.rpc('check_ai_quota', { p_shop_id: currentShop.id });
+        if (quotaErr) {
+            console.error('[BudTender Quota callAI] Error:', quotaErr);
+        } else if (hasQuota === false) {
+            throw new Error("L'IA est temporairement indisponible (quota atteint).");
+        }
+    }
+
     console.log('[BudTender callAI] Model:', modelToUse);
 
     try {
@@ -206,7 +216,19 @@ async function callAI(
             return null;
         }
 
-        return json?.choices?.[0]?.message?.content ?? null;
+        const responseText = json?.choices?.[0]?.message?.content ?? null;
+
+        // --- SAAS: Log Usage ---
+        if (currentShop && responseText) {
+            supabase.from('ai_usage_logs').insert({
+                shop_id: currentShop.id,
+                user_id: (useAuthStore.getState().user as any)?.id,
+                interaction_type: 'quiz',
+                tokens_estimate: responseText.length / 4
+            }).then();
+        }
+
+        return responseText;
     } catch (err) {
         console.error('[BudTender callAI] Fetch Error:', err);
         return null;
@@ -651,10 +673,24 @@ export default function BudTender() {
         setIsTyping(true);
 
         const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
+        const { currentShop } = useShopStore.getState();
+
         if (!apiKey || !settings.ai_enabled) {
             addBotMessage({ text: "Désolé, ma connexion à l'IA n'est pas configurée pour le moment." });
             setIsTyping(false);
             return;
+        }
+
+        // --- SAAS: Check Quota ---
+        if (currentShop) {
+            const { data: hasQuota, error: quotaErr } = await supabase.rpc('check_ai_quota', { p_shop_id: currentShop.id });
+            if (quotaErr) {
+                console.error('[BudTender Quota] Error:', quotaErr);
+            } else if (hasQuota === false) {
+                addBotMessage({ text: "La boutique a atteint son quota mensuel d'IA. ⏳ Elle sera de retour le mois prochain ! Vous pouvez toujours naviguer dans le catalogue." });
+                setIsTyping(false);
+                return;
+            }
         }
 
         // ─── RAG: Vector Search First ──────────────────────────────────────────────
@@ -662,7 +698,6 @@ export default function BudTender() {
         try {
             console.log('[BudTender RAG] Semantic search for:', text);
             const embedding = await generateEmbedding(text);
-            const { currentShop } = useShopStore.getState();
             const { data, error: rpcError } = await supabase.rpc('match_products', {
                 query_embedding: embedding,
                 match_threshold: 0.1,
@@ -733,7 +768,6 @@ export default function BudTender() {
             userContext += `Préférences: ${entries.join(' | ')}`;
         }
 
-        const { currentShop } = useShopStore.getState();
         const systemPrompt = getChatPrompt(
             text,
             catalog,
@@ -819,6 +853,16 @@ export default function BudTender() {
                 sender: 'bot',
                 text: responseText,
             }]);
+
+            // --- SAAS: Log Usage ---
+            if (currentShop) {
+                supabase.from('ai_usage_logs').insert({
+                    shop_id: currentShop.id,
+                    user_id: (useAuthStore.getState().user as any)?.id,
+                    interaction_type: 'chat',
+                    tokens_estimate: responseText.length / 4 // Rough estimate
+                }).then();
+            }
         } catch (err) {
             console.error('OpenRouter handleSendMessage error:', err);
             addBotMessage({ text: "Oups, j'ai eu une petite déconnexion. Pouvez-vous réessayer ?" });

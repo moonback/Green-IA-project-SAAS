@@ -5,6 +5,7 @@ import { supabase } from '../lib/supabase';
 import { generateEmbedding } from '../lib/embeddings';
 import { getVoicePrompt } from '../lib/budtenderPrompts';
 import { useShopStore } from '../store/shopStore';
+import { useAuthStore } from '../store/authStore';
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
@@ -276,6 +277,25 @@ export function useGeminiLiveVoice({
         setVoiceState('connecting');
         setError(null);
 
+        const { currentShop } = useShopStore.getState();
+
+        // --- SAAS: Check Quota ---
+        if (currentShop) {
+            try {
+                const { data: hasQuota, error: quotaErr } = await supabase.rpc('check_ai_quota', { p_shop_id: currentShop.id });
+                if (quotaErr) {
+                    console.error('[Voice Quota] Error:', quotaErr);
+                } else if (hasQuota === false) {
+                    setError("La boutique a atteint son quota mensuel d'IA.");
+                    setVoiceState('error');
+                    startInFlightRef.current = false;
+                    return;
+                }
+            } catch (err) {
+                console.error('[Voice Quota] Exception:', err);
+            }
+        }
+
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             streamRef.current = stream;
@@ -352,6 +372,16 @@ export function useGeminiLiveVoice({
                         }]
                     }
                 }));
+
+                // --- SAAS: Log Usage ---
+                if (currentShop) {
+                    supabase.from('ai_usage_logs').insert({
+                        shop_id: currentShop.id,
+                        user_id: (useAuthStore.getState().user as any)?.id,
+                        interaction_type: 'voice',
+                        tokens_estimate: 5000 // Voice sessions are token-heavy
+                    }).then();
+                }
 
                 // Auto-cancel if setup doesn't confirm in 10s
                 setupTimeoutRef.current = window.setTimeout(() => {

@@ -29,6 +29,8 @@ export interface BudTenderSettings {
     welcome_message: string;
     pulse_delay: number;
     quiz_steps: QuizStep[];
+    ai_tone?: string;
+    ai_instructions?: string;
 }
 
 export const BUDTENDER_DEFAULT_QUIZ: QuizStep[] = [
@@ -117,6 +119,8 @@ export const BUDTENDER_DEFAULTS: BudTenderSettings = {
     welcome_message: "Bienvenue ! 🌿 Je suis BudTender, votre conseiller CBD de confiance. Comment puis-je vous aider aujourd'hui ?",
     pulse_delay: 3,
     quiz_steps: BUDTENDER_DEFAULT_QUIZ,
+    ai_tone: 'expert',
+    ai_instructions: 'Tu es un conseiller expert en CBD. Sois professionnel, bienveillant et donne des conseils précis basés sur le catalogue.',
 };
 
 export const BUDTENDER_LS_KEY = 'budtender_admin_settings_v1';

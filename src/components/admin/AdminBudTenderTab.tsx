@@ -10,6 +10,7 @@ import {
     PieChart, Pie
 } from 'recharts';
 import { supabase } from '../../lib/supabase';
+import { useShopStore } from '../../store/shopStore';
 
 import { BudTenderSettings, BUDTENDER_DEFAULTS, BUDTENDER_LS_KEY } from '../../lib/budtenderSettings';
 
@@ -133,7 +134,20 @@ export default function AdminBudTenderTab() {
     useEffect(() => {
         const load = async () => {
             try {
-                // 1. Try Supabase
+                const { currentShop } = useShopStore.getState();
+
+                // 1. Priorité aux réglages SaaS du Shop
+                if (currentShop?.settings?.budtender_config) {
+                    setSettings({
+                        ...BUDTENDER_DEFAULTS,
+                        ...currentShop.settings.budtender_config,
+                        ai_tone: currentShop.settings.ai_tone || (currentShop.settings.budtender_config as any).ai_tone,
+                        ai_instructions: currentShop.settings.ai_instructions || (currentShop.settings.budtender_config as any).ai_instructions
+                    });
+                    return;
+                }
+
+                // 2. Fallback table store_settings
                 const { data } = await supabase
                     .from('store_settings')
                     .select('value')
@@ -143,7 +157,7 @@ export default function AdminBudTenderTab() {
                 if (data?.value) {
                     setSettings({ ...BUDTENDER_DEFAULTS, ...data.value });
                 } else {
-                    // 2. Fallback to localStorage
+                    // 3. Fallback to localStorage
                     const raw = localStorage.getItem(BUDTENDER_LS_KEY);
                     if (raw) setSettings({ ...BUDTENDER_DEFAULTS, ...JSON.parse(raw) });
                 }
@@ -252,27 +266,49 @@ export default function AdminBudTenderTab() {
     const handleSave = async () => {
         setIsSaving(true);
         try {
+            const { currentShop } = useShopStore.getState();
+
             // Keep localStorage as local cache
             localStorage.setItem(BUDTENDER_LS_KEY, JSON.stringify(settings));
 
-            // Sync the entire configuration to Supabase
-            // We use two keys: one for quick check (enabled) and one for full config
-            await Promise.all([
-                supabase.from('store_settings').upsert(
-                    [{ key: 'budtender_enabled', value: settings.enabled, updated_at: new Date().toISOString() }],
-                    { onConflict: 'key' }
-                ),
-                supabase.from('store_settings').upsert(
-                    [{ key: 'budtender_config', value: settings, updated_at: new Date().toISOString() }],
-                    { onConflict: 'key' }
-                )
-            ]);
+            if (currentShop) {
+                // Sync to Shops table (SaaS way)
+                const newSettings = {
+                    ...currentShop.settings,
+                    budtender_config: settings,
+                    ai_enabled: settings.enabled,
+                    ai_tone: settings.ai_tone,
+                    ai_instructions: settings.ai_instructions
+                };
+
+                const { error } = await supabase
+                    .from('shops')
+                    .update({ settings: newSettings })
+                    .eq('id', currentShop.id);
+
+                if (error) throw error;
+
+                // Refresh shop store
+                useShopStore.getState().fetchShop(currentShop.id);
+            } else {
+                // Legacy way (store_settings)
+                await Promise.all([
+                    supabase.from('store_settings').upsert(
+                        [{ key: 'budtender_enabled', value: settings.enabled, updated_at: new Date().toISOString() }],
+                        { onConflict: 'key' }
+                    ),
+                    supabase.from('store_settings').upsert(
+                        [{ key: 'budtender_config', value: settings, updated_at: new Date().toISOString() }],
+                        { onConflict: 'key' }
+                    )
+                ]);
+            }
 
             setSaved(true);
             setTimeout(() => setSaved(false), 3000);
         } catch (err) {
             console.error('[AdminBudTenderTab] save error:', err);
-            alert("Erreur lors de la sauvegarde en base de données.");
+            alert("Erreur lors de la sauvegarde.");
         } finally {
             setIsSaving(false);
         }
@@ -445,6 +481,39 @@ export default function AdminBudTenderTab() {
                                         onChange={(v) => update({ ai_max_tokens: v })}
                                         hint="~300 tokens ≈ 2-3 phrases. Augmenter pour des conseils plus détaillés."
                                     />
+
+                                    <div className="space-y-2 pt-2 border-t border-zinc-800">
+                                        <label className="text-xs text-zinc-400 font-medium uppercase tracking-wider block">
+                                            Ton de l'IA (Personnalité)
+                                        </label>
+                                        <select
+                                            value={settings.ai_tone || 'expert'}
+                                            onChange={(e) => update({ ai_tone: e.target.value })}
+                                            className={INPUT}
+                                        >
+                                            <option value="expert">🎓 Expert Bienveillant (Défaut)</option>
+                                            <option value="friendly">👋 Ami Décontracté</option>
+                                            <option value="medical">🩺 Médical & Factuel</option>
+                                            <option value="premium">💎 Luxe & Sophistiqué</option>
+                                            <option value="puck">⚡ Puck (Dynamique & Taquin)</option>
+                                        </select>
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <label className="text-xs text-zinc-400 font-medium uppercase tracking-wider block">
+                                            Instructions métier personnalisées
+                                        </label>
+                                        <textarea
+                                            rows={5}
+                                            value={settings.ai_instructions || ''}
+                                            onChange={(e) => update({ ai_instructions: e.target.value })}
+                                            className={INPUT + ' resize-none font-mono text-[11px]'}
+                                            placeholder="Ex: Ne jamais mentionner l'usage récréatif. Toujours suggérer un accompagnement avec du miel..."
+                                        />
+                                        <p className="text-[10px] text-zinc-600 italic">
+                                            Ces instructions seront injectées dans le prompt système de l'IA lors de chaque conseil.
+                                        </p>
+                                    </div>
                                 </div>
 
                                 <div className="bg-amber-500/5 border border-amber-500/20 rounded-xl p-4 flex gap-3">
