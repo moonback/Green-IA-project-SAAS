@@ -84,10 +84,10 @@ export default function Account() {
   ];
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white pt-32 pb-40">
+    <div className="min-h-scxreen bg-zinc-950 text-white pt-32 pb-40">
       <SEO title="Console Pro — Green IA SaaS" description="Gérez votre infrastructure CBD et vos boutiques." />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-12xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* ── HEADER DASHBOARD ── */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-16">
