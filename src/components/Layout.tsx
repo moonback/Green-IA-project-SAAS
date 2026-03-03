@@ -69,7 +69,7 @@ export default function Layout() {
     ]
     : [
       { name: "Accueil", path: "/" },
-      { name: "Solution SaaS", path: "/catalogue" },
+      { name: "Solution SaaS", path: "/solution" },
       { name: "Qualité & Sécurité", path: "/qualite" },
       { name: "Contact & Démo", path: "/contact" },
     ];
