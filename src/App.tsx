@@ -65,6 +65,9 @@ export default function App() {
           {/* ═══ Pages globales SaaS (pas de shop) ═══ */}
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
+            <Route path="catalogue" element={<Catalog />} />
+            <Route path="qualite" element={<Quality />} />
+            <Route path="contact" element={<Contact />} />
             <Route path="connexion" element={<Login />} />
             <Route path="ouvrir-boutique" element={<RegisterShop />} />
             <Route path="reset-password" element={<ResetPassword />} />
