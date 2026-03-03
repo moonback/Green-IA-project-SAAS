@@ -11,10 +11,11 @@ interface AuthStore {
   isLoading: boolean;
   initialize: () => void;
   signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string, fullName: string) => Promise<void>;
+  signUp: (email: string, password: string, fullName: string, referralCode?: string, metadata?: any) => Promise<void>;
   signOut: () => Promise<void>;
   fetchProfile: (userId: string) => Promise<void>;
   setProfile: (profile: Profile | null) => void;
+  resetPassword: (email: string) => Promise<void>;
 }
 
 export const useAuthStore = create<AuthStore>((set, get) => ({
@@ -70,7 +71,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
     if (error) throw error;
   },
 
-  signUp: async (email, password, fullName, referralCode?: string) => {
+  signUp: async (email, password, fullName, referralCode?: string, metadata?: any) => {
     let referredById: string | null = null;
 
     if (referralCode) {
@@ -90,7 +91,8 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
       password,
       options: {
         data: {
-          full_name: fullName
+          full_name: fullName,
+          ...metadata
         }
       },
     });
@@ -147,5 +149,12 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
     await supabase.auth.signOut();
     useShopStore.getState().clearShop();
     set({ user: null, profile: null, session: null });
+  },
+
+  resetPassword: async (email: string) => {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    if (error) throw error;
   },
 }));

@@ -2,7 +2,8 @@ import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { Mail, Lock, User, Eye, EyeOff, LayoutDashboard, Store, CheckCircle, ArrowRight, Github } from 'lucide-react';
+import { Mail, Lock, User, Eye, EyeOff, LayoutDashboard, Store, CheckCircle, ArrowRight, Github, ArrowLeft } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
 import SEO from '../components/SEO';
 
@@ -10,9 +11,10 @@ type Mode = 'login' | 'register';
 
 export default function Login() {
   const navigate = useNavigate();
-  const { signIn, signUp } = useAuthStore();
+  const { signIn, signUp, resetPassword } = useAuthStore();
 
   const [mode, setMode] = useState<Mode>('login');
+  const [isForgotMode, setIsForgotMode] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
@@ -21,8 +23,36 @@ export default function Login() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
+  const handleSocialLogin = async (provider: 'google' | 'github') => {
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider,
+        options: { redirectTo: window.location.origin }
+      });
+      if (error) throw error;
+    } catch (err: any) {
+      setError(err.message);
+    }
+  };
+
+  const handleResetPassword = async (e: FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setSuccess('');
+    setIsLoading(true);
+    try {
+      await resetPassword(email);
+      setSuccess('Un email de réinitialisation a été envoyé.');
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    if (isForgotMode) return handleResetPassword(e);
     setError('');
     setSuccess('');
     setIsLoading(true);
@@ -216,35 +246,41 @@ export default function Login() {
                   </div>
                 </div>
 
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <label className="text-[11px] uppercase tracking-widest font-bold text-zinc-500 ml-1">Mot de passe</label>
-                    {mode === 'login' && (
-                      <button type="button" className="text-[10px] uppercase font-bold text-zinc-600 hover:text-green-neon transition-colors">
-                        Oublié ?
+                {!isForgotMode && (
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-[11px] uppercase tracking-widest font-bold text-zinc-500 ml-1">Mot de passe</label>
+                      {mode === 'login' && (
+                        <button
+                          type="button"
+                          onClick={() => setIsForgotMode(true)}
+                          className="text-[10px] uppercase font-bold text-zinc-600 hover:text-green-neon transition-colors"
+                        >
+                          Oublié ?
+                        </button>
+                      )}
+                    </div>
+                    <div className="relative group">
+                      <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600 group-focus-within:text-green-neon transition-colors" />
+                      <input
+                        type={showPassword ? 'text' : 'password'}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="••••••••"
+                        className="w-full bg-black/40 border border-zinc-800 rounded-2xl pl-12 pr-12 py-4 text-white placeholder-zinc-700 focus:outline-none focus:border-green-neon focus:ring-1 focus:ring-green-neon/20 transition-all outline-none"
+                        required
+                        minLength={6}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-600 hover:text-white transition-colors"
+                      >
+                        {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                       </button>
-                    )}
+                    </div>
                   </div>
-                  <div className="relative group">
-                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600 group-focus-within:text-green-neon transition-colors" />
-                    <input
-                      type={showPassword ? 'text' : 'password'}
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="••••••••"
-                      className="w-full bg-black/40 border border-zinc-800 rounded-2xl pl-12 pr-12 py-4 text-white placeholder-zinc-700 focus:outline-none focus:border-green-neon focus:ring-1 focus:ring-green-neon/20 transition-all outline-none"
-                      required
-                      minLength={6}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-600 hover:text-white transition-colors"
-                    >
-                      {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                    </button>
-                  </div>
-                </div>
+                )}
 
                 {error && (
                   <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="bg-red-500/10 border border-red-500/20 rounded-2xl p-4 flex gap-3 items-center">
