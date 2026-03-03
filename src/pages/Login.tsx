@@ -109,7 +109,7 @@ export default function Login() {
           >
             <Link to="/" className="flex items-center gap-2">
               <div className="bg-green-neon p-1.5 rounded-lg shadow-[0_0_15px_rgba(20,229,148,0.4)]">
-                <img src="/logo.jpeg" alt="Logo" className="w-8 h-8 rounded-full" />
+                <img src="/logo.png" alt="Logo" className="w-8 h-8 rounded-full" />
               </div>
               <span className="text-2xl font-serif font-black text-white tracking-tight">
                 GREEN <span className="text-green-neon">MOOD</span>
@@ -177,7 +177,7 @@ export default function Login() {
           >
             {/* Header for mobile only or small screens */}
             <div className="lg:hidden text-center mb-10">
-              <img src="/logo.jpeg" alt="Logo" className="w-20 h-20 rounded-full mx-auto mb-4 border-2 border-green-neon shadow-[0_0_20px_rgba(20,229,148,0.3)]" />
+              <img src="/logo.png" alt="Logo" className="w-20 h-20 rounded-full mx-auto mb-4 border-2 border-green-neon shadow-[0_0_20px_rgba(20,229,148,0.3)]" />
               <h1 className="text-3xl font-serif font-bold text-white">Green Mood</h1>
             </div>
 

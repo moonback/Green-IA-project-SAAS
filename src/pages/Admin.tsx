@@ -1001,7 +1001,7 @@ export default function Admin() {
             <div className="px-4 py-4 border-b border-zinc-800/60">
               <div className="flex items-center gap-3">
                 <img
-                  src="/logo.jpeg"
+                  src="/logo.png"
                   alt="Green Mood"
                   className="h-10 w-auto object-contain"
                   style={{ filter: 'drop-shadow(0 0 6px rgba(57,255,20,0.5))' }}
