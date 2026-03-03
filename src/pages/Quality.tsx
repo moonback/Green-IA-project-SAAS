@@ -4,6 +4,13 @@ import SEO from "../components/SEO";
 import { useShopContent } from "../hooks/useShopContent";
 import { useShopStore } from "../store/shopStore";
 import { useShopLayout } from "../hooks/useShopLayout";
+import {
+  NewsletterSection,
+  TestimonialsSection,
+  FAQSection,
+  FeaturesGridSection,
+  InstagramFeedSection
+} from '../components/shop/GenericSections';
 
 export default function Quality() {
   const content = useShopContent();
@@ -54,7 +61,7 @@ export default function Quality() {
                 style={{ color: primaryColor, borderColor: `${primaryColor}33`, backgroundColor: `${primaryColor}1a` }}
               >
                 <Terminal className="w-4 h-4" />
-                {content.quality.badge}
+                {section.settings?.badge || content.quality.badge}
               </motion.div>
 
               <motion.h1
@@ -62,8 +69,7 @@ export default function Quality() {
                 animate={{ opacity: 1, y: 0 }}
                 className="text-5xl md:text-8xl font-serif font-black tracking-tighter leading-none mb-10"
               >
-                {content.quality.hero_title_line1} <br />
-                <span className="italic glow-green" style={{ color: primaryColor }}>{content.quality.hero_title_line2}</span>
+                {section.settings?.title ? section.settings.title : <>{content.quality.hero_title_line1} <br /> <span className="italic glow-green" style={{ color: primaryColor }}>{content.quality.hero_title_line2}</span></>}
               </motion.h1>
 
               <motion.p
@@ -72,7 +78,7 @@ export default function Quality() {
                 transition={{ delay: 0.2 }}
                 className="text-xl md:text-2xl text-zinc-400 max-w-3xl mx-auto font-light leading-relaxed mb-12"
               >
-                {content.quality.hero_subtitle}
+                {section.settings?.subtitle || content.quality.hero_subtitle}
               </motion.p>
             </div>
           </section>
@@ -232,14 +238,25 @@ export default function Quality() {
             <div className="p-16 bg-gradient-to-br from-zinc-900 to-zinc-950 border border-zinc-800 rounded-[4rem] text-center space-y-10 shadow-2xl">
               <Zap className="w-16 h-16 text-green-neon mx-auto animate-pulse" />
               <div className="space-y-5">
-                <h3 className="text-3xl md:text-4xl font-serif font-black">{content.quality.trust_banner_title}</h3>
+                <h3 className="text-3xl md:text-4xl font-serif font-black">{section.settings?.title || content.quality.trust_banner_title}</h3>
                 <p className="text-zinc-400 max-w-2xl mx-auto font-light leading-relaxed text-lg">
-                  {content.quality.trust_banner_desc}
+                  {section.settings?.subtitle || content.quality.trust_banner_desc}
                 </p>
               </div>
             </div>
           </section>
         );
+
+      case 'newsletter':
+        return <NewsletterSection key={section.id} primaryColor={primaryColor} settings={section.settings} />;
+      case 'testimonials':
+        return <TestimonialsSection key={section.id} primaryColor={primaryColor} settings={section.settings} />;
+      case 'faq':
+        return <FAQSection key={section.id} primaryColor={primaryColor} settings={section.settings} />;
+      case 'features_grid':
+        return <FeaturesGridSection key={section.id} primaryColor={primaryColor} settings={section.settings} />;
+      case 'instagram_feed':
+        return <InstagramFeedSection key={section.id} primaryColor={primaryColor} settings={section.settings} />;
 
       default:
         return null;

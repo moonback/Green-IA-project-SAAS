@@ -7,6 +7,13 @@ import { useSettingsStore } from "../store/settingsStore";
 import { useShopPath } from "../hooks/useShopPath";
 import { useShopContent } from "../hooks/useShopContent";
 import { useShopLayout } from "../hooks/useShopLayout";
+import {
+    NewsletterSection,
+    TestimonialsSection,
+    FAQSection,
+    FeaturesGridSection,
+    InstagramFeedSection
+} from '../components/shop/GenericSections';
 
 /**
  * ShopAbout — Page "Notre Boutique" dynamique, affichant les infos du shop actuel.
@@ -55,7 +62,7 @@ export default function ShopAbout() {
                     <section key={section.id} className="relative min-h-[50vh] flex items-center justify-center pt-24 px-4 overflow-hidden">
                         <div className="absolute inset-0 z-0">
                             <img
-                                src={content.about.hero_image}
+                                src={section.settings?.image_url || content.about.hero_image}
                                 className="w-full h-full object-cover opacity-20 filter grayscale"
                                 alt=""
                             />
@@ -74,14 +81,13 @@ export default function ShopAbout() {
                                     style={{ color: primaryColor }}
                                 >
                                     <Sparkles className="w-4 h-4" />
-                                    {content.about.badge}
+                                    {section.settings?.badge || content.about.badge}
                                 </div>
                                 <h1 className="text-5xl md:text-7xl font-serif font-bold tracking-tighter leading-none">
-                                    {content.about.hero_title_line1} <br />
-                                    <span className="italic" style={{ color: primaryColor }}>{shopName.toUpperCase()}.</span>
+                                    {section.settings?.title ? section.settings.title : <>{content.about.hero_title_line1} <br /> <span className="italic" style={{ color: primaryColor }}>{shopName.toUpperCase()}.</span></>}
                                 </h1>
                                 <p className="text-xl text-zinc-400 max-w-2xl mx-auto font-light leading-relaxed pt-4">
-                                    {content.about.hero_subtitle}
+                                    {section.settings?.subtitle || content.about.hero_subtitle}
                                 </p>
                             </motion.div>
                         </div>
@@ -186,6 +192,17 @@ export default function ShopAbout() {
                         </motion.div>
                     </section>
                 );
+
+            case 'newsletter':
+                return <NewsletterSection key={section.id} primaryColor={primaryColor} settings={section.settings} />;
+            case 'testimonials':
+                return <TestimonialsSection key={section.id} primaryColor={primaryColor} settings={section.settings} />;
+            case 'faq':
+                return <FAQSection key={section.id} primaryColor={primaryColor} settings={section.settings} />;
+            case 'features_grid':
+                return <FeaturesGridSection key={section.id} primaryColor={primaryColor} settings={section.settings} />;
+            case 'instagram_feed':
+                return <InstagramFeedSection key={section.id} primaryColor={primaryColor} settings={section.settings} />;
 
             default:
                 return null;

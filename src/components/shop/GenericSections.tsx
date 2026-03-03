@@ -1,0 +1,213 @@
+import { motion } from 'framer-motion';
+import { Mail, Star, HelpCircle, ShieldCheck, Zap, Heart, Instagram, Send, Plus, ChevronDown } from 'lucide-react';
+import { useState } from 'react';
+
+// --- NEWSLETTER SECTION ---
+export function NewsletterSection({ primaryColor, settings }: { primaryColor: string; settings?: any }) {
+    return (
+        <section className="py-24 px-4 overflow-hidden">
+            <div className="max-w-5xl mx-auto relative rounded-[4rem] overflow-hidden bg-zinc-900 border border-white/5 p-12 md:p-20 text-center space-y-8">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-green-neon/5 blur-[100px]" />
+                <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/5 blur-[100px]" />
+
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400">
+                    <Mail className="w-3 h-3" />
+                    {settings?.badge || "Restez Informé"}
+                </div>
+
+                <h2 className="text-4xl md:text-6xl font-serif font-black tracking-tight leading-none text-white">
+                    {settings?.title ? settings.title : <>Rejoignez le <span className="italic" style={{ color: primaryColor }}>Cercle Privé.</span></>}
+                </h2>
+
+                <p className="text-lg text-zinc-500 max-w-2xl mx-auto font-light">
+                    {settings?.subtitle || "Recevez nos nouveautés, promotions exclusives et conseils BudTender directement dans votre boîte mail."}
+                </p>
+
+                <form className="flex flex-col sm:flex-row gap-3 max-w-xl mx-auto pt-4" onSubmit={(e) => e.preventDefault()}>
+                    <input
+                        type="email"
+                        placeholder="votre@email.com"
+                        className="flex-1 bg-black border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-green-neon/50 transition-colors"
+                    />
+                    <button
+                        type="submit"
+                        className="px-10 py-4 rounded-2xl font-black text-black transition-transform hover:scale-105 flex items-center justify-center gap-2"
+                        style={{ backgroundColor: primaryColor }}
+                    >
+                        {settings?.cta_text || "S'inscrire"}
+                        <Send className="w-4 h-4" />
+                    </button>
+                </form>
+
+                <p className="text-[10px] text-zinc-600 uppercase tracking-widest font-bold">Zéro spam. Désinscription en 1 clic.</p>
+            </div>
+        </section>
+    );
+}
+
+// --- TESTIMONIALS SECTION ---
+export function TestimonialsSection({ primaryColor, settings }: { primaryColor: string; settings?: any }) {
+    const testimonials = settings?.testimonials || [
+        { name: "Marc D.", role: "Client Fidèle", text: "La qualité du CBD est exceptionnelle. Le BudTender IA m'a aidé à trouver exactement ce qu'il me fallait pour mes insomnies." },
+        { name: "Sophie L.", role: "Utilisatrice Occasionnelle", text: "Livraison ultra-rapide et emballage soigné. Je recommande les fleurs de la gamme Green Moon !" },
+        { name: "Thomas R.", role: "Expert", text: "Le meilleur rapport qualité-prix du marché. On sent que les produits sont sélectionnés avec soin." }
+    ];
+
+    return (
+        <section className="py-24 px-4 bg-zinc-900/20">
+            <div className="max-w-7xl mx-auto space-y-16">
+                <div className="text-center space-y-4">
+                    <h2 className="text-4xl md:text-5xl font-serif font-black">
+                        {settings?.title ? settings.title : <>Ce que disent <span style={{ color: primaryColor }}>nos clients</span></>}
+                    </h2>
+                    <div className="flex justify-center gap-1">
+                        {[1, 2, 3, 4, 5].map(s => <Star key={s} className="w-4 h-4 text-yellow-500 fill-yellow-500" />)}
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {testimonials.map((t: any, idx: number) => (
+                        <motion.div
+                            key={idx}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: idx * 0.1 }}
+                            className="bg-black border border-white/5 p-8 rounded-[2.5rem] relative group"
+                        >
+                            <div className="absolute top-8 right-8 text-zinc-800 group-hover:text-green-neon transition-colors">
+                                <Heart className="w-8 h-8 fill-current" />
+                            </div>
+                            <p className="text-lg text-zinc-300 font-light italic leading-relaxed mb-8">"{t.text}"</p>
+                            <div>
+                                <h4 className="font-bold text-white uppercase tracking-widest text-sm">{t.name}</h4>
+                                <p className="text-xs text-zinc-600 font-medium">{t.role}</p>
+                            </div>
+                        </motion.div>
+                    ))}
+                </div>
+            </div>
+        </section>
+    );
+}
+
+// --- FAQ SECTION ---
+export function FAQSection({ primaryColor, settings }: { primaryColor: string; settings?: any }) {
+    const [openIndex, setOpenIndex] = useState<number | null>(0);
+
+    const faqs = settings?.faqs || [
+        { q: "Quels sont vos délais de livraison ?", a: "Nous livrons en 24h/48h partout en France. Pour les commandes locales, nous proposons également le Click & Collect." },
+        { q: "Vos produits sont-ils légaux ?", a: "Oui, tous nos produits sont conformes à la législation européenne avec un taux de THC inférieur à 0,3%." },
+        { q: "Comment utiliser le BudTender IA ?", a: "Il suffit de cliquer sur l'icône de l'assistant en bas de l'écran ou d'utiliser le questionnaire personnalisé sur la page d'accueil." }
+    ];
+
+    return (
+        <section className="py-24 px-4 font-sans">
+            <div className="max-w-3xl mx-auto space-y-12">
+                <div className="text-center space-y-4">
+                    <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto" style={{ color: primaryColor }}>
+                        <HelpCircle className="w-6 h-6" />
+                    </div>
+                    <h2 className="text-4xl font-serif font-black">
+                        {settings?.title ? settings.title : <>Questions <span style={{ color: primaryColor }}>Fréquentes</span></>}
+                    </h2>
+                </div>
+
+                <div className="space-y-4">
+                    {faqs.map((f: any, idx: number) => (
+                        <div key={idx} className="bg-zinc-900 border border-white/5 rounded-3xl overflow-hidden">
+                            <button
+                                onClick={() => setOpenIndex(openIndex === idx ? null : idx)}
+                                className="w-full flex items-center justify-between p-6 text-left"
+                            >
+                                <span className="font-bold text-white tracking-wide">{f.q}</span>
+                                <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${openIndex === idx ? 'rotate-180' : ''}`} style={{ color: primaryColor }} />
+                            </button>
+                            {openIndex === idx && (
+                                <motion.div
+                                    initial={{ height: 0, opacity: 0 }}
+                                    animate={{ height: 'auto', opacity: 1 }}
+                                    className="px-6 pb-6 text-zinc-400 font-light leading-relaxed"
+                                >
+                                    {f.a}
+                                </motion.div>
+                            )}
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
+    );
+}
+
+// --- FEATURES GRID SECTION ---
+export function FeaturesGridSection({ primaryColor, settings }: { primaryColor: string; settings?: any }) {
+    const features = settings?.features || [
+        { icon: ShieldCheck, title: "Qualité Premium", desc: "Produits testés en laboratoire indépendant." },
+        { icon: Zap, title: "Livraison Flash", desc: "Expédition le jour même pour toute commande avant 14h." },
+        { icon: Heart, title: "Engagement Eco", desc: "Emballages biodégradables et culture responsable." },
+        { icon: Star, title: "Service Client", desc: "Experts à votre écoute 7j/7 via chat ou téléphone." }
+    ];
+
+    return (
+        <section className="py-24 px-4 overflow-hidden">
+            <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {features.map((feat: any, idx: number) => (
+                    <div key={idx} className="p-8 rounded-[2.5rem] bg-zinc-900/50 border border-white/5 hover:border-white/10 transition-all text-center space-y-4 group">
+                        <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mx-auto group-hover:scale-110 transition-transform duration-500">
+                            {typeof feat.icon === 'string' ? <Star className="w-8 h-8" style={{ color: primaryColor }} /> : <feat.icon className="w-8 h-8" style={{ color: primaryColor }} />}
+                        </div>
+                        <h3 className="font-black uppercase tracking-widest text-sm text-white">{feat.title}</h3>
+                        <p className="text-zinc-500 text-sm font-light leading-relaxed">{feat.desc}</p>
+                    </div>
+                ))}
+            </div>
+        </section>
+    );
+}
+
+// --- INSTAGRAM FEED SECTION ---
+export function InstagramFeedSection({ primaryColor, settings }: { primaryColor: string; settings?: any }) {
+    const username = settings?.username || "green_moon_cbd";
+
+    return (
+        <section className="py-24 px-4 bg-black">
+            <div className="max-w-7xl mx-auto space-y-12">
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                    <div className="space-y-3">
+                        <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em]" style={{ color: primaryColor }}>
+                            <Instagram className="w-4 h-4" />
+                            {settings?.badge || "Suivez-nous"}
+                        </div>
+                        <h2 className="text-4xl font-serif font-black tracking-tight">
+                            {settings?.title ? settings.title : <>Rejoignez la <span className="italic" style={{ color: primaryColor }}>Communauté.</span></>}
+                        </h2>
+                    </div>
+                    <a
+                        href={`https://instagram.com/${username}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-8 py-3 bg-white/5 border border-white/10 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-white/10 transition-all"
+                    >
+                        @{username}
+                    </a>
+                </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {[1, 2, 3, 4].map(idx => (
+                        <div key={idx} className="relative aspect-square rounded-[2rem] overflow-hidden bg-zinc-900 group">
+                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity z-10 flex items-center justify-center">
+                                <Instagram className="w-8 h-8 text-white" />
+                            </div>
+                            <img
+                                src={`https://images.unsplash.com/photo-1611080626919-7cf5a9dcab5b?auto=format&fit=crop&q=80&w=400&h=400&v=${idx}`}
+                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                alt="Insta Post"
+                            />
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
+    );
+}

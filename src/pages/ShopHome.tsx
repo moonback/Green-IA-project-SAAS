@@ -9,6 +9,13 @@ import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import SEO from '../components/SEO';
 import type { Product, Category } from '../lib/types';
+import {
+    NewsletterSection,
+    TestimonialsSection,
+    FAQSection,
+    FeaturesGridSection,
+    InstagramFeedSection
+} from '../components/shop/GenericSections';
 
 export default function ShopHome() {
     const { currentShop } = useShopStore();
@@ -19,6 +26,8 @@ export default function ShopHome() {
     const [categories, setCategories] = useState<Category[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
+    const primaryColor = currentShop?.settings?.primary_color || '#39ff14';
+
     const renderSection = (section: any) => {
         if (!section.enabled) return null;
 
@@ -27,9 +36,9 @@ export default function ShopHome() {
                 return (
                     <section key={section.id} className="relative min-h-[60vh] flex items-center justify-center pt-24 px-4 overflow-hidden">
                         <div className="absolute inset-0 z-0">
-                            {currentShop?.settings?.theme?.hero_image_url && (
+                            {(section.settings?.image_url || currentShop?.settings?.theme?.hero_image_url) && (
                                 <img
-                                    src={currentShop.settings.theme.hero_image_url}
+                                    src={section.settings?.image_url || currentShop.settings.theme.hero_image_url}
                                     className="w-full h-full object-cover opacity-30"
                                     alt=""
                                 />
@@ -58,15 +67,15 @@ export default function ShopHome() {
 
                                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-xl text-xs font-black uppercase tracking-[0.3em]" style={{ color: primaryColor }}>
                                     <Leaf className="w-4 h-4" />
-                                    {content.home.badge}
+                                    {section.settings?.badge || content.home.badge}
                                 </div>
 
                                 <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold tracking-tighter leading-none">
-                                    {currentShop?.name.toUpperCase()}
+                                    {section.settings?.title || currentShop?.name.toUpperCase()}
                                 </h1>
 
                                 <p className="text-xl text-zinc-400 max-w-2xl mx-auto font-light leading-relaxed">
-                                    {content.home.hero_subtitle}
+                                    {section.settings?.subtitle || content.home.hero_subtitle}
                                 </p>
 
                                 <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
@@ -264,6 +273,17 @@ export default function ShopHome() {
                     </section>
                 );
 
+            case 'newsletter':
+                return <NewsletterSection key={section.id} primaryColor={primaryColor} settings={section.settings} />;
+            case 'testimonials':
+                return <TestimonialsSection key={section.id} primaryColor={primaryColor} settings={section.settings} />;
+            case 'faq':
+                return <FAQSection key={section.id} primaryColor={primaryColor} settings={section.settings} />;
+            case 'features_grid':
+                return <FeaturesGridSection key={section.id} primaryColor={primaryColor} settings={section.settings} />;
+            case 'instagram_feed':
+                return <InstagramFeedSection key={section.id} primaryColor={primaryColor} settings={section.settings} />;
+
             default:
                 return null;
         }
@@ -304,8 +324,6 @@ export default function ShopHome() {
     }, [currentShop]);
 
     if (!currentShop) return null;
-
-    const primaryColor = currentShop.settings?.primary_color || '#39ff14';
 
     return (
         <div className="min-h-screen bg-brand-950 text-white pb-20">

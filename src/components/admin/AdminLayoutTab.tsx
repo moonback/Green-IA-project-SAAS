@@ -16,10 +16,22 @@ import {
     ShieldCheck,
     Phone,
     HelpCircle,
-    Package
+    Package,
+    Mail,
+    MessageSquare,
+    Instagram,
+    ListChecks,
+    Users,
+    Star,
+    Settings,
+    X,
+    ChevronRight,
+    Type,
+    Image as ImageIcon
 } from 'lucide-react';
 import { useShopStore } from '../../store/shopStore';
 import { supabase } from '../../lib/supabase';
+import ImageUpload from './ImageUpload';
 import { DEFAULT_HOME_LAYOUT, DEFAULT_ABOUT_LAYOUT, DEFAULT_QUALITY_LAYOUT, PageSection } from '../../hooks/useShopLayout';
 
 type PageKey = 'home' | 'about' | 'quality';
@@ -31,6 +43,7 @@ export default function AdminLayoutTab() {
     const [isSaving, setIsSaving] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [editingSection, setEditingSection] = useState<PageSection | null>(null);
 
     const getDefaults = (page: PageKey) => {
         if (page === 'home') return DEFAULT_HOME_LAYOUT;
@@ -97,12 +110,23 @@ export default function AdminLayoutTab() {
         const newSection: PageSection = {
             id,
             type,
-            enabled: true
+            enabled: true,
+            settings: {}
         };
         setSections(prev => [...prev, newSection]);
     };
 
+    const updateSection = (id: string, updates: Partial<PageSection>) => {
+        setSections(prev => prev.map(s =>
+            s.id === id ? { ...s, ...updates } : s
+        ));
+        if (editingSection?.id === id) {
+            setEditingSection(prev => prev ? { ...prev, ...updates } : null);
+        }
+    };
+
     const sectionLabels: Record<string, string> = {
+        // Core sections
         hero: 'Bannière principale (Hero)',
         categories: 'Grille des catégories',
         featured_products: 'Produits vedettes',
@@ -110,29 +134,44 @@ export default function AdminLayoutTab() {
         values: 'Valeurs & Engagement',
         visit_cta: 'Appel à l\'action (Contact/Visite)',
         pillars: 'Piliers techniques',
-        isolation: 'Isolation des données (Focus)',
-        ai_excellence: 'Excellence IA (Focus)',
-        trust_banner: 'Bannière de confiance'
+        isolation: 'Isolation des données',
+        ai_excellence: 'Excellence IA',
+        trust_banner: 'Bannière de confiance',
+
+        // Generic shared sections
+        newsletter: 'Newsletter Premium',
+        testimonials: 'Avis Clients',
+        faq: 'Questions Fréquentes (FAQ)',
+        features_grid: 'Grille Points Forts',
+        instagram_feed: 'Flux Instagram'
     };
 
-    const availableSectionsByPage: Record<PageKey, { type: string; label: string }[]> = {
+    const genericSections = [
+        { type: 'newsletter', label: 'Newsletter', icon: Mail },
+        { type: 'testimonials', label: 'Avis Clients', icon: MessageSquare },
+        { type: 'faq', label: 'FAQ', icon: HelpCircle },
+        { type: 'features_grid', label: 'Points Forts', icon: ListChecks },
+        { type: 'instagram_feed', label: 'Flux Instagram', icon: Instagram }
+    ];
+
+    const specificSectionsByPage: Record<PageKey, { type: string; label: string; icon: any }[]> = {
         home: [
-            { type: 'hero', label: 'Bannière d\'accueil' },
-            { type: 'categories', label: 'Liste des catégories' },
-            { type: 'featured_products', label: 'Produits en avant' },
-            { type: 'ai_promo', label: 'Promo Assistant IA' }
+            { type: 'hero', label: 'Bannière d\'accueil', icon: Home },
+            { type: 'categories', label: 'Liste des catégories', icon: HelpCircle },
+            { type: 'featured_products', label: 'Produits en avant', icon: Package },
+            { type: 'ai_promo', label: 'Promo Assistant IA', icon: HelpCircle }
         ],
         about: [
-            { type: 'hero', label: 'Bannière À Propos' },
-            { type: 'values', label: 'Nos Valeurs' },
-            { type: 'visit_cta', label: 'Bloc Contact/Visite' }
+            { type: 'hero', label: 'Bannière À Propos', icon: Info },
+            { type: 'values', label: 'Nos Valeurs', icon: ShieldCheck },
+            { type: 'visit_cta', label: 'Bloc Contact/Visite', icon: Phone }
         ],
         quality: [
-            { type: 'hero', label: 'Bannière Qualité' },
-            { type: 'pillars', label: 'Piliers Techniques' },
-            { type: 'isolation', label: 'Isolation Données' },
-            { type: 'ai_excellence', label: 'Excellence IA' },
-            { type: 'trust_banner', label: 'Bannière Confiance' }
+            { type: 'hero', label: 'Bannière Qualité', icon: ShieldCheck },
+            { type: 'pillars', label: 'Piliers Techniques', icon: ShieldCheck },
+            { type: 'isolation', label: 'Isolation Données', icon: ShieldCheck },
+            { type: 'ai_excellence', label: 'Excellence IA', icon: ShieldCheck },
+            { type: 'trust_banner', label: 'Bannière Confiance', icon: ShieldCheck }
         ]
     };
 
@@ -154,11 +193,11 @@ export default function AdminLayoutTab() {
                     <div className="flex items-center gap-2 text-zinc-400 mb-1">
                         <span className="text-xs font-bold uppercase tracking-wider bg-white/5 px-2 py-0.5 rounded border border-white/10 flex items-center gap-1">
                             <Layout className="w-3 h-3 text-green-neon" />
-                            Layout
+                            Structure
                         </span>
                     </div>
-                    <h2 className="text-3xl font-black text-white italic">Structure des <span className="text-green-neon">Pages</span></h2>
-                    <p className="text-zinc-500 max-w-xl">Configurez l'ordre des sections et la visibilité des blocs pour optimiser l'expérience client.</p>
+                    <h2 className="text-3xl font-black text-white italic">Design du <span className="text-green-neon">Shop</span></h2>
+                    <p className="text-zinc-500 max-w-xl">Organisez vos pages en ajoutant des composants pré-conçus.</p>
                 </div>
 
                 <div className="flex items-center gap-3">
@@ -190,8 +229,8 @@ export default function AdminLayoutTab() {
                             key={p.key}
                             onClick={() => setActivePage(p.key as PageKey)}
                             className={`flex items-center gap-2.5 px-6 py-2.5 rounded-xl transition-all ${activePage === p.key
-                                    ? 'bg-green-neon text-black font-black shadow-lg shadow-green-neon/40 border border-green-neon/50'
-                                    : 'text-zinc-400 hover:text-white hover:bg-white/5'
+                                ? 'bg-green-neon text-black font-black shadow-lg shadow-green-neon/40 border border-green-neon/50'
+                                : 'text-zinc-400 hover:text-white hover:bg-white/5'
                                 }`}
                         >
                             <Icon className={`w-4 h-4 ${activePage === p.key ? 'text-black' : 'text-zinc-500'}`} />
@@ -214,8 +253,8 @@ export default function AdminLayoutTab() {
                             key={section.id}
                             value={section}
                             className={`group flex items-center gap-4 p-5 rounded-[2rem] border transition-all ${section.enabled
-                                    ? 'bg-zinc-900/50 border-white/[0.05] hover:border-white/10 shadow-xl'
-                                    : 'bg-zinc-950 border-dashed border-white/5 opacity-40 grayscale'
+                                ? 'bg-zinc-900/50 border-white/[0.05] hover:border-white/10 shadow-xl'
+                                : 'bg-zinc-950 border-dashed border-white/5 opacity-40 grayscale'
                                 }`}
                         >
                             <div className="cursor-grab active:cursor-grabbing text-zinc-700 group-hover:text-green-neon/50 transition-colors">
@@ -233,12 +272,21 @@ export default function AdminLayoutTab() {
                                 <button
                                     onClick={() => toggleSection(section.id)}
                                     className={`p-2.5 rounded-xl transition-all ${section.enabled
-                                            ? 'text-green-neon hover:bg-green-neon/10'
-                                            : 'text-zinc-600 hover:bg-white/5'
+                                        ? 'text-green-neon hover:bg-green-neon/10'
+                                        : 'text-zinc-600 hover:bg-white/5'
                                         }`}
                                     title={section.enabled ? 'Désactiver' : 'Activer'}
                                 >
                                     {section.enabled ? <Eye className="w-5 h-5" /> : <EyeOff className="w-5 h-5" />}
+                                </button>
+                                <button
+                                    onClick={() => setEditingSection(section)}
+                                    className={`p-2.5 rounded-xl transition-all ${section.enabled ? 'text-zinc-400 hover:text-white hover:bg-white/5' : 'text-zinc-800 cursor-not-allowed'
+                                        }`}
+                                    disabled={!section.enabled}
+                                    title="Paramètres"
+                                >
+                                    <Settings className="w-5 h-5" />
                                 </button>
                                 <button
                                     onClick={() => removeSection(section.id)}
@@ -252,15 +300,14 @@ export default function AdminLayoutTab() {
                     ))}
                 </Reorder.Group>
 
-                {/* Add Section */}
+                {/* Specific Add Section */}
                 <div className="mt-10 p-8 rounded-[3rem] border border-dashed border-white/10 bg-white/[0.01] relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-green-neon/5 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
                     <h5 className="text-[10px] font-black text-zinc-500 mb-6 flex items-center gap-2 uppercase tracking-[0.3em]">
                         <Plus className="w-3 h-3 text-green-neon" />
-                        Ajouter un nouveau composant sur la page
+                        Composants spécifiques à cette page
                     </h5>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        {availableSectionsByPage[activePage].map((as) => (
+                        {specificSectionsByPage[activePage].map((as) => (
                             <button
                                 key={as.type}
                                 onClick={() => addSection(as.type)}
@@ -272,6 +319,33 @@ export default function AdminLayoutTab() {
                                 </span>
                             </button>
                         ))}
+                    </div>
+                </div>
+
+                {/* Generic Add Section */}
+                <div className="mt-6 p-8 rounded-[3rem] border border-zinc-800 bg-black relative overflow-hidden group">
+                    <h5 className="text-[10px] font-black text-zinc-400 mb-6 flex items-center gap-2 uppercase tracking-[0.3em]">
+                        <Star className="w-3 h-3 text-yellow-500" />
+                        Composants universels (S'ajoutent partout)
+                    </h5>
+                    <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                        {genericSections.map((gs) => {
+                            const Icon = gs.icon;
+                            return (
+                                <button
+                                    key={gs.type}
+                                    onClick={() => addSection(gs.type)}
+                                    className="group/btn flex flex-col items-center gap-3 p-4 rounded-2xl bg-zinc-900/50 border border-white/[0.02] hover:border-green-neon transition-all"
+                                >
+                                    <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center group-hover/btn:bg-green-neon/10 transition-colors">
+                                        <Icon className="w-5 h-5 text-zinc-500 group-hover/btn:text-green-neon" />
+                                    </div>
+                                    <span className="text-[8px] font-black uppercase tracking-tighter text-zinc-600 group-hover/btn:text-white transition-colors">
+                                        {gs.label}
+                                    </span>
+                                </button>
+                            );
+                        })}
                     </div>
                 </div>
             </div>
@@ -288,26 +362,395 @@ export default function AdminLayoutTab() {
                     </div>
                     <div>
                         <p className="font-black uppercase tracking-widest text-[10px]">Success</p>
-                        <p className="text-sm font-bold text-white">Mise en page enregistrée avec succès</p>
+                        <p className="text-sm font-bold text-white">Structure mise à jour !</p>
                     </div>
                 </motion.div>
+            </div>
 
-                {error && (
+            {/* Editing Modal */}
+            {editingSection && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-end p-4 md:p-6 bg-black/60 backdrop-blur-sm">
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="flex items-center gap-4 px-8 py-5 rounded-[2rem] bg-zinc-900 border border-red-500/20 text-red-500 shadow-2xl backdrop-blur-xl"
+                        initial={{ x: '100%' }}
+                        animate={{ x: 0 }}
+                        className="w-full max-w-xl h-full bg-zinc-950 border-l border-white/10 shadow-2xl overflow-hidden flex flex-col rounded-[2.5rem]"
                     >
-                        <div className="w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center">
-                            <AlertCircle className="w-5 h-5" />
+                        {/* Modal Header */}
+                        <div className="p-8 border-b border-white/5 flex items-center justify-between bg-zinc-900/50">
+                            <div className="flex items-center gap-4">
+                                <div className="p-3 rounded-2xl bg-green-neon/10 text-green-neon">
+                                    <Settings className="w-6 h-6" />
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-black text-white uppercase tracking-tight">Configuration</h3>
+                                    <p className="text-xs text-zinc-500 font-bold uppercase tracking-widest">{sectionLabels[editingSection.type] || editingSection.type}</p>
+                                </div>
+                            </div>
+                            <button
+                                onClick={() => setEditingSection(null)}
+                                className="p-3 rounded-xl hover:bg-white/5 text-zinc-500 hover:text-white transition-all"
+                            >
+                                <X className="w-6 h-6" />
+                            </button>
                         </div>
-                        <div>
-                            <p className="font-black uppercase tracking-widest text-[10px]">Erreur</p>
-                            <p className="text-sm font-bold text-white">{error}</p>
+
+                        {/* Modal Content */}
+                        <div className="flex-1 overflow-y-auto p-8 space-y-8 custom-scrollbar">
+                            {/* Common Settings - ID Override / Label */}
+                            <div className="space-y-4">
+                                <h4 className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.2em] flex items-center gap-2">
+                                    <Type className="w-3 h-3" />
+                                    Textes de la section
+                                </h4>
+
+                                <div className="space-y-4">
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-bold text-zinc-500 uppercase ml-1">Titre de la section</label>
+                                        <input
+                                            type="text"
+                                            value={editingSection.settings?.title || ''}
+                                            onChange={(e) => updateSection(editingSection.id, {
+                                                settings: { ...editingSection.settings, title: e.target.value }
+                                            })}
+                                            placeholder="Titre personnalisé..."
+                                            className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-white focus:outline-none focus:border-green-neon transition-all"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-bold text-zinc-500 uppercase ml-1">Sous-titre / Description</label>
+                                        <textarea
+                                            value={editingSection.settings?.subtitle || ''}
+                                            onChange={(e) => updateSection(editingSection.id, {
+                                                settings: { ...editingSection.settings, subtitle: e.target.value }
+                                            })}
+                                            placeholder="Description courte..."
+                                            rows={3}
+                                            className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-white focus:outline-none focus:border-green-neon transition-all resize-none"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Section Specific: Hero / Banner */}
+                            {(editingSection.type === 'hero' || editingSection.type === 'trust_banner') && (
+                                <div className="space-y-4 pt-4 border-t border-white/5">
+                                    <h4 className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.2em] flex items-center gap-2">
+                                        <ImageIcon className="w-3 h-3" />
+                                        Visuels & Media
+                                    </h4>
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-bold text-zinc-500 uppercase ml-1">Image de fond</label>
+                                        <ImageUpload
+                                            value={editingSection.settings?.image_url || ''}
+                                            onChange={(url) => updateSection(editingSection.id, {
+                                                settings: { ...editingSection.settings, image_url: url }
+                                            })}
+                                        />
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Section Specific: Newsletter */}
+                            {editingSection.type === 'newsletter' && (
+                                <div className="space-y-4 pt-4 border-t border-white/5">
+                                    <h4 className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.2em] flex items-center gap-2">
+                                        <Mail className="w-3 h-3" />
+                                        Configuration Newsletter
+                                    </h4>
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-bold text-zinc-500 uppercase ml-1">Texte du bouton</label>
+                                        <input
+                                            type="text"
+                                            value={editingSection.settings?.cta_text || "S'inscrire"}
+                                            onChange={(e) => updateSection(editingSection.id, {
+                                                settings: { ...editingSection.settings, cta_text: e.target.value }
+                                            })}
+                                            className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-white focus:outline-none focus:border-green-neon transition-all"
+                                        />
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Section Specific: Instagram */}
+                            {editingSection.type === 'instagram_feed' && (
+                                <div className="space-y-4 pt-4 border-t border-white/5">
+                                    <h4 className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.2em] flex items-center gap-2">
+                                        <Instagram className="w-3 h-3" />
+                                        Réseaux Sociaux
+                                    </h4>
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-bold text-zinc-500 uppercase ml-1">Nom d'utilisateur Instagram</label>
+                                        <div className="relative">
+                                            <span className="absolute left-5 top-1/2 -translate-y-1/2 text-zinc-500 font-bold">@</span>
+                                            <input
+                                                type="text"
+                                                value={editingSection.settings?.username || ''}
+                                                onChange={(e) => updateSection(editingSection.id, {
+                                                    settings: { ...editingSection.settings, username: e.target.value }
+                                                })}
+                                                placeholder="votre_boutique"
+                                                className="w-full bg-white/5 border border-white/10 rounded-2xl pl-10 pr-5 py-4 text-white focus:outline-none focus:border-green-neon transition-all"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Section Specific: FAQ Repeater */}
+                            {editingSection.type === 'faq' && (
+                                <div className="space-y-4 pt-4 border-t border-white/5">
+                                    <h4 className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.2em] flex items-center gap-2">
+                                        <Plus className="w-3 h-3" />
+                                        Questions / Réponses
+                                    </h4>
+                                    <div className="space-y-3">
+                                        {(editingSection.settings?.faqs || [
+                                            { q: "Quels sont vos délais ?", a: "Nous livrons en 48h." },
+                                            { q: "Vos produits sont-ils bio ?", a: "Oui, 100% naturels." }
+                                        ]).map((faq: any, idx: number) => (
+                                            <div key={idx} className="p-5 rounded-2xl bg-white/5 border border-white/5 space-y-3 relative group">
+                                                <button
+                                                    onClick={() => {
+                                                        const newFaqs = [...(editingSection.settings?.faqs || [])];
+                                                        newFaqs.splice(idx, 1);
+                                                        updateSection(editingSection.id, { settings: { ...editingSection.settings, faqs: newFaqs } });
+                                                    }}
+                                                    className="absolute top-4 right-4 text-zinc-600 hover:text-red-500 transition-colors"
+                                                >
+                                                    <Trash2 className="w-4 h-4" />
+                                                </button>
+                                                <input
+                                                    type="text"
+                                                    value={faq.q}
+                                                    onChange={(e) => {
+                                                        const currentFaqs = editingSection.settings?.faqs || [
+                                                            { q: "Quels sont vos délais ?", a: "Nous livrons en 48h." },
+                                                            { q: "Vos produits sont-ils bio ?", a: "Oui, 100% naturels." }
+                                                        ];
+                                                        const newFaqs = [...currentFaqs];
+                                                        newFaqs[idx] = { ...newFaqs[idx], q: e.target.value };
+                                                        updateSection(editingSection.id, { settings: { ...editingSection.settings, faqs: newFaqs } });
+                                                    }}
+                                                    placeholder="La question..."
+                                                    className="w-full bg-black/40 border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-green-neon/30"
+                                                />
+                                                <textarea
+                                                    value={faq.a}
+                                                    onChange={(e) => {
+                                                        const currentFaqs = editingSection.settings?.faqs || [
+                                                            { q: "Quels sont vos délais ?", a: "Nous livrons en 48h." },
+                                                            { q: "Vos produits sont-ils bio ?", a: "Oui, 100% naturels." }
+                                                        ];
+                                                        const newFaqs = [...currentFaqs];
+                                                        newFaqs[idx] = { ...newFaqs[idx], a: e.target.value };
+                                                        updateSection(editingSection.id, { settings: { ...editingSection.settings, faqs: newFaqs } });
+                                                    }}
+                                                    placeholder="La réponse..."
+                                                    rows={2}
+                                                    className="w-full bg-black/40 border border-white/5 rounded-xl px-4 py-3 text-sm text-zinc-400 focus:outline-none focus:border-green-neon/30 resize-none"
+                                                />
+                                            </div>
+                                        ))}
+                                        <button
+                                            onClick={() => {
+                                                const currentFaqs = editingSection.settings?.faqs || [
+                                                    { q: "Quels sont vos délais ?", a: "Nous livrons en 48h." },
+                                                    { q: "Vos produits sont-ils bio ?", a: "Oui, 100% naturels." }
+                                                ];
+                                                const newFaqs = [...currentFaqs, { q: "", a: "" }];
+                                                updateSection(editingSection.id, { settings: { ...editingSection.settings, faqs: newFaqs } });
+                                            }}
+                                            className="w-full py-4 rounded-2xl border border-dashed border-white/10 text-[10px] font-black uppercase tracking-widest text-zinc-500 hover:text-green-neon hover:border-green-neon/30 transition-all flex items-center justify-center gap-2"
+                                        >
+                                            <Plus className="w-3 h-3" />
+                                            Ajouter une question
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Section Specific: Testimonials Repeater */}
+                            {editingSection.type === 'testimonials' && (
+                                <div className="space-y-4 pt-4 border-t border-white/5">
+                                    <h4 className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.2em] flex items-center gap-2">
+                                        <Plus className="w-3 h-3" />
+                                        Liste des Témoignages
+                                    </h4>
+                                    <div className="space-y-3">
+                                        {(editingSection.settings?.testimonials || [
+                                            { name: "Marc D.", role: "Client", text: "Super service !" },
+                                            { name: "Sophie L.", role: "Fan", text: "Qualité top." }
+                                        ]).map((t: any, idx: number) => (
+                                            <div key={idx} className="p-5 rounded-2xl bg-white/5 border border-white/5 space-y-3 relative group">
+                                                <button
+                                                    onClick={() => {
+                                                        const newT = [...(editingSection.settings?.testimonials || [])];
+                                                        newT.splice(idx, 1);
+                                                        updateSection(editingSection.id, { settings: { ...editingSection.settings, testimonials: newT } });
+                                                    }}
+                                                    className="absolute top-4 right-4 text-zinc-600 hover:text-red-500 transition-colors"
+                                                >
+                                                    <Trash2 className="w-4 h-4" />
+                                                </button>
+                                                <div className="grid grid-cols-2 gap-3">
+                                                    <input
+                                                        type="text"
+                                                        value={t.name}
+                                                        onChange={(e) => {
+                                                            const currentT = editingSection.settings?.testimonials || [
+                                                                { name: "Marc D.", role: "Client", text: "Super service !" },
+                                                                { name: "Sophie L.", role: "Fan", text: "Qualité top." }
+                                                            ];
+                                                            const newT = [...currentT];
+                                                            newT[idx] = { ...newT[idx], name: e.target.value };
+                                                            updateSection(editingSection.id, { settings: { ...editingSection.settings, testimonials: newT } });
+                                                        }}
+                                                        placeholder="Nom"
+                                                        className="w-full bg-black/40 border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-green-neon/30"
+                                                    />
+                                                    <input
+                                                        type="text"
+                                                        value={t.role}
+                                                        onChange={(e) => {
+                                                            const currentT = editingSection.settings?.testimonials || [
+                                                                { name: "Marc D.", role: "Client", text: "Super service !" },
+                                                                { name: "Sophie L.", role: "Fan", text: "Qualité top." }
+                                                            ];
+                                                            const newT = [...currentT];
+                                                            newT[idx] = { ...newT[idx], role: e.target.value };
+                                                            updateSection(editingSection.id, { settings: { ...editingSection.settings, testimonials: newT } });
+                                                        }}
+                                                        placeholder="Rôle (ex: Client)"
+                                                        className="w-full bg-black/40 border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-green-neon/30"
+                                                    />
+                                                </div>
+                                                <textarea
+                                                    value={t.text}
+                                                    onChange={(e) => {
+                                                        const currentT = editingSection.settings?.testimonials || [
+                                                            { name: "Marc D.", role: "Client", text: "Super service !" },
+                                                            { name: "Sophie L.", role: "Fan", text: "Qualité top." }
+                                                        ];
+                                                        const newT = [...currentT];
+                                                        newT[idx] = { ...newT[idx], text: e.target.value };
+                                                        updateSection(editingSection.id, { settings: { ...editingSection.settings, testimonials: newT } });
+                                                    }}
+                                                    placeholder="Témoignage..."
+                                                    rows={2}
+                                                    className="w-full bg-black/40 border border-white/5 rounded-xl px-4 py-3 text-sm text-zinc-400 focus:outline-none focus:border-green-neon/30 resize-none"
+                                                />
+                                            </div>
+                                        ))}
+                                        <button
+                                            onClick={() => {
+                                                const currentT = editingSection.settings?.testimonials || [
+                                                    { name: "Marc D.", role: "Client", text: "Super service !" },
+                                                    { name: "Sophie L.", role: "Fan", text: "Qualité top." }
+                                                ];
+                                                const newT = [...currentT, { name: "", role: "Client", text: "" }];
+                                                updateSection(editingSection.id, { settings: { ...editingSection.settings, testimonials: newT } });
+                                            }}
+                                            className="w-full py-4 rounded-2xl border border-dashed border-white/10 text-[10px] font-black uppercase tracking-widest text-zinc-500 hover:text-green-neon hover:border-green-neon/30 transition-all flex items-center justify-center gap-2"
+                                        >
+                                            <Plus className="w-3 h-3" />
+                                            Ajouter un témoignage
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Section Specific: Features Grid Repeater */}
+                            {editingSection.type === 'features_grid' && (
+                                <div className="space-y-4 pt-4 border-t border-white/5">
+                                    <h4 className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.2em] flex items-center gap-2">
+                                        <Plus className="w-3 h-3" />
+                                        Grille des Points Forts
+                                    </h4>
+                                    <div className="space-y-3">
+                                        {(editingSection.settings?.features || [
+                                            { title: "Point Fort 1", desc: "Description..." },
+                                            { title: "Point Fort 2", desc: "Description..." }
+                                        ]).map((f: any, idx: number) => (
+                                            <div key={idx} className="p-5 rounded-2xl bg-white/5 border border-white/5 space-y-3 relative group">
+                                                <button
+                                                    onClick={() => {
+                                                        const newF = [...(editingSection.settings?.features || [])];
+                                                        newF.splice(idx, 1);
+                                                        updateSection(editingSection.id, { settings: { ...editingSection.settings, features: newF } });
+                                                    }}
+                                                    className="absolute top-4 right-4 text-zinc-600 hover:text-red-500 transition-colors"
+                                                >
+                                                    <Trash2 className="w-4 h-4" />
+                                                </button>
+                                                <input
+                                                    type="text"
+                                                    value={f.title}
+                                                    onChange={(e) => {
+                                                        const currentF = editingSection.settings?.features || [
+                                                            { title: "Point Fort 1", desc: "Description..." },
+                                                            { title: "Point Fort 2", desc: "Description..." }
+                                                        ];
+                                                        const newF = [...currentF];
+                                                        newF[idx] = { ...newF[idx], title: e.target.value };
+                                                        updateSection(editingSection.id, { settings: { ...editingSection.settings, features: newF } });
+                                                    }}
+                                                    placeholder="Titre de l'avantage"
+                                                    className="w-full bg-black/40 border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-green-neon/30"
+                                                />
+                                                <textarea
+                                                    value={f.desc}
+                                                    onChange={(e) => {
+                                                        const currentF = editingSection.settings?.features || [
+                                                            { title: "Point Fort 1", desc: "Description..." },
+                                                            { title: "Point Fort 2", desc: "Description..." }
+                                                        ];
+                                                        const newF = [...currentF];
+                                                        newF[idx] = { ...newF[idx], desc: e.target.value };
+                                                        updateSection(editingSection.id, { settings: { ...editingSection.settings, features: newF } });
+                                                    }}
+                                                    placeholder="Description courte..."
+                                                    rows={2}
+                                                    className="w-full bg-black/40 border border-white/5 rounded-xl px-4 py-3 text-sm text-zinc-400 focus:outline-none focus:border-green-neon/30 resize-none"
+                                                />
+                                            </div>
+                                        ))}
+                                        <button
+                                            onClick={() => {
+                                                const currentF = editingSection.settings?.features || [
+                                                    { title: "Point Fort 1", desc: "Description..." },
+                                                    { title: "Point Fort 2", desc: "Description..." }
+                                                ];
+                                                const newF = [...currentF, { title: "", desc: "" }];
+                                                updateSection(editingSection.id, { settings: { ...editingSection.settings, features: newF } });
+                                            }}
+                                            className="w-full py-4 rounded-2xl border border-dashed border-white/10 text-[10px] font-black uppercase tracking-widest text-zinc-500 hover:text-green-neon hover:border-green-neon/30 transition-all flex items-center justify-center gap-2"
+                                        >
+                                            <Plus className="w-3 h-3" />
+                                            Ajouter un avantage
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                            <div className="p-6 rounded-3xl bg-blue-500/5 border border-blue-500/10 flex items-start gap-4">
+                                <Info className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
+                                <p className="text-xs text-zinc-500 leading-relaxed font-medium">
+                                    Les modifications sont enregistrées localement dans votre mise en page. N'oubliez pas de cliquer sur <span className="text-white font-bold">Enregistrer</span> dans la barre principale pour les appliquer définitivement.
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Modal Footer */}
+                        <div className="p-8 border-t border-white/5 bg-zinc-900/30 flex items-center justify-end">
+                            <button
+                                onClick={() => setEditingSection(null)}
+                                className="px-10 py-4 rounded-2xl bg-green-neon text-black font-black hover:scale-105 active:scale-95 transition-all shadow-xl shadow-green-neon/20"
+                            >
+                                Terminer
+                            </button>
                         </div>
                     </motion.div>
-                )}
-            </div>
+                </div>
+            )}
         </div>
     );
 }
