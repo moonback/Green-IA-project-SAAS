@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { supabase } from '../lib/supabase';
+import { useShopStore } from './shopStore';
 
 export interface StoreSettings {
     delivery_fee: number;
@@ -44,26 +45,37 @@ interface SettingsStore {
     updateSettingsInStore: (newSettings: Partial<StoreSettings>) => void;
 }
 
-export const useSettingsStore = create<SettingsStore>((set) => ({
+export const useSettingsStore = create<SettingsStore>((set, get) => ({
     settings: DEFAULT_SETTINGS,
-    isLoading: true,
+    isLoading: false,
     fetchSettings: async () => {
+        const { currentShop } = useShopStore.getState();
+
+        // Si on a un shop chargé, on fusionne ses settings avec les défauts
+        if (currentShop) {
+            set({
+                settings: {
+                    ...DEFAULT_SETTINGS,
+                    ...currentShop.settings,
+                    store_name: currentShop.name || DEFAULT_SETTINGS.store_name
+                },
+                isLoading: false
+            });
+            return;
+        }
+
+        // Fallback sur l'ancienne table pour la rétrocompatibilité (période de transition)
         try {
             const { data, error } = await supabase.from('store_settings').select('*');
-            if (error) throw error;
-
-            if (data && data.length > 0) {
+            if (!error && data && data.length > 0) {
                 const obj = data.reduce((acc: Record<string, any>, row: { key: string; value: any }) => {
                     acc[row.key] = row.value;
                     return acc;
                 }, {});
                 set({ settings: { ...DEFAULT_SETTINGS, ...obj }, isLoading: false });
-            } else {
-                set({ isLoading: false });
             }
         } catch (err) {
-            console.error('Error fetching settings:', err);
-            set({ isLoading: false });
+            console.error('Error fetching settings fallback:', err);
         }
     },
     updateSettingsInStore: (newSettings) => {

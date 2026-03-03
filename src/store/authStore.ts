@@ -1,7 +1,8 @@
 import { create } from 'zustand';
 import { Session, User } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
-import { Profile } from '../lib/types';
+import { Profile, Shop } from '../lib/types';
+import { useShopStore } from './shopStore';
 
 interface AuthStore {
   user: User | null;
@@ -51,7 +52,15 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
       return;
     }
 
-    if (data) set({ profile: data as Profile });
+    if (data) {
+      const profile = data as Profile;
+      set({ profile });
+
+      // Load shop context if available
+      if (profile.current_shop_id) {
+        useShopStore.getState().fetchShop(profile.current_shop_id);
+      }
+    }
   },
 
   setProfile: (profile: Profile | null) => set({ profile }),
@@ -136,6 +145,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
 
   signOut: async () => {
     await supabase.auth.signOut();
+    useShopStore.getState().clearShop();
     set({ user: null, profile: null, session: null });
   },
 }));
