@@ -43,6 +43,8 @@ export default function Layout() {
   const settings = useSettingsStore((s) => s.settings);
   const currentShop = useShopStore((s) => s.currentShop);
 
+  const isOwner = currentShop && user && currentShop.owner_id === user.id;
+
   // Helper: construit un chemin relatif au shop ou global
   const sp = (path: string) => (shopSlug && !RESERVED_SLUGS.includes(shopSlug)) ? `/${shopSlug}${path}` : path;
 
@@ -51,6 +53,7 @@ export default function Layout() {
   const adminPath = effectiveSlug ? `/${effectiveSlug}/admin` : "/admin";
 
   const isShopContext = !!shopSlug && !RESERVED_SLUGS.includes(shopSlug);
+  const isRegisteredToShop = !isShopContext || isOwner || (profile?.current_shop_id === currentShop?.id);
 
   // Close menus on route change and scroll to top
   useEffect(() => {
@@ -83,7 +86,7 @@ export default function Layout() {
       <CartSidebar />
 
       {/* BudTender IA Widget */}
-      {settings.budtender_enabled && user && <BudTender />}
+      {settings.budtender_enabled && user && isRegisteredToShop && <BudTender />}
 
       {/* Toast Notifications */}
       <ToastContainer />
@@ -172,7 +175,7 @@ export default function Layout() {
 
             {/* Right Action: User / Auth / Mobile Trigger */}
             <div className="flex items-center gap-3 md:gap-4">
-              {user ? (
+              {user && isRegisteredToShop ? (
                 <div className="relative">
                   <button
                     onClick={() => setIsAccountMenuOpen(!isAccountMenuOpen)}
@@ -233,7 +236,7 @@ export default function Layout() {
                             <ArrowRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-zinc-600" />
                           </Link>
 
-                          {profile?.is_admin && (
+                          {(isOwner || (!isShopContext && profile?.is_admin)) && (
                             <div className="mt-3 pt-3 border-t border-white/[0.05]">
                               <Link
                                 to={adminPath}
@@ -376,7 +379,7 @@ export default function Layout() {
 
               {/* Mobile footer actions */}
               <div className="px-6 pb-12 pt-8 border-t border-white/[0.06] bg-zinc-950/60 backdrop-blur-3xl relative z-20">
-                {user ? (
+                {user && isRegisteredToShop ? (
                   <div className="space-y-6">
                     <div className="flex items-center gap-4 p-5 bg-white/[0.03] border border-white/[0.06] rounded-[2.5rem]">
                       <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-zinc-700 to-zinc-900 border border-white/10 flex items-center justify-center overflow-hidden shadow-lg">
@@ -403,7 +406,7 @@ export default function Layout() {
                         </div>
                         <span className="text-[10px] font-black uppercase tracking-widest text-zinc-300">Console</span>
                       </Link>
-                      {profile?.is_admin && (
+                      {(isOwner || (!isShopContext && profile?.is_admin)) && (
                         <Link
                           to={adminPath}
                           onClick={() => setIsMenuOpen(false)}

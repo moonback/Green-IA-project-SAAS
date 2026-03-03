@@ -32,6 +32,9 @@ export default function ShopLayout() {
     const { user, profile, signOut } = useAuthStore();
     const settings = useSettingsStore((s) => s.settings);
 
+    const isOwner = currentShop && user && currentShop.owner_id === user.id;
+    const isRegisteredToShop = Boolean(isOwner || (profile?.current_shop_id === currentShop?.id));
+
     const sp = (path: string) => `/${shopSlug}${path}`;
     const primaryColor = currentShop?.settings?.primary_color || '#39ff14';
 
@@ -55,7 +58,7 @@ export default function ShopLayout() {
         <div className="min-h-screen flex flex-col bg-zinc-950 text-zinc-100 font-sans">
             <AgeGate />
             <CartSidebar />
-            {settings.budtender_enabled && user && <BudTender />}
+            {settings.budtender_enabled && user && isRegisteredToShop && <BudTender />}
             <ToastContainer />
 
             {/* ═══ SHOP HEADER ═══ */}
@@ -167,7 +170,7 @@ export default function ShopLayout() {
                             </button>
 
                             {/* Account Dropdown */}
-                            {user ? (
+                            {user && isRegisteredToShop ? (
                                 <div className="relative">
                                     <button
                                         onClick={() => setIsAccountMenuOpen(!isAccountMenuOpen)}
@@ -248,7 +251,7 @@ export default function ShopLayout() {
                                                     </Link>
                                                 </div>
 
-                                                {profile?.is_admin && (
+                                                {isOwner && (
                                                     <div className="mt-3 pt-3 border-t border-white/[0.05]">
                                                         <Link
                                                             to={sp("/admin")}
@@ -367,7 +370,7 @@ export default function ShopLayout() {
 
                             {/* Mobile footer actions */}
                             <div className="px-6 pb-10 pt-6 border-t border-white/[0.06] bg-zinc-950/60 backdrop-blur-2xl relative z-10">
-                                {user ? (
+                                {user && isRegisteredToShop ? (
                                     <div className="space-y-4 text-center">
                                         <p className="text-zinc-500 text-[10px] font-bold uppercase tracking-widest leading-none">Session Ouverte</p>
                                         <p className="text-white font-serif font-black text-xl leading-none mb-1">{profile?.full_name}</p>
@@ -381,7 +384,7 @@ export default function ShopLayout() {
                                                 <User className="w-5 h-5 text-zinc-400" />
                                                 <span className="text-[10px] font-black uppercase tracking-widest text-zinc-300">Compte</span>
                                             </Link>
-                                            {profile?.is_admin && (
+                                            {isOwner && (
                                                 <Link
                                                     to={sp("/admin")}
                                                     onClick={() => setIsMenuOpen(false)}

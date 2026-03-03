@@ -63,8 +63,23 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
   setProfile: (profile: Profile | null) => set({ profile }),
 
   signIn: async (email, password) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { data: authData, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) throw error;
+
+    // Si on se connecte depuis un Shop spécifique, on lie le profil à ce shop
+    // Cela permet aux utilisateurs globaux d'accéder à l'espace de ce shop sans être rejetés.
+    if (authData.user) {
+      const currentShop = useShopStore.getState().currentShop;
+      if (currentShop) {
+        await supabase
+          .from('profiles')
+          .update({ current_shop_id: currentShop.id })
+          .eq('id', authData.user.id);
+
+        // Raffraichir le profil
+        await useAuthStore.getState().fetchProfile(authData.user.id);
+      }
+    }
   },
 
   signUp: async (email, password, fullName, referralCode?: string, metadata?: any) => {
@@ -104,7 +119,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
           // Update referred_by_id
           await supabase
             .from('profiles')
-            .update({ referred_by_id: referredById, shop_id: currentShop?.id })
+            .update({ referred_by_id: referredById, current_shop_id: currentShop?.id })
             .eq('id', authData.user.id);
 
           // Handle Welcome Bonus
@@ -147,7 +162,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
         try {
           await supabase
             .from('profiles')
-            .update({ shop_id: currentShop.id })
+            .update({ current_shop_id: currentShop.id })
             .eq('id', authData.user.id);
         } catch (err) {
           console.error('Failed to set initial shop_id:', err);
