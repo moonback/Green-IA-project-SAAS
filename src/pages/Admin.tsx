@@ -242,12 +242,12 @@ export default function Admin() {
 
   // Load categories in background when opening product modal
   useEffect(() => {
-    if (tab === 'products' && categories.length === 0) {
-      supabase.from('categories').select('*').order('sort_order').then(({ data }) => {
+    if (tab === 'products' && categories.length === 0 && currentShop) {
+      supabase.from('categories').select('*').eq('shop_id', currentShop.id).order('sort_order').then(({ data }) => {
         if (data) setCategories(data as Category[]);
       });
     }
-  }, [tab, categories.length]);
+  }, [tab, categories.length, currentShop]);
 
   const loadDashboard = async () => {
     const now = new Date();
@@ -490,6 +490,7 @@ export default function Admin() {
       quantity_change: qty,
       type: qty > 0 ? 'restock' : 'adjustment',
       note: stockAdjust.note || 'Ajustement manuel',
+      shop_id: currentShop?.id,
     });
     setProducts((prev) => prev.map((p) => (p.id === stockAdjust.id ? { ...p, stock_quantity: newStock } : p)));
     if (tab === 'stock') {
