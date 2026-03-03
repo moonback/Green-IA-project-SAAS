@@ -84,6 +84,28 @@ export interface Shop {
     ai_instructions?: string;
     store_address?: string;
     store_hours?: string;
+    // ── Theme customization ──
+    theme?: {
+      primary_color: string;
+      secondary_color: string;
+      accent_color: string;
+      background_color: string;
+      text_color: string;
+      font_family: string;
+      border_radius: 'sharp' | 'rounded' | 'pill';
+      button_style: 'filled' | 'outline' | 'ghost';
+      nav_style: 'dark' | 'light' | 'transparent' | 'colored';
+      card_style: 'glass' | 'solid' | 'minimal' | 'bordered';
+      hero_style: 'gradient' | 'image' | 'solid' | 'overlay';
+      hero_image_url: string | null;
+      logo_position: 'left' | 'center';
+      show_banner: boolean;
+      banner_color: string;
+      banner_text_color: string;
+      dark_mode: boolean;
+      animations_enabled: boolean;
+      preset: string;
+    };
     [key: string]: any;
   };
   subscription_plan: 'free' | 'pro' | 'enterprise';

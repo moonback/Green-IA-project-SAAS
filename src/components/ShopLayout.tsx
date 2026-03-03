@@ -14,6 +14,7 @@ import { useCartStore } from "../store/cartStore";
 import { useAuthStore } from "../store/authStore";
 import { useShopStore } from "../store/shopStore";
 import { useSettingsStore } from "../store/settingsStore";
+import { applyThemeCSSVars } from "./admin/AdminThemeTab";
 
 /**
  * ShopLayout — Layout dédié aux boutiques.
@@ -36,7 +37,30 @@ export default function ShopLayout() {
     const isRegisteredToShop = Boolean(isOwner || (profile?.current_shop_id === currentShop?.id));
 
     const sp = (path: string) => `/${shopSlug}${path}`;
-    const primaryColor = currentShop?.settings?.primary_color || '#39ff14';
+    const primaryColor = currentShop?.settings?.theme?.primary_color || currentShop?.settings?.primary_color || '#39ff14';
+    const shopFont = currentShop?.settings?.theme?.font_family || 'Inter';
+
+    // ── Apply theme CSS variables whenever shop changes ──
+    useEffect(() => {
+        if (currentShop?.settings?.theme) {
+            applyThemeCSSVars(currentShop.settings.theme);
+            // Inject Google Font dynamically
+            const fontFamily = currentShop.settings.theme.font_family;
+            if (fontFamily) {
+                const id = `gf-${fontFamily.replace(/\s+/g, '-')}`;
+                if (!document.getElementById(id)) {
+                    const link = document.createElement('link');
+                    link.id = id;
+                    link.rel = 'stylesheet';
+                    link.href = `https://fonts.googleapis.com/css2?family=${fontFamily.replace(/\s+/g, '+')}:wght@300;400;500;600;700;800;900&display=swap`;
+                    document.head.appendChild(link);
+                }
+            }
+        } else if (currentShop?.settings?.primary_color) {
+            // Legacy: only primary_color
+            document.documentElement.style.setProperty('--shop-primary', currentShop.settings.primary_color);
+        }
+    }, [currentShop]);
 
     useEffect(() => {
         setIsMenuOpen(false);
@@ -55,7 +79,13 @@ export default function ShopLayout() {
     const shopName = currentShop?.name || 'Boutique CBD';
 
     return (
-        <div className="min-h-screen flex flex-col bg-zinc-950 text-zinc-100 font-sans">
+        <div
+            className="min-h-screen flex flex-col text-zinc-100"
+            style={{
+                backgroundColor: currentShop?.settings?.theme?.background_color || '#09090b',
+                fontFamily: shopFont,
+            }}
+        >
             <AgeGate />
             <CartSidebar />
             {settings.budtender_enabled && user && isRegisteredToShop && <BudTender />}

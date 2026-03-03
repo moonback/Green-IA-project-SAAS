@@ -236,7 +236,7 @@ export default function Layout() {
                             <ArrowRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-zinc-600" />
                           </Link>
 
-                          {(isOwner || (!isShopContext && profile?.is_admin)) && (
+                          {/* {(isOwner || (!isShopContext && profile?.is_admin)) && (
                             <div className="mt-3 pt-3 border-t border-white/[0.05]">
                               <Link
                                 to={adminPath}
@@ -254,7 +254,7 @@ export default function Layout() {
                                 <ArrowRight className="w-4 h-4 relative z-10 text-zinc-500 group-hover:translate-x-1 transition-transform" />
                               </Link>
                             </div>
-                          )}
+                          )} */}
                         </div>
 
                         <div className="mt-3 pt-3 border-t border-white/[0.05]">

@@ -41,6 +41,7 @@ import {
   Award,
   ShoppingCart,
   Hash,
+  Palette,
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { Product, Category, Order, OrderItem, StockMovement, Profile } from '../lib/types';
@@ -56,10 +57,11 @@ import AdminRecommendationsTab from '../components/admin/AdminRecommendationsTab
 import AdminBudTenderTab from '../components/admin/AdminBudTenderTab';
 import AdminPOSTab from '../components/admin/AdminPOSTab';
 import ProductImageUpload from '../components/admin/ProductImageUpload';
+import AdminThemeTab from '../components/admin/AdminThemeTab';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
-type Tab = 'dashboard' | 'products' | 'categories' | 'orders' | 'stock' | 'customers' | 'settings' | 'subscriptions' | 'reviews' | 'analytics' | 'promo_codes' | 'recommendations' | 'budtender' | 'referrals' | 'pos';
+type Tab = 'dashboard' | 'products' | 'categories' | 'orders' | 'stock' | 'customers' | 'settings' | 'theme' | 'subscriptions' | 'reviews' | 'analytics' | 'promo_codes' | 'recommendations' | 'budtender' | 'referrals' | 'pos';
 
 interface DashboardStats {
   totalRevenue: number;
@@ -204,6 +206,7 @@ export default function Admin() {
     { key: 'stock', label: 'Stock', icon: BarChart3 },
     { key: 'customers', label: 'Clients', icon: Users },
     { key: 'referrals', label: 'Parrainages', icon: Award },
+    { key: 'theme', label: 'Thème & Design', icon: Palette },
     { key: 'settings', label: 'Paramètres', icon: Settings },
     { key: 'subscriptions', label: 'Abonnements', icon: RefreshCw },
     { key: 'reviews', label: 'Avis', icon: MessageSquare },
@@ -228,6 +231,7 @@ export default function Admin() {
       case 'stock': await loadStock(); break;
       case 'customers': await loadCustomers(); break;
       case 'settings': await loadSettings(); break;
+      case 'theme': break; // handled by AdminThemeTab
       case 'subscriptions': break; // handled by AdminSubscriptionsTab
       case 'reviews': break; // handled by AdminReviewsTab
       case 'analytics': break; // handled by AdminAnalyticsTab
@@ -2407,6 +2411,11 @@ export default function Admin() {
                 {/* ── BudTender IA tab ── */}
                 {tab === 'budtender' && !isLoading && (
                   <AdminBudTenderTab />
+                )}
+
+                {/* ── Theme & Design tab ── */}
+                {tab === 'theme' && !isLoading && (
+                  <AdminThemeTab />
                 )}
 
                 {/* ── Referrals tab ── */}
