@@ -32,8 +32,8 @@ export default function Contact() {
             animate={{ opacity: 1, y: 0 }}
             className="text-5xl md:text-8xl font-serif font-black tracking-tighter leading-none mb-8"
           >
-            CONSTRUISONS <br />
-            <span className="text-green-neon italic glow-green">L'AVENIR DU CBD.</span>
+            ACCÉLÉRONS <br />
+            <span className="text-green-neon italic glow-green">VOTRE BUSINESS CBD.</span>
           </motion.h1>
 
           <motion.p
@@ -42,8 +42,8 @@ export default function Contact() {
             transition={{ delay: 0.2 }}
             className="text-xl text-zinc-400 max-w-2xl mx-auto font-light leading-relaxed"
           >
-            Démonstration, support technique ou partenariat stratégique :
-            nos experts SaaS sont là pour propulser votre business.
+            Audit de votre modèle, démo plateforme et plan de déploiement :
+            notre équipe accompagne les décideurs CBD de la stratégie à l'exécution.
           </motion.p>
         </div>
       </section>
@@ -57,24 +57,24 @@ export default function Contact() {
             <div className="space-y-6">
               {[
                 {
-                  title: "Démo Personnalisée",
-                  desc: "Découvrez comment l'IA BudTender peut transformer vos ventes.",
+                  title: "Diagnostic SaaS personnalisé",
+                  desc: "Cartographiez vos leviers de marge, conversion et fidélisation en 30 minutes.",
                   icon: Zap,
                   color: "text-green-neon",
                   link: "/ouvrir-boutique",
-                  label: "Lancer la démo"
+                  label: "Réserver un audit"
                 },
                 {
-                  title: "Support SaaS 24/7",
-                  desc: "Une équipe technique dédiée pour vos déploiements.",
+                  title: "Accompagnement déploiement",
+                  desc: "Architecture, migration et mise en production de votre stack CBD.",
                   icon: Headphones,
                   color: "text-blue-400",
                   link: "mailto:support@greenIA.io",
                   label: "Ouvrir un ticket"
                 },
                 {
-                  title: "Partenariats Shop",
-                  desc: "Rejoignez l'écosystème Green IA en tant que partenaire.",
+                  title: "Programme partenaires",
+                  desc: "Intégrateurs, franchises et opérateurs multi-sites : construisons ensemble.",
                   icon: Building2,
                   color: "text-purple-400",
                   link: "mailto:partners@greenIA.io",
@@ -116,8 +116,8 @@ export default function Contact() {
             >
               <div className="absolute top-0 right-0 w-32 h-32 bg-green-neon/5 blur-[50px]" />
               <div className="space-y-4">
-                <h2 className="text-4xl font-serif font-black">Besoin d'aide <br /><span className="text-green-neon italic">Sur-Mesure ?</span></h2>
-                <p className="text-zinc-500 text-sm">Transmettez-nous vos besoins, un conseiller SaaS reviendra vers vous sous 12h.</p>
+                <h2 className="text-4xl font-serif font-black">Parlons de vos <br /><span className="text-green-neon italic">objectifs business</span></h2>
+                <p className="text-zinc-500 text-sm">Décrivez votre contexte (mono-site, multi-site, e-commerce, POS). Un expert vous répond sous 12h.</p>
               </div>
 
               <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>

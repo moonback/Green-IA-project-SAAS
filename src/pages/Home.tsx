@@ -78,18 +78,18 @@ export default function Home() {
             </span>
 
             <h1 className="section-title text-4xl sm:text-6xl lg:text-7xl">
-              Mur photo & commerce <span className="glow-green italic text-green-neon">augmentés</span>
+              SaaS CBD orienté <span className="glow-green italic text-green-neon">performance réseau</span>
             </h1>
             <p className="section-copy mt-6 max-w-2xl text-base sm:text-lg">
-              Une expérience SaaS premium qui unifie l’engagement événementiel, les recommandations IA et la conversion en boutique.
+              Green IA aide les dirigeants CBD à industrialiser acquisition, conversion et fidélisation sur tous leurs points de vente.
             </p>
 
             <div className="mt-10 flex w-full flex-col items-stretch justify-center gap-3 sm:w-auto sm:flex-row">
               <Link to="/ouvrir-boutique" className="btn-primary">
-                Démarrer gratuitement <ArrowRight className="h-4 w-4" />
+                Parler à un expert SaaS B2B <ArrowRight className="h-4 w-4" />
               </Link>
               <Link to="/solution" className="btn-secondary">
-                Voir la solution
+                Voir l'architecture SaaS
               </Link>
             </div>
           </motion.div>
@@ -198,7 +198,7 @@ export default function Home() {
 
           <div>
             <p className="section-kicker">Operations suite</p>
-            <h2 className="section-title mt-4">Fiabilité premium pour les équipes événementielles</h2>
+            <h2 className="section-title mt-4">Fiabilité premium pour les opérateurs CBD</h2>
             <p className="section-copy mt-5">
               Tableaux de bord, suivi des interactions et vision unifiée des ventes pour un pilotage fluide sur mobile, tablette et desktop.
             </p>
@@ -216,17 +216,17 @@ export default function Home() {
       <section className="app-section">
         <div className="content-wrap ui-card rounded-[2.2rem] p-8 text-center sm:p-12">
           <h2 className="section-title mx-auto max-w-3xl text-4xl sm:text-6xl">
-            Prêt à lancer votre expérience <span className="text-green-neon">SaaS premium</span> ?
+            Prêt à structurer votre <span className="text-green-neon">croissance CBD</span> ?
           </h2>
           <p className="section-copy mx-auto mt-4 max-w-2xl">
-            Déploiement rapide, design cohérent et performance mobile-first pour engager vos clients sur chaque point de contact.
+            Déploiement multi-boutique, pilotage temps réel et automatisation commerciale pour accélérer votre business CBD.
           </p>
           <div className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row">
             <Link to="/ouvrir-boutique" className="btn-primary">
-              Essai gratuit
+              Planifier un onboarding
             </Link>
             <Link to="/contact" className="btn-secondary">
-              Demander une démo
+              Parler à un expert SaaS
             </Link>
           </div>
         </div>

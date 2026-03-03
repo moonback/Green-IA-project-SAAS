@@ -29,8 +29,8 @@ export default function Quality() {
   return (
     <div className="min-h-screen bg-zinc-950 text-white font-sans">
       <SEO
-        title="Excellence Technologique — Green IA SaaS"
-        description="Découvrez l'infrastructure de pointe de Green IA. Sécurité multi-tenant, IA spécialisée et performance cloud pour votre business CBD."
+        title="Excellence opérationnelle — Green IA SaaS"
+        description="Découvrez le standard d'exploitation Green IA pour les professionnels CBD : sécurité, conformité, IA et performance commerciale."
       />
 
       {/* ────────── Hero Section : Tech Focus ────────── */}
@@ -55,8 +55,8 @@ export default function Quality() {
             animate={{ opacity: 1, y: 0 }}
             className="text-5xl md:text-8xl font-serif font-black tracking-tighter leading-none mb-10"
           >
-            LA SCIENCE DU <br />
-            <span className="text-green-neon italic glow-green">SUCCÈS DIGITAL.</span>
+            LE STANDARD DU <br />
+            <span className="text-green-neon italic glow-green">SUCCÈS BUSINESS.</span>
           </motion.h1>
 
           <motion.p
@@ -65,8 +65,7 @@ export default function Quality() {
             transition={{ delay: 0.2 }}
             className="text-xl md:text-2xl text-zinc-400 max-w-3xl mx-auto font-light leading-relaxed mb-12"
           >
-            Nous ne construisons pas juste un site web. Nous déployons un écosystème intelligent,
-            robuste et sécurisé, conçu pour supporter la croissance des leaders du CBD.
+            Nous ne vendons pas un simple site. Nous déployons un système d'exploitation SaaS complet pour structurer la croissance des retailers CBD.
           </motion.p>
         </div>
       </section>
@@ -199,7 +198,7 @@ export default function Quality() {
               className="space-y-10"
             >
               <div className="space-y-4">
-                <h2 className="text-4xl md:text-5xl font-serif font-black">L'IA au service du <br /> <span className="text-green-neon italic">Retail Moderne.</span></h2>
+                <h2 className="text-4xl md:text-5xl font-serif font-black">L'IA au service du <br /> <span className="text-green-neon italic">pilotage CBD B2B.</span></h2>
               </div>
               <div className="space-y-8">
                 <p className="text-lg text-zinc-400 leading-relaxed font-light">

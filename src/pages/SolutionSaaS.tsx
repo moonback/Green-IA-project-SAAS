@@ -67,7 +67,7 @@ export default function SolutionSaaS() {
                         className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.04] border border-white/[0.08] backdrop-blur-xl mb-4"
                     >
                         <Zap className="w-4 h-4 text-green-neon fill-green-neon" />
-                        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400">Infrastructure Multi-tenant Cloud</span>
+                        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400">Infrastructure SaaS pour opérateurs CBD</span>
                     </motion.div>
 
                     <motion.h1
@@ -76,7 +76,7 @@ export default function SolutionSaaS() {
                         className="text-5xl md:text-8xl font-serif font-black tracking-tighter leading-[0.9] mb-10"
                     >
                         ARCHITECTURE <br />
-                        <span className="text-green-neon italic glow-green">HAUTE-PERFORMANCE.</span>
+                        <span className="text-green-neon italic glow-green">B2B HAUTE PERFORMANCE.</span>
                     </motion.h1>
 
                     <motion.p
@@ -85,14 +85,13 @@ export default function SolutionSaaS() {
                         transition={{ delay: 0.1 }}
                         className="text-zinc-400 text-lg md:text-xl max-w-3xl mx-auto font-light leading-relaxed"
                     >
-                        Green IA n'est pas qu'un simple site web, c'est un moteur technologique
-                        complet qui gère l'inventaire, les clients et l'intelligence artificielle
-                        pour des centaines de boutiques simultanément.
+                        Green IA est une plateforme d'exploitation conçue pour les professionnels du CBD :
+                        pilotage multi-boutique, conformité, POS cloud et IA commerciale dans un seul outil.
                     </motion.p>
                 </div>
             </section>
 
-            {/* ─── Core Architecture Section ─── */}
+            {/* ─── Modules pour exploiter un business CBD ─── */}
             <section className="py-32 px-5">
                 <div className="max-w-7xl mx-auto">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pb-20 border-b border-white/[0.06]">
