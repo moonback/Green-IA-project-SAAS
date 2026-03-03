@@ -9,6 +9,9 @@ import { useWishlistStore } from '../store/wishlistStore';
 import StockBadge from './StockBadge';
 import StarRating from './StarRating';
 
+// Image de remplacement si l'URL produit est invalide / 404
+const FALLBACK_IMG = 'https://images.pexels.com/photos/4041392/pexels-photo-4041392.jpeg?auto=compress&cs=tinysrgb&w=800';
+
 interface ProductCardProps {
   product: Product;
 }
@@ -82,7 +85,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           className={`flex items-center justify-center w-8 h-8 rounded-xl border backdrop-blur-md transition-all ${isWished
             ? 'bg-red-500/90 border-red-500/50 text-white'
             : 'bg-zinc-900/80 border-white/10 text-zinc-400 hover:text-red-400 hover:border-red-400/30'
-          }`}
+            }`}
         >
           <Heart className={`w-4 h-4 ${isWished ? 'fill-current' : ''}`} />
         </button>
@@ -96,8 +99,16 @@ export default function ProductCard({ product }: ProductCardProps) {
       {/* Image — aspect 4:5 coherent with product detail */}
       <Link to={`/catalogue/${product.slug}`} className="block aspect-[4/5] overflow-hidden bg-zinc-800/50">
         <img
-          src={product.image_url ?? 'https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=400'}
+          src={product.image_url ?? FALLBACK_IMG}
           alt={product.name}
+          loading="lazy"
+          onError={(e) => {
+            const target = e.currentTarget;
+            // Prevent infinite loop if fallback itself fails
+            if (target.src !== FALLBACK_IMG) {
+              target.src = FALLBACK_IMG;
+            }
+          }}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
       </Link>
