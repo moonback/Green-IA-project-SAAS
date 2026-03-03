@@ -109,7 +109,7 @@ export default function ShopLayout() {
                         </Link>
 
                         {/* Desktop Nav */}
-                        <nav className="hidden lg:flex items-center gap-1">
+                        <nav className="hidden lg:flex items-center gap-1.5 px-1.5 py-1 bg-white/[0.03] border border-white/[0.06] rounded-full">
                             {navLinks.map((link) => {
                                 const isActive = location.pathname === link.path ||
                                     (link.path !== sp("/") && location.pathname.startsWith(link.path));
@@ -117,105 +117,164 @@ export default function ShopLayout() {
                                     <Link
                                         key={link.path}
                                         to={link.path}
-                                        className={`relative px-4 py-2 text-[10px] font-bold uppercase tracking-[0.15em] transition-all duration-300 rounded-full ${isActive
+                                        className={`relative px-5 py-2 text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-500 rounded-full group ${isActive
                                             ? "text-black"
-                                            : "text-zinc-400 hover:text-white hover:bg-white/[0.04]"
+                                            : "text-zinc-500 hover:text-white"
                                             }`}
-                                        style={isActive ? { backgroundColor: primaryColor } : {}}
                                     >
-                                        {link.name}
+                                        <span className="relative z-10">{link.name}</span>
+                                        {isActive && (
+                                            <motion.div
+                                                layoutId="shop-nav-active"
+                                                className="absolute inset-0 rounded-full shadow-[0_4px_12px_rgba(0,0,0,0.3)]"
+                                                style={{ backgroundColor: primaryColor }}
+                                                transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                                            />
+                                        )}
+                                        {!isActive && (
+                                            <span className="absolute inset-0 rounded-full bg-white/0 group-hover:bg-white/[0.05] transition-colors" />
+                                        )}
                                     </Link>
                                 );
                             })}
                         </nav>
 
-                        {/* Right Actions */}
-                        <div className="flex items-center gap-2 md:gap-3">
+                        {/* Account & Meta Actions */}
+                        <div className="flex items-center gap-2 md:gap-4 ml-2">
+                            {/* Search Trigger (Visual only for now) */}
+                            <button className="hidden md:flex p-2.5 text-zinc-400 hover:text-white transition-colors rounded-xl hover:bg-white/[0.04]">
+                                <Search className="w-5 h-5" />
+                            </button>
+
                             {/* Cart */}
                             <button
                                 onClick={openSidebar}
-                                className="relative p-2.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-zinc-400 hover:text-white transition-all"
+                                className="relative p-2.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-zinc-400 hover:text-white transition-all group overflow-hidden"
                                 aria-label="Panier"
                             >
-                                <ShoppingCart className="w-5 h-5" />
+                                <div className="absolute inset-0 bg-white/[0.02] group-hover:bg-white/[0.08] transition-colors" />
+                                <ShoppingCart className="w-5 h-5 relative z-10" />
                                 {itemCount > 0 && (
-                                    <span
-                                        className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full text-[10px] font-black flex items-center justify-center text-black shadow-lg"
+                                    <motion.span
+                                        initial={{ scale: 0 }}
+                                        animate={{ scale: 1 }}
+                                        className="absolute -top-1 -right-1 w-5 h-5 rounded-full text-[10px] font-black flex items-center justify-center text-black shadow-[0_0_15px_rgba(255,255,255,0.3)] relative z-20"
                                         style={{ backgroundColor: primaryColor }}
                                     >
                                         {itemCount}
-                                    </span>
+                                    </motion.span>
                                 )}
                             </button>
 
-                            {/* Account */}
+                            {/* Account Dropdown */}
                             {user ? (
                                 <div className="relative">
                                     <button
                                         onClick={() => setIsAccountMenuOpen(!isAccountMenuOpen)}
-                                        className={`flex items-center gap-2 p-1.5 pr-3 rounded-full border transition-all duration-300 ${isAccountMenuOpen
-                                            ? "border-white/20 bg-white/10 text-white"
-                                            : "bg-white/[0.04] border-white/[0.08] text-zinc-400 hover:text-white"
+                                        className={`flex items-center gap-3 p-1 rounded-full border transition-all duration-500 group ${isAccountMenuOpen
+                                            ? "border-white/20 bg-white/10"
+                                            : "bg-white/[0.04] border-white/[0.08] hover:border-white/20 hover:bg-white/[0.06]"
                                             }`}
                                     >
-                                        <div className="w-7 h-7 rounded-full flex items-center justify-center bg-white/[0.08]">
-                                            <User className="h-3.5 w-3.5" />
+                                        <div className="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden bg-gradient-to-br from-zinc-700 to-zinc-900 border border-white/10 group-hover:scale-105 transition-transform">
+                                            {profile?.avatar_url ? (
+                                                <img src={profile.avatar_url} alt="" className="w-full h-full object-cover" />
+                                            ) : (
+                                                <User className="h-4 w-4 text-zinc-400" />
+                                            )}
                                         </div>
-                                        <span className="text-[10px] font-bold uppercase tracking-wider hidden md:inline">
-                                            {profile?.full_name?.split(" ")[0] ?? "Profil"}
-                                        </span>
-                                        <ChevronDown className={`w-3 h-3 transition-transform ${isAccountMenuOpen ? 'rotate-180' : ''}`} />
+                                        <div className="hidden lg:flex flex-col items-start pr-3">
+                                            <span className="text-[10px] font-black text-white uppercase tracking-tighter leading-none mb-0.5">
+                                                {profile?.full_name?.split(" ")[0] ?? "Profil"}
+                                            </span>
+                                            <span className="text-[8px] font-bold text-zinc-500 uppercase tracking-widest leading-none">
+                                                Connecté
+                                            </span>
+                                        </div>
+                                        <ChevronDown className={`hidden md:block w-3 h-3 text-zinc-500 mr-2 transition-transform duration-500 ${isAccountMenuOpen ? 'rotate-180' : ''}`} />
                                     </button>
 
                                     <AnimatePresence>
                                         {isAccountMenuOpen && (
                                             <motion.div
-                                                initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                                                initial={{ opacity: 0, y: 15, scale: 0.95 }}
                                                 animate={{ opacity: 1, y: 0, scale: 1 }}
-                                                exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                                                className="absolute right-0 top-full mt-3 w-56 bg-zinc-900/95 backdrop-blur-2xl border border-white/[0.08] rounded-2xl shadow-2xl overflow-hidden z-50 p-2"
+                                                exit={{ opacity: 0, y: 15, scale: 0.95 }}
+                                                className="absolute right-0 top-full mt-4 w-72 bg-zinc-900/90 backdrop-blur-3xl border border-white/[0.1] rounded-3xl shadow-[0_30px_60px_rgba(0,0,0,0.8)] overflow-hidden z-50 p-3"
                                             >
-                                                <Link
-                                                    to={sp("/compte")}
-                                                    className="flex items-center gap-3 px-4 py-3 text-xs font-semibold text-zinc-400 hover:bg-white/[0.04] hover:text-white rounded-xl transition-all"
-                                                >
-                                                    <User className="h-4 w-4" />
-                                                    Mon Compte
-                                                </Link>
-                                                <Link
-                                                    to={sp("/compte/commandes")}
-                                                    className="flex items-center gap-3 px-4 py-3 text-xs font-semibold text-zinc-400 hover:bg-white/[0.04] hover:text-white rounded-xl transition-all"
-                                                >
-                                                    <Package className="h-4 w-4" />
-                                                    Mes Commandes
-                                                </Link>
-                                                <Link
-                                                    to={sp("/compte/favoris")}
-                                                    className="flex items-center gap-3 px-4 py-3 text-xs font-semibold text-zinc-400 hover:bg-white/[0.04] hover:text-white rounded-xl transition-all"
-                                                >
-                                                    <Heart className="h-4 w-4" />
-                                                    Mes Favoris
-                                                </Link>
+                                                {/* Profile Info Section */}
+                                                <div className="px-4 py-4 mb-2 bg-white/[0.03] rounded-2xl border border-white/[0.05]">
+                                                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 mb-1">Session Magasin</p>
+                                                    <h3 className="text-white font-serif font-black text-lg leading-tight mb-1">{profile?.full_name}</h3>
+                                                    <p className="text-[10px] text-zinc-400 truncate opacity-60">{user.email}</p>
+                                                </div>
+
+                                                <div className="space-y-1">
+                                                    <Link
+                                                        to={sp("/compte")}
+                                                        className="flex items-center justify-between px-4 py-3 text-xs font-bold text-zinc-400 hover:text-white hover:bg-white/[0.05] rounded-xl transition-all group"
+                                                    >
+                                                        <div className="flex items-center gap-3">
+                                                            <div className="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                                                <User className="h-4 w-4" />
+                                                            </div>
+                                                            Tableau de Bord
+                                                        </div>
+                                                        <ArrowRight className="w-3.5 h-3.5 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-zinc-600" />
+                                                    </Link>
+                                                    <Link
+                                                        to={sp("/compte/commandes")}
+                                                        className="flex items-center justify-between px-4 py-3 text-xs font-bold text-zinc-400 hover:text-white hover:bg-white/[0.05] rounded-xl transition-all group"
+                                                    >
+                                                        <div className="flex items-center gap-3">
+                                                            <div className="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                                                <Package className="h-4 w-4" />
+                                                            </div>
+                                                            Historique Achats
+                                                        </div>
+                                                        <ArrowRight className="w-3.5 h-3.5 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-zinc-600" />
+                                                    </Link>
+                                                    <Link
+                                                        to={sp("/compte/favoris")}
+                                                        className="flex items-center justify-between px-4 py-3 text-xs font-bold text-zinc-400 hover:text-white hover:bg-white/[0.05] rounded-xl transition-all group"
+                                                    >
+                                                        <div className="flex items-center gap-3">
+                                                            <div className="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                                                <Heart className="h-4 w-4" />
+                                                            </div>
+                                                            Produits Favoris
+                                                        </div>
+                                                        <ArrowRight className="w-3.5 h-3.5 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-zinc-600" />
+                                                    </Link>
+                                                </div>
+
                                                 {profile?.is_admin && (
-                                                    <>
-                                                        <div className="h-px bg-white/[0.06] my-1 mx-3" />
+                                                    <div className="mt-3 pt-3 border-t border-white/[0.05]">
                                                         <Link
                                                             to={sp("/admin")}
-                                                            className="flex items-center gap-3 px-4 py-3 text-xs font-bold hover:bg-green-500/10 rounded-xl transition-all"
-                                                            style={{ color: primaryColor }}
+                                                            className="flex items-center justify-between px-4 py-4 rounded-2xl transition-all group overflow-hidden relative"
+                                                            style={{ backgroundColor: `${primaryColor}08` }}
                                                         >
-                                                            <ShieldCheck className="h-4 w-4" />
-                                                            Gestion Boutique
+                                                            <div className="flex items-center gap-3 relative z-10">
+                                                                <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform" style={{ backgroundColor: primaryColor }}>
+                                                                    <ShieldCheck className="h-5 w-5 text-black" />
+                                                                </div>
+                                                                <div className="flex flex-col">
+                                                                    <span className="text-[10px] font-black uppercase tracking-tight" style={{ color: primaryColor }}>Management</span>
+                                                                    <span className="text-xs font-bold text-white">Gestion Boutique</span>
+                                                                </div>
+                                                            </div>
+                                                            <ChevronDown className="w-4 h-4 -rotate-90 relative z-10 text-zinc-500" />
                                                         </Link>
-                                                    </>
+                                                    </div>
                                                 )}
-                                                <div className="h-px bg-white/[0.06] my-1 mx-3" />
+
                                                 <button
                                                     onClick={signOut}
-                                                    className="w-full flex items-center gap-3 px-4 py-3 text-xs font-bold text-red-400 hover:bg-red-400/10 rounded-xl transition-all"
+                                                    className="w-full mt-2 flex items-center gap-3 px-4 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-red-400/70 hover:text-red-400 hover:bg-red-400/5 rounded-2xl transition-all group"
                                                 >
-                                                    <LogOut className="h-4 w-4" />
-                                                    Déconnexion
+                                                    <LogOut className="h-3.5 w-3.5 group-hover:-translate-x-1 transition-transform" />
+                                                    Fermer la session
                                                 </button>
                                             </motion.div>
                                         )}
@@ -224,11 +283,11 @@ export default function ShopLayout() {
                             ) : (
                                 <Link
                                     to={sp("/connexion")}
-                                    className="flex items-center gap-2 px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all text-black"
+                                    className="hidden md:flex items-center gap-3 px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-[0.15em] transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:shadow-[0_0_30px_rgba(255,255,255,0.1)] text-black"
                                     style={{ backgroundColor: primaryColor }}
                                 >
                                     <User className="w-3.5 h-3.5" />
-                                    <span className="hidden sm:inline">Connexion</span>
+                                    Se Connecter
                                 </Link>
                             )}
                         </div>
@@ -245,23 +304,31 @@ export default function ShopLayout() {
                             transition={{ type: "spring", damping: 25, stiffness: 200 }}
                             className="fixed inset-0 z-[100] lg:hidden bg-zinc-950 flex flex-col overflow-hidden"
                         >
-                            <div className="absolute top-0 right-0 w-[80%] h-[40%] blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2 opacity-20" style={{ background: primaryColor }} />
+                            {/* Decorative background blur */}
+                            <div className="absolute top-0 right-0 w-[100%] h-[50%] blur-[150px] rounded-full -translate-y-1/2 translate-x-1/2 opacity-20 pointer-events-none" style={{ background: primaryColor }} />
+                            <div className="absolute bottom-0 left-0 w-[80%] h-[30%] blur-[120px] rounded-full translate-y-1/2 -translate-x-1/2 opacity-10 pointer-events-none" style={{ background: primaryColor }} />
 
                             {/* Mobile header */}
-                            <div className="flex items-center justify-between px-6 h-20 relative z-10 border-b border-white/[0.04] bg-zinc-950/50 backdrop-blur-md">
+                            <div className="flex items-center justify-between px-6 h-20 relative z-10 border-b border-white/[0.04] bg-zinc-950/40 backdrop-blur-xl">
                                 <Link to={sp("/")} className="flex items-center gap-3" onClick={() => setIsMenuOpen(false)}>
-                                    {currentShop?.logo_url ? (
-                                        <img src={currentShop.logo_url} alt={shopName} className="h-10 w-10 rounded-xl object-cover" />
-                                    ) : (
-                                        <div className="h-10 w-10 rounded-xl flex items-center justify-center text-black font-black text-lg" style={{ backgroundColor: primaryColor }}>
-                                            {shopName[0]}
-                                        </div>
-                                    )}
-                                    <span className="text-lg font-black text-white">{shopName}</span>
+                                    <div className="relative group">
+                                        <div className="absolute inset-0 blur-lg rounded-xl opacity-50 transition-opacity group-active:opacity-100" style={{ background: primaryColor }} />
+                                        {currentShop?.logo_url ? (
+                                            <img src={currentShop.logo_url} alt={shopName} className="h-10 w-10 rounded-xl object-cover relative z-10 border border-white/10" />
+                                        ) : (
+                                            <div className="h-10 w-10 rounded-xl flex items-center justify-center text-black font-black text-lg relative z-10 shadow-lg" style={{ backgroundColor: primaryColor }}>
+                                                {shopName[0]}
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-sm font-black text-white uppercase tracking-wider leading-none mb-0.5">{shopName}</span>
+                                        <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.2em] leading-none">Boutique Officielle</span>
+                                    </div>
                                 </Link>
                                 <button
                                     onClick={() => setIsMenuOpen(false)}
-                                    className="p-3 text-zinc-400 hover:text-white rounded-2xl bg-white/[0.04] border border-white/[0.08]"
+                                    className="p-3 text-zinc-400 hover:text-white rounded-2xl bg-white/[0.04] border border-white/[0.08] active:scale-95 transition-all"
                                     aria-label="Fermer"
                                 >
                                     <X className="w-5 h-5" />
@@ -270,7 +337,8 @@ export default function ShopLayout() {
 
                             {/* Navigation links */}
                             <nav className="flex-1 overflow-y-auto px-6 py-10 relative z-10">
-                                <div className="flex flex-col gap-2">
+                                <div className="space-y-4">
+                                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-600 ml-4 mb-2">Navigation</p>
                                     {navLinks.map((link, i) => (
                                         <motion.div
                                             key={link.path}
@@ -281,34 +349,61 @@ export default function ShopLayout() {
                                             <Link
                                                 to={link.path}
                                                 onClick={() => setIsMenuOpen(false)}
-                                                className={`group flex items-center justify-between px-5 py-4 rounded-3xl transition-all ${location.pathname === link.path
-                                                    ? "text-black"
-                                                    : "text-zinc-400 hover:text-white hover:bg-white/[0.03]"
+                                                className={`group flex items-center justify-between px-6 py-5 rounded-[2rem] transition-all border ${location.pathname === link.path
+                                                    ? "text-black border-transparent shadow-xl"
+                                                    : "text-zinc-400 border-white/[0.03] hover:bg-white/[0.02]"
                                                     }`}
                                                 style={location.pathname === link.path ? { backgroundColor: primaryColor } : {}}
                                             >
-                                                <span className="text-2xl font-serif font-bold">{link.name}</span>
-                                                <ArrowRight className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                                <span className="text-3xl font-serif font-black tracking-tight">{link.name}</span>
+                                                <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 ${location.pathname === link.path ? "bg-black/20" : "bg-white/5 group-hover:bg-white/10 group-hover:rotate-45"}`}>
+                                                    <ArrowRight className={`w-5 h-5 ${location.pathname === link.path ? "text-black" : "text-zinc-600"}`} />
+                                                </div>
                                             </Link>
                                         </motion.div>
                                     ))}
                                 </div>
                             </nav>
 
-                            {/* Mobile footer */}
-                            <div className="px-6 pb-10 pt-6 border-t border-white/[0.06] bg-zinc-950/80 backdrop-blur-xl relative z-20 space-y-4">
+                            {/* Mobile footer actions */}
+                            <div className="px-6 pb-10 pt-6 border-t border-white/[0.06] bg-zinc-950/60 backdrop-blur-2xl relative z-10">
                                 {user ? (
-                                    <div className="flex flex-col gap-3 text-center">
-                                        <p className="text-zinc-500 text-[10px] font-bold uppercase tracking-widest">Connecté en tant que</p>
-                                        <p className="text-white font-serif font-black text-lg">{profile?.full_name}</p>
-                                        <Link to={sp("/compte")} onClick={() => setIsMenuOpen(false)} className="bg-white/5 py-4 rounded-2xl text-xs font-bold text-white border border-white/5">Mon Compte</Link>
-                                        <button onClick={() => { signOut(); setIsMenuOpen(false); }} className="text-red-400 py-3 text-xs font-bold">Déconnexion</button>
+                                    <div className="space-y-4 text-center">
+                                        <p className="text-zinc-500 text-[10px] font-bold uppercase tracking-widest leading-none">Session Ouverte</p>
+                                        <p className="text-white font-serif font-black text-xl leading-none mb-1">{profile?.full_name}</p>
+                                        <p className="text-[10px] text-zinc-600 font-bold uppercase tracking-wider mb-4 truncate">{user.email}</p>
+                                        <div className="grid grid-cols-2 gap-3">
+                                            <Link
+                                                to={sp("/compte")}
+                                                onClick={() => setIsMenuOpen(false)}
+                                                className="flex flex-col items-center gap-2 p-5 bg-white/[0.04] border border-white/[0.06] rounded-3xl hover:bg-white/[0.08] transition-colors"
+                                            >
+                                                <User className="w-5 h-5 text-zinc-400" />
+                                                <span className="text-[10px] font-black uppercase tracking-widest text-zinc-300">Compte</span>
+                                            </Link>
+                                            {profile?.is_admin && (
+                                                <Link
+                                                    to={sp("/admin")}
+                                                    onClick={() => setIsMenuOpen(false)}
+                                                    className="flex flex-col items-center gap-2 p-5 bg-green-neon/5 border border-green-neon/10 rounded-3xl"
+                                                >
+                                                    <ShieldCheck className="w-5 h-5 text-green-neon" />
+                                                    <span className="text-[10px] font-black uppercase tracking-widest text-green-neon">Admin</span>
+                                                </Link>
+                                            )}
+                                        </div>
+                                        <button
+                                            onClick={() => { signOut(); setIsMenuOpen(false); }}
+                                            className="w-full py-2 text-[10px] font-black uppercase tracking-[0.3em] text-red-400/60 hover:text-red-400 transition-colors"
+                                        >
+                                            Déconnexion
+                                        </button>
                                     </div>
                                 ) : (
                                     <Link
                                         to={sp("/connexion")}
                                         onClick={() => setIsMenuOpen(false)}
-                                        className="flex items-center justify-center gap-4 p-5 rounded-3xl text-sm font-black uppercase tracking-[0.2em] text-black"
+                                        className="flex items-center justify-center gap-4 p-6 rounded-[2rem] text-sm font-black uppercase tracking-[0.2em] transition-all active:scale-[0.98] shadow-2xl text-black"
                                         style={{ backgroundColor: primaryColor }}
                                     >
                                         <User className="h-5 w-5" /> Se Connecter

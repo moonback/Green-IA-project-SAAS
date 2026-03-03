@@ -64,6 +64,7 @@ export interface Profile {
   referred_by_id: string | null;
   is_admin: boolean;
   current_shop_id: string | null;
+  avatar_url: string | null;
   created_at: string;
 }
 
