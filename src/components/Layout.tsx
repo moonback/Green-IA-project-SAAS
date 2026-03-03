@@ -12,6 +12,8 @@ import {
   User,
   LogOut,
   ShieldCheck,
+  ArrowRight,
+  Globe,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
@@ -43,11 +45,9 @@ export default function Layout() {
 
   const baseNavLinks = [
     { name: "Accueil", path: "/" },
-    { name: "La Boutique", path: "/boutique" },
-    { name: "Catalogue", path: "/catalogue" },
-    { name: "Nos Produits", path: "/produits" },
-    { name: "Qualité & Légalité", path: "/qualite" },
-    { name: "Contact", path: "/contact" },
+    { name: "Solution SaaS", path: "/catalogue" },
+    { name: "Qualité & Sécurité", path: "/qualite" },
+    { name: "Contact & Démo", path: "/contact" },
   ];
 
   const navLinks = baseNavLinks;
@@ -77,7 +77,7 @@ export default function Layout() {
           >
             <div className="px-4 py-2.5 text-xs font-bold uppercase tracking-[0.2em] text-center w-full max-w-7xl mx-auto pr-10">
               <span className="inline-block animate-pulse mr-2">✦</span>
-              {settings.banner_text}
+              NOUVEAU : {settings.banner_text}
               <span className="inline-block animate-pulse ml-2">✦</span>
             </div>
             <button
@@ -108,7 +108,7 @@ export default function Layout() {
               {/* Left spacer for desktop symmetry, Mobile menu button for mobile */}
               <div className="flex-1 lg:flex items-center hidden">
                 <span className="text-[10px] uppercase tracking-[0.3em] text-zinc-500 font-bold hidden xl:block">
-                  Premium SaaS CBD Experience
+                  #1 AI-POWERED CBD SAAS PLATFORM
                 </span>
               </div>
 
@@ -125,11 +125,11 @@ export default function Layout() {
 
               {/* Centered Logo */}
               <div className="flex-shrink-0 flex items-center justify-center">
-                <Link to="/" className="flex items-center group relative z-[1000]" aria-label="Green Mood CBD Shop — Accueil">
+                <Link to="/" className="flex items-center group relative z-[1000]" aria-label="Green Mood SaaS — Accueil">
                   <div className="absolute -inset-8 bg-green-neon/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                   <img
                     src="/logo.png"
-                    alt="Green Mood CBD Shop"
+                    alt="Green Mood CBD SaaS"
                     className="h-30 md:h-32 w-auto object-contain transition-all duration-700 group-hover:scale-105 group-hover:glow-logo"
                   />
                 </Link>
@@ -137,20 +137,6 @@ export default function Layout() {
 
               {/* Right Actions: Cart & Account */}
               <div className="flex-1 flex justify-end items-center gap-2 md:gap-4">
-                {/* Cart button */}
-                <button
-                  onClick={openSidebar}
-                  className="group relative p-3 text-zinc-400 hover:text-green-neon transition-all duration-300 hover:bg-white/[0.04] rounded-xl border border-transparent hover:border-white/[0.08]"
-                  aria-label="Ouvrir le panier"
-                >
-                  <ShoppingCart className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" />
-                  {itemCount > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-green-neon text-black text-[10px] font-bold rounded-full w-4.5 h-4.5 flex items-center justify-center shadow-[0_0_12px_rgba(57,255,20,0.5)]">
-                      {itemCount > 99 ? "99+" : itemCount}
-                    </span>
-                  )}
-                </button>
-
                 {/* Account (Desktop) */}
                 {user ? (
                   <div className="relative hidden md:block">
@@ -176,21 +162,14 @@ export default function Layout() {
                           initial={{ opacity: 0, y: 12, scale: 0.95 }}
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: 12, scale: 0.95 }}
-                          className="absolute right-0 top-full mt-4 w-56 bg-zinc-900/95 backdrop-blur-2xl border border-white/[0.08] rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden z-50 p-2"
+                          className="absolute right-0 top-full mt-4 w-62 bg-zinc-900/95 backdrop-blur-2xl border border-white/[0.08] rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden z-50 p-2"
                         >
                           <Link
                             to="/compte"
                             className="flex items-center gap-3 px-4 py-3 text-xs font-semibold text-zinc-400 hover:bg-white/[0.04] hover:text-white rounded-xl transition-all"
                           >
                             <User className="h-4 w-4" />
-                            Tableau de bord
-                          </Link>
-                          <Link
-                            to="/compte/commandes"
-                            className="flex items-center gap-3 px-4 py-3 text-xs font-semibold text-zinc-400 hover:bg-white/[0.04] hover:text-white rounded-xl transition-all"
-                          >
-                            <Clock className="h-4 w-4" />
-                            Historique
+                            Tableau de bord Console
                           </Link>
                           {profile?.is_admin && (
                             <Link
@@ -198,7 +177,7 @@ export default function Layout() {
                               className="flex items-center gap-3 px-4 py-3 text-xs font-bold text-green-neon hover:bg-green-neon/10 rounded-xl transition-all"
                             >
                               <ShieldCheck className="h-4 w-4" />
-                              Administration
+                              Gestion Boutiques
                             </Link>
                           )}
                           <div className="h-px bg-white/[0.06] my-2 mx-4" />
@@ -214,13 +193,20 @@ export default function Layout() {
                     </AnimatePresence>
                   </div>
                 ) : (
-                  <Link
-                    to="/connexion"
-                    className="hidden md:flex items-center gap-3 px-6 py-2.5 bg-white/[0.04] border border-white/[0.08] hover:bg-white/10 hover:border-green-neon/20 text-white rounded-full transition-all duration-300 group"
-                  >
-                    <User className="h-3.5 w-3.5 text-zinc-500 group-hover:text-green-neon transition-colors" />
-                    <span className="text-[10px] font-bold uppercase tracking-widest">Connexion</span>
-                  </Link>
+                  <div className="hidden md:flex items-center gap-3">
+                    <Link
+                      to="/connexion"
+                      className="text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-white transition-colors px-4"
+                    >
+                      Connexion
+                    </Link>
+                    <Link
+                      to="/ouvrir-boutique"
+                      className="flex items-center gap-3 px-6 py-2.5 bg-green-neon text-black rounded-full transition-all duration-300 hover:shadow-[0_0_20px_rgba(57,255,20,0.4)] hover:scale-105 active:scale-95 group font-black"
+                    >
+                      <span className="text-[10px] uppercase tracking-widest">Ouvrir ma boutique</span>
+                    </Link>
+                  </div>
                 )}
               </div>
             </div>
@@ -277,7 +263,7 @@ export default function Layout() {
               {/* Mobile header */}
               <div className="flex items-center justify-center px-6 h-32 relative z-10 border-b border-white/[0.04] bg-zinc-950/50 backdrop-blur-md">
                 <Link to="/" className="flex items-center" onClick={() => setIsMenuOpen(false)}>
-                  <img src="/logo.png" alt="Green Mood" className="h-32 w-auto object-contain" />
+                  <img src="/logo.png" alt="Green Mood SaaS" className="h-32 w-auto object-contain" />
                 </Link>
                 <button
                   onClick={() => setIsMenuOpen(false)}
@@ -291,7 +277,7 @@ export default function Layout() {
               {/* Navigation links */}
               <nav className="flex-1 overflow-y-auto px-6 py-10 relative z-10 scrollbar-none">
                 <div className="flex flex-col gap-2">
-                  <span className="text-[10px] uppercase tracking-[0.4em] text-zinc-600 font-black mb-4 ml-4">Menu Principal</span>
+                  <span className="text-[10px] uppercase tracking-[0.4em] text-zinc-600 font-black mb-4 ml-4">Plateforme SaaS</span>
                   {navLinks.map((link, i) => (
                     <motion.div
                       key={link.path}
@@ -314,56 +300,33 @@ export default function Layout() {
                       </Link>
                     </motion.div>
                   ))}
+                  <div className="h-px bg-white/5 my-6 mx-4" />
+                  <Link
+                    to="/ouvrir-boutique"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="flex items-center justify-between px-6 py-5 bg-green-neon rounded-3xl text-black font-black uppercase tracking-widest text-xs"
+                  >
+                    Ouvrir ma boutique <ArrowRight className="w-4 h-4" />
+                  </Link>
                 </div>
               </nav>
 
               {/* Mobile footer actions */}
               <div className="px-6 pb-10 pt-6 border-t border-white/[0.06] bg-zinc-950/80 backdrop-blur-xl relative z-20 space-y-4">
                 {user ? (
-                  <div className="flex flex-col gap-3">
-                    <div className="flex items-center gap-4 p-4 bg-white/[0.03] rounded-3xl border border-white/[0.06]">
-                      <div className="w-12 h-12 rounded-2xl bg-green-neon/10 flex items-center justify-center text-green-neon">
-                        <User className="w-6 h-6" />
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="text-xs text-zinc-500 uppercase tracking-widest font-bold">Bienvenue</span>
-                        <span className="text-lg font-serif font-black text-white">{profile?.full_name ?? "Client Mood"}</span>
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-3">
-                      <Link
-                        to="/compte"
-                        onClick={() => setIsMenuOpen(false)}
-                        className="flex flex-col items-center justify-center gap-2 p-4 bg-white/[0.04] border border-white/[0.08] rounded-3xl hover:bg-white/[0.08] transition-all"
-                      >
-                        <User className="h-5 w-5 text-green-neon" />
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-300">Profil</span>
-                      </Link>
-                      <button
-                        onClick={() => { signOut(); setIsMenuOpen(false); }}
-                        className="flex flex-col items-center justify-center gap-2 p-4 bg-red-400/5 border border-red-400/10 rounded-3xl hover:bg-red-400/10 transition-all group"
-                      >
-                        <LogOut className="h-5 w-5 text-red-400 group-hover:scale-110 transition-transform" />
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-red-300">Sortie</span>
-                      </button>
-                    </div>
-                    {profile?.is_admin && (
-                      <Link
-                        to="/admin"
-                        onClick={() => setIsMenuOpen(false)}
-                        className="flex items-center justify-center gap-3 p-4 bg-green-neon text-black rounded-3xl text-xs font-black uppercase tracking-[0.2em] shadow-[0_10px_30px_rgba(57,255,20,0.2)]"
-                      >
-                        <ShieldCheck className="h-4 w-4" /> Administration
-                      </Link>
-                    )}
+                  <div className="flex flex-col gap-3 text-center">
+                    <p className="text-zinc-500 text-[10px] font-bold uppercase tracking-widest">Connecté en tant que</p>
+                    <p className="text-white font-serif font-black text-lg">{profile?.full_name}</p>
+                    <Link to="/compte" onClick={() => setIsMenuOpen(false)} className="bg-white/5 py-4 rounded-2xl text-xs font-bold text-white border border-white/5">Console Management</Link>
+                    <button onClick={() => { signOut(); setIsMenuOpen(false); }} className="text-red-400 py-3 text-xs font-bold">Déconnexion</button>
                   </div>
                 ) : (
                   <Link
                     to="/connexion"
                     onClick={() => setIsMenuOpen(false)}
-                    className="flex items-center justify-center gap-4 p-5 bg-green-neon text-black rounded-3xl text-sm font-black uppercase tracking-[0.2em] shadow-[0_15px_40px_rgba(57,255,20,0.3)] active:scale-95 transition-all"
+                    className="flex items-center justify-center gap-4 p-5 bg-white/5 text-white border border-white/10 rounded-3xl text-sm font-black uppercase tracking-[0.2em] active:scale-95 transition-all"
                   >
-                    <User className="h-5 w-5" /> Connexion
+                    <User className="h-5 w-5" /> Se Connecter
                   </Link>
                 )}
               </div>
@@ -378,42 +341,43 @@ export default function Layout() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-black border-t border-white/[0.06] pt-16 pb-8">
+      <footer className="bg-black border-t border-white/[0.06] pt-24 pb-12">
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-12 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-16 md:gap-12 mb-20">
             {/* Brand */}
-            <div className="space-y-4">
-              <Link to="/" className="flex items-center group" aria-label="Green Mood CBD Shop">
+            <div className="space-y-6">
+              <Link to="/" className="flex items-center group" aria-label="Green Mood SaaS">
                 <img
                   src="/logo.png"
-                  alt="Green Mood CBD Shop"
-                  className="h-12 w-auto object-contain opacity-80 group-hover:opacity-100 transition-all duration-500 group-hover:glow-logo"
+                  alt="Green Mood SaaS"
+                  className="h-12 w-auto object-contain transition-all duration-500 group-hover:glow-logo"
                 />
               </Link>
-              <p className="text-zinc-400 text-sm leading-relaxed">
-                Votre CBD Shop premium. Produits naturels, traçabilité garantie
-                et conseils d'experts pour votre bien-être.
+              <p className="text-zinc-500 text-sm leading-relaxed font-light">
+                La plateforme SaaS Cloud nº1 pour le retail CBD.
+                Intelligence Artificielle, Multi-tenant et Performance.
               </p>
-              <div className="flex gap-3 pt-1">
-                <a href={settings.social_instagram} target="_blank" rel="noopener noreferrer" className="p-2 text-zinc-500 hover:text-green-neon hover:bg-white/[0.04] rounded-lg transition-all" aria-label="Instagram">
-                  <Instagram className="h-4.5 w-4.5" />
-                </a>
-                <a href={settings.social_facebook} target="_blank" rel="noopener noreferrer" className="p-2 text-zinc-500 hover:text-green-neon hover:bg-white/[0.04] rounded-lg transition-all" aria-label="Facebook">
-                  <Facebook className="h-4.5 w-4.5" />
-                </a>
+              <div className="flex gap-4">
+                {[Instagram, Facebook, Globe, ShieldCheck].map((Icon, i) => (
+                  <a key={i} href="#" className="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-500 hover:text-green-neon hover:border-green-neon/30 transition-all">
+                    <Icon className="w-4 h-4" />
+                  </a>
+                ))}
               </div>
             </div>
 
-            {/* Quick Links */}
+            {/* Platform */}
             <div>
-              <h3 className="font-serif text-base font-semibold mb-4 text-zinc-200">Navigation</h3>
-              <ul className="space-y-2.5">
-                {navLinks.map((link) => (
-                  <li key={link.path}>
-                    <Link
-                      to={link.path}
-                      className="text-zinc-500 hover:text-green-neon transition-colors text-sm"
-                    >
+              <h3 className="text-xs font-black uppercase tracking-[0.2em] text-zinc-200 mb-8 underline decoration-green-neon underline-offset-8">Plateforme</h3>
+              <ul className="space-y-4">
+                {[
+                  { name: "IA BudTender", path: "/catalogue" },
+                  { name: "Gestion Stocks", path: "/compte" },
+                  { name: "Système POS", path: "/admin" },
+                  { name: "Fidélité & Web3", path: "/compte/loyalty" }
+                ].map((link) => (
+                  <li key={link.name}>
+                    <Link to={link.path} className="text-zinc-500 hover:text-white transition-colors text-sm font-light">
                       {link.name}
                     </Link>
                   </li>
@@ -421,52 +385,32 @@ export default function Layout() {
               </ul>
             </div>
 
-            {/* Contact Info */}
+            {/* Legal */}
             <div>
-              <h3 className="font-serif text-base font-semibold mb-4 text-zinc-200">Contact</h3>
-              <ul className="space-y-4 text-sm text-zinc-500">
-                <li className="flex items-start gap-3">
-                  <MapPin className="h-4 w-4 text-green-neon shrink-0 mt-0.5" />
-                  <span>
-                    {settings.store_address.split(',')[0]}
-                    <br />
-                    {settings.store_address.split(',').slice(1).join(',').trim()}
-                  </span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <Phone className="h-4 w-4 text-green-neon shrink-0" />
-                  <span>{settings.store_phone}</span>
-                </li>
+              <h3 className="text-xs font-black uppercase tracking-[0.2em] text-zinc-200 mb-8 underline decoration-green-neon underline-offset-8">Ressources</h3>
+              <ul className="space-y-4 text-sm text-zinc-500 font-light">
+                {["Documentation API", "Centre de Support", "Status Plateforme", "Sécurité & RLS"].map((item) => (
+                  <li key={item} className="hover:text-white cursor-pointer transition-colors">{item}</li>
+                ))}
               </ul>
             </div>
 
-            {/* Hours */}
-            <div>
-              <h3 className="font-serif text-base font-semibold mb-4 text-zinc-200">Horaires</h3>
-              <ul className="space-y-2.5 text-sm text-zinc-500">
-                <li className="flex justify-between">
-                  <span>Lundi - Samedi</span>
-                  <span className="text-zinc-400">{settings.store_hours.split(' ').slice(1).join(' ')}</span>
-                </li>
-                <li className="flex justify-between">
-                  <span>Dimanche</span>
-                  <span className="text-zinc-400">Fermé</span>
-                </li>
-              </ul>
+            {/* CTA */}
+            <div className="bg-zinc-900 border border-zinc-800 p-8 rounded-3xl space-y-4">
+              <h4 className="text-white font-bold">Prêt à scaler ?</h4>
+              <p className="text-zinc-500 text-xs leading-relaxed">Rejoignez plus de 500 shops CBD qui utilisent déjà notre IA.</p>
+              <Link to="/ouvrir-boutique" className="block w-full text-center py-3 bg-green-neon text-black text-xs font-black uppercase rounded-xl hover:scale-105 transition-transform">
+                Essai Gratuit
+              </Link>
             </div>
           </div>
 
-          <div className="border-t border-white/[0.06] pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-zinc-600">
-            <p>
-              &copy; {new Date().getFullYear()} Green Mood CBD Shop. Tous droits réservés.
-            </p>
-            <div className="flex gap-6">
-              <Link to="/mentions-legales" className="hover:text-zinc-400 transition-colors">
-                Mentions Légales
-              </Link>
-              <Link to="/mentions-legales" className="hover:text-zinc-400 transition-colors">
-                CGU
-              </Link>
+          <div className="border-t border-white/[0.04] pt-10 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-600">
+            <p>&copy; {new Date().getFullYear()} Green Mood SaaS. Global Node Infrastructure.</p>
+            <div className="flex gap-8">
+              <Link to="/mentions-legales" className="hover:text-green-neon transition-colors">Politique de Confidentialité</Link>
+              <Link to="/mentions-legales" className="hover:text-green-neon transition-colors">Termes SaaS</Link>
+              <Link to="/mentions-legales" className="hover:text-green-neon transition-colors">SLA</Link>
             </div>
           </div>
         </div>

@@ -123,11 +123,20 @@ export default function AdminBudTenderTab() {
     const [saved, setSaved] = useState(false);
     const [activeTab, setActiveTab] = useState<'general' | 'ai' | 'memory' | 'quiz' | 'stats'>('general');
     const [isLoadingStats, setIsLoadingStats] = useState(false);
-    const [stats, setStats] = useState({
-        interactionTypes: [] as { name: string; value: number }[],
-        topQuestions: [] as { question: string; count: number }[],
+    interface AdminStats {
+        interactionTypes: { name: string; value: number }[];
+        topQuestions: { question: string; count: number }[];
+        satisfaction: { positive: number; negative: number; score: number };
+        conversion: { rate: number; buyersCount: number; quizCount: number };
+        quota: { current: number; limit: number; plan: 'free' | 'pro' | 'enterprise' };
+    }
+
+    const [stats, setStats] = useState<AdminStats>({
+        interactionTypes: [],
+        topQuestions: [],
         satisfaction: { positive: 0, negative: 0, score: 0 },
-        conversion: { rate: 0, buyersCount: 0, quizCount: 0 }
+        conversion: { rate: 0, buyersCount: 0, quizCount: 0 },
+        quota: { current: 0, limit: 100, plan: 'free' }
     });
 
     // Load settings from Supabase (and fallback to localStorage) on mount
@@ -227,7 +236,8 @@ export default function AdminBudTenderTab() {
                 }
             });
 
-            // 2. Conversion calculation
+            // 2. Conversion calculation and Quota Prep
+            const { currentShop } = useShopStore.getState();
             const usersWithQuiz = new Set(interactions
                 .filter(i => i.interaction_type === 'chat_session' || i.interaction_type === 'recommendation')
                 .map(i => i.user_id)
@@ -250,8 +260,31 @@ export default function AdminBudTenderTab() {
                     rate: quizCount > 0 ? Math.round((buyersCount / quizCount) * 100) : 0,
                     buyersCount,
                     quizCount
+                },
+                quota: {
+                    current: 0,
+                    limit: currentShop?.subscription_plan === 'pro' ? 2000 : currentShop?.subscription_plan === 'enterprise' ? 100000 : 100,
+                    plan: (currentShop?.subscription_plan || 'free') as 'free' | 'pro' | 'enterprise'
                 }
             });
+
+            // 3. Quota current usage
+            if (currentShop) {
+                const startOfMonth = new Date();
+                startOfMonth.setDate(1);
+                startOfMonth.setHours(0, 0, 0, 0);
+
+                const { count: usageCount } = await supabase
+                    .from('ai_usage_logs')
+                    .select('id', { count: 'exact', head: true })
+                    .eq('shop_id', currentShop.id)
+                    .gte('created_at', startOfMonth.toISOString());
+
+                setStats(s => ({
+                    ...s,
+                    quota: { ...s.quota, current: usageCount || 0 }
+                }));
+            }
         } catch (err) {
             console.error('[AdminBudTenderTab] loadStats error:', err);
         } finally {
@@ -518,8 +551,24 @@ export default function AdminBudTenderTab() {
 
                                 <div className="bg-amber-500/5 border border-amber-500/20 rounded-xl p-4 flex gap-3">
                                     <Info className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
-                                    <div className="text-xs text-zinc-400 space-y-1">
+                                    <div className="text-xs text-zinc-400 space-y-2">
                                         <p>La clé API OpenRouter est configurée via la variable <code className="text-amber-400 bg-zinc-800 px-1.5 py-0.5 rounded font-mono">VITE_OPENROUTER_API_KEY</code> dans le fichier <code className="text-amber-400 bg-zinc-800 px-1.5 py-0.5 rounded font-mono">.env</code>.</p>
+
+                                        <div className="pt-2 border-t border-amber-500/10 mt-2">
+                                            <div className="flex items-center justify-between mb-1.5">
+                                                <span className="font-bold text-amber-400 uppercase tracking-widest text-[10px]">Quota Mensuel IA (Appels)</span>
+                                                <span className="text-[10px] text-zinc-500 font-bold uppercase">{stats.quota.current} / {stats.quota.limit}</span>
+                                            </div>
+                                            <div className="w-full h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                                                <div
+                                                    className="h-full bg-amber-500 transition-all duration-1000"
+                                                    style={{ width: `${Math.min(100, (stats.quota.current / stats.quota.limit) * 100)}%` }}
+                                                />
+                                            </div>
+                                            <p className="mt-2 text-[10px] italic">
+                                                Votre forfait <strong>{stats.quota.plan.toUpperCase()}</strong> permet jusqu'à {stats.quota.limit.toLocaleString()} requêtes par mois.
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </Section>
