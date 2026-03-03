@@ -13,6 +13,7 @@ export default function Login() {
   const navigate = useNavigate();
   const { shopSlug } = useParams<{ shopSlug: string }>();
   const { signIn, signUp, resetPassword } = useAuthStore();
+  const isShopAuth = Boolean(shopSlug);
 
   const [mode, setMode] = useState<Mode>('login');
   const [isForgotMode, setIsForgotMode] = useState(false);
@@ -28,11 +29,11 @@ export default function Login() {
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
-        options: { redirectTo: window.location.origin + (shopSlug ? `/${shopSlug}/compte` : '/compte') }
+        options: { redirectTo: window.location.origin + (shopSlug ? `/${shopSlug}/compte` : '/admin') }
       });
       if (error) throw error;
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Connexion sociale impossible.');
     }
   };
 
@@ -44,8 +45,8 @@ export default function Login() {
     try {
       await resetPassword(email);
       setSuccess('Un email de réinitialisation a été envoyé.');
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Impossible d’envoyer le lien de réinitialisation.');
     } finally {
       setIsLoading(false);
     }
@@ -64,9 +65,13 @@ export default function Login() {
         if (shopSlug) {
           navigate(`/${shopSlug}/compte`);
         } else {
-          navigate('/compte');
+          navigate('/admin');
         }
       } else {
+        if (!isShopAuth) {
+          navigate('/ouvrir-boutique');
+          return;
+        }
         if (!fullName.trim()) {
           setError('Le prénom et nom sont requis.');
           return;
@@ -91,8 +96,16 @@ export default function Login() {
   return (
     <>
       <SEO
-        title={mode === 'login' ? 'Connexion — Green IA CBD' : 'Créer un compte — Green IA CBD'}
-        description="Connectez-vous ou créez un compte pour accéder à votre historique de commandes et programme de fidélité."
+        title={
+          isShopAuth
+            ? (mode === 'login' ? 'Connexion boutique — Green IA CBD' : 'Créer un compte boutique — Green IA CBD')
+            : 'Connexion SaaS — Green IA'
+        }
+        description={
+          isShopAuth
+            ? 'Connectez-vous ou créez un compte client pour accéder à votre espace boutique.'
+            : 'Connectez-vous à votre espace SaaS Green IA pour gérer votre boutique.'
+        }
       />
 
       <div className="min-h-screen bg-black flex overflow-hidden font-sans">
@@ -188,12 +201,18 @@ export default function Login() {
 
             <div className="mb-8">
               <h2 className="text-3xl font-serif font-bold text-white mb-2">
-                {isForgotMode ? 'Paramètres d\'accès' : (mode === 'login' ? 'Bon retour !' : 'Rejoindre l\'aventure')}
+                {isForgotMode
+                  ? 'Paramètres d\'accès'
+                  : (isShopAuth
+                    ? (mode === 'login' ? 'Bon retour !' : 'Rejoindre l\'aventure')
+                    : 'Espace SaaS')}
               </h2>
               <p className="text-zinc-400">
                 {isForgotMode
                   ? 'Saisissez votre email pour recevoir un lien de réinitialisation.'
-                  : (mode === 'login' ? 'Authentifiez-vous pour accéder à votre espace.' : 'Créez votre compte en quelques instants.')
+                  : (isShopAuth
+                    ? (mode === 'login' ? 'Authentifiez-vous pour accéder à votre espace.' : 'Créez votre compte en quelques instants.')
+                    : 'Connexion dédiée aux gérants de boutiques SaaS. L’inscription se fait via le parcours “Ouvrir ma boutique”.')
                 }
               </p>
             </div>
@@ -203,7 +222,7 @@ export default function Login() {
               <div className="absolute top-0 right-0 w-24 h-24 bg-green-neon/10 blur-2xl group-hover:bg-green-neon/20 transition-all duration-700" />
 
               {/* Tabs (Hidden in forgot mode) */}
-              {!isForgotMode && (
+              {!isForgotMode && isShopAuth && (
                 <div className="flex mb-8 bg-black/40 rounded-2xl p-1.5 border border-zinc-800/50">
                   {(['login', 'register'] as Mode[]).map((m) => (
                     <button
@@ -230,7 +249,7 @@ export default function Login() {
               )}
 
               <form onSubmit={handleSubmit} className="space-y-5">
-                {mode === 'register' && (
+                {mode === 'register' && isShopAuth && (
                   <motion.div
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
@@ -324,7 +343,11 @@ export default function Login() {
                     <span className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin" />
                   ) : (
                     <>
-                      {isForgotMode ? 'Envoyer le lien' : (mode === 'login' ? 'Se connecter' : 'Confirmer l\'inscription')}
+                      {isForgotMode
+                        ? 'Envoyer le lien'
+                        : (mode === 'login'
+                          ? (isShopAuth ? 'Se connecter' : 'Accéder au dashboard SaaS')
+                          : 'Confirmer l\'inscription')}
                       <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </>
                   )}
@@ -361,24 +384,45 @@ export default function Login() {
               )}
             </div>
 
-            {/* SaaS Section for Professionals */}
-            <div className="mt-10 pt-8 border-t border-zinc-800">
-              <Link
-                to="/ouvrir-boutique"
-                className="bg-gradient-to-r from-green-neon/5 to-transparent border border-green-neon/20 rounded-2xl p-5 flex items-center justify-between group cursor-pointer hover:border-green-neon/40 transition-all w-full text-left"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-green-neon/10 flex items-center justify-center text-green-neon">
-                    <Store className="w-5 h-5" />
+            {isShopAuth && (
+              <div className="mt-10 pt-8 border-t border-zinc-800">
+                <Link
+                  to="/ouvrir-boutique"
+                  className="bg-gradient-to-r from-green-neon/5 to-transparent border border-green-neon/20 rounded-2xl p-5 flex items-center justify-between group cursor-pointer hover:border-green-neon/40 transition-all w-full text-left"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-xl bg-green-neon/10 flex items-center justify-center text-green-neon">
+                      <Store className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold text-white">Vous êtes un professionnel ?</p>
+                      <p className="text-xs text-zinc-500">Ouvrez votre propre boutique SaaS CBD.</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-sm font-bold text-white">Vous êtes un professionnel ?</p>
-                    <p className="text-xs text-zinc-500">Ouvrez votre propre boutique SaaS CBD.</p>
+                  <ArrowRight className="w-5 h-5 text-zinc-600 group-hover:text-green-neon transition-colors" />
+                </Link>
+              </div>
+            )}
+
+            {!isShopAuth && (
+              <div className="mt-10 pt-8 border-t border-zinc-800">
+                <Link
+                  to="/ouvrir-boutique"
+                  className="bg-gradient-to-r from-green-neon/5 to-transparent border border-green-neon/20 rounded-2xl p-5 flex items-center justify-between group cursor-pointer hover:border-green-neon/40 transition-all w-full text-left"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-xl bg-green-neon/10 flex items-center justify-center text-green-neon">
+                      <LayoutDashboard className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold text-white">Pas encore de boutique SaaS ?</p>
+                      <p className="text-xs text-zinc-500">Créez votre espace gérant et votre boutique en quelques étapes.</p>
+                    </div>
                   </div>
-                </div>
-                <ArrowRight className="w-5 h-5 text-zinc-600 group-hover:text-green-neon transition-colors" />
-              </Link>
-            </div>
+                  <ArrowRight className="w-5 h-5 text-zinc-600 group-hover:text-green-neon transition-colors" />
+                </Link>
+              </div>
+            )}
 
             <p className="text-center text-zinc-600 text-[10px] mt-8 uppercase tracking-tighter">
               En continuant, vous confirmez avoir 18 ans révolus. — Green IA Secure Identity
