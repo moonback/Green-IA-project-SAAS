@@ -113,6 +113,11 @@ export interface Shop {
       quality?: Record<string, string>;
       catalog?: Record<string, string>;
     };
+    layout?: {
+      home?: { sections: any[] };
+      about?: { sections: any[] };
+      quality?: { sections: any[] };
+    };
     [key: string]: any;
   };
   subscription_plan: 'free' | 'pro' | 'enterprise';

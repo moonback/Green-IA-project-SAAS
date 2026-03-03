@@ -42,6 +42,7 @@ import {
   ShoppingCart,
   Hash,
   Palette,
+  Layout,
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { Product, Category, Order, OrderItem, StockMovement, Profile } from '../lib/types';
@@ -59,10 +60,11 @@ import AdminPOSTab from '../components/admin/AdminPOSTab';
 import ProductImageUpload from '../components/admin/ProductImageUpload';
 import AdminThemeTab from '../components/admin/AdminThemeTab';
 import AdminContentTab from '../components/admin/AdminContentTab';
+import AdminLayoutTab from '../components/admin/AdminLayoutTab';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
-type Tab = 'dashboard' | 'products' | 'categories' | 'orders' | 'stock' | 'customers' | 'settings' | 'theme' | 'content' | 'subscriptions' | 'reviews' | 'analytics' | 'promo_codes' | 'recommendations' | 'budtender' | 'referrals' | 'pos';
+type Tab = 'dashboard' | 'products' | 'categories' | 'orders' | 'stock' | 'customers' | 'settings' | 'theme' | 'content' | 'layout' | 'subscriptions' | 'reviews' | 'analytics' | 'promo_codes' | 'recommendations' | 'budtender' | 'referrals' | 'pos';
 
 interface DashboardStats {
   totalRevenue: number;
@@ -208,6 +210,8 @@ export default function Admin() {
     { key: 'customers', label: 'Clients', icon: Users },
     { key: 'referrals', label: 'Parrainages', icon: Award },
     { key: 'theme', label: 'Thème & Design', icon: Palette },
+    { key: 'layout', label: 'Mise en page', icon: Layout },
+    { key: 'content', label: 'Textes & Contenu', icon: Hash },
     { key: 'settings', label: 'Paramètres', icon: Settings },
     { key: 'subscriptions', label: 'Abonnements', icon: RefreshCw },
     { key: 'reviews', label: 'Avis', icon: MessageSquare },
@@ -1097,6 +1101,7 @@ export default function Admin() {
                   group: 'Système',
                   items: [
                     { key: 'theme' as Tab, label: 'Thème & Design', icon: Palette },
+                    { key: 'layout' as Tab, label: 'Mise en page', icon: Layout },
                     { key: 'content' as Tab, label: 'Textes & Contenu', icon: Hash },
                     { key: 'settings' as Tab, label: 'Paramètres', icon: Settings },
                     { key: 'budtender' as Tab, label: 'BudTender IA', icon: Leaf },
@@ -2425,6 +2430,11 @@ export default function Admin() {
                 {/* ── Content tab ── */}
                 {tab === 'content' && !isLoading && (
                   <AdminContentTab />
+                )}
+
+                {/* ── Layout tab ── */}
+                {tab === 'layout' && !isLoading && (
+                  <AdminLayoutTab />
                 )}
 
                 {/* ── Referrals tab ── */}
