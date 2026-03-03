@@ -38,7 +38,7 @@ flowchart LR
 
 ### 2.3 Gestion d’état
 - `authStore` : session Supabase + profil utilisateur.
-- `shopStore` : boutique courante (`currentShop`) résolue par slug.
+- `shopStore` : boutique courante (`currentShop`) résolue par slug, incluant les paramètres de thème et de mise en page.
 - `cartStore`, `wishlistStore`, `settingsStore`, `toastStore` : état métier local.
 
 ---
@@ -57,6 +57,7 @@ flowchart LR
 - Colonnes `shop_id` ajoutées aux tables métier.
 - Trigger SQL pour auto-assigner `shop_id` sur insert.
 - Politiques RLS d’isolation par appartenance au shop.
+- Stockage de la configuration UI (sections, thèmes) dans `shops.settings` (format JSONB).
 
 ---
 

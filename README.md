@@ -33,6 +33,7 @@ Le projet s’appuie sur **React + Supabase** et intègre un **BudTender IA** (c
 
 ### Expérience admin / opérations
 - Tableau de bord admin (stocks, commandes, analytics, avis, recommandations, abonnements, parrainage).
+- Éditeur de mise en page dynamique (Drag & Drop des sections, personnalisation des contenus).
 - POS (point de vente) avec clôtures (`pos_reports`).
 - Paramétrage de la boutique et de l’IA (prompts/instructions).
 

@@ -126,6 +126,12 @@ Authorization: Bearer <JWT>
 3. Affectation `current_shop_id` profil.
 4. Accès routes via `/:shopSlug`.
 
+### 5.4 Personnalisation Boutique
+1. Administration charge `currentShop.settings`.
+2. Édition locale via `AdminLayoutTab` ou `AdminThemeTab`.
+3. `UPDATE shops SET settings = ... WHERE id = ...`.
+4. Propagation immédiate via le store Zustand.
+
 ---
 
 ## 6) Règles de sécurité API

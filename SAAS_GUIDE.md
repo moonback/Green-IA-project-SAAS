@@ -108,7 +108,7 @@ Transformez l'IA en moteur de vente personnalisé pour chaque boutique.
 ### Workflow d'Onboarding (10 min)
 1. **Signup** via Supabase Auth.
 2. **Create Shop** : Nom et sous-domaine/slug.
-3. **Template Selection** : Pré-remplissage avec un catalogue CBD type (Fleurs, Huiles).
+3. **Branding & Layout** : Personnalisation no-code des couleurs, polices et de l'organisation des sections (Drag & Drop).
 4. **Stripe Setup** : Liaison pour les paiements récurrents.
 
 ---

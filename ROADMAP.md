@@ -13,6 +13,8 @@ Roadmap orientée produit et architecture pour faire évoluer Green IA de l’é
 - Fondations multi-tenant (`shops`, `shop_members`, `shop_id`).
 - BudTender IA (chat/voix) + recherche vectorielle.
 - Fidélité, parrainage, abonnements, avis.
+- **Éditeur de layout dynamique** (sections paramétrables, réorganisation).
+- **Thèmes & Branding** (couleurs, logo, polices).
 
 ---
 
@@ -36,7 +38,7 @@ Roadmap orientée produit et architecture pour faire évoluer Green IA de l’é
 ## 2.4 Produit SaaS
 - [ ] Onboarding guidé création boutique (wizard no-code).
 - [ ] Templates de catalogue de démarrage par segment.
-- [ ] Paramètres branding shop (logo, couleurs, domaine custom).
+- ✅ Paramètres branding shop (logo, couleurs, domaine custom).
 
 ---
 

@@ -74,6 +74,8 @@ Le modèle est organisé en 6 domaines :
 | `shops` | Tenant boutique | `owner_id`, `name`, `slug`, `settings`, `subscription_plan` |
 | `shop_members` | Membres et rôles | `shop_id`, `user_id`, `role` |
 
+> **Note sur `shops.settings`** : Stocke un objet JSONB contenant le thème (`primary_color`, `font_family`, etc.) et le layout (`home`, `about`, `quality` avec leurs listes de sections et paramètres spécifiques).
+
 ---
 
 ## 3) Relations clés
