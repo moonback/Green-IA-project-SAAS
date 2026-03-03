@@ -217,20 +217,33 @@ export default function Login() {
               </p>
             </div>
 
-            <div className="bg-zinc-900/50 backdrop-blur-xl rounded-3xl p-8 border border-zinc-800 shadow-2xl overflow-hidden relative group">
+            <div
+              className={`backdrop-blur-xl rounded-3xl p-8 border shadow-2xl overflow-hidden relative group ${
+                isShopAuth
+                  ? 'bg-gradient-to-b from-zinc-900/90 to-zinc-950 border-green-neon/30 shadow-[0_0_40px_rgba(20,229,148,0.08)]'
+                  : 'bg-zinc-900/50 border-zinc-800'
+              }`}
+            >
               {/* Animated corner accent */}
-              <div className="absolute top-0 right-0 w-24 h-24 bg-green-neon/10 blur-2xl group-hover:bg-green-neon/20 transition-all duration-700" />
+              <div className={`absolute top-0 right-0 w-24 h-24 blur-2xl transition-all duration-700 ${isShopAuth ? 'bg-green-neon/20 group-hover:bg-green-neon/30' : 'bg-green-neon/10 group-hover:bg-green-neon/20'}`} />
+
+              {isShopAuth && !isForgotMode && (
+                <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-green-neon/30 bg-green-neon/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-green-neon">
+                  <Store className="w-3.5 h-3.5" />
+                  Espace client boutique
+                </div>
+              )}
 
               {/* Tabs (Hidden in forgot mode) */}
               {!isForgotMode && isShopAuth && (
-                <div className="flex mb-8 bg-black/40 rounded-2xl p-1.5 border border-zinc-800/50">
+                <div className="flex mb-8 bg-black/50 rounded-2xl p-1.5 border border-green-neon/20">
                   {(['login', 'register'] as Mode[]).map((m) => (
                     <button
                       key={m}
                       onClick={() => { setMode(m); setError(''); setSuccess(''); }}
                       className={`flex-1 py-3 rounded-xl text-sm font-semibold transition-all duration-300 ${mode === m
-                        ? 'bg-green-neon text-black shadow-[0_4px_15px_rgba(20,229,148,0.4)]'
-                        : 'text-zinc-500 hover:text-white'
+                        ? 'bg-green-neon text-black shadow-[0_8px_20px_rgba(20,229,148,0.35)]'
+                        : 'text-zinc-500 hover:text-white hover:bg-white/5'
                         }`}
                     >
                       {m === 'login' ? 'Connexion' : 'Inscription'}
@@ -270,7 +283,7 @@ export default function Login() {
                 )}
 
                 <div>
-                  <label className="block text-[11px] uppercase tracking-widest font-bold text-zinc-500 mb-2 ml-1">Email</label>
+                    <label className="block text-[11px] uppercase tracking-widest font-bold text-zinc-500 mb-2 ml-1">{isShopAuth ? 'Email client' : 'Email'}</label>
                   <div className="relative group">
                     <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600 group-focus-within:text-green-neon transition-colors" />
                     <input
