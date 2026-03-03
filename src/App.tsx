@@ -17,6 +17,8 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 
 // ── Pages Shop (sous /:shopSlug) ──
 const ShopHome = lazy(() => import("./pages/ShopHome"));
+const ShopAbout = lazy(() => import("./pages/ShopAbout"));
+const ShopContact = lazy(() => import("./pages/ShopContact"));
 const Shop = lazy(() => import("./pages/Shop"));
 const Products = lazy(() => import("./pages/Products"));
 const Quality = lazy(() => import("./pages/Quality"));
@@ -75,10 +77,10 @@ export default function App() {
             {/* Vitrine publique (avec ShopLayout header/footer personnalisé) */}
             <Route element={<ShopLayout />}>
               <Route index element={<ShopHome />} />
-              <Route path="boutique" element={<Shop />} />
+              <Route path="boutique" element={<ShopAbout />} />
               <Route path="produits" element={<Products />} />
               <Route path="qualite" element={<Quality />} />
-              <Route path="contact" element={<Contact />} />
+              <Route path="contact" element={<ShopContact />} />
               <Route path="connexion" element={<Login />} />
               <Route path="reset-password" element={<ResetPassword />} />
               <Route path="mentions-legales" element={<Legal />} />
