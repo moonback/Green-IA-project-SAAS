@@ -1,58 +1,65 @@
-# 📖 Documentation API
+# 📖 Documentation API — Green IA SaaS
 
-Green IA CBD utilise principalement les APIs de Supabase (Post-gREST) et des fonctions personnalisées (RPC).
+L'accès aux données de Green IA SaaS se fait via le client Supabase (PostgREST) ou des procédures stockées (RPC).
 
-## 🗄️ Supabase Remote Procedure Calls (RPC)
+---
 
-Certaines fonctionnalités complexes sont gérées directement en base de données pour plus de performance.
+## 🗄️ Endpoints Principaux (REST)
+
+Toutes les requêtes REST sont automatiquement filtrées par le serveur (Supabase RLS) en fonction de l'utilisateur authentifié et de son `current_shop_id`.
+
+### Produits (`/products`)
+| Méthode | Description | Paramètres |
+| :--- | :--- | :--- |
+| `GET` | Liste des produits du shop actuel | `?is_active=eq.true` |
+| `PATCH` | Mise à jour d'un produit (Admin seulement) | `id` |
+
+### Commandes (`/orders`)
+| Méthode | Description | Paramètres |
+| :--- | :--- | :--- |
+| `GET` | Historique des commandes de l'utilisateur | `?select=*,order_items(*)` |
+| `POST` | Création d'une nouvelle commande | Body JSON |
+
+---
+
+## ⚡ Procédures Stockées (RPC)
+
+Les RPC sont utilisées pour les logiques métier complexes exécutées côté serveur.
 
 ### `get_product_recommendations`
-Récupère les produits recommandés pour un produit donné (recommandations croisées + fallback par catégorie).
+Récupère les produits similaires au sein de la même boutique.
 - **Paramètres** : 
-  - `p_product_id` (uuid) : ID du produit source.
-  - `p_limit` (int) : Nombre maximum de recommandations (défaut: 4).
-- **Retour** : Ensemble d'objets `products`.
+    - `p_product_id` (uuid)
+    - `p_limit` (integer)
+- **Logique** : Basée sur la catégorie et les vecteurs de similarité (si configurés).
 
 ### `sync_bundle_stock`
-Synchronise le stock d'un pack (bundle) basé sur le stock de ses composants.
-- **Paramètres** : 
-  - `p_bundle_id` (uuid) : ID du bundle.
+Recalcule automatiquement le stock d'un pack en fonction de la disponibilité de ses composants individuels.
 
 ---
 
-## 🤖 Gemini Live AI Interface
+## 🤖 BudTender IA Interface
 
-L'application communique avec Gemini 2.0 via le protocole Multimodal Live.
+L'IA communique via un flux JSON structuré. Elle a accès aux outils suivants (Tool Calling) :
 
-### Outils (Tools) disponibles pour l'IA
-L'IA peut déclencher les actions suivantes dans l'application :
+### Outil : `add_to_cart`
+Permet à l'IA d'ajouter un article pour le client.
+- **Input** : `{ "product_id": "uuid", "quantity": number }`
 
-1. **`get_products`** : Récupérer la liste des produits disponibles.
-2. **`add_to_cart`** : Ajouter un produit spécifique au panier utilisateur.
-   - Arguments : `product_id`, `quantity`.
-3. **`get_cart_total`** : Obtenir la valeur actuelle du panier.
+### Outil : `search_products`
+Recherche sémantique dans le catalogue.
+- **Input** : `{ "query": "stress et sommeil" }`
 
 ---
 
-## 🔐 Authentification & Sécurité
+## 🔐 Headers & Authentification
 
-### Headers requis
-Pour toutes les requêtes authentifiées via le client Supabase :
-```json
-{
-  "apikey": "VITE_SUPABASE_ANON_KEY",
-  "Authorization": "Bearer <user_jwt_token>"
-}
+### Authentification JWT
+L'Header `Authorization` est obligatoire pour les routes privées.
+```bash
+Authorization: Bearer <SUPABASE_USER_JWT>
+apikey: <SUPABASE_ANON_KEY>
 ```
 
----
-
-## 🛍️ Endpoints de Données (Collections)
-
-| Table | Méthodes | Description |
-| :--- | :--- | :--- |
-| `products` | `SELECT` | Liste des produits (public) |
-| `categories` | `SELECT` | Liste des catégories (public) |
-| `orders` | `SELECT, INSERT` | Commandes de l'utilisateur |
-| `profiles` | `SELECT, UPDATE` | Informations du profil utilisateur |
-| `loyalty_transactions`| `SELECT` | Historique des points de fidélité |
+### Context Shop
+Dans l'architecture SaaS, le `shop_id` n'a pas besoin d'être passé en paramètre d'URL pour les requêtes authentifiées, car il est récupéré sur le profil du `uid()` via le déclencheur `tr_set_shop_id`.

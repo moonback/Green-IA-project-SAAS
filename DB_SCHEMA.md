@@ -1,73 +1,55 @@
-# 🗃️ Schéma de la Base de Données
+# 🗃️ Schéma de Base de Données — Green IA SaaS (PostgreSQL)
 
-Green IA CBD utilise Supabase (PostgreSQL). Voici une vue d'ensemble structurée des tables et relations.
+## 🏛️ Tables d'Infrastructure SaaS
 
-## 📋 Tables Principales
-
-### `categories`
-Catégories de produits (ex: Fleurs, Huiles).
+### `shops`
+Gère les différents marchands (Tenants).
 - `id` (uuid, PK)
-- `slug` (text, unique) : Identifiant URL.
-- `name` (text) : Nom affiché.
-- `is_active` (boolean) : Statut de visibilité.
+- `owner_id` (uuid, FK) : L'utilisateur propriétaire.
+- `name` (text), `slug` (text, unique)
+- `settings` (jsonb) : Couleurs, thèmes, logos.
+- `subscription_plan` (enum: free, pro, enterprise)
+
+### `shop_members`
+Définit qui a accès à quelle boutique et avec quel rôle.
+- `id` (uuid)
+- `shop_id` (uuid, FK)
+- `user_id` (uuid, FK)
+- `role` (enum: owner, admin, staff)
+
+---
+
+## 🛍️ Tables Métier (Scopées par `shop_id`)
 
 ### `products`
-Catalogue complet des articles.
-- `id` (uuid, PK)
-- `category_id` (uuid, FK) : Référence à `categories`.
-- `name` (text), `description` (text)
-- `price` (numeric) : Prix TTC.
-- `stock_quantity` (int) : Quantité disponible.
-- `is_bundle` (boolean) : Indique si c'est un pack de produits.
-- `attributes` (jsonb) : Propriétés variables (Bénéfices, Arômes).
-
-### `profiles`
-Données étendues des utilisateurs (liées à `auth.users`).
-- `id` (uuid, PK) : Référence à l'utilisateur authentifié.
-- `full_name` (text), `phone` (text)
-- `loyalty_points` (int) : Solde de fidélité.
-- `is_admin` (boolean) : Droits d'administration.
-
----
-
-## 🧾 Gestion des Commandes
+Catalogue de produits.
+- `id` (uuid)
+- **`shop_id`** (uuid, FK) : Isolation multi-tenant.
+- `name`, `description`, `price`, `stock_quantity`.
+- `embedding` (vector) : Pour la recherche sémantique par IA.
 
 ### `orders`
-En-tête des transactions.
-- `id` (uuid, PK)
-- `user_id` (uuid, FK) : L'acheteur.
-- `status` (text) : `pending`, `paid`, `shipped`, etc.
-- `total` (numeric) : Montant final.
-- `delivery_type` (text) : `click_collect`, `delivery`.
+Ventes et transactions.
+- `id` (uuid)
+- **`shop_id`** (uuid, FK)
+- `user_id` (uuid) : Client.
+- `total`, `status`, `payment_status`.
 
-### `order_items`
-Détail des produits achetés par commande.
-- `id` (uuid, PK)
-- `order_id` (uuid, FK), `product_id` (uuid, FK)
-- `quantity` (int), `unit_price` (numeric).
-
----
-
-## 🎁 Fidélité & Réductions
-
-### `loyalty_transactions`
-Historique des points gagnés ou utilisés.
-- `user_id`, `points`, `type` (earned, redeemed).
-
-### `promo_codes`
-Codes promo configurables.
-- `code` (text), `discount_type` (percent/fixed), `expires_at`.
+### `profiles`
+Données utilisateurs étendues.
+- `id` (uuid, FK)
+- `full_name`.
+- **`current_shop_id`** (uuid, FK) : Shop actuellement consulté/géré par l'utilisateur.
 
 ---
 
-## 🔄 Relations Clés
-
-- **`products` ↔ `categories`** : N à 1 (un produit appartient à une catégorie).
-- **`orders` ↔ `profiles`** : N à 1 (un utilisateur peut avoir plusieurs commandes).
-- **`bundle_items` ↔ `products`** : Relation Many-to-Many pour composer des packs.
-- **`product_recommendations` ↔ `products`** : Relation réflexive pour le cross-selling.
+## 🔗 Relations Principales
+- **Shop → Products** (1:N) : Une boutique gère son propre catalogue.
+- **User → ShopMembers → Shop** (N:N) : Un utilisateur peut appartenir à plusieurs boutiques avec des rôles différents.
+- **Order → OrderItems → Products** (N:N) : Structure classique de panier d'achat.
 
 ---
 
-## 🛡️ Sécurité (RLS)
-Des politiques de **Row Level Security** s'appliquent sur toutes les tables pour garantir que les utilisateurs ne voient que leurs propres données et que le catalogue reste protégé.
+## 🛡️ Sécurité & Automatisation
+- **Trigger `tr_set_shop_id`** : Injecte automatiquement le `shop_id` correct lors d'une insertion en fonction du profil de l'utilisateur.
+- **RLS (Row Level Security)** : Toutes les requêtes `SELECT`, `UPDATE` et `DELETE` sont filtrées par le moteur PostgreSQL pour que les données d'un shop ne fuitent jamais vers un autre.
