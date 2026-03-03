@@ -30,6 +30,7 @@ const MyReviews = lazy(() => import("./pages/MyReviews"));
 const Favorites = lazy(() => import("./pages/Favorites"));
 const Referrals = lazy(() => import("./pages/Referrals"));
 const POSPage = lazy(() => import("./pages/POSPage"));
+const RegisterShop = lazy(() => import("./pages/RegisterShop"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 function PageLoader() {
@@ -69,6 +70,7 @@ export default function App() {
             <Route path="contact" element={<Contact />} />
             <Route path="mentions-legales" element={<Legal />} />
             <Route path="connexion" element={<Login />} />
+            <Route path="ouvrir-boutique" element={<RegisterShop />} />
 
             {/* Catalogue en ligne */}
             <Route path="catalogue" element={<Catalog />} />
