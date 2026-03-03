@@ -1,4 +1,4 @@
-import { Outlet, Link, useLocation } from "react-router-dom";
+import { Outlet, Link, useLocation, useParams } from "react-router-dom";
 import {
   Menu,
   X,
@@ -30,11 +30,16 @@ export default function Layout() {
   const [isBannerVisible, setIsBannerVisible] = useState(true);
   const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
   const location = useLocation();
+  const { shopSlug } = useParams<{ shopSlug: string }>();
 
   const itemCount = useCartStore((s) => s.itemCount());
   const openSidebar = useCartStore((s) => s.openSidebar);
   const { user, profile, signOut } = useAuthStore();
   const settings = useSettingsStore((s) => s.settings);
+
+  // Helper: construit un chemin relatif au shop ou global
+  const sp = (path: string) => shopSlug ? `/${shopSlug}${path}` : path;
+  const isShopContext = !!shopSlug;
 
   // Close menus on route change and scroll to top
   useEffect(() => {
@@ -43,14 +48,20 @@ export default function Layout() {
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
-  const baseNavLinks = [
-    { name: "Accueil", path: "/" },
-    { name: "Solution SaaS", path: "/catalogue" },
-    { name: "Qualité & Sécurité", path: "/qualite" },
-    { name: "Contact & Démo", path: "/contact" },
-  ];
-
-  const navLinks = baseNavLinks;
+  // Navigation adaptative : SaaS global vs Boutique
+  const navLinks = isShopContext
+    ? [
+      { name: "Vitrine", path: sp("/") },
+      { name: "Catalogue", path: sp("/catalogue") },
+      { name: "Notre Boutique", path: sp("/boutique") },
+      { name: "Contact", path: sp("/contact") },
+    ]
+    : [
+      { name: "Accueil", path: "/" },
+      { name: "Solution SaaS", path: "/catalogue" },
+      { name: "Qualité & Sécurité", path: "/qualite" },
+      { name: "Contact & Démo", path: "/contact" },
+    ];
 
   return (
     <div className="min-h-screen flex flex-col bg-zinc-950 text-zinc-100 font-sans">
@@ -125,7 +136,7 @@ export default function Layout() {
 
               {/* Centered Logo */}
               <div className="flex-shrink-0 flex items-center justify-center">
-                <Link to="/" className="flex items-center group relative z-[1000]" aria-label="Green Mood SaaS — Accueil">
+                <Link to={isShopContext ? sp('/') : '/'} className="flex items-center group relative z-[1000]" aria-label="Green Mood SaaS — Accueil">
                   <div className="absolute -inset-8 bg-green-neon/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                   <img
                     src="/logo.png"
@@ -165,7 +176,7 @@ export default function Layout() {
                           className="absolute right-0 top-full mt-4 w-62 bg-zinc-900/95 backdrop-blur-2xl border border-white/[0.08] rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden z-50 p-2"
                         >
                           <Link
-                            to="/compte"
+                            to={sp("/compte")}
                             className="flex items-center gap-3 px-4 py-3 text-xs font-semibold text-zinc-400 hover:bg-white/[0.04] hover:text-white rounded-xl transition-all"
                           >
                             <User className="h-4 w-4" />
@@ -173,7 +184,7 @@ export default function Layout() {
                           </Link>
                           {profile?.is_admin && (
                             <Link
-                              to="/admin"
+                              to={sp("/admin")}
                               className="flex items-center gap-3 px-4 py-3 text-xs font-bold text-green-neon hover:bg-green-neon/10 rounded-xl transition-all"
                             >
                               <ShieldCheck className="h-4 w-4" />
@@ -195,7 +206,7 @@ export default function Layout() {
                 ) : (
                   <div className="hidden md:flex items-center gap-3">
                     <Link
-                      to="/connexion"
+                      to={sp("/connexion")}
                       className="text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-white transition-colors px-4"
                     >
                       Connexion
@@ -262,7 +273,7 @@ export default function Layout() {
 
               {/* Mobile header */}
               <div className="flex items-center justify-center px-6 h-32 relative z-10 border-b border-white/[0.04] bg-zinc-950/50 backdrop-blur-md">
-                <Link to="/" className="flex items-center" onClick={() => setIsMenuOpen(false)}>
+                <Link to={isShopContext ? sp('/') : '/'} className="flex items-center" onClick={() => setIsMenuOpen(false)}>
                   <img src="/logo.png" alt="Green Mood SaaS" className="h-32 w-auto object-contain" />
                 </Link>
                 <button
@@ -317,12 +328,12 @@ export default function Layout() {
                   <div className="flex flex-col gap-3 text-center">
                     <p className="text-zinc-500 text-[10px] font-bold uppercase tracking-widest">Connecté en tant que</p>
                     <p className="text-white font-serif font-black text-lg">{profile?.full_name}</p>
-                    <Link to="/compte" onClick={() => setIsMenuOpen(false)} className="bg-white/5 py-4 rounded-2xl text-xs font-bold text-white border border-white/5">Console Management</Link>
+                    <Link to={sp("/compte")} onClick={() => setIsMenuOpen(false)} className="bg-white/5 py-4 rounded-2xl text-xs font-bold text-white border border-white/5">Console Management</Link>
                     <button onClick={() => { signOut(); setIsMenuOpen(false); }} className="text-red-400 py-3 text-xs font-bold">Déconnexion</button>
                   </div>
                 ) : (
                   <Link
-                    to="/connexion"
+                    to={sp("/connexion")}
                     onClick={() => setIsMenuOpen(false)}
                     className="flex items-center justify-center gap-4 p-5 bg-white/5 text-white border border-white/10 rounded-3xl text-sm font-black uppercase tracking-[0.2em] active:scale-95 transition-all"
                   >
@@ -346,7 +357,7 @@ export default function Layout() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-16 md:gap-12 mb-20">
             {/* Brand */}
             <div className="space-y-6">
-              <Link to="/" className="flex items-center group" aria-label="Green Mood SaaS">
+              <Link to={isShopContext ? sp('/') : '/'} className="flex items-center group" aria-label="Green Mood SaaS">
                 <img
                   src="/logo.png"
                   alt="Green Mood SaaS"
@@ -371,10 +382,10 @@ export default function Layout() {
               <h3 className="text-xs font-black uppercase tracking-[0.2em] text-zinc-200 mb-8 underline decoration-green-neon underline-offset-8">Plateforme</h3>
               <ul className="space-y-4">
                 {[
-                  { name: "IA BudTender", path: "/catalogue" },
-                  { name: "Gestion Stocks", path: "/compte" },
-                  { name: "Système POS", path: "/admin" },
-                  { name: "Fidélité & Web3", path: "/compte/loyalty" }
+                  { name: "IA BudTender", path: sp("/catalogue") },
+                  { name: "Gestion Stocks", path: sp("/compte") },
+                  { name: "Système POS", path: sp("/admin") },
+                  { name: "Fidélité & Web3", path: sp("/compte/fidelite") }
                 ].map((link) => (
                   <li key={link.name}>
                     <Link to={link.path} className="text-zinc-500 hover:text-white transition-colors text-sm font-light">

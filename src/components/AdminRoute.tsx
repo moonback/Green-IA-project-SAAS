@@ -1,8 +1,9 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useParams } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 
 export default function AdminRoute() {
   const { user, profile, isLoading } = useAuthStore();
+  const { shopSlug } = useParams<{ shopSlug: string }>();
 
   if (isLoading) {
     return (
@@ -13,7 +14,8 @@ export default function AdminRoute() {
   }
 
   if (!user || !profile?.is_admin) {
-    return <Navigate to="/" replace />;
+    const homePath = shopSlug ? `/${shopSlug}` : '/';
+    return <Navigate to={homePath} replace />;
   }
 
   return <Outlet />;

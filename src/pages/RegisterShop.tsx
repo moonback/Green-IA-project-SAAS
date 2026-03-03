@@ -144,16 +144,27 @@ export default function RegisterShop() {
                                     <div className="w-20 h-20 bg-green-neon/20 rounded-full flex items-center justify-center mx-auto mb-4">
                                         <ShieldCheck className="w-10 h-10 text-green-neon" />
                                     </div>
-                                    <h2 className="text-3xl font-serif font-bold">Boutique en attente !</h2>
+                                    <h2 className="text-3xl font-serif font-bold">Boutique créée ! 🎉</h2>
                                     <p className="text-zinc-400">
-                                        Votre compte a été créé avec succès. Vérifiez vos emails pour confirmer votre adresse et accéder à votre dashboard admin.
+                                        Votre boutique <span className="text-white font-bold">{shopName}</span> est maintenant en ligne.
+                                        Connectez-vous pour accéder à votre dashboard admin.
                                     </p>
-                                    <div className="pt-6">
+                                    <div className="bg-zinc-800/50 border border-zinc-700 rounded-2xl p-4 text-sm">
+                                        <p className="text-zinc-500 text-xs uppercase tracking-widest mb-1">Adresse de votre boutique</p>
+                                        <p className="text-green-neon font-mono font-bold">/{shopSlug}</p>
+                                    </div>
+                                    <div className="flex flex-col sm:flex-row gap-3 pt-4">
+                                        <Link
+                                            to={`/${shopSlug}`}
+                                            className="flex-1 inline-flex items-center justify-center gap-2 bg-green-neon text-black font-bold px-6 py-4 rounded-2xl hover:scale-105 transition-transform"
+                                        >
+                                            Voir ma boutique <ArrowRight className="w-4 h-4" />
+                                        </Link>
                                         <Link
                                             to="/connexion"
-                                            className="inline-flex items-center gap-2 bg-green-neon text-black font-bold px-8 py-4 rounded-2xl hover:scale-105 transition-transform"
+                                            className="flex-1 inline-flex items-center justify-center gap-2 bg-zinc-800 text-white font-bold px-6 py-4 rounded-2xl hover:bg-zinc-700 transition-colors"
                                         >
-                                            Aller à la connexion <ArrowRight className="w-4 h-4" />
+                                            Se connecter
                                         </Link>
                                     </div>
                                 </motion.div>
