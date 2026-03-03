@@ -257,13 +257,13 @@ export default function ProductDetail() {
   if (!product) return null;
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white pt-24 pb-32">
+    <div className="min-h-screen bg-brand-950 text-white pt-24 pb-32">
       <SEO
         title={`${product.name} — Excellence Green IA`}
         description={product.description ?? `Découvrez ${product.name} par Green IA. L'excellence du CBD.`}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="page-block">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-4 text-xs uppercase tracking-wider text-zinc-600 mb-12">
           <Link to={sp('/catalogue')} className="flex items-center gap-2 hover:text-green-neon transition-colors">

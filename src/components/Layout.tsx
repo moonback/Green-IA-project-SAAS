@@ -155,7 +155,7 @@ export default function Layout() {
                   <Link
                     key={link.path}
                     to={link.path}
-                    className={`relative px-5 py-2.5 text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-500 rounded-xl group ${isActive ? "text-black" : "text-zinc-500 hover:text-white"
+                    className={`relative px-5 py-2.5 text-xs font-black uppercase tracking-[0.2em] transition-all duration-500 rounded-xl group ${isActive ? "text-black" : "text-zinc-500 hover:text-white"
                       }`}
                   >
                     <span className="relative z-10">{link.name}</span>
@@ -192,12 +192,12 @@ export default function Layout() {
                       )}
                     </div>
                     <div className="hidden md:flex flex-col items-start pr-3">
-                      <span className="text-[10px] font-black text-white uppercase tracking-tighter mb-0.5 group-hover:text-green-neon transition-colors">
+                      <span className="text-xs font-black text-white uppercase tracking-tighter mb-0.5 group-hover:text-green-neon transition-colors">
                         {profile?.full_name?.split(" ")[0] ?? "Profil"}
                       </span>
                       <div className="flex items-center gap-1.5">
                         <span className="w-1 h-1 rounded-full bg-green-neon animate-pulse" />
-                        <span className="text-[8px] font-bold text-zinc-500 uppercase tracking-widest leading-none">Console</span>
+                        <span className="text-[11px] font-bold text-zinc-500 uppercase tracking-widest leading-none">Console</span>
                       </div>
                     </div>
                     <ChevronDown className={`hidden md:block w-3 h-3 text-zinc-500 mr-2 transition-transform duration-500 ${isAccountMenuOpen ? 'rotate-180 text-green-neon' : ''}`} />
@@ -212,13 +212,13 @@ export default function Layout() {
                         className="absolute right-0 top-full mt-4 w-72 bg-zinc-900/95 backdrop-blur-3xl border border-white/[0.1] rounded-[2.5rem] shadow-[0_30px_80px_rgba(0,0,0,0.8)] overflow-hidden z-50 p-4"
                       >
                         <div className="px-5 py-5 mb-3 bg-white/[0.03] rounded-3xl border border-white/[0.05]">
-                          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-500 mb-2">Cloud Intelligence</p>
+                          <p className="text-xs font-black uppercase tracking-[0.3em] text-zinc-500 mb-2">Cloud Intelligence</p>
                           <h3 className="text-white font-serif font-black text-xl leading-tight mb-2">{profile?.full_name}</h3>
                           <div className="flex items-center gap-2">
                             {profile?.is_admin && (
-                              <span className="px-2 py-0.5 bg-green-neon text-black text-[8px] font-black uppercase tracking-widest rounded-md">Admin</span>
+                              <span className="px-2 py-0.5 bg-green-neon text-black text-[11px] font-black uppercase tracking-widest rounded-md">Admin</span>
                             )}
-                            <span className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest opacity-60 truncate">{user.email}</span>
+                            <span className="text-xs text-zinc-500 font-bold uppercase tracking-widest opacity-60 truncate">{user.email}</span>
                           </div>
                         </div>
 
@@ -247,7 +247,7 @@ export default function Layout() {
                                     <ShieldCheck className="h-5 w-5" />
                                   </div>
                                   <div className="flex flex-col">
-                                    <span className="text-[10px] font-black uppercase tracking-tight text-green-neon">Gestion Shops</span>
+                                    <span className="text-xs font-black uppercase tracking-tight text-green-neon">Gestion Shops</span>
                                     <span className="text-xs font-bold text-white tracking-tight">Console Admin</span>
                                   </div>
                                 </div>
@@ -260,7 +260,7 @@ export default function Layout() {
                         <div className="mt-3 pt-3 border-t border-white/[0.05]">
                           <button
                             onClick={signOut}
-                            className="w-full flex items-center gap-3 px-4 py-4 text-[10px] font-black uppercase tracking-[0.3em] text-red-400/60 hover:text-red-400 hover:bg-red-400/5 rounded-2xl transition-all group"
+                            className="w-full flex items-center gap-3 px-4 py-4 text-xs font-black uppercase tracking-[0.3em] text-red-400/60 hover:text-red-400 hover:bg-red-400/5 rounded-2xl transition-all group"
                           >
                             <LogOut className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
                             Déconnexion
@@ -274,7 +274,7 @@ export default function Layout() {
                 <div className="flex items-center gap-4">
                   <Link
                     to="/connexion"
-                    className="hidden md:block text-[10px] font-black uppercase tracking-[0.25em] text-zinc-400 hover:text-white transition-all px-6 py-3 hover:bg-white/[0.04] rounded-2xl border border-transparent hover:border-white/[0.08] active:scale-95"
+                    className="hidden md:block text-xs font-black uppercase tracking-[0.25em] text-zinc-400 hover:text-white transition-all px-6 py-3 hover:bg-white/[0.04] rounded-2xl border border-transparent hover:border-white/[0.08] active:scale-95"
                   >
                     Connexion
                   </Link>
@@ -284,7 +284,7 @@ export default function Layout() {
                   >
                     <div className="absolute inset-0 bg-white/30 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 ease-in-out skew-x-[-45deg]" />
                     <Store className="w-4 h-4 text-black relative z-10" />
-                    <span className="text-[10px] font-black uppercase tracking-[0.15em] text-black relative z-10">Ouvrir un Shop</span>
+                    <span className="text-xs font-black uppercase tracking-[0.15em] text-black relative z-10">Ouvrir un Shop</span>
                   </Link>
                 </div>
               )}
@@ -337,7 +337,7 @@ export default function Layout() {
               {/* Navigation links */}
               <nav className="flex-1 overflow-y-auto px-6 py-12 relative z-10 scrollbar-none">
                 <div className="space-y-4">
-                  <p className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-600 ml-6 mb-4">Espace Plateforme</p>
+                  <p className="text-xs font-black uppercase tracking-[0.4em] text-zinc-600 ml-6 mb-4">Espace Plateforme</p>
                   {navLinks.map((link, i) => (
                     <motion.div
                       key={link.path}
@@ -391,7 +391,7 @@ export default function Layout() {
                       </div>
                       <div className="flex flex-col">
                         <p className="text-white font-serif font-black text-xl leading-none mb-1.5">{profile?.full_name}</p>
-                        <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-[0.15em] opacity-60 truncate max-w-[180px]">{user.email}</p>
+                        <p className="text-xs text-zinc-500 font-bold uppercase tracking-[0.15em] opacity-60 truncate max-w-[180px]">{user.email}</p>
                       </div>
                     </div>
 
@@ -404,7 +404,7 @@ export default function Layout() {
                         <div className="w-10 h-10 rounded-xl bg-zinc-800 flex items-center justify-center">
                           <User className="w-5 h-5 text-zinc-400" />
                         </div>
-                        <span className="text-[10px] font-black uppercase tracking-widest text-zinc-300">Console</span>
+                        <span className="text-xs font-black uppercase tracking-widest text-zinc-300">Console</span>
                       </Link>
                       {(isOwner || (!isShopContext && profile?.is_admin)) && (
                         <Link
@@ -415,14 +415,14 @@ export default function Layout() {
                           <div className="w-10 h-10 rounded-xl bg-green-neon flex items-center justify-center">
                             <ShieldCheck className="w-5 h-5 text-black" />
                           </div>
-                          <span className="text-[10px] font-black uppercase tracking-widest text-green-neon">Admin</span>
+                          <span className="text-xs font-black uppercase tracking-widest text-green-neon">Admin</span>
                         </Link>
                       )}
                     </div>
 
                     <button
                       onClick={() => { signOut(); setIsMenuOpen(false); }}
-                      className="w-full py-2 text-[10px] font-black uppercase tracking-[0.4em] text-red-400/50 hover:text-red-400 transition-colors"
+                      className="w-full py-2 text-xs font-black uppercase tracking-[0.4em] text-red-400/50 hover:text-red-400 transition-colors"
                     >
                       Fermer la console
                     </button>
@@ -443,7 +443,7 @@ export default function Layout() {
       </motion.header>
 
       {/* Main Content */}
-      <main className="flex-grow">
+      <main className="flex-grow page-content-shell">
         <Outlet />
       </main>
 
@@ -512,7 +512,7 @@ export default function Layout() {
             </div>
           </div>
 
-          <div className="border-t border-white/[0.04] pt-10 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-600">
+          <div className="border-t border-white/[0.04] pt-10 flex flex-col md:flex-row justify-between items-center gap-6 text-xs font-bold uppercase tracking-[0.2em] text-zinc-600">
             <p>&copy; {new Date().getFullYear()} Green IA SaaS. Global Node Infrastructure.</p>
             <div className="flex gap-8">
               <Link to="/mentions-legales" className="hover:text-green-neon transition-colors">Politique de Confidentialité</Link>

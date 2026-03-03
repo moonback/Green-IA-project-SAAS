@@ -32,8 +32,8 @@ export default function Contact() {
             animate={{ opacity: 1, y: 0 }}
             className="text-5xl md:text-8xl font-serif font-black tracking-tighter leading-none mb-8"
           >
-            CONSTRUISONS <br />
-            <span className="text-green-neon italic glow-green">L'AVENIR DU CBD.</span>
+            PARLONS DE VOTRE <br />
+            <span className="text-green-neon italic glow-green">BOUTIQUE CBD.</span>
           </motion.h1>
 
           <motion.p
@@ -42,8 +42,7 @@ export default function Contact() {
             transition={{ delay: 0.2 }}
             className="text-xl text-zinc-400 max-w-2xl mx-auto font-light leading-relaxed"
           >
-            Démonstration, support technique ou partenariat stratégique :
-            nos experts SaaS sont là pour propulser votre business.
+            Nous vous montrons comment Green IA peut simplifier votre quotidien et augmenter vos ventes, étape par étape.
           </motion.p>
         </div>
       </section>
@@ -57,24 +56,24 @@ export default function Contact() {
             <div className="space-y-6">
               {[
                 {
-                  title: "Démo Personnalisée",
-                  desc: "Découvrez comment l'IA BudTender peut transformer vos ventes.",
+                  title: "Démo personnalisée",
+                  desc: "Découvrez en direct comment l'outil peut vous aider selon votre boutique.",
                   icon: Zap,
                   color: "text-green-neon",
                   link: "/ouvrir-boutique",
-                  label: "Lancer la démo"
+                  label: "Réserver une démo"
                 },
                 {
-                  title: "Support SaaS 24/7",
-                  desc: "Une équipe technique dédiée pour vos déploiements.",
+                  title: "Aide au démarrage",
+                  desc: "On vous accompagne pour lancer rapidement votre espace sans stress.",
                   icon: Headphones,
                   color: "text-blue-400",
                   link: "mailto:support@greenIA.io",
                   label: "Ouvrir un ticket"
                 },
                 {
-                  title: "Partenariats Shop",
-                  desc: "Rejoignez l'écosystème Green IA en tant que partenaire.",
+                  title: "Partenaires boutiques",
+                  desc: "Vous avez plusieurs boutiques ou un projet de réseau ? Parlons-en.",
                   icon: Building2,
                   color: "text-purple-400",
                   link: "mailto:partners@greenIA.io",
@@ -116,8 +115,8 @@ export default function Contact() {
             >
               <div className="absolute top-0 right-0 w-32 h-32 bg-green-neon/5 blur-[50px]" />
               <div className="space-y-4">
-                <h2 className="text-4xl font-serif font-black">Besoin d'aide <br /><span className="text-green-neon italic">Sur-Mesure ?</span></h2>
-                <p className="text-zinc-500 text-sm">Transmettez-nous vos besoins, un conseiller SaaS reviendra vers vous sous 12h.</p>
+                <h2 className="text-4xl font-serif font-black">Parlons de votre <br /><span className="text-green-neon italic">projet boutique</span></h2>
+                <p className="text-zinc-500 text-sm">Décrivez votre besoin et recevez une réponse claire de notre équipe sous 12h.</p>
               </div>
 
               <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
@@ -143,10 +142,10 @@ export default function Contact() {
                 <div className="space-y-3">
                   <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500 ml-4">Sujet de Consultation</label>
                   <select className="w-full bg-black border border-zinc-800 rounded-2xl px-6 py-5 text-zinc-400 focus:outline-none focus:border-green-neon transition-all appearance-none cursor-pointer">
-                    <option>Demande de Démonstration IA</option>
-                    <option>Problème d'Intégration API</option>
-                    <option>Question Facturation & Plans</option>
-                    <option>Devenir Partenaire Solution</option>
+                    <option>Demande de démo</option>
+                    <option>Aide au démarrage</option>
+                    <option>Question sur les offres</option>
+                    <option>Projet multi-boutique</option>
                     <option>Autre</option>
                   </select>
                 </div>
@@ -155,7 +154,7 @@ export default function Contact() {
                   <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500 ml-4">Détails de votre Projet</label>
                   <textarea
                     rows={6}
-                    placeholder="Comment Green IA peut-il aider votre business aujourd'hui ?"
+                    placeholder="Que souhaitez-vous améliorer dans votre boutique CBD ?"
                     className="w-full bg-black border border-zinc-800 rounded-[2.5rem] px-8 py-6 text-white placeholder-zinc-700 focus:outline-none focus:border-green-neon transition-all resize-none"
                   ></textarea>
                 </div>

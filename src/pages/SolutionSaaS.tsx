@@ -21,53 +21,53 @@ import { Link } from "react-router-dom";
 export default function SolutionSaaS() {
     const features = [
         {
-            title: "IA BudTender 24/7",
-            description: "Une intelligence artificielle experte qui guide vos clients vers les produits adaptés à leurs besoins (sommeil, stress, douleurs).",
+            title: "Conseiller client automatique",
+            description: "Un assistant qui répond aux questions de vos clients et les aide à choisir plus facilement.",
             icon: <Cpu className="w-8 h-8 text-green-neon" />,
             tag: "Innovation"
         },
         {
-            title: "Multi-tenant Sécurisé",
-            description: "Chaque boutique bénéficie d'une instance isolée et sécurisée. Vos données sont protégées par les standards bancaires.",
+            title: "Gestion de plusieurs boutiques",
+            description: "Si vous gérez plusieurs points de vente, vous gardez une vue claire et séparée de chaque boutique.",
             icon: <Lock className="w-8 h-8 text-green-neon" />,
             tag: "Sécurité"
         },
         {
-            title: "Omnicanal Connecté",
-            description: "Synchronisez en temps réel vos stocks magasin et e-commerce. Un seul inventaire pour une vision 360°.",
+            title: "Boutique + caisse connectées",
+            description: "Vos stocks sont synchronisés entre la boutique en ligne et la caisse, sans double saisie.",
             icon: <Globe className="w-8 h-8 text-green-neon" />,
             tag: "Performance"
         },
         {
-            title: "Analytics Avancés",
-            description: "Suivez vos performances avec des tableaux de bord prédictifs. Identifiez vos best-sellers et optimisez vos marges.",
+            title: "Suivi des ventes",
+            description: "Suivez simplement les produits qui marchent le mieux et prenez de meilleures décisions.",
             icon: <BarChart3 className="w-8 h-8 text-green-neon" />,
             tag: "Growth"
         }
     ];
 
     return (
-        <div className="min-h-screen bg-zinc-950 text-white overflow-hidden">
+        <div className="min-h-screen bg-brand-950 text-white overflow-hidden">
             <SEO
                 title="Solution SaaS | Green IA Infrastructure Cloud"
                 description="Découvrez l'infrastructure la plus avancée du marché pour le retail CBD. Centralisez votre gestion, automatisez vos ventes avec l'IA."
             />
 
             {/* ─── Hero Section ─── */}
-            <section className="relative pt-40 pb-20 px-5 overflow-hidden">
+            <section className="app-section relative pt-28 sm:pt-32 overflow-hidden">
                 <div className="absolute inset-0 pointer-events-none">
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-green-neon/5 blur-[120px] rounded-full opacity-30" />
                     <div className="absolute top-20 right-0 w-96 h-96 bg-emerald-500/10 blur-[100px] rounded-full" />
                 </div>
 
-                <div className="relative z-10 max-w-7xl mx-auto text-center space-y-8">
+                <div className="relative z-10 page-block text-center space-y-8">
                     <motion.div
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.04] border border-white/[0.08] backdrop-blur-xl mb-4"
                     >
                         <Zap className="w-4 h-4 text-green-neon fill-green-neon" />
-                        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400">Infrastructure Multi-tenant Cloud</span>
+                        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400">Une solution pensée pour les boutiques CBD</span>
                     </motion.div>
 
                     <motion.h1
@@ -75,8 +75,8 @@ export default function SolutionSaaS() {
                         animate={{ opacity: 1, y: 0 }}
                         className="text-5xl md:text-8xl font-serif font-black tracking-tighter leading-[0.9] mb-10"
                     >
-                        ARCHITECTURE <br />
-                        <span className="text-green-neon italic glow-green">HAUTE-PERFORMANCE.</span>
+                        UNE SOLUTION <br />
+                        <span className="text-green-neon italic glow-green">SIMPLE ET EFFICACE.</span>
                     </motion.h1>
 
                     <motion.p
@@ -85,14 +85,12 @@ export default function SolutionSaaS() {
                         transition={{ delay: 0.1 }}
                         className="text-zinc-400 text-lg md:text-xl max-w-3xl mx-auto font-light leading-relaxed"
                     >
-                        Green IA n'est pas qu'un simple site web, c'est un moteur technologique
-                        complet qui gère l'inventaire, les clients et l'intelligence artificielle
-                        pour des centaines de boutiques simultanément.
+                        Green IA vous aide à vendre plus, gagner du temps et mieux suivre votre activité, que vous ayez une seule boutique ou plusieurs.
                     </motion.p>
                 </div>
             </section>
 
-            {/* ─── Core Architecture Section ─── */}
+            {/* ─── Tout ce qu'il faut pour gérer votre boutique CBD ─── */}
             <section className="py-32 px-5">
                 <div className="max-w-7xl mx-auto">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pb-20 border-b border-white/[0.06]">
@@ -209,7 +207,7 @@ export default function SolutionSaaS() {
                         <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-8">
                             {[
                                 { icon: <Database />, title: "Isolément Données", label: "Multi-tenant logic" },
-                                { icon: <ShieldCheck />, title: "Sécurité RLS", label: "Zéro leak possible" },
+                                { icon: <ShieldCheck />, title: "Données protégées", label: "Protection renforcée" },
                                 { icon: <Smartphone />, title: "POS Natif", label: "Magasin piloté Cloud" }
                             ].map((item, i) => (
                                 <div key={i} className="flex flex-col items-center gap-4">

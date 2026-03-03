@@ -102,21 +102,20 @@ export default function RegisterShop() {
 
                     <div className="space-y-4">
                         <h1 className="text-5xl lg:text-7xl font-serif font-bold leading-tight">
-                            Lancez votre shop <br />
-                            <span className="text-green-neon italic">augmenté</span>.
+                            Déployez votre activité <br />
+                            <span className="text-green-neon italic">en mode SaaS</span>.
                         </h1>
                         <p className="text-zinc-400 text-lg max-w-md">
-                            Une plateforme tout-en-un pour les boutiques de CBD.
-                            Gestion de stock, POS, Fidélité et BudTender IA.
+                            Une stack SaaS complète pour dirigeants CBD : opérations, ventes, fidélisation et pilotage temps réel.
                         </p>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-8">
                         {[
-                            { title: 'IA BudTender', desc: 'Vendez plus avec nos conseils' },
-                            { title: 'Multi-Tenant', desc: 'Gestion sécurisée de vos données' },
-                            { title: 'Fidélité Pro', desc: 'Retenez vos clients locaux' },
-                            { title: 'Statistiques', desc: 'Dashboards complets en temps réel' }
+                            { title: 'IA BudTender', desc: 'Conseil IA orienté conversion' },
+                            { title: 'Multi-Tenant', desc: 'Conformité multi-tenant' },
+                            { title: 'Fidélité Pro', desc: 'Programmes CRM et rétention' },
+                            { title: 'Statistiques', desc: 'KPI business en temps réel' }
                         ].map((f, i) => (
                             <div key={i} className="bg-zinc-900/50 border border-zinc-800 p-4 rounded-2xl">
                                 <p className="font-bold text-white mb-1">{f.title}</p>
