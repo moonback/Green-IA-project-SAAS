@@ -1,42 +1,90 @@
-# 🤝 Contribution au Projet
+# 🤝 CONTRIBUTING
 
-Merci de l'intérêt que vous portez à Green IA CBD ! Voici quelques directives pour contribuer au projet de manière efficace.
-
-## 🛠️ Setup Local
-
-1. Assurez-vous d'avoir Node.js et `npm` installés.
-2. Utilisez le fichier `.env.example` pour créer votre `.env`.
-3. Respectez la version de TypeScript définie dans le `tsconfig.json`.
-
-## 📜 Conventions de Code
-
-### Style de Code
-- Nous utilisons **ESLint** pour assurer la qualité du code.
-- Utilisez des **composants fonctionnels** avec des hooks React.
-- Privilégiez l'utilisation des utilitaires **Tailwind CSS** au lieu du CSS brut.
-
-### Commits
-Nous suivons la convention [Conventional Commits](https://www.conventionalcommits.org/) :
-- `feat: ...` : Nouvelle fonctionnalité.
-- `fix: ...` : Correction de bug.
-- `docs: ...` : Documentation uniquement.
-- `style: ...` : Changements esthétiques (espaces, formatage).
-- `refactor: ...` : Refonte du code sans changement de comportement.
-
-### Branches
-- `main` : Branche stable de production.
-- `develop` : Branche de développement intégrant les nouveautés.
-- `feature/ma-feature` : Travail sur une nouvelle fonctionnalité.
-- `hotfix/mon-fix` : Correction urgente.
-
-## 🚀 Workflow de Contribution
-
-1. **Forkez** le repository.
-2. Créez votre branche à partir de `develop`.
-3. Effectuez vos modifications.
-4. Lancez le linting : `npm run lint`.
-5. Soumettez une **Pull Request** claire et détaillée vers `develop`.
+Merci pour votre contribution à Green IA SaaS.
 
 ---
 
-Besoin d'aide ? N'hésitez pas à ouvrir une *Issue* !
+## 1) Principes généraux
+
+- Faire des changements **petits, lisibles, testables**.
+- Préserver la **sécurité multi-tenant** (ne jamais casser l’isolation `shop_id` + RLS).
+- Documenter toute évolution structurante (API, DB, architecture).
+
+---
+
+## 2) Setup local
+
+```bash
+npm install
+cp .env.example .env
+npm run dev
+```
+
+Vérification minimale avant PR :
+
+```bash
+npm run lint
+npm run build
+```
+
+---
+
+## 3) Workflow Git recommandé
+
+1. Créer une branche :
+   - `feat/<sujet>`
+   - `fix/<sujet>`
+   - `docs/<sujet>`
+2. Commits atomiques et explicites.
+3. Ouvrir une PR avec :
+   - contexte/problème,
+   - solution,
+   - impacts DB/API,
+   - plan de test.
+
+### Convention de commit (Conventional Commits)
+- `feat:` nouvelle fonctionnalité
+- `fix:` correction bug
+- `docs:` documentation
+- `refactor:` refonte sans changement fonctionnel
+- `chore:` maintenance
+
+---
+
+## 4) Standards de code
+
+### Frontend
+- TypeScript strict (éviter `any`).
+- Composants fonctionnels + hooks.
+- Préférer les stores Zustand existants au state dupliqué.
+- Garder la logique métier lourde hors composants UI quand possible.
+
+### Supabase / SQL
+- Toute modif DB doit être ajoutée dans `supabase/` (migration dédiée).
+- Documenter les nouvelles tables/champs/RPC dans `DB_SCHEMA.md` et `API_DOCS.md`.
+- Vérifier les politiques RLS associées à chaque nouvelle table.
+
+### UX/UI
+- Respecter la cohérence visuelle (Tailwind existant).
+- Vérifier responsive desktop/mobile.
+- Garder l’accessibilité de base (labels, contraste, focus).
+
+---
+
+## 5) Checklist PR
+
+- [ ] Code compilable (`npm run lint`)
+- [ ] Build OK (`npm run build`)
+- [ ] Pas de secrets ajoutés
+- [ ] Docs mises à jour si besoin
+- [ ] Migrations SQL testées sur environnement de dev
+- [ ] Impacts multi-tenant vérifiés
+
+---
+
+## 6) Bonnes pratiques sécurité
+
+- Ne pas exposer de secret serveur dans des variables `VITE_*`.
+- Ne pas faire confiance au frontend pour l’autorisation (s’appuyer sur RLS/RPC).
+- Éviter les requêtes globales sans contrainte de shop dans les vues privées.
+
