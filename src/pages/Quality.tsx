@@ -7,7 +7,7 @@ export default function Quality() {
     {
       title: "Isolation Multi-Tenant",
       icon: Lock,
-      detail: "Chaque boutique bénéficie d'une isolation stricte au niveau de la base de données (RLS). Vos données ne sont jamais partagées."
+      detail: "Chaque boutique garde ses données séparées. Vos informations restent privées et protégées."
     },
     {
       title: "IA BudTender certifiée",
@@ -17,20 +17,20 @@ export default function Quality() {
     {
       title: "Infrastructure Global Cloud",
       icon: Globe,
-      detail: "Temps de latence record et disponibilité de 99.9% grâce à notre architecture distribuée sur Supabase et Edge Functions."
+      detail: "Une plateforme rapide et stable, disponible quand vous en avez besoin pour vendre sans interruption."
     },
     {
       title: "Sécurité & RGPD",
       icon: ShieldCheck,
-      detail: "Conformité totale aux normes européennes. Chiffrement de bout en bout et gestion granulaire des accès staff."
+      detail: "Des règles de sécurité solides pour travailler sereinement avec votre équipe et vos clients."
     },
   ];
 
   return (
     <div className="min-h-screen bg-zinc-950 text-white font-sans">
       <SEO
-        title="Excellence opérationnelle — Green IA SaaS"
-        description="Découvrez le standard d'exploitation Green IA pour les professionnels CBD : sécurité, conformité, IA et performance commerciale."
+        title="Qualité & Sécurité — Green IA SaaS"
+        description="Découvrez comment Green IA protège votre activité et vous aide à vendre en confiance."
       />
 
       {/* ────────── Hero Section : Tech Focus ────────── */}
@@ -55,8 +55,8 @@ export default function Quality() {
             animate={{ opacity: 1, y: 0 }}
             className="text-5xl md:text-8xl font-serif font-black tracking-tighter leading-none mb-10"
           >
-            LE STANDARD DU <br />
-            <span className="text-green-neon italic glow-green">SUCCÈS BUSINESS.</span>
+            LA QUALITÉ QUI <br />
+            <span className="text-green-neon italic glow-green">RASSURE VOS CLIENTS.</span>
           </motion.h1>
 
           <motion.p
@@ -65,7 +65,7 @@ export default function Quality() {
             transition={{ delay: 0.2 }}
             className="text-xl md:text-2xl text-zinc-400 max-w-3xl mx-auto font-light leading-relaxed mb-12"
           >
-            Nous ne vendons pas un simple site. Nous déployons un système d'exploitation SaaS complet pour structurer la croissance des retailers CBD.
+            Avec Green IA, vous profitez d'un outil fiable, simple à utiliser, et adapté aux besoins réels des boutiques CBD.
           </motion.p>
         </div>
       </section>
@@ -112,7 +112,7 @@ export default function Quality() {
               <div className="space-y-8">
                 <p className="text-lg text-zinc-400 leading-relaxed font-light">
                   Chaque tenant (boutique) est encapsulé dans son propre environnement logique au niveau de la base de données PostgreSQL.
-                  Notre politique de **Row Level Security (RLS)** garantit qu'aucune donnée de vente ou client ne peut fuiter d'une boutique à l'autre.
+                  Nos règles de sécurité empêchent toute confusion entre boutiques : vos ventes et vos clients restent bien séparés.
                 </p>
                 <div className="grid gap-6">
                   <div className="flex gap-5 p-8 bg-zinc-900 border border-zinc-800 rounded-3xl">
@@ -127,7 +127,7 @@ export default function Quality() {
                   <div className="flex gap-5 p-8 bg-zinc-900 border border-zinc-800 rounded-3xl">
                     <Server className="w-8 h-8 text-green-neon shrink-0" />
                     <div>
-                      <h4 className="font-bold text-white uppercase tracking-widest text-xs mb-2">Architecture Serverless</h4>
+                      <h4 className="font-bold text-white uppercase tracking-widest text-xs mb-2">Plateforme moderne</h4>
                       <p className="text-sm text-zinc-500 leading-relaxed font-light">
                         Capacité de montée en charge infinie lors de vos pics de trafic (Soldes, lancements). Performance constante.
                       </p>
@@ -198,7 +198,7 @@ export default function Quality() {
               className="space-y-10"
             >
               <div className="space-y-4">
-                <h2 className="text-4xl md:text-5xl font-serif font-black">L'IA au service du <br /> <span className="text-green-neon italic">pilotage CBD B2B.</span></h2>
+                <h2 className="text-4xl md:text-5xl font-serif font-black">Un outil pensé pour <br /> <span className="text-green-neon italic">les commerçants CBD.</span></h2>
               </div>
               <div className="space-y-8">
                 <p className="text-lg text-zinc-400 leading-relaxed font-light">
@@ -217,7 +217,7 @@ export default function Quality() {
                     permettant une personnalisation que même le meilleur vendeur en boutique ne pourrait atteindre manuellement.
                   </p>
                   <div className="flex flex-wrap gap-4">
-                    {["NLP advanced", "Vector Search", "Real-time Sync", "Multi-modal Ready"].map(tag => (
+                    {["Conseils automatiques", "Recherche intelligente", "Mise à jour immédiate", "Prêt pour l'évolution"].map(tag => (
                       <span key={tag} className="px-5 py-2.5 rounded-xl bg-black border border-zinc-800 text-[10px] font-black uppercase tracking-widest text-zinc-400 group-hover:text-green-neon transition-colors">
                         {tag}
                       </span>

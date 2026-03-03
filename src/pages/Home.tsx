@@ -23,30 +23,30 @@ import SEO from "../components/SEO";
 export default function Home() {
   const stats = [
     { value: "+42%", label: "Taux de conversion", icon: <LineChart className="h-4 w-4" /> },
-    { value: "0.2s", label: "Latence API Cloud", icon: <Zap className="h-4 w-4" /> },
-    { value: "100%", label: "Conformité RLS", icon: <ShieldCheck className="h-4 w-4" /> },
-    { value: "Multi-store", label: "Architecture native", icon: <Database className="h-4 w-4" /> },
+    { value: "0.2s", label: "Rapidité de la plateforme", icon: <Zap className="h-4 w-4" /> },
+    { value: "100%", label: "Sécurité des données", icon: <ShieldCheck className="h-4 w-4" /> },
+    { value: "Multi-store", label: "Gestion multi-boutique", icon: <Database className="h-4 w-4" /> },
   ];
 
   const pillars = [
     {
-      title: "BudTender IA™ propriétaire",
+      title: "Conseiller de vente intelligent",
       description:
-        "Un moteur NLP spécialisé qui oriente les clients vers le bon produit avec un langage naturel et contextuel.",
+        "Un assistant qui guide vos clients vers les bons produits et augmente votre panier moyen.",
       icon: <Sparkles className="h-5 w-5 text-green-neon" />,
       tag: "Intelligence",
     },
     {
-      title: "Infrastructure multi-tenant",
+      title: "Gestion multi-boutique",
       description:
-        "Isolation des données par boutique, sécurité renforcée et scalabilité sans friction pour un déploiement en réseau.",
+        "Gérez une ou plusieurs boutiques depuis un seul espace, sans complexité technique.",
       icon: <Database className="h-5 w-5 text-green-neon" />,
-      tag: "Architecture",
+      tag: "Gestion",
     },
     {
-      title: "Commerce omnicanal",
+      title: "Ventes en ligne + magasin",
       description:
-        "Synchronisation entre POS, e-commerce et analytics pour piloter les ventes en temps réel.",
+        "Vos stocks, commandes et performances restent synchronisés automatiquement.",
       icon: <Globe className="h-5 w-5 text-green-neon" />,
       tag: "Opérations",
     },
@@ -74,22 +74,22 @@ export default function Home() {
           >
             <span className="ui-card mb-8 inline-flex items-center gap-2 px-4 py-2 text-[10px] font-black uppercase tracking-[0.24em] text-zinc-300">
               <span className="h-1.5 w-1.5 rounded-full bg-green-neon" />
-              Next-gen event retail infrastructure
+              La solution simple pour toutes les boutiques CBD
             </span>
 
             <h1 className="section-title text-4xl sm:text-6xl lg:text-7xl">
-              SaaS CBD orienté <span className="glow-green italic text-green-neon">performance réseau</span>
+              Le SaaS CBD qui vous aide à <span className="glow-green italic text-green-neon">vendre plus</span>
             </h1>
             <p className="section-copy mt-6 max-w-2xl text-base sm:text-lg">
-              Green IA aide les dirigeants CBD à industrialiser acquisition, conversion et fidélisation sur tous leurs points de vente.
+              Green IA centralise votre boutique en ligne, vos ventes en magasin et votre relation client dans un seul outil facile à piloter.
             </p>
 
             <div className="mt-10 flex w-full flex-col items-stretch justify-center gap-3 sm:w-auto sm:flex-row">
               <Link to="/ouvrir-boutique" className="btn-primary">
-                Parler à un expert SaaS B2B <ArrowRight className="h-4 w-4" />
+                Demander une démo <ArrowRight className="h-4 w-4" />
               </Link>
               <Link to="/solution" className="btn-secondary">
-                Voir l'architecture SaaS
+                Voir comment ça marche
               </Link>
             </div>
           </motion.div>
@@ -198,7 +198,7 @@ export default function Home() {
 
           <div>
             <p className="section-kicker">Operations suite</p>
-            <h2 className="section-title mt-4">Fiabilité premium pour les opérateurs CBD</h2>
+            <h2 className="section-title mt-4">Une plateforme fiable pour votre quotidien</h2>
             <p className="section-copy mt-5">
               Tableaux de bord, suivi des interactions et vision unifiée des ventes pour un pilotage fluide sur mobile, tablette et desktop.
             </p>
@@ -216,17 +216,17 @@ export default function Home() {
       <section className="app-section">
         <div className="content-wrap ui-card rounded-[2.2rem] p-8 text-center sm:p-12">
           <h2 className="section-title mx-auto max-w-3xl text-4xl sm:text-6xl">
-            Prêt à structurer votre <span className="text-green-neon">croissance CBD</span> ?
+            Prêt à faire grandir votre <span className="text-green-neon">boutique CBD</span> ?
           </h2>
           <p className="section-copy mx-auto mt-4 max-w-2xl">
-            Déploiement multi-boutique, pilotage temps réel et automatisation commerciale pour accélérer votre business CBD.
+            Lancez rapidement votre espace pro et pilotez vos ventes sans passer par des outils compliqués.
           </p>
           <div className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row">
             <Link to="/ouvrir-boutique" className="btn-primary">
-              Planifier un onboarding
+              Commencer maintenant
             </Link>
             <Link to="/contact" className="btn-secondary">
-              Parler à un expert SaaS
+              Parler à un conseiller
             </Link>
           </div>
         </div>

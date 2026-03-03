@@ -21,26 +21,26 @@ import { Link } from "react-router-dom";
 export default function SolutionSaaS() {
     const features = [
         {
-            title: "IA BudTender 24/7",
-            description: "Une intelligence artificielle experte qui guide vos clients vers les produits adaptés à leurs besoins (sommeil, stress, douleurs).",
+            title: "Conseiller client automatique",
+            description: "Un assistant qui répond aux questions de vos clients et les aide à choisir plus facilement.",
             icon: <Cpu className="w-8 h-8 text-green-neon" />,
             tag: "Innovation"
         },
         {
-            title: "Multi-tenant Sécurisé",
-            description: "Chaque boutique bénéficie d'une instance isolée et sécurisée. Vos données sont protégées par les standards bancaires.",
+            title: "Gestion de plusieurs boutiques",
+            description: "Si vous gérez plusieurs points de vente, vous gardez une vue claire et séparée de chaque boutique.",
             icon: <Lock className="w-8 h-8 text-green-neon" />,
             tag: "Sécurité"
         },
         {
-            title: "Omnicanal Connecté",
-            description: "Synchronisez en temps réel vos stocks magasin et e-commerce. Un seul inventaire pour une vision 360°.",
+            title: "Boutique + caisse connectées",
+            description: "Vos stocks sont synchronisés entre la boutique en ligne et la caisse, sans double saisie.",
             icon: <Globe className="w-8 h-8 text-green-neon" />,
             tag: "Performance"
         },
         {
-            title: "Analytics Avancés",
-            description: "Suivez vos performances avec des tableaux de bord prédictifs. Identifiez vos best-sellers et optimisez vos marges.",
+            title: "Suivi des ventes",
+            description: "Suivez simplement les produits qui marchent le mieux et prenez de meilleures décisions.",
             icon: <BarChart3 className="w-8 h-8 text-green-neon" />,
             tag: "Growth"
         }
@@ -67,7 +67,7 @@ export default function SolutionSaaS() {
                         className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.04] border border-white/[0.08] backdrop-blur-xl mb-4"
                     >
                         <Zap className="w-4 h-4 text-green-neon fill-green-neon" />
-                        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400">Infrastructure SaaS pour opérateurs CBD</span>
+                        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400">Une solution pensée pour les boutiques CBD</span>
                     </motion.div>
 
                     <motion.h1
@@ -75,8 +75,8 @@ export default function SolutionSaaS() {
                         animate={{ opacity: 1, y: 0 }}
                         className="text-5xl md:text-8xl font-serif font-black tracking-tighter leading-[0.9] mb-10"
                     >
-                        ARCHITECTURE <br />
-                        <span className="text-green-neon italic glow-green">B2B HAUTE PERFORMANCE.</span>
+                        UNE SOLUTION <br />
+                        <span className="text-green-neon italic glow-green">SIMPLE ET EFFICACE.</span>
                     </motion.h1>
 
                     <motion.p
@@ -85,13 +85,12 @@ export default function SolutionSaaS() {
                         transition={{ delay: 0.1 }}
                         className="text-zinc-400 text-lg md:text-xl max-w-3xl mx-auto font-light leading-relaxed"
                     >
-                        Green IA est une plateforme d'exploitation conçue pour les professionnels du CBD :
-                        pilotage multi-boutique, conformité, POS cloud et IA commerciale dans un seul outil.
+                        Green IA vous aide à vendre plus, gagner du temps et mieux suivre votre activité, que vous ayez une seule boutique ou plusieurs.
                     </motion.p>
                 </div>
             </section>
 
-            {/* ─── Modules pour exploiter un business CBD ─── */}
+            {/* ─── Tout ce qu'il faut pour gérer votre boutique CBD ─── */}
             <section className="py-32 px-5">
                 <div className="max-w-7xl mx-auto">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pb-20 border-b border-white/[0.06]">
@@ -208,7 +207,7 @@ export default function SolutionSaaS() {
                         <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-8">
                             {[
                                 { icon: <Database />, title: "Isolément Données", label: "Multi-tenant logic" },
-                                { icon: <ShieldCheck />, title: "Sécurité RLS", label: "Zéro leak possible" },
+                                { icon: <ShieldCheck />, title: "Données protégées", label: "Protection renforcée" },
                                 { icon: <Smartphone />, title: "POS Natif", label: "Magasin piloté Cloud" }
                             ].map((item, i) => (
                                 <div key={i} className="flex flex-col items-center gap-4">
