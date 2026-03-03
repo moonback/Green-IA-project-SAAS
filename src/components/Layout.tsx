@@ -28,7 +28,7 @@ import { useAuthStore } from "../store/authStore";
 import { useSettingsStore } from "../store/settingsStore";
 import { useShopStore } from "../store/shopStore";
 
-const RESERVED_SLUGS = ['admin', 'pos', '404', 'catalogue', 'qualite', 'contact', 'connexion', 'ouvrir-boutique', 'reset-password', 'mentions-legales', 'compte', 'profil', 'commandes', 'favorites', 'parrainage', 'addresses', 'abonnements', 'fidelite', 'avis'];
+const RESERVED_SLUGS = ['admin', 'pos', '404', 'catalogue', 'qualite', 'contact', 'connexion', 'ouvrir-boutique', 'reset-password', 'mentions-legales', 'compte', 'profil', 'commandes', 'favorites', 'parrainage', 'addresses', 'abonnements', 'fidelite', 'avis', 'annuaire'];
 
 export default function Layout() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -73,6 +73,7 @@ export default function Layout() {
     : [
       { name: "Accueil", path: "/" },
       { name: "Solution SaaS", path: "/solution" },
+      { name: "Annuaire", path: "/annuaire" },
       { name: "Qualité & Sécurité", path: "/qualite" },
       { name: "Contact & Démo", path: "/contact" },
     ];
