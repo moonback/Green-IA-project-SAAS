@@ -1,42 +1,50 @@
-# 🤝 Contribution au Projet
+# 🤝 Guide de Contribution — Green IA SaaS
 
-Merci de l'intérêt que vous portez à Green IA CBD ! Voici quelques directives pour contribuer au projet de manière efficace.
-
-## 🛠️ Setup Local
-
-1. Assurez-vous d'avoir Node.js et `npm` installés.
-2. Utilisez le fichier `.env.example` pour créer votre `.env`.
-3. Respectez la version de TypeScript définie dans le `tsconfig.json`.
-
-## 📜 Conventions de Code
-
-### Style de Code
-- Nous utilisons **ESLint** pour assurer la qualité du code.
-- Utilisez des **composants fonctionnels** avec des hooks React.
-- Privilégiez l'utilisation des utilitaires **Tailwind CSS** au lieu du CSS brut.
-
-### Commits
-Nous suivons la convention [Conventional Commits](https://www.conventionalcommits.org/) :
-- `feat: ...` : Nouvelle fonctionnalité.
-- `fix: ...` : Correction de bug.
-- `docs: ...` : Documentation uniquement.
-- `style: ...` : Changements esthétiques (espaces, formatage).
-- `refactor: ...` : Refonte du code sans changement de comportement.
-
-### Branches
-- `main` : Branche stable de production.
-- `develop` : Branche de développement intégrant les nouveautés.
-- `feature/ma-feature` : Travail sur une nouvelle fonctionnalité.
-- `hotfix/mon-fix` : Correction urgente.
-
-## 🚀 Workflow de Contribution
-
-1. **Forkez** le repository.
-2. Créez votre branche à partir de `develop`.
-3. Effectuez vos modifications.
-4. Lancez le linting : `npm run lint`.
-5. Soumettez une **Pull Request** claire et détaillée vers `develop`.
+Bienvenue ! Green IA SaaS est un projet ambitieux et nous apprécions votre aide.
 
 ---
 
-Besoin d'aide ? N'hésitez pas à ouvrir une *Issue* !
+## 🏗️ Standards de Développement
+
+### 1. Conventions de Nommage
+- **Variables & Fonctions** : `camelCase`.
+- **Composants React** : `PascalCase`.
+- **Fichiers** : `PascalCase.tsx` pour les composants, `camelCase.ts` pour la logique.
+
+### 2. Style de Code
+- Nous utilisons **Tailwind CSS**. Évitez d'ajouter des fichiers `.css` sauf cas de force majeure.
+- Chaque composant doit être documenté avec une petite description en haut du fichier.
+- Utilisez **TypeScript** de manière stricte. Évitez le type `any`.
+
+### 3. Workflow Git
+- Ne travaillez jamais directement sur `main`.
+- `develop` : Branche pour les tests d'intégration.
+- `feature/...` : Vos nouvelles fonctionnalités.
+- `fix/...` : Vos corrections de bugs.
+
+### 4. Commits
+Respectez la norme **Conventional Commits** :
+- `feat(cart): add removal animation`
+- `fix(auth): redirect loop on login`
+- `docs(readme): update installation steps`
+
+---
+
+## 🚀 Comment Proposer une Modification ?
+
+1. **Forkez** le projet.
+2. **Créez** votre branche.
+3. **Committez** vos changements de manière atomique.
+4. **Ouvrez** une PR (Pull Request) en expliquant :
+    - Quel est le problème résolu ?
+    - Comment avez-vous testé vos changements ?
+    - Y a-t-il des changements dans la base de données ?
+
+---
+
+## 🧪 Tests
+Assurez-vous que l'application compile sans erreurs avant de soumettre une PR :
+```bash
+npm run build
+npm run lint
+```
