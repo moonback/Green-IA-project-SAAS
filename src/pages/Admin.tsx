@@ -1094,6 +1094,7 @@ export default function Admin() {
                 {
                   group: 'Système',
                   items: [
+                    { key: 'theme' as Tab, label: 'Thème & Design', icon: Palette },
                     { key: 'settings' as Tab, label: 'Paramètres', icon: Settings },
                     { key: 'budtender' as Tab, label: 'BudTender IA', icon: Leaf },
                   ],
