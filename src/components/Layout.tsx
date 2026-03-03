@@ -93,7 +93,7 @@ export default function Layout() {
 
       {/* Promotional Banner */}
       <AnimatePresence>
-        {isBannerVisible && settings.banner_enabled && (
+        {isBannerVisible && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
@@ -102,7 +102,7 @@ export default function Layout() {
           >
             <div className="px-4 py-2.5 text-xs font-bold uppercase tracking-[0.2em] text-center w-full max-w-7xl mx-auto pr-10">
               <span className="inline-block animate-pulse mr-2">✦</span>
-              NOUVEAU : {settings.banner_text}
+              CE PROJET EST EN VENTE : CONTACTEZ-NOUS POUR PLUS D'INFORMATIONS
               <span className="inline-block animate-pulse ml-2">✦</span>
             </div>
             <button

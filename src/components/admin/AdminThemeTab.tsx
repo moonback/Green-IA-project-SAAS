@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
     Palette, Save, Eye, RefreshCw, Check, Sparkles,
-    Type, Layout, Square, Sliders, Monitor, Sun, IA,
+    Type, Layout, Square, Sliders, Monitor, Sun, Moon,
     Wand2, ChevronRight, Zap, Image as ImageIcon, X
 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
@@ -957,7 +957,7 @@ export default function AdminThemeTab() {
                                 {/* Dark mode */}
                                 <div className="flex items-center justify-between p-4 bg-white/[0.03] border border-white/[0.07] rounded-xl">
                                     <div className="flex items-center gap-3">
-                                        {theme.dark_mode ? <IA className="w-4 h-4 text-blue-400" /> : <Sun className="w-4 h-4 text-yellow-400" />}
+                                        {theme.dark_mode ? <Moon className="w-4 h-4 text-blue-400" /> : <Sun className="w-4 h-4 text-yellow-400" />}
                                         <div>
                                             <p className="text-sm font-black text-white">Mode {theme.dark_mode ? 'Sombre' : 'Clair'}</p>
                                             <p className="text-xs text-zinc-500">Fond général de la boutique</p>
