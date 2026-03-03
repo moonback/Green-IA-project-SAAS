@@ -83,7 +83,7 @@ export default function Layout() {
       <CartSidebar />
 
       {/* BudTender IA Widget */}
-      {settings.budtender_enabled && <BudTender />}
+      {settings.budtender_enabled && user && <BudTender />}
 
       {/* Toast Notifications */}
       <ToastContainer />

@@ -55,7 +55,7 @@ export default function ShopLayout() {
         <div className="min-h-screen flex flex-col bg-zinc-950 text-zinc-100 font-sans">
             <AgeGate />
             <CartSidebar />
-            {settings.budtender_enabled && <BudTender />}
+            {settings.budtender_enabled && user && <BudTender />}
             <ToastContainer />
 
             {/* ═══ SHOP HEADER ═══ */}
