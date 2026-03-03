@@ -35,8 +35,8 @@ export default function Catalog() {
         .order('name');
 
       if (currentShop) {
-        categoryQuery.eq('shop_id', currentShop.id);
-        productQuery.eq('shop_id', currentShop.id);
+        categoryQuery.or(`shop_id.eq.${currentShop.id},shop_id.is.null`);
+        productQuery.or(`shop_id.eq.${currentShop.id},shop_id.is.null`);
       }
 
       const [{ data: cats }, { data: prods }] = await Promise.all([
@@ -73,7 +73,7 @@ export default function Catalog() {
       setIsLoading(false);
     }
     load();
-  }, []);
+  }, [currentShop]);
 
   const allBenefits = Array.from(new Set(products.flatMap(p => p.attributes?.benefits || [])));
   const allAromas = Array.from(new Set(products.flatMap(p => p.attributes?.aromas || [])));

@@ -45,6 +45,7 @@ import {
 import { supabase } from '../lib/supabase';
 import { Product, Category, Order, OrderItem, StockMovement, Profile } from '../lib/types';
 import { useSettingsStore } from '../store/settingsStore';
+import { useShopStore } from '../store/shopStore';
 import SEO from '../components/SEO';
 import AdminAnalyticsTab from '../components/admin/AdminAnalyticsTab';
 import AdminReferralsTab from '../components/admin/AdminReferralsTab';
@@ -154,6 +155,7 @@ const LABEL = 'block text-xs text-zinc-400 mb-1 font-medium uppercase tracking-w
 
 export default function Admin() {
   const { shopSlug } = useParams<{ shopSlug: string }>();
+  const { currentShop } = useShopStore();
   const [tab, setTab] = useState<Tab>('dashboard');
 
   // ── Data ──
@@ -284,12 +286,20 @@ export default function Admin() {
   };
 
   const loadProducts = async () => {
-    const { data } = await supabase.from('products').select('*, category:categories(*)').order('name');
+    let query = supabase.from('products').select('*, category:categories(*)').order('name');
+    if (currentShop) {
+      query = query.or(`shop_id.eq.${currentShop.id},shop_id.is.null`);
+    }
+    const { data } = await query;
     setProducts((data as Product[]) ?? []);
   };
 
   const loadCategories = async () => {
-    const { data } = await supabase.from('categories').select('*').order('sort_order');
+    let query = supabase.from('categories').select('*').order('sort_order');
+    if (currentShop) {
+      query = query.or(`shop_id.eq.${currentShop.id},shop_id.is.null`);
+    }
+    const { data } = await query;
     setCategories((data as Category[]) ?? []);
   };
 
@@ -379,7 +389,11 @@ export default function Admin() {
   const handleSaveProduct = async (e: FormEvent) => {
     e.preventDefault();
     setIsSaving(true);
-    const payload = { ...productForm, slug: productForm.slug || slugify(productForm.name) };
+    const payload = {
+      ...productForm,
+      slug: productForm.slug || slugify(productForm.name),
+      shop_id: currentShop?.id
+    };
     let savedId = editingProductId;
     if (editingProductId) {
       await supabase.from('products').update(payload).eq('id', editingProductId);
@@ -427,7 +441,11 @@ export default function Admin() {
   const handleSaveCategory = async (e: FormEvent) => {
     e.preventDefault();
     setIsSaving(true);
-    const payload = { ...categoryForm, slug: categoryForm.slug || slugify(categoryForm.name ?? '') };
+    const payload = {
+      ...categoryForm,
+      slug: categoryForm.slug || slugify(categoryForm.name ?? ''),
+      shop_id: currentShop?.id
+    };
     if (editingCategoryId) {
       await supabase.from('categories').update(payload).eq('id', editingCategoryId);
     } else {

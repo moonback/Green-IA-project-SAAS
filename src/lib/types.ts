@@ -9,6 +9,7 @@ export interface Category {
   image_url: string | null;
   sort_order: number;
   is_active: boolean;
+  shop_id: string;
   created_at: string;
 }
 
@@ -36,6 +37,7 @@ export interface Product {
     aromas?: string[];
     [key: string]: any;
   };
+  shop_id: string;
   created_at: string;
   // joined
   category?: Category;
