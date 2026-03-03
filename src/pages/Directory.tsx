@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { Store, MapPin, ChevronRight, Search, Star, ExternalLink, Globe } from 'lucide-react';
+import { Store, MapPin, ChevronRight, Search, Star, ExternalLink, Globe, Phone, Mail, Clock } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { Shop } from '../lib/types';
@@ -140,10 +140,40 @@ export default function Directory() {
 
                                     <div className="space-y-2 mb-8">
                                         {shop.settings?.store_address && (
-                                            <div className="flex items-start gap-2 text-sm text-zinc-500">
-                                                <MapPin className="w-4 h-4 mt-0.5 shrink-0" />
-                                                <span className="line-clamp-2">{shop.settings.store_address}</span>
+                                            <div className="flex items-start gap-3 p-3 rounded-2xl bg-black/20 border border-white/5">
+                                                <MapPin className="w-5 h-5 text-green-neon shrink-0 mt-0.5" />
+                                                <div className="flex flex-col">
+                                                    <span className="text-xs font-bold text-white mb-0.5">Adresse</span>
+                                                    <span className="text-xs text-zinc-400 line-clamp-2 leading-relaxed">
+                                                        {shop.settings.store_address}
+                                                    </span>
+                                                </div>
                                             </div>
+                                        )}
+
+                                        {/* Phone/Email Contacts if available in settings */}
+                                        {(shop.settings?.contact_phone || shop.settings?.contact_email) && (
+                                            <div className="flex flex-col gap-2 p-3 rounded-2xl bg-black/20 border border-white/5">
+                                                {shop.settings?.contact_phone && (
+                                                    <div className="flex items-center gap-3">
+                                                        <Phone className="w-4 h-4 text-zinc-500 shrink-0" />
+                                                        <span className="text-xs text-zinc-400 font-medium">{shop.settings.contact_phone}</span>
+                                                    </div>
+                                                )}
+                                                {shop.settings?.contact_email && (
+                                                    <div className="flex items-center gap-3">
+                                                        <Mail className="w-4 h-4 text-zinc-500 shrink-0" />
+                                                        <span className="text-xs text-zinc-400 font-medium truncate">{shop.settings.contact_email}</span>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
+
+                                        {/* Brief Description or Slogan if available */}
+                                        {shop.settings?.content?.home?.subtitle && (
+                                            <p className="text-xs text-zinc-500 italic px-2 line-clamp-2">
+                                                "{shop.settings.content.home.subtitle}"
+                                            </p>
                                         )}
                                     </div>
 
