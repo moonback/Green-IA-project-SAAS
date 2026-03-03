@@ -15,7 +15,7 @@ export interface SavedPrefs {
     age?: string;
     intensity?: string;
     terpenes?: string[]; // Multiple choice possible
-    [key: string]: any; // Support for dynamic/extra fields
+    [key: string]: string | string[] | undefined; // Support for dynamic/extra fields
 }
 
 export interface ChatMessage {
@@ -55,6 +55,23 @@ interface OrderHistoryItem {
         image_url: string | null;
         category: { slug: string } | null;
     } | null;
+}
+
+interface BudTenderSessionRow {
+    session_id: string;
+    quiz_answers: { messages?: ChatMessage[] } | null;
+    created_at: string;
+}
+
+interface UserAiPreferenceRow {
+    goal: string | null;
+    experience_level: string | null;
+    preferred_format: string | null;
+    budget_range: string | null;
+    age_range: string | null;
+    intensity_preference: string | null;
+    terpene_preferences: string[] | null;
+    extra_prefs: Record<string, string | string[] | undefined> | null;
 }
 
 // Maps a category slug to the matching BudTenderSettings threshold key.
@@ -117,13 +134,20 @@ export function useBudTenderMemory() {
         const fetchHistory = async () => {
             setIsLoading(true);
             try {
-                const { data: orders } = await supabase
+                let ordersQuery = supabase
                     .from('orders')
                     .select('id, created_at, status, order_items(product_id, product_name, unit_price, product:products(slug, image_url, category:categories(slug)))')
                     .eq('user_id', user.id)
                     .in('status', ['paid', 'processing', 'ready', 'shipped', 'delivered'])
                     .order('created_at', { ascending: false })
                     .limit(10);
+
+                if (profile?.current_shop_id) {
+                    ordersQuery = ordersQuery.eq('shop_id', profile.current_shop_id);
+                }
+
+                const { data: orders, error } = await ordersQuery;
+                if (error) throw error;
 
                 if (!orders) return;
 
@@ -193,7 +217,7 @@ export function useBudTenderMemory() {
             // Supabase sync
             if (user) {
                 // Separate fixed DB columns from dynamic ones
-                const { goal, experience, format, budget, age, intensity, terpenes, ...extra } = prefs as any;
+                const { goal, experience, format, budget, age, intensity, terpenes, ...extra } = prefs;
 
                 if (import.meta.env.DEV) {
                     console.log('[BudTenderMemory] Supabase Upsert Payload:', {
@@ -202,7 +226,7 @@ export function useBudTenderMemory() {
                     });
                 }
 
-                await supabase.from('user_ai_preferences').upsert({
+                const { error } = await supabase.from('user_ai_preferences').upsert({
                     user_id: user.id,
                     goal: goal,
                     experience_level: experience,
@@ -214,6 +238,8 @@ export function useBudTenderMemory() {
                     extra_prefs: extra, // This can store any dynamic questions added in Admin
                     updated_at: new Date().toISOString()
                 }, { onConflict: 'user_id' });
+
+                if (error) throw error;
             }
         } catch (err) {
             if (import.meta.env.DEV) console.error('[BudTenderMemory] Error saving prefs:', err);
@@ -231,13 +257,15 @@ export function useBudTenderMemory() {
                 // We use a simple session_id based on the first message id or date
                 const sessionId = history[0].id || new Date().toISOString();
 
-                await supabase.from('budtender_interactions').upsert({
+                const { error } = await supabase.from('budtender_interactions').upsert({
                     user_id: user.id,
                     session_id: sessionId,
                     interaction_type: 'chat_session',
                     quiz_answers: { messages: history },
                     created_at: new Date().toISOString()
                 }, { onConflict: 'user_id,session_id' });
+
+                if (error) throw error;
             }
         } catch (err) {
             if (import.meta.env.DEV) console.error('[BudTenderMemory] Error saving history:', err);
@@ -248,23 +276,25 @@ export function useBudTenderMemory() {
         if (!user) return;
         setIsHistoryLoading(true);
         try {
-            const { data } = await supabase
+            const { data, error } = await supabase
                 .from('budtender_interactions')
                 .select('session_id, quiz_answers, created_at')
                 .eq('user_id', user.id)
                 .eq('interaction_type', 'chat_session')
                 .order('created_at', { ascending: false });
 
+            if (error) throw error;
+
             if (data) {
-                const sessions = data.map(d => {
+                const sessions = (data as BudTenderSessionRow[]).map(d => {
                     const messages = (d.quiz_answers?.messages as ChatMessage[]) || [];
 
                     // Filter out "button-like" user messages that shouldn't be the title
                     const nonSystemUserMessages = messages.filter(m =>
                         m.sender === 'user' &&
-                        !m.text.includes("Utilise mes préférences") &&
-                        !m.text.includes("conseiller moi") &&
-                        !m.text.includes("Recommencer")
+                        !m.text?.includes("Utilise mes préférences") &&
+                        !m.text?.includes("conseiller moi") &&
+                        !m.text?.includes("Recommencer")
                     );
 
                     const firstRealMessage = nonSystemUserMessages[0]?.text ||
@@ -322,29 +352,32 @@ export function useBudTenderMemory() {
         const syncWithSupabase = async () => {
             try {
                 // 1. Fetch AI Preferences
-                const { data: prefsData } = await supabase
+                const { data: prefsData, error: prefsError } = await supabase
                     .from('user_ai_preferences')
                     .select('*')
                     .eq('user_id', user.id)
                     .maybeSingle();
 
+                if (prefsError) throw prefsError;
+
                 if (prefsData) {
+                    const typedPrefs = prefsData as UserAiPreferenceRow;
                     const syncedPrefs: SavedPrefs = {
-                        goal: prefsData.goal ?? '',
-                        experience: prefsData.experience_level ?? '',
-                        format: prefsData.preferred_format ?? '',
-                        budget: prefsData.budget_range ?? '',
-                        age: prefsData.age_range ?? '',
-                        intensity: prefsData.intensity_preference ?? '',
-                        terpenes: prefsData.terpene_preferences ?? [],
-                        ...(prefsData.extra_prefs || {}) // Restore any dynamic/custom questions
+                        goal: typedPrefs.goal ?? '',
+                        experience: typedPrefs.experience_level ?? '',
+                        format: typedPrefs.preferred_format ?? '',
+                        budget: typedPrefs.budget_range ?? '',
+                        age: typedPrefs.age_range ?? '',
+                        intensity: typedPrefs.intensity_preference ?? '',
+                        terpenes: typedPrefs.terpene_preferences ?? [],
+                        ...(typedPrefs.extra_prefs || {}) // Restore any dynamic/custom questions
                     };
                     setSavedPrefs(syncedPrefs);
                     localStorage.setItem(LS_KEY, JSON.stringify(syncedPrefs));
                 }
 
                 // 2. Fetch Latest Chat Session
-                const { data: interactionData } = await supabase
+                const { data: interactionData, error: interactionError } = await supabase
                     .from('budtender_interactions')
                     .select('quiz_answers')
                     .eq('user_id', user.id)
@@ -352,6 +385,8 @@ export function useBudTenderMemory() {
                     .order('created_at', { ascending: false })
                     .limit(1)
                     .maybeSingle();
+
+                if (interactionError) throw interactionError;
 
                 if (interactionData && interactionData.quiz_answers?.messages) {
                     const history = interactionData.quiz_answers.messages as ChatMessage[];
