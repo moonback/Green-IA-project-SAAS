@@ -10,7 +10,7 @@ export const getQuizPrompt = (
     answers: QuizAnswers,
     quizSteps: QuizStep[],
     catalog: string,
-    shopName: string = 'Green Moon CBD',
+    shopName: string = 'Green IA CBD',
     aiInstructions?: string,
     context?: string
 ) => {
@@ -83,7 +83,7 @@ Réponds en français.
 export const getChatPrompt = (
     userMessage: string,
     catalog: string,
-    shopName: string = 'Green Moon CBD',
+    shopName: string = 'Green IA CBD',
     aiInstructions?: string,
     prefs?: string
 ) => {
@@ -109,7 +109,7 @@ ${prefsBlock}
 - Si un produit est recommandé → UNIQUEMENT depuis le catalogue
 - Jamais d’invention de produit
 - Aucune mention légale
-- Si hors-sujet → redirection polie vers ton rôle de conseiller Green Moon
+- Si hors-sujet → redirection polie vers ton rôle de conseiller Green IA
 
 📦 CATALOGUE AUTORISÉ :
 ${catalog}
@@ -128,7 +128,7 @@ export const getVoicePrompt = (
     products: Product[],
     savedPrefs: any,
     userName?: string | null,
-    shopName: string = 'Green Moon CBD',
+    shopName: string = 'Green IA CBD',
     aiInstructions?: string,
     pastProducts: any[] = [],
     deliveryFee: number = 5.9,

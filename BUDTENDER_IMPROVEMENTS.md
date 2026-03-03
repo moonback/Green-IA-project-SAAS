@@ -1,4 +1,4 @@
-# Améliorations Pertinentes : BudTender IA — Green Moon CBD
+# Améliorations Pertinentes : BudTender IA — Green IA CBD
 
 Ce document détaille les axes d'amélioration identifiés pour transformer l'actuel **BudTender IA** en un véritable assistant de vente prédictif et ultra-personnalisé.
 
@@ -77,4 +77,4 @@ Ce document détaille les axes d'amélioration identifiés pour transformer l'ac
     - Le "Conseiller Médical" (très axé bien-être).
 
 ---
-*Document généré par l'IA Antigravity pour Green Moon CBD — Mars 2026*
+*Document généré par l'IA Antigravity pour Green IA CBD — Mars 2026*

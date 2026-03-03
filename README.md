@@ -1,6 +1,6 @@
-# Green Moon SaaS - Plateforme de Boutiques E-Commerce
+# Green IA SaaS - Plateforme de Boutiques E-Commerce
 
-**Green Moon SaaS** est une plateforme multi-tenant permettant de déployer, gérer et personnaliser des boutiques e-commerce B2B/B2C avec un écosystème complet. De la gestion du catalogue à un "Budtender" piloté par l'IA, cette solution connecte les marchands à leurs clients finaux.
+**Green IA SaaS** est une plateforme multi-tenant permettant de déployer, gérer et personnaliser des boutiques e-commerce B2B/B2C avec un écosystème complet. De la gestion du catalogue à un "Budtender" piloté par l'IA, cette solution connecte les marchands à leurs clients finaux.
 
 ## 🚀 Fonctionnalités Principales (MVP)
 
@@ -30,8 +30,8 @@
 
 **1. Cloner le dépôt**
 ```bash
-git clone https://github.com/votre-organisation/Green-Moon-project---SAAS.git
-cd Green-Moon-project---SAAS
+git clone https://github.com/votre-organisation/Green-IA-project---SAAS.git
+cd Green-IA-project---SAAS
 ```
 
 **2. Installer les dépendances**

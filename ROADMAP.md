@@ -1,6 +1,6 @@
-# Roadmap - Green Moon SaaS
+# Roadmap - Green IA SaaS
 
-Cette feuille de route définit la direction et l'évolution globale de la plateforme E-Commerce **Green Moon SaaS**.
+Cette feuille de route définit la direction et l'évolution globale de la plateforme E-Commerce **Green IA SaaS**.
 
 ## 🚀 Étape Principale : MVP (Minimum Viable Product)
 **Statut: En Développement**
@@ -40,7 +40,7 @@ Après le lancement, de nouvelles fonctionnalités Premium permettront d'attirer
 ---
 
 ## 🌟 Vision Long Terme (Marketplace & Écosystème Global)
-L'intégration communautaire au travers de Green Moon.
+L'intégration communautaire au travers de Green IA.
 - [ ] **Super App Mobile** (PWA ou React Native) commune à tous les vendeurs pour l'achat finalisé.
 - [ ] **Partage des évaluations / avis inter-boutiques**.
 - [ ] **Comptabilité intégrée**.

@@ -1,6 +1,6 @@
 # Architecture et Schéma de la Base de Données
 
-Ce document présente l'organisation de la base de données PostgreSQL (hébergée sur **Supabase**) pour la plateforme E-commerce Multi-tenant **Green Moon**.
+Ce document présente l'organisation de la base de données PostgreSQL (hébergée sur **Supabase**) pour la plateforme E-commerce Multi-tenant **Green IA**.
 
 ## 🏗️ Philosophie et Multi-tenant
 
@@ -37,7 +37,7 @@ Configuration globale du magasin.
 
 ## 🛒 2. Catalogue de Produits
 
-Afin que le catalogue "Green Moon" originel reste distinct, chaque marchand peut gérer son catalogue. Pour le multi-tenant, `products` est idéalement lié à un `shop_id`.
+Afin que le catalogue "Green IA" originel reste distinct, chaque marchand peut gérer son catalogue. Pour le multi-tenant, `products` est idéalement lié à un `shop_id`.
 
 ### `public.categories`
 - `id`, `name`, `slug`

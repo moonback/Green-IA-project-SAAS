@@ -1,4 +1,4 @@
-const CACHE_NAME = 'green-moon-v1';
+const CACHE_NAME = 'green-IA-v1';
 const STATIC_ASSETS = [
     '/',
     '/index.html',

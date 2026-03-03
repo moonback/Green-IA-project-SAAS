@@ -1,6 +1,6 @@
 # Architecture Système et Logicielle
 
-Ce document présente l'architecture globale de **Green Moon SaaS**, une plateforme E-commerce Multi-tenant.
+Ce document présente l'architecture globale de **Green IA SaaS**, une plateforme E-commerce Multi-tenant.
 
 ## 🏗️ Vue d'ensemble
 

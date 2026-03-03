@@ -159,7 +159,7 @@ async function callAI(
             answers,
             settings.quiz_steps,
             catalog,
-            currentShop?.name || 'Green Moon CBD',
+            currentShop?.name || 'Green IA CBD',
             currentShop?.settings?.ai_instructions,
             context
         )
@@ -197,7 +197,7 @@ async function callAI(
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${apiKey}`,
-                    'X-Title': 'Green Moon BudTender',
+                    'X-Title': 'Green IA BudTender',
                     'HTTP-Referer': typeof window !== 'undefined' ? window.location.origin : '',
                 },
                 body: JSON.stringify({
@@ -399,7 +399,7 @@ export default function BudTender() {
             const last = pastProducts[0];
             greeting = `Content de te revoir${userName ? `, ${userName}` : ''} ! 👋 La dernière fois tu avais commandé **${last.product_name}** — tu l'as apprécié ? Je suis là pour te trouver quelque chose d'encore mieux.`;
         } else {
-            greeting = `Bienvenue${userName ? `, ${userName}` : ''} ! 🌿 Je suis BudTender, votre conseiller CBD de confiance chez Green Moon. Prêt à découvrir votre sélection idéale ?`;
+            greeting = `Bienvenue${userName ? `, ${userName}` : ''} ! 🌿 Je suis BudTender, votre conseiller CBD de confiance chez Green IA. Prêt à découvrir votre sélection idéale ?`;
         }
 
         // Push greeting first
@@ -637,8 +637,8 @@ export default function BudTender() {
 
     const handleShare = async () => {
         const shareData = {
-            title: 'Green Moon CBD — Mon diagnostic BudTender',
-            text: 'Je viens de faire mon diagnostic CBD avec BudTender IA Chez Green Moon ! Découvrez vos produits idéaux ici :',
+            title: 'Green IA CBD — Mon diagnostic BudTender',
+            text: 'Je viens de faire mon diagnostic CBD avec BudTender IA Chez Green IA ! Découvrez vos produits idéaux ici :',
             url: window.location.origin,
         };
 
@@ -771,7 +771,7 @@ export default function BudTender() {
         const systemPrompt = getChatPrompt(
             text,
             catalog,
-            currentShop?.name || 'Green Moon CBD',
+            currentShop?.name || 'Green IA CBD',
             currentShop?.settings?.ai_instructions,
             userContext
         );
@@ -813,7 +813,7 @@ export default function BudTender() {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${apiKey}`,
-                        'X-Title': 'Green Moon BudTender',
+                        'X-Title': 'Green IA BudTender',
                         // OpenRouter suggests including the referrer
                         'HTTP-Referer': window.location.origin,
                     },
@@ -1063,7 +1063,7 @@ export default function BudTender() {
                                                     </div>
                                                     <div>
                                                         <p className="text-white font-bold text-lg">Connectez-vous</p>
-                                                        <p className="text-zinc-500 text-sm max-w-xs mx-auto mt-1">L'historique des conversations est réservé aux membres de Green Moon.</p>
+                                                        <p className="text-zinc-500 text-sm max-w-xs mx-auto mt-1">L'historique des conversations est réservé aux membres de Green IA.</p>
                                                     </div>
                                                 </div>
                                             ) : memory.isHistoryLoading ? (
@@ -1403,7 +1403,7 @@ export default function BudTender() {
                                                                         )}
                                                                     </button>
                                                                 </div>
-                                                                <p className="text-[10px] text-zinc-500 text-center italic">Valable sur tout le catalogue Green Moon.</p>
+                                                                <p className="text-[10px] text-zinc-500 text-center italic">Valable sur tout le catalogue Green IA.</p>
                                                             </div>
                                                         )}
                                                     </motion.div>

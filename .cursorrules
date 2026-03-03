@@ -1,7 +1,7 @@
-# .cursorrules - Green Moon SaaS
+# .cursorrules - Green IA SaaS
 
 # Project Context
-Green Moon SaaS is a multi-tenant B2B/B2C e-commerce platform allowing merchants to create, manage, and customize their independent shops (`/:shopSlug`). The platform includes a unified global storefront, a "Budtender" AI conversational assistant (via Gemini), loyalty/referral systems, and a Point of Sale (POS) interface. The backend relies primarily on Supabase for Auth, PostgreSQL, Storage, and Row Level Security (RLS).
+Green IA SaaS is a multi-tenant B2B/B2C e-commerce platform allowing merchants to create, manage, and customize their independent shops (`/:shopSlug`). The platform includes a unified global storefront, a "Budtender" AI conversational assistant (via Gemini), loyalty/referral systems, and a Point of Sale (POS) interface. The backend relies primarily on Supabase for Auth, PostgreSQL, Storage, and Row Level Security (RLS).
 
 # Tech Stack
 - Frontend: React 19, TypeScript, React Router v7, Vite

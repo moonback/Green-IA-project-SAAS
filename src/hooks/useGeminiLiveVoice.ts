@@ -169,7 +169,7 @@ export function useGeminiLiveVoice({
             productsRef.current,
             savedPrefs,
             userName,
-            currentShop?.name || 'Green Moon CBD',
+            currentShop?.name || 'Green IA CBD',
             currentShop?.settings?.ai_instructions,
             pastProducts,
             deliveryFee,

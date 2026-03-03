@@ -138,7 +138,7 @@ export default function Layout() {
                 <div className="relative">
                   <img
                     src="/logo.png"
-                    alt="Green Moon"
+                    alt="Green IA"
                     className="h-12 md:h-30 w-auto object-contain transition-transform duration-700 group-hover:scale-110 drop-shadow-[0_0_15px_rgba(57,255,20,0.3)]"
                   />
                 </div>

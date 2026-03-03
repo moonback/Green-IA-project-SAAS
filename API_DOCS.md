@@ -1,6 +1,6 @@
 # Documentation API (Client / Supabase)
 
-L'application **Green Moon SaaS** ne possède par de serveur backend monolithique. Le frontend consomme les données via l'API **PostgREST** de **Supabase** et les API tierces (Gemini, Viva Wallet).
+L'application **Green IA SaaS** ne possède par de serveur backend monolithique. Le frontend consomme les données via l'API **PostgREST** de **Supabase** et les API tierces (Gemini, Viva Wallet).
 
 ## 🔒 1. Authentification (Supabase Auth)
 

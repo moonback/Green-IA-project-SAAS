@@ -9,7 +9,7 @@ import {
   ShieldCheck,
   Sparkles,
   Zap,
-  Moon,
+  IA,
   Wind
 } from "lucide-react";
 import { Link } from "react-router-dom";

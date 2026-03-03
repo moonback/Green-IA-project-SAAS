@@ -49,7 +49,7 @@ export function NewsletterSection({ primaryColor, settings }: { primaryColor: st
 export function TestimonialsSection({ primaryColor, settings }: { primaryColor: string; settings?: any }) {
     const testimonials = settings?.testimonials || [
         { name: "Marc D.", role: "Client Fidèle", text: "La qualité du CBD est exceptionnelle. Le BudTender IA m'a aidé à trouver exactement ce qu'il me fallait pour mes insomnies." },
-        { name: "Sophie L.", role: "Utilisatrice Occasionnelle", text: "Livraison ultra-rapide et emballage soigné. Je recommande les fleurs de la gamme Green Moon !" },
+        { name: "Sophie L.", role: "Utilisatrice Occasionnelle", text: "Livraison ultra-rapide et emballage soigné. Je recommande les fleurs de la gamme Green IA !" },
         { name: "Thomas R.", role: "Expert", text: "Le meilleur rapport qualité-prix du marché. On sent que les produits sont sélectionnés avec soin." }
     ];
 
@@ -168,7 +168,7 @@ export function FeaturesGridSection({ primaryColor, settings }: { primaryColor: 
 
 // --- INSTAGRAM FEED SECTION ---
 export function InstagramFeedSection({ primaryColor, settings }: { primaryColor: string; settings?: any }) {
-    const username = settings?.username || "green_moon_cbd";
+    const username = settings?.username || "green_IA_cbd";
 
     return (
         <section className="py-24 px-4 bg-black">
