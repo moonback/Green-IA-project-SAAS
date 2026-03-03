@@ -123,188 +123,182 @@ export default function Layout() {
         {/* Header Background with Glassmorphism */}
         <div className="absolute inset-0 bg-zinc-950/80 backdrop-blur-3xl border-b border-white/[0.04] shadow-[0_8px_32px_rgba(0,0,0,0.5)]" />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="flex flex-col">
-            {/* Top Row: Logo & Actions */}
-            <div className="flex items-center justify-between h-20 md:h-24">
-              {/* Left Action: Search or Platform Status */}
-              <div className="flex-1 hidden lg:flex items-center">
-                <div className="flex items-center gap-3 px-4 py-2 bg-white/[0.03] border border-white/[0.06] rounded-2xl group cursor-pointer hover:bg-white/[0.06] transition-all">
-                  <div className="w-2 h-2 rounded-full bg-green-neon/50 animate-pulse shadow-[0_0_8px_rgba(57,255,20,0.5)]" />
-                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 group-hover:text-zinc-200 transition-colors">
-                    Platform Status: Online
-                  </span>
+        <div className="max-w-12xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="flex items-center justify-between h-20 md:h-24 gap-4 lg:gap-8">
+            {/* Left: Brand Logo */}
+            <div className="flex items-center">
+              <Link
+                to="/"
+                className="flex items-center gap-3 group relative transition-all duration-500"
+              >
+                <div className="absolute inset-0 bg-green-neon/10 blur-2xl rounded-full scale-150 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                <div className="relative">
+                  <img
+                    src="/logo.png"
+                    alt="Green Moon"
+                    className="h-12 md:h-30 w-auto object-contain transition-transform duration-700 group-hover:scale-110 drop-shadow-[0_0_15px_rgba(57,255,20,0.3)]"
+                  />
                 </div>
-              </div>
+                <div className="hidden sm:flex flex-col">
+                  <span className="text-sm font-serif font-black tracking-tighter text-white leading-none uppercase italic">Green Moon</span>
+                  <span className="text-[10px] font-black text-green-neon uppercase tracking-widest leading-none mt-1 opacity-80">SaaS Platform</span>
+                </div>
+              </Link>
+            </div>
 
-              {/* Mobile Menu Trigger */}
-              <div className="lg:hidden flex-1">
+            {/* Center: Navigation (Desktop only) */}
+            <nav className="hidden lg:flex items-center gap-1 p-1 bg-white/[0.03] border border-white/[0.06] rounded-2xl backdrop-blur-md shadow-inner">
+              {navLinks.map((link) => {
+                const isActive = location.pathname === link.path ||
+                  (link.path !== "/" && location.pathname.startsWith(link.path));
+                return (
+                  <Link
+                    key={link.path}
+                    to={link.path}
+                    className={`relative px-5 py-2.5 text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-500 rounded-xl group ${isActive ? "text-black" : "text-zinc-500 hover:text-white"
+                      }`}
+                  >
+                    <span className="relative z-10">{link.name}</span>
+                    {isActive ? (
+                      <motion.div
+                        layoutId="saas-nav-active"
+                        className="absolute inset-0 bg-green-neon rounded-xl shadow-[0_0_20px_rgba(57,255,20,0.3)]"
+                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                      />
+                    ) : (
+                      <span className="absolute inset-0 bg-transparent rounded-xl group-hover:bg-white/[0.04] transition-all duration-300" />
+                    )}
+                  </Link>
+                );
+              })}
+            </nav>
+
+            {/* Right Action: User / Auth / Mobile Trigger */}
+            <div className="flex items-center gap-3 md:gap-4">
+              {user ? (
+                <div className="relative">
+                  <button
+                    onClick={() => setIsAccountMenuOpen(!isAccountMenuOpen)}
+                    className={`flex items-center gap-3 p-1 rounded-full border transition-all duration-500 group ${isAccountMenuOpen
+                      ? "border-green-neon/50 bg-green-neon/10"
+                      : "bg-white/[0.04] border-white/[0.08] hover:border-white/20 hover:bg-white/[0.06]"
+                      }`}
+                  >
+                    <div className="w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center overflow-hidden bg-gradient-to-br from-zinc-800 to-black border border-white/10 group-hover:scale-105 transition-transform">
+                      {profile?.avatar_url ? (
+                        <img src={profile.avatar_url} alt="" className="w-full h-full object-cover" />
+                      ) : (
+                        <User className="h-4 w-4 text-zinc-400 group-hover:text-green-neon transition-colors" />
+                      )}
+                    </div>
+                    <div className="hidden md:flex flex-col items-start pr-3">
+                      <span className="text-[10px] font-black text-white uppercase tracking-tighter mb-0.5 group-hover:text-green-neon transition-colors">
+                        {profile?.full_name?.split(" ")[0] ?? "Profil"}
+                      </span>
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-1 h-1 rounded-full bg-green-neon animate-pulse" />
+                        <span className="text-[8px] font-bold text-zinc-500 uppercase tracking-widest leading-none">Console</span>
+                      </div>
+                    </div>
+                    <ChevronDown className={`hidden md:block w-3 h-3 text-zinc-500 mr-2 transition-transform duration-500 ${isAccountMenuOpen ? 'rotate-180 text-green-neon' : ''}`} />
+                  </button>
+
+                  <AnimatePresence>
+                    {isAccountMenuOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 15, scale: 0.95 }}
+                        className="absolute right-0 top-full mt-4 w-72 bg-zinc-900/95 backdrop-blur-3xl border border-white/[0.1] rounded-[2.5rem] shadow-[0_30px_80px_rgba(0,0,0,0.8)] overflow-hidden z-50 p-4"
+                      >
+                        <div className="px-5 py-5 mb-3 bg-white/[0.03] rounded-3xl border border-white/[0.05]">
+                          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-500 mb-2">Cloud Intelligence</p>
+                          <h3 className="text-white font-serif font-black text-xl leading-tight mb-2">{profile?.full_name}</h3>
+                          <div className="flex items-center gap-2">
+                            {profile?.is_admin && (
+                              <span className="px-2 py-0.5 bg-green-neon text-black text-[8px] font-black uppercase tracking-widest rounded-md">Admin</span>
+                            )}
+                            <span className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest opacity-60 truncate">{user.email}</span>
+                          </div>
+                        </div>
+
+                        <div className="space-y-1.5">
+                          <Link
+                            to={sp("/compte")}
+                            className="flex items-center justify-between px-4 py-4 text-[11px] font-bold text-zinc-400 hover:text-white hover:bg-white/[0.05] rounded-2xl transition-all group"
+                          >
+                            <div className="flex items-center gap-3">
+                              <div className="w-9 h-9 rounded-xl bg-zinc-800 flex items-center justify-center group-hover:scale-110 group-hover:bg-zinc-700 transition-all">
+                                <User className="h-4 w-4" />
+                              </div>
+                              Mon Dashboard
+                            </div>
+                            <ArrowRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-zinc-600" />
+                          </Link>
+
+                          {profile?.is_admin && (
+                            <div className="mt-3 pt-3 border-t border-white/[0.05]">
+                              <Link
+                                to={adminPath}
+                                className="flex items-center justify-between px-4 py-4 rounded-3xl transition-all group relative overflow-hidden bg-green-neon/5 hover:bg-green-neon/10 border border-green-neon/10 hover:border-green-neon/30"
+                              >
+                                <div className="flex items-center gap-3 relative z-10">
+                                  <div className="w-10 h-10 rounded-xl bg-green-neon flex items-center justify-center shadow-[0_0_20px_rgba(57,255,20,0.2)] group-hover:scale-105 transition-transform text-black">
+                                    <ShieldCheck className="h-5 w-5" />
+                                  </div>
+                                  <div className="flex flex-col">
+                                    <span className="text-[10px] font-black uppercase tracking-tight text-green-neon">Gestion Shops</span>
+                                    <span className="text-xs font-bold text-white tracking-tight">Console Admin</span>
+                                  </div>
+                                </div>
+                                <ArrowRight className="w-4 h-4 relative z-10 text-zinc-500 group-hover:translate-x-1 transition-transform" />
+                              </Link>
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="mt-3 pt-3 border-t border-white/[0.05]">
+                          <button
+                            onClick={signOut}
+                            className="w-full flex items-center gap-3 px-4 py-4 text-[10px] font-black uppercase tracking-[0.3em] text-red-400/60 hover:text-red-400 hover:bg-red-400/5 rounded-2xl transition-all group"
+                          >
+                            <LogOut className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
+                            Déconnexion
+                          </button>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ) : (
+                <div className="flex items-center gap-4">
+                  <Link
+                    to="/connexion"
+                    className="hidden md:block text-[10px] font-black uppercase tracking-[0.25em] text-zinc-400 hover:text-white transition-all px-6 py-3 hover:bg-white/[0.04] rounded-2xl border border-transparent hover:border-white/[0.08] active:scale-95"
+                  >
+                    Connexion
+                  </Link>
+                  <Link
+                    to="/ouvrir-boutique"
+                    className="group relative flex items-center gap-3 px-6 md:px-8 py-3.5 md:py-4 bg-green-neon rounded-2xl md:rounded-[1.25rem] transition-all hover:scale-[1.05] active:scale-95 shadow-[0_15px_40px_rgba(57,255,20,0.25)] overflow-hidden"
+                  >
+                    <div className="absolute inset-0 bg-white/30 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 ease-in-out skew-x-[-45deg]" />
+                    <Store className="w-4 h-4 text-black relative z-10" />
+                    <span className="text-[10px] font-black uppercase tracking-[0.15em] text-black relative z-10">Ouvrir un Shop</span>
+                  </Link>
+                </div>
+              )}
+
+              {/* Mobile Menu Trigger (On the right) */}
+              <div className="lg:hidden">
                 <button
-                  className="p-3 text-zinc-400 hover:text-white bg-white/[0.04] rounded-2xl border border-white/[0.08] active:scale-95 transition-all shadow-lg"
+                  className="p-3.5 text-zinc-400 hover:text-white bg-white/[0.04] rounded-[1.25rem] border border-white/[0.08] active:scale-90 transition-all shadow-xl hover:bg-white/[0.08]"
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
                   aria-label="Menu"
                 >
                   <Menu className="h-5 w-5" />
                 </button>
               </div>
-
-              {/* Center: Brand Logo */}
-              <Link
-                to={isShopContext ? sp("/") : "/"}
-                className="flex flex-col items-center group relative px-8"
-              >
-                <div className="absolute inset-0 bg-green-neon/5 blur-3xl rounded-full scale-150 group-hover:bg-green-neon/10 transition-colors duration-500" />
-                <img
-                  src="/logo.png"
-                  alt="Green Moon"
-                  className="h-16 md:h-24 w-auto object-contain transition-all duration-700 group-hover:scale-105 relative z-10 filter drop-shadow-[0_0_15px_rgba(57,255,20,0.2)]"
-                />
-              </Link>
-
-              {/* Right Action: User / Auth */}
-              <div className="flex-1 flex justify-end items-center gap-2 md:gap-4">
-                {user ? (
-                  <div className="relative">
-                    <button
-                      onClick={() => setIsAccountMenuOpen(!isAccountMenuOpen)}
-                      className={`flex items-center gap-3 p-1 rounded-full border transition-all duration-500 group ${isAccountMenuOpen
-                        ? "border-white/20 bg-white/10"
-                        : "bg-white/[0.04] border-white/[0.08] hover:border-white/20 hover:bg-white/[0.06]"
-                        }`}
-                    >
-                      <div className="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden bg-gradient-to-br from-zinc-700 to-zinc-900 border border-white/10 group-hover:scale-105 transition-transform shadow-inner">
-                        {profile?.avatar_url ? (
-                          <img src={profile.avatar_url} alt="" className="w-full h-full object-cover" />
-                        ) : (
-                          <User className="h-4 w-4 text-zinc-400" />
-                        )}
-                      </div>
-                      <div className="hidden lg:flex flex-col items-start pr-3">
-                        <span className="text-[10px] font-black text-white uppercase tracking-tighter leading-none mb-0.5">
-                          {profile?.full_name?.split(" ")[0] ?? "Profil"}
-                        </span>
-                        <span className="text-[8px] font-bold text-zinc-500 uppercase tracking-widest leading-none">
-                          Dashboard
-                        </span>
-                      </div>
-                      <ChevronDown className={`hidden md:block w-3 h-3 text-zinc-500 mr-2 transition-transform duration-500 ${isAccountMenuOpen ? 'rotate-180' : ''}`} />
-                    </button>
-
-                    <AnimatePresence>
-                      {isAccountMenuOpen && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 15, scale: 0.95 }}
-                          animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: 15, scale: 0.95 }}
-                          className="absolute right-0 top-full mt-4 w-72 bg-zinc-900/90 backdrop-blur-3xl border border-white/[0.1] rounded-3xl shadow-[0_30px_60px_rgba(0,0,0,0.8)] overflow-hidden z-50 p-3"
-                        >
-                          <div className="px-5 py-5 mb-2 bg-white/[0.03] rounded-2xl border border-white/[0.05]">
-                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 mb-1">Administration Console</p>
-                            <h3 className="text-white font-serif font-black text-lg leading-tight mb-1">{profile?.full_name}</h3>
-                            <div className="flex items-center gap-2 mt-2">
-                              {profile?.is_admin && (
-                                <span className="px-2 py-0.5 bg-green-neon/10 text-green-neon text-[8px] font-black uppercase tracking-widest rounded-md border border-green-neon/20">Admin</span>
-                              )}
-                              <span className="text-[9px] text-zinc-500 font-bold uppercase tracking-widest opacity-60 truncate">{user.email}</span>
-                            </div>
-                          </div>
-
-                          <div className="space-y-1">
-                            <Link
-                              to={sp("/compte")}
-                              className="flex items-center justify-between px-4 py-3.5 text-[11px] font-bold text-zinc-400 hover:text-white hover:bg-white/[0.05] rounded-xl transition-all group"
-                            >
-                              <div className="flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                  <User className="h-4 w-4" />
-                                </div>
-                                Mon Dashboard
-                              </div>
-                              <ArrowRight className="w-3.5 h-3.5 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-zinc-600" />
-                            </Link>
-
-                            {profile?.is_admin && (
-                              <div className="mt-3 pt-3 border-t border-white/[0.05]">
-                                <Link
-                                  to={adminPath}
-                                  className="flex items-center justify-between px-4 py-4 rounded-2xl transition-all group overflow-hidden relative bg-green-neon/5 hover:bg-green-neon/10 border border-green-neon/5 hover:border-green-neon/20"
-                                >
-                                  <div className="flex items-center gap-3 relative z-10">
-                                    <div className="w-10 h-10 rounded-xl bg-green-neon flex items-center justify-center shadow-[0_0_20px_rgba(57,255,20,0.3)] group-hover:scale-105 transition-transform">
-                                      <ShieldCheck className="h-5 w-5 text-black" />
-                                    </div>
-                                    <div className="flex flex-col">
-                                      <span className="text-[10px] font-black uppercase tracking-tight text-green-neon">Control Panel</span>
-                                      <span className="text-xs font-bold text-white">Gestion Boutiques</span>
-                                    </div>
-                                  </div>
-                                  <ArrowRight className="w-4 h-4 relative z-10 text-zinc-500 p-0.5 group-hover:translate-x-1 transition-transform" />
-                                </Link>
-                              </div>
-                            )}
-                          </div>
-
-                          <div className="mt-3 pt-2 border-t border-white/[0.05]">
-                            <button
-                              onClick={signOut}
-                              className="w-full flex items-center gap-3 px-4 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-red-400/70 hover:text-red-400 hover:bg-red-400/5 rounded-2xl transition-all group"
-                            >
-                              <LogOut className="h-3.5 w-3.5 group-hover:-translate-x-1 transition-transform" />
-                              Quitter la Console
-                            </button>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                ) : (
-                  <div className="hidden md:flex items-center gap-4">
-                    <Link
-                      to={sp("/connexion")}
-                      className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-500 hover:text-white transition-all px-4 py-2 hover:bg-white/5 rounded-xl border border-transparent hover:border-white/10"
-                    >
-                      Connexion
-                    </Link>
-                    <Link
-                      to="/ouvrir-boutique"
-                      className="group relative flex items-center gap-3 px-6 py-3 bg-green-neon rounded-2xl transition-all hover:scale-[1.02] hover:-translate-y-0.5 active:scale-95 shadow-[0_15px_35px_rgba(57,255,20,0.2)] overflow-hidden"
-                    >
-                      <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out skew-x-[-45deg]" />
-                      <Store className="w-4 h-4 text-black relative z-10" />
-                      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-black relative z-10">Ouvrir ma boutique</span>
-                    </Link>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Bottom Row: Navigation (Desktop only) */}
-            <div className="hidden lg:flex items-center justify-center pb-6">
-              <nav className="flex items-center gap-1 p-1.5 bg-white/[0.03] border border-white/[0.06] rounded-2xl backdrop-blur-md shadow-2xl">
-                {navLinks.map((link) => {
-                  const isActive = location.pathname === link.path ||
-                    (link.path !== "/" && location.pathname.startsWith(link.path));
-                  return (
-                    <Link
-                      key={link.path}
-                      to={link.path}
-                      className={`relative px-6 py-2.5 text-[10px] font-black uppercase tracking-[0.25em] transition-all duration-500 rounded-xl group ${isActive ? "text-black" : "text-zinc-500 hover:text-white"
-                        }`}
-                    >
-                      <span className="relative z-10">{link.name}</span>
-                      {isActive ? (
-                        <motion.div
-                          layoutId="saas-nav-active"
-                          className="absolute inset-0 bg-green-neon rounded-xl shadow-[0_0_20px_rgba(57,255,20,0.3)]"
-                          transition={{ type: "spring", stiffness: 350, damping: 30 }}
-                        />
-                      ) : (
-                        <span className="absolute inset-0 bg-transparent rounded-xl group-hover:bg-white/[0.04] transition-all duration-300" />
-                      )}
-                    </Link>
-                  );
-                })}
-              </nav>
             </div>
           </div>
         </div>
