@@ -178,7 +178,7 @@ export default function ProductDetail() {
 
   async function handleSubscribe() {
     if (!user) {
-      navigate('/connexion');
+      navigate(sp('/connexion'));
       return;
     }
     if (!product) return;
@@ -503,7 +503,7 @@ export default function ProductDetail() {
                       )}
                       <div className="flex-1 min-w-0">
                         <Link
-                          to={`/catalogue/${item.product?.slug}`}
+                          to={sp(`/catalogue/${item.product?.slug}`)}
                           className="text-sm font-bold uppercase tracking-wider text-white hover:text-primary transition-colors line-clamp-1"
                         >
                           {item.quantity > 1 && <span className="text-green-neon mr-2">{item.quantity}×</span>}
@@ -576,7 +576,7 @@ export default function ProductDetail() {
                   <p className="text-green-400 font-semibold">Abonnement créé !</p>
                   <p className="text-sm text-zinc-400 mt-0.5">
                     Gérez vos livraisons depuis{' '}
-                    <Link to="/compte/abonnements" className="text-primary hover:underline">
+                    <Link to={sp("/compte/abonnements")} className="text-primary hover:underline">
                       Mon compte
                     </Link>.
                   </p>

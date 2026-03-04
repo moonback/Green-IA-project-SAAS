@@ -7,8 +7,10 @@ import { useAuthStore } from '../store/authStore';
 import type { Review } from '../lib/types';
 import StarRating from '../components/StarRating';
 import SEO from '../components/SEO';
+import { useShopPath } from '../hooks/useShopPath';
 
 export default function MyReviews() {
+  const sp = useShopPath();
   const { user } = useAuthStore();
   const [reviews, setReviews] = useState<Review[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -35,7 +37,7 @@ export default function MyReviews() {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
           <div className="space-y-4">
-            <Link to="/compte" className="inline-flex items-center gap-2 text-zinc-500 hover:text-green-neon text-xs font-black uppercase tracking-widest transition-colors mb-2">
+            <Link to={sp("/compte")} className="inline-flex items-center gap-2 text-zinc-500 hover:text-green-neon text-xs font-black uppercase tracking-widest transition-colors mb-2">
               <ArrowLeft className="w-4 h-4" />
               Retour au Hub
             </Link>
@@ -67,7 +69,7 @@ export default function MyReviews() {
               </p>
             </div>
             <Link
-              to="/compte/commandes"
+              to={sp("/compte/commandes")}
               className="bg-white text-black font-black uppercase tracking-widest px-10 py-5 rounded-2xl hover:bg-green-neon transition-all"
             >
               Voir mes Commandes
@@ -88,7 +90,7 @@ export default function MyReviews() {
                   <div className="relative shrink-0">
                     <div className="absolute inset-0 bg-green-neon/10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
                     {review.product?.image_url ? (
-                      <Link to={`/catalogue/${review.product.slug}`}>
+                      <Link to={sp(`/catalogue/${review.product.slug}`)}>
                         <img
                           src={review.product.image_url}
                           alt={review.product.name}
@@ -106,7 +108,7 @@ export default function MyReviews() {
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                       <div>
                         <Link
-                          to={`/catalogue/${review.product?.slug ?? ''}`}
+                          to={sp(`/catalogue/${review.product?.slug ?? ''}`)}
                           className="text-xl font-serif font-black text-white hover:text-green-neon transition-colors uppercase tracking-tight"
                         >
                           {review.product?.name ?? 'Produit Inconnu'}

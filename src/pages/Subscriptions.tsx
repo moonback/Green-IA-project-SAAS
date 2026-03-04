@@ -8,6 +8,7 @@ import { useSettingsStore } from '../store/settingsStore';
 import type { Subscription, SubscriptionFrequency } from '../lib/types';
 import SEO from '../components/SEO';
 import { useNavigate } from 'react-router-dom';
+import { useShopPath } from '../hooks/useShopPath';
 
 const FREQUENCY_LABELS: Record<SubscriptionFrequency, string> = {
   weekly: 'Chaque semaine',
@@ -22,6 +23,7 @@ const STATUS_CONFIG = {
 };
 
 export default function Subscriptions() {
+  const sp = useShopPath();
   const { user } = useAuthStore();
   const navigate = useNavigate();
   const settings = useSettingsStore((s) => s.settings);
@@ -31,7 +33,7 @@ export default function Subscriptions() {
 
   useEffect(() => {
     if (!settings.subscriptions_enabled) {
-      navigate('/compte');
+      navigate(sp('/compte'));
       return;
     }
     if (!user) return;
@@ -91,7 +93,7 @@ export default function Subscriptions() {
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="flex items-center gap-3 mb-8">
           <Link
-            to="/compte"
+            to={sp("/compte")}
             className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors text-sm"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -116,7 +118,7 @@ export default function Subscriptions() {
             <p className="font-medium">Aucun abonnement actif</p>
             <p className="text-sm mt-1 mb-6">Abonnez-vous à vos produits CBD préférés pour des livraisons automatiques.</p>
             <Link
-              to="/catalogue"
+              to={sp("/catalogue")}
               className="inline-flex items-center gap-2 bg-green-neon hover:bg-green-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition-colors"
             >
               <ShoppingBag className="w-4 h-4" />

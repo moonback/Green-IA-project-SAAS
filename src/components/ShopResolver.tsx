@@ -6,7 +6,7 @@ import { useShopStore } from '../store/shopStore';
  * ShopResolver — Résout le shop via le slug dans l'URL.
  * Charge le currentShop dans le store Zustand avant de rendre les routes enfants.
  */
-const RESERVED_SLUGS = ['admin', 'pos', '404', 'catalogue', 'qualite', 'contact', 'connexion', 'ouvrir-boutique', 'reset-password', 'mentions-legales', 'compte', 'profil', 'commandes', 'favorites', 'parrainage', 'addresses', 'abonnements', 'fidelite', 'avis', 'annuaire'];
+const RESERVED_SLUGS = ['admin', 'pos', '404', 'catalogue', 'qualite', 'contact', 'connexion', 'ouvrir-boutique', 'reset-password', 'mentions-legales', 'compte', 'profil', 'commandes', 'favorites', 'parrainage', 'addresses', 'abonnements', 'fidelite', 'avis', 'annuaire', 'commande', 'solution'];
 
 export default function ShopResolver() {
     const { shopSlug } = useParams<{ shopSlug: string }>();

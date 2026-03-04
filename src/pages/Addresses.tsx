@@ -6,8 +6,10 @@ import { supabase } from '../lib/supabase';
 import { Address } from '../lib/types';
 import { useAuthStore } from '../store/authStore';
 import SEO from '../components/SEO';
+import { useShopPath } from '../hooks/useShopPath';
 
 export default function Addresses() {
+  const sp = useShopPath();
   const { user } = useAuthStore();
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -67,7 +69,7 @@ export default function Addresses() {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
           <div className="space-y-4">
-            <Link to="/compte" className="inline-flex items-center gap-2 text-zinc-500 hover:text-green-neon text-xs font-black uppercase tracking-widest transition-colors mb-2">
+            <Link to={sp("/compte")} className="inline-flex items-center gap-2 text-zinc-500 hover:text-green-neon text-xs font-black uppercase tracking-widest transition-colors mb-2">
               <ArrowLeft className="w-4 h-4" />
               Retour au Hub
             </Link>

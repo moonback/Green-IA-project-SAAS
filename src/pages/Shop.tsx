@@ -14,8 +14,10 @@ import {
 import { Link } from "react-router-dom";
 import SEO from "../components/SEO";
 import { useSettingsStore } from "../store/settingsStore";
+import { useShopPath } from "../hooks/useShopPath";
 
 export default function Shop() {
+  const sp = useShopPath();
   const settings = useSettingsStore((s) => s.settings);
 
   const shopSchema = {
@@ -233,14 +235,14 @@ export default function Shop() {
 
           <div className="flex flex-col sm:flex-row gap-6 justify-center pt-8">
             <Link
-              to="/contact"
+              to={sp("/contact")}
               className="px-10 py-5 bg-green-neon text-black font-black rounded-2xl transition-all transform hover:scale-105 hover:glow-box-green flex items-center justify-center gap-3"
             >
               Calculer l'itinéraire
               <ArrowRight className="w-5 h-5" />
             </Link>
             <Link
-              to="/catalogue"
+              to={sp("/catalogue")}
               className="px-10 py-5 bg-white/5 border border-white/20 text-white font-bold rounded-2xl hover:bg-white/10 transition-all flex items-center justify-center gap-3"
             >
               <CalendarCheck className="w-5 h-5 text-zinc-500" />

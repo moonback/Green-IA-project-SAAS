@@ -6,6 +6,7 @@ import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
 import type { LoyaltyTransaction } from '../lib/types';
 import SEO from '../components/SEO';
+import { useShopPath } from '../hooks/useShopPath';
 
 /* ── Tier definitions ─────────────────────────────────────────────── */
 
@@ -102,6 +103,7 @@ const TYPE_CONFIG = {
 /* ── Component ────────────────────────────────────────────────────── */
 
 export default function LoyaltyHistory() {
+  const sp = useShopPath();
   const { user, profile } = useAuthStore();
   const [transactions, setTransactions] = useState<LoyaltyTransaction[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -144,7 +146,7 @@ export default function LoyaltyHistory() {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
           <div className="space-y-4">
-            <Link to="/compte" className="inline-flex items-center gap-2 text-zinc-500 hover:text-green-neon text-xs font-black uppercase tracking-widest transition-colors mb-2">
+            <Link to={sp("/compte")} className="inline-flex items-center gap-2 text-zinc-500 hover:text-green-neon text-xs font-black uppercase tracking-widest transition-colors mb-2">
               <ArrowLeft className="w-4 h-4" />
               Retour au Hub
             </Link>
@@ -298,8 +300,8 @@ export default function LoyaltyHistory() {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.5 }}
                     className={`relative rounded-2xl p-4 text-center transition-all duration-300 ${isActive
-                        ? `bg-white/[0.05] border-2 ${tier.border}`
-                        : 'bg-white/[0.01] border border-white/5 opacity-50'
+                      ? `bg-white/[0.05] border-2 ${tier.border}`
+                      : 'bg-white/[0.01] border border-white/5 opacity-50'
                       }`}
                   >
                     <TIcon className={`w-6 h-6 mx-auto mb-2 ${tier.color}`} />

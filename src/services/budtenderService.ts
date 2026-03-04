@@ -93,7 +93,11 @@ export async function callAI(
         const json = await res.json();
 
         if (!res.ok) {
-            console.error('[BudTender callAI] API Error:', json);
+            console.error('[BudTender callAI] API Error:', {
+                status: res.status,
+                statusText: res.statusText,
+                body: json
+            });
             return null;
         }
 
