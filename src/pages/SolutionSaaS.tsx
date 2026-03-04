@@ -21,28 +21,28 @@ import { Link } from "react-router-dom";
 export default function SolutionSaaS() {
     const features = [
         {
-            title: "Conseiller client automatique",
-            description: "Un assistant qui répond aux questions de vos clients et les aide à choisir plus facilement.",
+            title: "IA BudTender Conversationnelle",
+            description: "Un assistant intelligent qui guide vos clients selon leurs besoins (sommeil, stress, récupération) et booste votre taux de conversion.",
             icon: <Cpu className="w-8 h-8 text-green-neon" />,
-            tag: "Innovation"
+            tag: "Intelligence Artificielle"
         },
         {
-            title: "Gestion de plusieurs boutiques",
-            description: "Si vous gérez plusieurs points de vente, vous gardez une vue claire et séparée de chaque boutique.",
+            title: "Pilotage Multi-Points de Vente",
+            description: "Gérez l'ensemble de vos boutiques physiques et en ligne depuis une interface unique et centralisée.",
             icon: <Lock className="w-8 h-8 text-green-neon" />,
-            tag: "Sécurité"
+            tag: "Gestion Centralisée"
         },
         {
-            title: "Boutique + caisse connectées",
-            description: "Vos stocks sont synchronisés entre la boutique en ligne et la caisse, sans double saisie.",
+            title: "Synchronisation Omnicanale",
+            description: "Stocks, commandes et clients synchronisés en temps réel entre votre e-boutique et votre logiciel de caisse.",
             icon: <Globe className="w-8 h-8 text-green-neon" />,
-            tag: "Performance"
+            tag: "Flux Temps Réel"
         },
         {
-            title: "Suivi des ventes",
-            description: "Suivez simplement les produits qui marchent le mieux et prenez de meilleures décisions.",
+            title: "Business Intelligence",
+            description: "Analysez vos performances, suivez vos meilleures ventes et optimisez vos stocks grâce à des rapports détaillés.",
             icon: <BarChart3 className="w-8 h-8 text-green-neon" />,
-            tag: "Growth"
+            tag: "Analytics"
         }
     ];
 
@@ -54,39 +54,40 @@ export default function SolutionSaaS() {
             />
 
             {/* ─── Hero Section ─── */}
-            <section className="app-section relative pt-28 sm:pt-32 overflow-hidden">
-                <div className="absolute inset-0 pointer-events-none">
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-green-neon/5 blur-[120px] rounded-full opacity-30" />
-                    <div className="absolute top-20 right-0 w-96 h-96 bg-emerald-500/10 blur-[100px] rounded-full" />
+            <section className="app-section relative pb-16 pt-24 sm:pt-28 md:pt-36">
+                <div className="pointer-events-none absolute inset-0">
+                    <div className="absolute left-1/2 top-0 h-[550px] w-[720px] -translate-x-1/2 rounded-full bg-green-neon/10 blur-[130px]" />
+                    <div className="absolute right-[-12%] top-[18%] h-[280px] w-[280px] rounded-full bg-emerald-400/10 blur-[120px]" />
                 </div>
 
-                <div className="relative z-10 page-block text-center space-y-8">
+                <div className="content-wrap relative z-10">
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.04] border border-white/[0.08] backdrop-blur-xl mb-4"
+                        initial={{ opacity: 0, y: 18 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6 }}
+                        className="mx-auto flex max-w-4xl flex-col items-center text-center"
                     >
-                        <Zap className="w-4 h-4 text-green-neon fill-green-neon" />
-                        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400">Une solution pensée pour les boutiques CBD</span>
+                        <span className="ui-card mb-8 inline-flex items-center gap-2 px-4 py-2 text-[10px] font-black uppercase tracking-[0.24em] text-zinc-300">
+                            <span className="h-1.5 w-1.5 rounded-full bg-green-neon animate-pulse" />
+                            L'écosystème ultime pour le retail CBD
+                        </span>
+
+                        <h1 className="section-title text-5xl sm:text-7xl lg:text-8xl">
+                            Propulsez votre business avec <span className="glow-green italic text-green-neon">l'IA native</span>
+                        </h1>
+                        <p className="section-copy mt-8 max-w-2xl text-lg sm:text-xl font-light text-zinc-400">
+                            De la gestion des stocks à l'assistant client intelligent, Green IA est la plateforme tout-en-un conçue pour scaler votre empire CBD en toute simplicité.
+                        </p>
+
+                        <div className="mt-12 flex w-full flex-col items-stretch justify-center gap-4 sm:w-auto sm:flex-row">
+                            <Link to="/ouvrir-boutique" className="btn-primary px-10 py-4 text-base">
+                                Demander une démo <ArrowRight className="h-5 w-5" />
+                            </Link>
+                            <Link to="/solution" className="btn-secondary px-10 py-4 text-base">
+                                Explorer l'écosystème
+                            </Link>
+                        </div>
                     </motion.div>
-
-                    <motion.h1
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="text-5xl md:text-8xl font-serif font-black tracking-tighter leading-[0.9] mb-10"
-                    >
-                        UNE SOLUTION <br />
-                        <span className="text-green-neon italic glow-green">SIMPLE ET EFFICACE.</span>
-                    </motion.h1>
-
-                    <motion.p
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.1 }}
-                        className="text-zinc-400 text-lg md:text-xl max-w-3xl mx-auto font-light leading-relaxed"
-                    >
-                        Green IA vous aide à vendre plus, gagner du temps et mieux suivre votre activité, que vous ayez une seule boutique ou plusieurs.
-                    </motion.p>
                 </div>
             </section>
 
@@ -164,14 +165,14 @@ export default function SolutionSaaS() {
                         </h2>
                         <p className="text-zinc-500 text-lg leading-relaxed font-light">
                             L'IA BudTender n'est pas un simple chatbot. C'est un moteur de recommandations
-                            entraîné sur des milliers de fiches produits CBD, capable de comprendre
-                            les nuances moléculaires et de conseiller vos clients selon l'usage recherché.
+                            avancé, conçu pour comprendre les spécificités des cannabinoïdes et
+                            accompagner vos clients vers le produit idéal en fonction de leurs besoins.
                         </p>
                         <div className="space-y-4">
                             {[
-                                { t: "Configurable à 100%", d: "Ajustez le ton (expert, amical, médical) selon votre image de marque." },
-                                { t: "Synchronisation Catalogue", d: "L'IA connaît vos stocks et ne recommande que ce qui est disponible." },
-                                { t: "Collecte de Data", d: "Comprenez ce que vos clients cherchent vraiment (sommeil, anxiété, plaisir)." }
+                                { t: "Intelligence Contextuelle", d: "Une compréhension profonde des besoins clients : anxiété, sommeil, douleur ou plaisir." },
+                                { t: "Vente Suggestive Intelligente", d: "Augmente le panier moyen en proposant des produits complémentaires pertinents." },
+                                { t: "Personnalité de Marque", d: "Adaptez le ton de l'IA pour qu'elle reflète l'identité unique de votre boutique." }
                             ].map((item, i) => (
                                 <div key={i} className="flex items-start gap-4 p-6 bg-white/[0.02] border border-white/[0.04] rounded-3xl hover:border-green-neon/20 transition-all group">
                                     <div className="mt-1 w-2 h-2 rounded-full bg-green-neon shadow-[0_0_8px_rgba(57,255,20,0.8)] group-hover:scale-150 transition-transform" />
@@ -193,9 +194,9 @@ export default function SolutionSaaS() {
                         DÉPLOYEZ EN <span className="text-green-neon">QUELQUES CLICS.</span>
                     </h2>
                     <p className="text-zinc-500 text-xl font-light">
-                        Oubliez les installations complexes. Chaque boutique Green IA est
-                        automatiquement isolée dans son propre environnement sécurisé,
-                        permettant une scalabilité infinie.
+                        Green IA repose sur une architecture Cloud native ultra-performante.
+                        Chaque instance est isolée, garantissant une sécurité maximale
+                        et une disponibilité sans faille pour votre entreprise.
                     </p>
 
                     <div className="relative py-20">
