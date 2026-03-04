@@ -93,7 +93,7 @@ export default function BudTenderWidget({ onClick, onVoiceClick, pulse = false, 
                     <p className="text-sm font-bold text-green-neon leading-none tracking-tight">
                         {isExpand ? 'Continuer la discussion' : 'BudTender IA'}
                     </p>
-                    <p className="text-[11px] text-zinc-400 leading-none mt-1 group-hover:text-zinc-200 transition-colors">
+                    <p className="text-xs text-zinc-400 leading-none mt-1 group-hover:text-zinc-200 transition-colors">
                         {isExpand ? 'Cliquez pour réouvrir' : 'Votre expert CBD'}
                     </p>
                 </div>

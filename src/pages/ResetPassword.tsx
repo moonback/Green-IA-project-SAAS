@@ -59,7 +59,7 @@ export default function ResetPassword() {
 
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 <div>
-                                    <label className="block text-[11px] uppercase tracking-widest font-bold text-zinc-500 mb-2 ml-1">Nouveau mot de passe</label>
+                                    <label className="block text-xs uppercase tracking-widest font-bold text-zinc-500 mb-2 ml-1">Nouveau mot de passe</label>
                                     <div className="relative group">
                                         <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600 group-focus-within:text-green-neon transition-colors" />
                                         <input

@@ -373,7 +373,7 @@ export default function Profile() {
                                                                     }`}
                                                             >
                                                                 <span className="text-lg">{option.emoji}</span>
-                                                                <span className="text-[11px] font-black uppercase tracking-tighter leading-tight">
+                                                                <span className="text-xs font-black uppercase tracking-tighter leading-tight">
                                                                     {option.label}
                                                                 </span>
                                                             </button>

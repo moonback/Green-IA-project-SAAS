@@ -11,7 +11,6 @@ import { useSettingsStore } from "../store/settingsStore";
 import { useShopTheme } from "../hooks/useShopTheme";
 
 // Modularized components
-import { ShopAnnouncement } from "./shop/ShopAnnouncement";
 import { ShopHeader } from "./shop/ShopHeader";
 import { ShopMobileMenu } from "./shop/ShopMobileMenu";
 import { ShopFooter } from "./shop/ShopFooter";
@@ -23,7 +22,7 @@ import { ShopFooter } from "./shop/ShopFooter";
 export default function ShopLayout() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
-    const [isBannerVisible, setIsBannerVisible] = useState(true);
+
     const location = useLocation();
     const { shopSlug } = useParams<{ shopSlug: string }>();
 
@@ -71,11 +70,7 @@ export default function ShopLayout() {
             {settings.budtender_enabled && user && isRegisteredToShop && <BudTender />}
             <ToastContainer />
 
-            <ShopAnnouncement
-                isVisible={isBannerVisible}
-                onClose={() => setIsBannerVisible(false)}
-                primaryColor={primaryColor}
-            />
+
 
             <ShopHeader
                 currentShop={currentShop}

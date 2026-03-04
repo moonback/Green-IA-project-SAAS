@@ -157,7 +157,7 @@ export default function ImageUpload({ value, onChange, bucket = 'shop-assets', l
                                 <ImageIcon className={`w-5 h-5 ${isDragging ? 'text-green-400' : 'text-zinc-600'}`} />
                             </div>
                             <div className="text-center px-4">
-                                <p className="text-[11px] text-zinc-400">
+                                <p className="text-xs text-zinc-400">
                                     Glissez ou{' '}
                                     <span className="text-green-400 font-bold">parcourez</span>
                                 </p>

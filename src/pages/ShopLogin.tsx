@@ -114,7 +114,7 @@ export default function ShopLogin() {
 
           <h1 className="text-3xl font-serif font-bold mb-2">Connexion</h1>
           <p className="text-zinc-400 text-sm mb-3">Accédez à vos commandes, abonnements et favoris.</p>
-          <p className="text-[11px] text-zinc-500 mb-6">Espace réservé aux clients de cette boutique pour acheter et suivre leurs commandes.</p>
+          <p className="text-xs text-zinc-500 mb-6">Espace réservé aux clients de cette boutique pour acheter et suivre leurs commandes.</p>
 
           {isForgotMode && (
             <button
@@ -127,7 +127,7 @@ export default function ShopLogin() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-[11px] uppercase tracking-widest font-bold text-zinc-500 mb-2 ml-1">Email client</label>
+              <label className="block text-xs uppercase tracking-widest font-bold text-zinc-500 mb-2 ml-1">Email client</label>
               <div className="relative">
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600" />
                 <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full bg-black/40 border border-zinc-800 rounded-2xl pl-12 pr-4 py-4 focus:border-green-neon outline-none" required />
@@ -137,7 +137,7 @@ export default function ShopLogin() {
             {!isForgotMode && (
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <label className="text-[11px] uppercase tracking-widest font-bold text-zinc-500 ml-1">Mot de passe</label>
+                  <label className="text-xs uppercase tracking-widest font-bold text-zinc-500 ml-1">Mot de passe</label>
                   <button type="button" onClick={() => setIsForgotMode(true)} className="text-[10px] uppercase font-bold text-zinc-600 hover:text-green-neon">Oublié ?</button>
                 </div>
                 <div className="relative">

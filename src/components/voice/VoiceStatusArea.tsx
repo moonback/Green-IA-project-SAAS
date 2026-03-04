@@ -101,7 +101,7 @@ export function VoiceStatusArea({
                 >
                     {STATUS[voiceState]}
                 </motion.p>
-                <p className="text-[11px] text-zinc-600 font-medium max-w-[260px] mx-auto leading-relaxed">
+                <p className="text-xs text-zinc-600 font-medium max-w-[260px] mx-auto leading-relaxed">
                     {error || compatibilityError || STATUS_SUB[voiceState]}
                 </p>
             </div>

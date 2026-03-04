@@ -167,7 +167,7 @@ export function ShopHeader({
                                         <span className="text-xs font-black text-white uppercase tracking-tighter leading-none mb-0.5">
                                             {profile?.full_name?.split(" ")[0] ?? "Profil"}
                                         </span>
-                                        <span className="text-[11px] font-bold text-zinc-500 uppercase tracking-widest leading-none">
+                                        <span className="text-xs font-bold text-zinc-500 uppercase tracking-widest leading-none">
                                             Connecté
                                         </span>
                                     </div>

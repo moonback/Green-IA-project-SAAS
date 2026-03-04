@@ -89,7 +89,7 @@ export function BudTenderHistory({
                                             <p className="text-sm font-bold text-white line-clamp-2 group-hover:text-green-neon transition-colors leading-relaxed">
                                                 {session.title || "Conseil Wellness personnalisé"}
                                             </p>
-                                            <div className="mt-3 flex items-center gap-4 text-[11px] text-zinc-500 font-medium">
+                                            <div className="mt-3 flex items-center gap-4 text-xs text-zinc-500 font-medium">
                                                 <span className="flex items-center gap-1.5 bg-white/5 px-2 py-1 rounded-md">
                                                     <Leaf className="w-3 h-3 text-green-neon" />
                                                     {session.messages.length} messages

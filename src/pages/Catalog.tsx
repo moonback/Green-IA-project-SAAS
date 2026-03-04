@@ -547,7 +547,7 @@ export default function Catalog() {
                 {item.icon}
               </div>
               <h4 className="text-xs font-black uppercase tracking-[0.2em] text-white">{item.title}</h4>
-              <p className="text-[11px] text-zinc-500 leading-relaxed font-medium group-hover:text-zinc-400 transition-colors">{item.desc}</p>
+              <p className="text-xs text-zinc-500 leading-relaxed font-medium group-hover:text-zinc-400 transition-colors">{item.desc}</p>
             </motion.div>
           ))}
         </div>

@@ -66,11 +66,11 @@ export default function ShopRegister() {
 
           <h1 className="text-3xl font-serif font-bold mb-2">Créer mon compte</h1>
           <p className="text-zinc-400 text-sm mb-3">Un compte dédié à cette boutique pour suivre vos commandes et favoris.</p>
-          <p className="text-[11px] text-zinc-500 mb-6">Inscription client uniquement — cet accès sert à acheter sur cette boutique.</p>
+          <p className="text-xs text-zinc-500 mb-6">Inscription client uniquement — cet accès sert à acheter sur cette boutique.</p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-[11px] uppercase tracking-widest font-bold text-zinc-500 mb-2 ml-1">Nom complet</label>
+              <label className="block text-xs uppercase tracking-widest font-bold text-zinc-500 mb-2 ml-1">Nom complet</label>
               <div className="relative">
                 <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600" />
                 <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} className="w-full bg-black/40 border border-zinc-800 rounded-2xl pl-12 pr-4 py-4 focus:border-green-neon outline-none" required />
@@ -78,7 +78,7 @@ export default function ShopRegister() {
             </div>
 
             <div>
-              <label className="block text-[11px] uppercase tracking-widest font-bold text-zinc-500 mb-2 ml-1">Email client</label>
+              <label className="block text-xs uppercase tracking-widest font-bold text-zinc-500 mb-2 ml-1">Email client</label>
               <div className="relative">
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600" />
                 <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full bg-black/40 border border-zinc-800 rounded-2xl pl-12 pr-4 py-4 focus:border-green-neon outline-none" required />
@@ -86,7 +86,7 @@ export default function ShopRegister() {
             </div>
 
             <div>
-              <label className="block text-[11px] uppercase tracking-widest font-bold text-zinc-500 mb-2 ml-1">Mot de passe</label>
+              <label className="block text-xs uppercase tracking-widest font-bold text-zinc-500 mb-2 ml-1">Mot de passe</label>
               <div className="relative">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600" />
                 <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full bg-black/40 border border-zinc-800 rounded-2xl pl-12 pr-4 py-4 focus:border-green-neon outline-none" required minLength={6} />

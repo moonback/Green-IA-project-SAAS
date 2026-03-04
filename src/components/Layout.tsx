@@ -197,7 +197,7 @@ export default function Layout() {
                       </span>
                       <div className="flex items-center gap-1.5">
                         <span className="w-1 h-1 rounded-full bg-green-neon animate-pulse" />
-                        <span className="text-[11px] font-bold text-zinc-500 uppercase tracking-widest leading-none">Console</span>
+                        <span className="text-xs font-bold text-zinc-500 uppercase tracking-widest leading-none">Console</span>
                       </div>
                     </div>
                     <ChevronDown className={`hidden md:block w-3 h-3 text-zinc-500 mr-2 transition-transform duration-500 ${isAccountMenuOpen ? 'rotate-180 text-green-neon' : ''}`} />
@@ -216,7 +216,7 @@ export default function Layout() {
                           <h3 className="text-white font-serif font-black text-xl leading-tight mb-2">{profile?.full_name}</h3>
                           <div className="flex items-center gap-2">
                             {profile?.is_admin && (
-                              <span className="px-2 py-0.5 bg-green-neon text-black text-[11px] font-black uppercase tracking-widest rounded-md">Admin</span>
+                              <span className="px-2 py-0.5 bg-green-neon text-black text-xs font-black uppercase tracking-widest rounded-md">Admin</span>
                             )}
                             <span className="text-xs text-zinc-500 font-bold uppercase tracking-widest opacity-60 truncate">{user.email}</span>
                           </div>
@@ -225,7 +225,7 @@ export default function Layout() {
                         <div className="space-y-1.5">
                           <Link
                             to={sp("/compte")}
-                            className="flex items-center justify-between px-4 py-4 text-[11px] font-bold text-zinc-400 hover:text-white hover:bg-white/[0.05] rounded-2xl transition-all group"
+                            className="flex items-center justify-between px-4 py-4 text-xs font-bold text-zinc-400 hover:text-white hover:bg-white/[0.05] rounded-2xl transition-all group"
                           >
                             <div className="flex items-center gap-3">
                               <div className="w-9 h-9 rounded-xl bg-zinc-800 flex items-center justify-center group-hover:scale-110 group-hover:bg-zinc-700 transition-all">

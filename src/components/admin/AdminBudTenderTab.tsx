@@ -541,7 +541,7 @@ export default function AdminBudTenderTab() {
                                             rows={5}
                                             value={settings.ai_instructions || ''}
                                             onChange={(e) => update({ ai_instructions: e.target.value })}
-                                            className={INPUT + ' resize-none font-mono text-[11px]'}
+                                            className={INPUT + ' resize-none font-mono text-xs'}
                                             placeholder="Ex: Ne jamais mentionner l'usage récréatif. Toujours suggérer un accompagnement avec du miel..."
                                         />
                                         <p className="text-[10px] text-zinc-600 italic">
@@ -725,7 +725,7 @@ export default function AdminBudTenderTab() {
                                                                 newSteps[sIdx].options[oIdx].label = e.target.value;
                                                                 update({ quiz_steps: newSteps });
                                                             }}
-                                                            className="flex-1 bg-transparent border-none text-[11px] text-zinc-300 p-0 focus:ring-0 placeholder-zinc-600"
+                                                            className="flex-1 bg-transparent border-none text-xs text-zinc-300 p-0 focus:ring-0 placeholder-zinc-600"
                                                             placeholder="Libellé de l'option..."
                                                         />
                                                         {/* Delete Option */}
