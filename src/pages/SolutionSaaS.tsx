@@ -60,7 +60,7 @@ export default function SolutionSaaS() {
                     <img
                         src="/images/solution-hero-bg.png"
                         alt="Infrastructure Cloud CBD"
-                        className="w-full h-full object-cover opacity-60 scale-105"
+                        className="w-full h-full object-cover opacity-100 scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-b from-brand-950/90 via-brand-950/40 to-brand-950" />
                     <div className="absolute inset-0 bg-radial-gradient from-transparent to-brand-950/80" />
