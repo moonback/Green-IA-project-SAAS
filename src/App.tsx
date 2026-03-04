@@ -7,6 +7,7 @@ import AdminRoute from "./components/AdminRoute";
 import ShopResolver from "./components/ShopResolver";
 import { useAuthStore } from "./store/authStore";
 import SplashScreen from "./components/SplashScreen";
+import ProjectForSaleModal from "./components/ProjectForSaleModal";
 
 // ── Pages SaaS (globales, hors shop) ──
 const Home = lazy(() => import("./pages/Home"));
@@ -64,6 +65,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <SplashScreen />
+      <ProjectForSaleModal />
       <Suspense fallback={<PageLoader />}>
         <Routes>
 
