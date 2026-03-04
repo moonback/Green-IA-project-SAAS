@@ -16,7 +16,7 @@ export default function Contact() {
         {/* Background Image & Cinematic Overlays */}
         <div className="absolute inset-0 z-0">
           <img
-            src="/images/contact-hero-bg.png"
+            src="/images/hero-bg.png"
             alt="Support Green IA"
             className="w-full h-full object-cover opacity-60 scale-105"
           />
