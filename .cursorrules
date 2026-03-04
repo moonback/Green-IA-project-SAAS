@@ -1,85 +1,80 @@
-# .cursorrules - Green IA SaaS
+# 🎯 .cursorrules — Green Moon SaaS (Configuration IA)
 
-# Project Context
-Green IA SaaS is a multi-tenant B2B/B2C e-commerce platform allowing merchants to create, manage, and customize their independent shops (`/:shopSlug`). The platform includes a unified global storefront, a "Budtender" AI conversational assistant (via Gemini), loyalty/referral systems, and a Point of Sale (POS) interface. The backend relies primarily on Supabase for Auth, PostgreSQL, Storage, and Row Level Security (RLS).
+Ce fichier définit les règles strictes pour le développement assisté par IA (Cursor/Claude) sur le projet Green Moon.
 
-# Tech Stack
-- Frontend: React 19, TypeScript, React Router v7, Vite
-- Styling: Tailwind CSS v4, Lucide React, Framer Motion
-- State Management: Zustand
-- Backend/DB: Supabase (PostgreSQL, Auth, RLS, Storage)
-- AI Integration: @google/genai (Gemini)
-- Payments: Viva Wallet (Sandbox/Prod)
+---
 
-# Code Style and Conventions
-- **Naming Conventions**:
-  - Components, Pages, and Interfaces: `PascalCase` (e.g., `ProductCard.tsx`, `ShopLayout.tsx`).
-  - Hooks and Functions: `camelCase` (e.g., `useAuthStore`, `formatPrice`).
-  - Files and Folders (non-components): `kebab-case` or `camelCase` (e.g., `store-settings.ts`, `api/`).
-  - Global Constants/Env Vars: `SCREAMING_SNAKE_CASE` (e.g., `VITE_SUPABASE_URL`).
-- **Component Structure**:
-  - Use Functional Components only.
-  - Export as `default` or named exports depending on modularity needs.
-  - Destructure props cleanly and ALWAYS type them using an `interface`.
-- **State Management Approach**:
-  - Favor Zustand for global or shared states (Cart, Auth, Theme).
-  - Use React's `useState` and `useReducer` for strictly local component state.
-  - Avoid prop drilling deeper than 2 levels.
+## 🏛 Project Context
+Green Moon est une plateforme SaaS multi-tenant pour l'industrie du CBD. 
+- **BtoB** : Les marchands créent et gèrent leur boutique (`/:shopSlug`).
+- **BtoC** : Les clients achètent via une interface premium avec un "Budtender" IA (Gemini).
+- **Backend** : Architecture Serverless via Supabase (Auth, DB, RLS, Storage).
 
-# Architecture Patterns
-- **Frontend Structure**:
-  - `src/components/`: Reusable UI elements, modals, layouts.
-  - `src/hooks/`: Custom React hooks embodying business logic.
-  - `src/pages/`: Route-level components. Split between Global SaaS pages and Shop-specific pages (`/:shopSlug`).
-  - `src/store/`: Zustand stores.
-  - `src/lib/`: External service instantiations (Supabase client, Gemini client).
-- **Backend/API Structure**:
-  - No traditional Node.js backend. Data is fetched directly from Supabase using `supabase-js`.
-  - Secure data modification via PostgreSQL Row Level Security (RLS).
-  - SQL migrations and logic scripts reside in the `/supabase/` folder.
-- **Database Access Patterns**:
-  - Handle asynchronous Supabase calls inside `try/catch` blocks.
-  - Always handle the `error` object returned by `supabase.from()`.
-  - For complex joins, leverage PostgREST syntax (e.g., `select('*, categories(*)')`).
+---
 
-# Best Practices
-- **Error Handling**: 
-  - Never suppress errors silently.
-  - Extract network calls into try-catch blocks and display user-friendly Toast/Alert notifications on failure.
-- **Type Safety**: 
-  - Maintain strict TypeScript compliance (`any` is forbidden unless absolutely necessary, use `unknown` instead).
-  - Sync `.ts` interfaces with the Supabase Database schema strictly.
-- **Security Considerations**:
-  - Never expose API keys or secrets in the client code other than `VITE_` prefixed public/anon keys.
-  - Enforce PostgreSQL RLS for any new table to ensure multi-tenant data isolation.
-- **Styling**:
-  - Use Tailwind utility classes.
-  - Avoid creating separate `.css` files unless necessary for complex global animations. 
-  - Follow the unified Dark Mode/Glassmorphism design language of the project.
+## 🛠 Tech Stack
+- **Frontend** : React 19, TypeScript, Vite 6, React Router 7.
+- **Styling** : Tailwind CSS 4, Framer Motion (animations), Lucide React (icônes).
+- **State** : Zustand (global), React Local State (composant).
+- **Backend** : Supabase (PostgreSQL + pgvector).
+- **IA** : Google Gemini SDK (`@google/genai`).
+- **Paiements** : Viva Wallet.
 
-# Common Tasks and Workflows
-- **How to add a new feature**:
-  1. Determine if it requires a DB change. If yes, write a `.sql` schema/migration in `/supabase/`.
-  2. Map the TS interface in the relevant types file.
-  3. Create reusable atom components in `src/components/`.
-  4. Aggregate components in the target page (`src/pages/`).
-  5. Add Zustand actions in `src/store/` if state sharing is needed.
-- **How to create a new API endpoint**:
-  - API endpoints are essentially new Supabase tables/views. Add a table via SQL, secure it via RLS, and query it directly using `supabase.from('new_table')`.
-- **How to add a database table**:
-  - Write a raw `.sql` migration file in the `supabase/` folder containing the `CREATE TABLE` and `CREATE POLICY` statements.
+---
 
-# Dependencies to Favor
-- `lucide-react` for icons.
-- `framer-motion` for complex interactive animations.
-- `zustand` for state.
-- `recharts` for admin dashboard charts.
+## 💅 Code Style & Conventions
+- **Composants** : Utilise uniquement des `Functional Components` avec export par défaut.
+- **Interfaces** : Nomme tes props `interface Props { ... }` pour chaque composant.
+- **Naming** : 
+  - Fichiers composants : `PascalCase` (`ProductCard.tsx`).
+  - Hooks : `camelCase` commençant par `use` (`useCart.ts`).
+  - Variables/Fonctions : `camelCase`.
+  - Constantes globales : `SCREAMING_SNAKE_CASE`.
+- **Typage** : Interdiction d'utiliser `any`. Utilise des types précis ou `unknown`.
+- **Prop Drilling** : Maximum 2 niveaux. Au-delà, utilise un store **Zustand**.
 
-# Things to Avoid
-- Avoid traditional CSS stylesheets in favor of Tailwind v4 syntax.
-- Do not bypass RLS using the Service Role key on the client side.
-- Do not mix global SaaS logic with localized `/:shopSlug` logic carelessly.
+---
 
-# Documentation Expectations
-- Add JSDoc comments to complex utility functions or critical `Zustand` actions.
-- Keep `README.md` and `DB_SCHEMA.md` up-to-date when altering architecture or large features.
+## 🏛 Architecture Patterns
+- **Isolation SaaS** : Ne mélange jamais la logique globale (SaaS) et la logique spécifique à une boutique (`/:shopSlug`).
+- **Sécurité DB** : Toute nouvelle table **DOIT** avoir une politique **RLS** (Row Level Security) activée.
+- **Accès Données** : Utilise exclusivement `supabase-js` pour les requêtes. Pas de routes API intermédiaires sauf nécessité absolue.
+- **Recherche IA** : Utilise les colonnes de type `vector(768)` pour les recherches sémantiques.
+
+---
+
+## ✅ Best Practices
+- **Chargement** : Implémente systématiquement un état de chargement (Skeletons ou Spinners) pour toute requête asynchrone.
+- **Erreurs** : Utilise des blocs `try/catch` pour chaque appel API Supabase et affiche une notification (Toast) à l'utilisateur.
+- **Animations** : Favorise `framer-motion` pour les transitions de page et les micro-interactions.
+- **Performance** : Utilise `useMemo` et `useCallback` uniquement pour les calculs lourds ou les dépendances de hooks critiques.
+
+---
+
+## 🔄 Common Workflows
+- **Ajout de table** : Crée un fichier `.sql` dans `/supabase/` avec `CREATE TABLE`, `ALTER TABLE ... ENABLE RLS` et les `POLICY`.
+- **Nouveau Store** : Crée un fichier dans `src/store/` avec le pattern `create<State>()`.
+- **Nouvelle Page** : Ajoute la route dans `App.tsx` et crée le fichier associé dans `src/pages/`.
+
+---
+
+## 📦 Preferred Dependencies
+- `lucide-react` : Utilise uniquement ces icônes.
+- `framer-motion` : Pour tout effet de survol ou de transition.
+- `zustand` : Pour le panier, l'auth et la config boutique.
+- `recharts` : Pour les graphiques du dashboard admin.
+
+---
+
+## 🚫 Anti-patterns to Avoid
+- **NE JAMAIS** exposer de clés secrètes (non `VITE_`) dans le code frontend.
+- **NE JAMAIS** utiliser de fichiers `.css` séparés (sauf `index.css`). Utilise Tailwind.
+- **NE JAMAIS** faire de requêtes SQL brutes depuis le frontend (utilise l'interface `supabase.from()`).
+- **NE JAMAIS** ignorer les erreurs de type TypeScript avec `@ts-ignore`.
+
+---
+
+## 📝 Documentation Rules
+- **JSDoc** : Obligatoire pour les fonctions utilitaires complexes dans `src/utils/`.
+- **Markdown** : Garde `README.md` et `DB_SCHEMA.md` à jour après chaque changement majeur de structure.
+- **Commits** : Utilise le standard **Conventional Commits** (`feat:`, `fix:`, `docs:`, `refactor:`).

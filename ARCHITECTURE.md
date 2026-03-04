@@ -1,78 +1,88 @@
-# Architecture Système et Logicielle
+# 🏛 Architecture Système — Green Moon SaaS
 
-Ce document présente l'architecture globale de **Green IA SaaS**, une plateforme E-commerce Multi-tenant.
+Ce document détaille l'organisation technique, les choix architecturaux et le flux de données de l'application.
 
-## 🏗️ Vue d'ensemble
+---
 
-Le projet suit une architecture dite **Client Lourd / BaaS (Backend as a Service)**, sans serveur applicatif Python, Node.js, ou PHP intermédiaire complexe. La logique "backend" se trouve très majoritairement gérée par **Supabase**.
+## 🗺 Vue d'ensemble
+
+L'application repose sur une architecture moderne **Serverless-first** :
 
 ```mermaid
 graph TD
-    Client[Navigateur / Utilisateur Client]
-    Merchant[Navigateur / Marchand Admin]
+    Client[Navigateur / Client React] --> API_S[Supabase API]
+    Client --> Gemini[Google Gemini AI]
+    API_S --> DB[(PostgreSQL + pgvector)]
+    API_S --> Storage[Supabase Storage]
+    Client --> Viva[Viva Wallet Payment]
     
-    subgraph Frontend React Vite / TypeScript / Tailwind css v4
-        App[Router Principal]
-        SaaS[Pages Globales SaaS]
-        Shop[Boutiques /:shopSlug]
-        Admin[Dashboard Admin / Pos]
-        State[Zustand Stores]
-        App --> SaaS
-        App --> Shop
-        Shop --> Admin
-        SaaS -.-> State
-        Shop -.-> State
+    subgraph "SaaS Core"
+        DB
+        Storage
     end
     
-    subgraph Backend Services Supabase
-        Auth[Supabase Auth]
-        DB[(PostgreSQL)]
-        RLS[Row Level Security]
-        Storage[Supabase Storage Images]
+    subgraph "External Services"
+        Gemini
+        Viva
     end
-    
-    subgraph External APIs
-        Gemini[Google Gemini AI / Budtender]
-        Payment[Passerelle Viva Wallet]
-    end
-
-    Client --> App
-    Merchant --> App
-    
-    State <--> Auth
-    State <--> DB
-    State <--> Storage
-    State <--> Gemini
-    State <--> Payment
-    
-    Auth -.-> RLS
-    DB -.-> RLS
 ```
 
-## 🖥️ Frontend (React & TypeScript)
+---
 
-- **SPA (Single Page Application)** : Livrée via un CDN (Vercel ou équivalent) offrant un temps de chargement minime.
-- **Routing Dynamique** : Les chemins root `/` ou non préfixés affichent le site vitrine/SaaS (Home, Inscription...). Les chemins préfixés `/:shopSlug` (ex: `/ma-boutique/produits`) redirigent l'utilisateur vers le store spécifique d'un marchand. 
-- **Stores Zustand** : Pour limiter le passage infernal de "Props", les états comme l'authentification (`useAuthStore`), les paniers (`useCartStore`) ou la personnalisation de la boutique (`useThemeStore`) sont centralisés avec Zustand.
-- **Hooks & Composants UI** : La conception est modulaire. Les composants de base (boutons multiples, loaders) sont indépendants des composants complexes (tunnel de commande, interface IA).
+## 🎨 Frontend (Client-side)
 
-## ⚙️ Backend as a Service (Supabase)
+### Structure des Composants
+- **Composants atomiques** : Boutons, entrées, cartes produits (`src/components/ui`).
+- **Composants métier** : Layouts, en-têtes dynamiques, gestionnaires de panier.
+- **Pages** : Composants de pages routés via `react-router-dom`.
 
-Supabase encapsule notre base de données PostgreSQL derrière des règles de sécurité.
+### Gestion d'État
+- **Zustand** : Utilisé pour la gestion d'état réactive (panier, authentification utilisateur, préférences boutique).
+- **LocalStorage** : Persistance du panier et de la session utilisateur.
 
-- **PostgREST** : Au lieu d'écrire des API CRUD (Create, Read, Update, Delete) à la main (avec Express.js/Nest.js par exemple), le frontend tape directement et de façon asynchrone dans les tables Supabase (ex: `supabase.from('products').select('*')`).
-- **PostgreSQL et RLS (Row Level Security)** : Essentiel pour le multi-tenant. Les policies PostgreSQL garantissent qu'un client ne voit que ses commandes et qu'un Marchand ne gère que les produits de sa propre boutique (grâce à l'id du profil de la boutique affiliée).
-- **Trigger(s) SQL** : Utilisés pour la synchronisation automatique (ex: Création d'un profil automatiquement lorsqu'un utilisateur s'inscrit, mise à jour de timestamps, décrémentation des stocks etc.).
-- **Auth & Storage** : Supabase gère entièrement le système de JWT (via magic link, e-mail/mot de passe), ainsi que l'hébergement des médias (images produits, bannières marchands).
+### Routing & Navigation
+L'application gère nativement le **multi-tenant** :
+- Routes globales : `/`, `/catalogue`, `/connexion`, `/register-shop`.
+- Routes boutiques : Gérées via filtrage dynamique par `shop_id` ou `subdomain`.
 
-## 🤖 Intelligence Artificielle (Budtender)
+---
 
-- **Intégration** : Réalisée via `@google/genai`. 
-- **Rôle** : Recommander des articles en temps réel de manière vocale ou textuelle (Gemini Live API), en s'appuyant potentiellement sur le contexte de la boutique naviguée par le client. Le navigateur crée la connexion websocket au service LLM, ce qui décharge d'autant l'application.
+## ⚙️ Backend (BaaS)
 
-## 💳 Paiements (Viva Wallet Integration)
-L'intégration native des processus de paiements (Smart Checkout via Viva Wallet ou intégration API stricte) se gère via des environnements de "sandbox" pour les environnements de test et une validation sécurisée. 
+### Couches applicatives
+- **Supabase Auth** : Gestion complète des utilisateurs, rôles (client vs admin) et sessions.
+- **Supabase Database** : PostgreSQL avec extensions `pgvector` pour la recherche sémantique.
+- **Supabase Storage** : Hébergement des images produits, bannières et logos.
 
-## 🛡️ Sécurité
-1. Aucune clé API secrète de type Write (Gemini, Supabase Service Role) n'est partagée côté client. Seule les clés publiques/anonymes sont exposées (`VITE_SUPABASE_ANON_KEY`).
-2. Row Level Security : Bloque les requêtes non authentifiées ou dont le jeton (token JWT) ne correspond pas à l'appartenance de la donnée appelée (notamment pour l'admin/multi-tenant).
+### Sécurité (RLS)
+L'ensemble de la sécurité est piloté directement au niveau de la base de données via **Row Level Security (RLS)** :
+- Un client ne peut voir que son profil et ses commandes.
+- Un admin de boutique ne peut modifier que les données liées à sa boutique.
+- L'accès anonyme est limité à la lecture du catalogue public.
+
+---
+
+## 🤖 Services d'Intelligence Artificielle
+
+### Budtender IA
+- **Modèle** : Google Gemini-1.5-flash.
+- **Rôle** : Recommander des produits en fonction de l'humeur, des goûts ou des besoins thérapeutiques de l'utilisateur.
+- **Intégration** : Via le SDK `@google/genai` directement depuis le client.
+
+### Recherche Vectorielle
+- Les descriptions produits sont converties en **embeddings** (768 dimensions) via Gemini.
+- Ces vecteurs sont stockés dans la colonne `embedding` de la table `products`.
+- La recherche sémantique (`match_products`) utilise la distance cosinus pour trouver les produits les plus pertinents.
+
+---
+
+## 🏛 Décisions d'Architecture (ADR)
+
+1. **Pourquoi React 19 + Vite ?**
+   - Performance maximale pour une application monopage (SPA) fluide avec animations complexes (Framer Motion).
+2. **Pourquoi Supabase au lieu d'un backend Node/Express ?**
+   - Gain de temps massif sur l'infrastructure (Auth, Realtime, DB). Tout le code métier complexe est déporté dans des fonctions SQL ou géré via RLS.
+3. **Pourquoi pgvector ?**
+   - Permet de combiner recherche SQL classique (prix, stock) et recherche sémantique IA (goût, effet) dans une seule requête atomique.
+4. **Pourquoi Tailwind 4 ?**
+   - Système de design moderne, plus performant et compatible nativement avec Vite.

@@ -1,66 +1,119 @@
-# Documentation API (Client / Supabase)
+# 🔗 Référence API (Supabase / PostgREST) — Green Moon SaaS
 
-L'application **Green IA SaaS** ne possède par de serveur backend monolithique. Le frontend consomme les données via l'API **PostgREST** de **Supabase** et les API tierces (Gemini, Viva Wallet).
-
-## 🔒 1. Authentification (Supabase Auth)
-
-L'API de gestion des utilisateurs passe par le client Supabase JavaScript : `supabase.auth`.
-
-### `signUp(email, password, metadata)`
-Inscription d'un nouvel utilisateur/marchand. Des flags (ex: `is_merchant: true`) et le nom de la boutique (`shop_slug`) peuvent être passés dans les metadata. Ces données modifient la Table `profiles` de PostgreSQL automatiquement.
-
-### `signInWithPassword(email, password)`
-Authentifie l'utilisateur, retourne une session et déclenche le refresh du store de l'utilisateur concerné.
-
-### `signOut()`
-Assure la déconnexion locale et invalide le jeton sur le backend.
-
-### `resetPasswordForEmail(email)`
-Génération d'un lien de réinitialisation sécurisé de type "magic link".
+L'application interagit principalement via l'API générée par **Supabase**. Les requêtes sont authentifiées par la clé `anon_key` (client) ou le token JWT (utilisateur connecté).
 
 ---
 
-## 🗄️ 2. Base de Données (Endpoints PostgREST)
+## 🏛 Authentification
 
-Supabase expose chaque table sous forme de route RESTFUL (`/rest/v1/[table]`).
-Via le module JavaScript : `supabase.from('NOM_DE_TABLE')`.
+Les endpoints d'authentification sont gérés par Supabase Auth.
 
-### `profiles` (Utilisateurs et Marchands)
-- **GET (Select)** : `supabase.from('profiles').select('*')` pour le fetch des informations de points de fidélité.
-- **PATCH (Update)** : Permet aux marchands et clients d'éditer leurs informations de compte ou préférences.
-
-### `shops` / `store_settings` (Multi-tenant)
-- Permet de résoudre la configuration (`theme`, `colors`, `name`) liée à la boutique consultée (`/:shopSlug`).
-- **Endpoint clés** : Récupérer le contenu par un slug ou l'ID associé à l'utilisateur courant (pour l'admin).
-
-### `products` & `categories`
-- **GET avec Filtres** : `supabase.from('products').select('*, categories(*)').eq('shop_id', id)` 
-  Récupère les items du catalogue liés à une boutique spécifique. Supporte la pagination, recherche textuelle et filtrage par prix ou catégories de produit (ex: "Fleurs", "Résines", "Concentrés", etc).
-
-### `orders` & `order_items`
-- **POST (Insert)** : Action finale du Checkout. Nécessite l'insertion d'une nouvelle `order` puis de multiples `order_items`. 
-- **GET (Historique)** : Filtrage sur `auth.uid()` pour les clients, et sur profil "Marchand" (ou ID boutique) pour le dashboard Admin & POS.
-
-### `subscriptions` (Abonnements)
-- Les requêtes permettant au client de consulter ou résilier ses commandes "récurrentes" et générer des cycles automatiques (planifié côté backend).
+| Endpoint | Méthode | Description | Auth requis |
+| :--- | :--- | :--- | :--- |
+| `/auth/v1/signup` | POST | Création de compte utilisateur | ❌ |
+| `/auth/v1/login` | POST | Connexion par email / mot de passe | ❌ |
+| `/auth/v1/logout`| POST | Déconnexion de la session actuelle | ✅ |
+| `/auth/v1/user`  | GET  | Informations de l'utilisateur actuel| ✅ |
 
 ---
 
-## 🤖 3. Budtender Intelligence Artificielle (Gemini API)
+## 📦 Produits & Catalogue
 
-Le frontend utilise `@google/genai` pour communiquer avec l'API Gemini.
+### Lister les produits
+`GET /rest/v1/products`
+Retourne la liste des produits paginée et filtrable.
 
-### `Google Gen AI API` (ex: `models/gemini-2.5-flash`)
-- **Appel** : Service AI connecté nativement côté client.
-- **Fonctions** : Fournir une assistance pour la navigation produit et émettre des recommandations (potentiellement multimodales - texte, voix). Le SDK initie les `sessions` websockets et les échanges asynchrones sans intermédiaire.
-- **Sécurité** : La clé cliente nécessite un whitelisting du domaine (`APP_URL`) sous Google Cloud Console pour limiter les fuites en production.
+- **Paramètres (Query)** :
+  - `select` : Liste des colonnes (`*`)
+  - `is_active` : `eq.true`
+  - `price` : `lt.40`, `gt.20`
+  - `order` : `price.asc`, `created_at.desc`
+- **Réponse (200 OK)** : Un tableau JSON d'objets `product`.
+
+### Recherche Sémantique (RPC)
+`POST /rest/v1/rpc/match_products`
+Recherche de produits via IA (embeddings).
+
+- **Paramètres (Body)** :
+  - `query_embedding` : `float[]` (vecteur 768 généré par Gemini)
+  - `match_threshold` : `number` (ex: `0.75`)
+  - `match_count` : `integer` (ex: `5`)
+- **Exemple JSON** :
+  ```json
+  {
+    "query_embedding": [0.012, -0.045, ...],
+    "match_threshold": 0.5,
+    "match_count": 4
+  }
+  ```
 
 ---
 
-## 💳 4. Paiement (Viva Wallet)
+## 🛒 Commandes & Panier
 
-### Création d'un Ordre de Paiement (Smart Checkout)
-L'intégration (en frontend ou Edge Function le cas échéant) demande la communication avec les serveurs Viva Wallet.
-- **Endpoint Viva API** : POST `/api/orders`
-- **Payload** : Montant (`amount`), Source (`sourceCode`), Détails clients.
-- Devrait répondre avec un identifiant de session redirigeant l'utilisateur sur une URL sécurisée d'encaissement, ou affichant l'iFrame locale de Viva Wallet au moment du panier.
+### Créer une commande
+`POST /rest/v1/orders`
+
+- **Auth** : ✅ (JWT Utilisateur)
+- **Corps de la requête (Body)** :
+  ```json
+  {
+    "user_id": "uuid-xxx",
+    "delivery_type": "click_collect",
+    "subtotal": 45.90,
+    "total": 45.90,
+    "status": "pending"
+  }
+  ```
+
+---
+
+## 🤖 Budtender (Conseiller IA)
+
+Le Budtender utilise directement l'API Google Gemini via le SDK client, mais les interactions sont enregistrées en base.
+
+### Enregistrer une session de chat
+`POST /rest/v1/budtender_interactions`
+
+- **Paramètres (Body)** :
+  - `interaction_type` : `'chat_session' | 'quiz_result'`
+  - `quiz_answers` : `jsonb`
+  - `recommended_products` : `uuid[]`
+- **Exemple JSON** :
+  ```json
+  {
+    "interaction_type": "quiz_result",
+    "quiz_answers": { "goal": "relax", "intensity": "high" },
+    "recommended_products": ["prod-uuid-1", "prod-uuid-2"]
+  }
+  ```
+
+---
+
+## 🏪 Boutique SaaS (Multi-Tenant)
+
+### Enregistrer un shop
+`POST /rest/v1/shops` (Table non explicite dans SQL mais gérée via profils et settings)
+
+> ⚠️ À compléter : Le schéma exact pour l'enregistrement multi-tenant nécessite une confirmation sur la table `shops` ou l'utilisation de `store_settings`.
+
+---
+
+## 💳 Paiements (Caisse / POS)
+
+### Générer un rapport POS
+`POST /rest/v1/pos_reports`
+
+- **Auth** : ✅ (Admin uniquement)
+- **Champs** : `total_sales`, `cash_total`, `card_total`, `items_sold`.
+
+---
+
+## 🚨 Erreurs Communes
+
+| Code | Message | Cause probable |
+| :--- | :--- | :--- |
+| `401 Unauthorized` | JWT Expired | Utilisateur non connecté ou session expirée. |
+| `403 Forbidden` | RLS Violation | Tentative d'accès à des données ne vous appartenant pas. |
+| `404 Not Found` | Route Invalide | L'endpoint ou la ressource n'existe pas. |
+| `400 Bad Request` | Invalid Input | Type de données incorrect ou paramètres manquants. |
