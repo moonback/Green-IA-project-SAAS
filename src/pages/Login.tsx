@@ -51,6 +51,16 @@ export default function Login() {
     try {
       if (mode === 'login') {
         await signIn(email, password);
+
+        // Security check: Only admins/owners can access the SaaS login
+        if (!isShopAuth) {
+          const { profile, signOut } = useAuthStore.getState();
+          if (!profile?.is_admin) {
+            await signOut();
+            throw new Error("Accès refusé. Cette page est réservée aux gérants de boutiques SaaS.");
+          }
+        }
+
         if (shopSlug) {
           navigate(`/${shopSlug}/compte`);
         } else {
