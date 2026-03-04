@@ -84,10 +84,21 @@ export default function RegisterShop() {
     };
 
     return (
-        <div className="min-h-screen bg-black text-white selection:bg-green-neon selection:text-black">
+        <div className="min-h-screen relative overflow-hidden bg-brand-950 text-white selection:bg-green-neon selection:text-black">
             <SEO title="Ouvrir ma boutique — Green IA SaaS" description="Rejoignez la plateforme SaaS CBD n°1 et lancez votre boutique avec IA." />
 
-            <div className="max-w-8xl mx-auto px-6 py-12 lg:py-20 grid lg:grid-cols-2 gap-16 items-center">
+            {/* Background Image & Cinematic Overlays */}
+            <div className="absolute inset-0 z-0">
+                <img
+                    src="/images/hero-bg.png"
+                    alt="Green IA Business"
+                    className="w-full h-full object-cover opacity-100 scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-brand-950/90 via-brand-950/40 to-brand-950" />
+                <div className="absolute inset-0 bg-radial-gradient from-transparent to-brand-950/80" />
+            </div>
+
+            <div className="relative z-10 max-w-8xl mx-auto px-6 py-12 lg:py-20 grid lg:grid-cols-2 gap-16 items-center">
 
                 {/* Left Side: Marketing */}
                 <div className="space-y-8">
@@ -259,7 +270,7 @@ export default function RegisterShop() {
                                                     <div
                                                         key={p.id}
                                                         onClick={() => setSelectedPlan(p.id)}
-                                                        className={`p-5 rounded-2xl border-2 cursor-pointer transition-all ${selectedPlan === p.id ? p.color : 'border-zinc-800 grayscale opacity-60'}`}
+                                                        className={`p-5 rounded-2xl border-2 cursor-pointer transition-all ${selectedPlan === p.id ? p.color : 'border-zinc-800 grayscale opacity-100'}`}
                                                     >
                                                         <div className="flex justify-between items-start mb-4">
                                                             <div>

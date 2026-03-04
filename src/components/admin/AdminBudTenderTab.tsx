@@ -659,7 +659,7 @@ export default function AdminBudTenderTab() {
                                             {speed === 'normal' && '⚖️ Normal'}
                                             {speed === 'fast' && '⚡ Rapide'}
                                             <br />
-                                            <span className="font-normal text-[10px] mt-0.5 block opacity-60">
+                                            <span className="font-normal text-[10px] mt-0.5 block opacity-100">
                                                 {speed === 'slow' && '1.5 – 2.5s'}
                                                 {speed === 'normal' && '0.8 – 1.5s'}
                                                 {speed === 'fast' && '0.2 – 0.5s'}

@@ -178,7 +178,7 @@ export default function Products() {
                         alt={cat.title}
                         className="w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-700"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent opacity-60" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent opacity-100" />
                       <div className="absolute top-8 left-8 flex flex-col gap-2">
                         <span className="px-5 py-2 rounded-full bg-zinc-950/80 backdrop-blur-md border border-white/10 text-white text-xs font-black tracking-widest uppercase">
                           {cat.tag}

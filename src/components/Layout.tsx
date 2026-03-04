@@ -219,7 +219,7 @@ export default function Layout() {
                             {profile?.is_admin && (
                               <span className="px-2 py-0.5 bg-green-neon text-black text-[10px] font-black uppercase tracking-widest rounded-md">Admin</span>
                             )}
-                            <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest opacity-60 truncate">{user.email}</span>
+                            <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest opacity-100 truncate">{user.email}</span>
                           </div>
                         </div>
 
@@ -392,7 +392,7 @@ export default function Layout() {
                       </div>
                       <div className="flex flex-col">
                         <p className="text-white font-serif font-black text-xl leading-none mb-1.5">{profile?.full_name}</p>
-                        <p className="text-xs text-zinc-500 font-bold uppercase tracking-[0.15em] opacity-60 truncate max-w-[180px]">{user.email}</p>
+                        <p className="text-xs text-zinc-500 font-bold uppercase tracking-[0.15em] opacity-100 truncate max-w-[180px]">{user.email}</p>
                       </div>
                     </div>
 

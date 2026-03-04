@@ -202,7 +202,7 @@ export default function Catalog() {
                   className="w-full h-full object-cover grayscale-[30%] hover:grayscale-0 transition-all duration-1000"
                   alt="Premium Product"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent opacity-60" />
+                <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent opacity-100" />
                 <div className="absolute bottom-10 left-10 right-10 p-6 backdrop-blur-3xl bg-white/[0.03] border border-white/10 rounded-3xl">
                   <p className="text-[9px] font-black uppercase tracking-[0.3em] text-primary mb-2">Focus du Mois</p>
                   <p className="text-xl font-serif font-bold text-white uppercase tracking-tight italic">Deep Emerald Kush</p>

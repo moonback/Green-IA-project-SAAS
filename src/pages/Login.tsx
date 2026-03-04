@@ -170,7 +170,7 @@ export default function Login() {
           >
             <div className="flex items-center gap-2">
               <div className="w-6 h-6 rounded bg-white/10 flex items-center justify-center">
-                <img src="/logo.png" className="w-4 h-4 rounded-full opacity-60" alt="" />
+                <img src="/logo.png" className="w-4 h-4 rounded-full opacity-100" alt="" />
               </div>
               <span className="text-[9px] font-black uppercase tracking-[0.3em] text-zinc-600">Green IA Secure</span>
             </div>

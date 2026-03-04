@@ -566,7 +566,7 @@ export default function AdminThemeTab() {
                         <button
                             onClick={handleSave}
                             disabled={isSaving}
-                            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider bg-green-500 hover:bg-green-400 text-black transition-all disabled:opacity-60"
+                            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider bg-green-500 hover:bg-green-400 text-black transition-all disabled:opacity-100"
                         >
                             {saveSuccess ? <Check className="w-4 h-4" /> : <Save className="w-4 h-4" />}
                             {isSaving ? 'Enregistrement...' : saveSuccess ? 'Sauvegardé !' : 'Sauvegarder'}
@@ -1066,7 +1066,7 @@ export default function AdminThemeTab() {
                         <button
                             onClick={handleSave}
                             disabled={isSaving}
-                            className="flex items-center gap-2 px-8 py-3.5 rounded-2xl text-sm font-black text-black transition-all hover:opacity-90 active:scale-95 disabled:opacity-60 shadow-[0_4px_20px_rgba(57,255,20,0.3)]"
+                            className="flex items-center gap-2 px-8 py-3.5 rounded-2xl text-sm font-black text-black transition-all hover:opacity-90 active:scale-95 disabled:opacity-100 shadow-[0_4px_20px_rgba(57,255,20,0.3)]"
                             style={{ background: theme.primary_color }}
                         >
                             {saveSuccess ? <Check className="w-4 h-4" /> : <Save className="w-4 h-4" />}

@@ -429,7 +429,7 @@ export default function LoyaltyHistory() {
                       tx.type === 'redeemed' || tx.type === 'expired' ? 'text-yellow-500' :
                         'text-purple-400'
                       }`}>
-                      {tx.type === 'earned' ? '+' : '\u2212'}{tx.points}<span className="text-[10px] ml-1 uppercase font-black font-sans tracking-widest opacity-60">pts</span>
+                      {tx.type === 'earned' ? '+' : '\u2212'}{tx.points}<span className="text-[10px] ml-1 uppercase font-black font-sans tracking-widest opacity-100">pts</span>
                     </p>
                     <p className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest">NOUVEAU SOLDE : {tx.balance_after}</p>
                   </div>

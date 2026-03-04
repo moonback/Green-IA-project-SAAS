@@ -331,7 +331,7 @@ export default function ProductDetail() {
                     onClick={() => setActiveImageIndex(idx)}
                     className={`w-16 h-16 rounded-xl overflow-hidden border-2 transition-all ${idx === activeImageIndex
                       ? 'border-primary shadow-[0_0_12px_rgba(var(--color-primary-rgb),0.3)]'
-                      : 'border-white/[0.08] opacity-60 hover:opacity-100'
+                      : 'border-white/[0.08] opacity-100 hover:opacity-100'
                       }`}
                   >
                     <img src={img} alt={`Vue ${idx + 1}`} className="w-full h-full object-cover" />

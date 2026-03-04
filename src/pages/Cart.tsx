@@ -181,7 +181,7 @@ export default function Cart() {
                   <Package className="w-6 h-6 flex-shrink-0" />
                   <div className="flex-1">
                     <p className={`text-sm font-semibold uppercase tracking-wider ${deliveryType === 'click_collect' ? 'text-black' : 'text-white'}`}>Click & Collect</p>
-                    <p className={`text-xs font-medium leading-none mt-1 opacity-60 text-inherit`}>Retrait Gratuit Boutique</p>
+                    <p className={`text-xs font-medium leading-none mt-1 opacity-100 text-inherit`}>Retrait Gratuit Boutique</p>
                   </div>
                 </button>
 
@@ -195,7 +195,7 @@ export default function Cart() {
                   <Truck className="w-6 h-6 flex-shrink-0" />
                   <div className="flex-1">
                     <p className={`text-sm font-semibold uppercase tracking-wider ${deliveryType === 'delivery' ? 'text-black' : 'text-white'}`}>Livraison</p>
-                    <p className={`text-xs font-medium leading-none mt-1 opacity-60 text-inherit`}>
+                    <p className={`text-xs font-medium leading-none mt-1 opacity-100 text-inherit`}>
                       {sub >= settings.delivery_free_threshold
                         ? 'Offerte — Dès 0€'
                         : `${settings.delivery_fee.toFixed(2)}€ — Standard`}

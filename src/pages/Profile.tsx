@@ -204,7 +204,7 @@ export default function Profile() {
                                 />
                             </div>
 
-                            <div className="space-y-2 md:col-span-2 opacity-60">
+                            <div className="space-y-2 md:col-span-2 opacity-100">
                                 <label className="text-[10px] font-mono text-zinc-600 uppercase tracking-[0.4em] px-4 flex items-center gap-3">
                                     <Mail className="w-3 h-3" />
                                     Adresse e-mail (Identifiant Unique)

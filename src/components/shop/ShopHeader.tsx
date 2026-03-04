@@ -185,7 +185,7 @@ export function ShopHeader({
                                             <div className="px-4 py-4 mb-2 bg-white/[0.03] rounded-2xl border border-white/[0.05]">
                                                 <p className="text-xs font-black uppercase tracking-[0.2em] text-zinc-500 mb-1">Session Magasin</p>
                                                 <h3 className="text-white font-serif font-black text-lg leading-tight mb-1">{profile?.full_name}</h3>
-                                                <p className="text-xs text-zinc-400 truncate opacity-60">{user.email}</p>
+                                                <p className="text-xs text-zinc-400 truncate opacity-100">{user.email}</p>
                                             </div>
 
                                             <div className="space-y-1">

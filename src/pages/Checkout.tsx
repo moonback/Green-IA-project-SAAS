@@ -322,7 +322,7 @@ export default function Checkout() {
                   <Package className={`w-8 h-8 ${deliveryType === 'click_collect' ? 'text-black' : 'text-green-neon'}`} />
                   <div>
                     <p className="text-sm font-semibold uppercase tracking-wider">Click & Collect</p>
-                    <p className={`text-xs mt-1 opacity-60 font-medium`}>Retrait immédiat en boutique — Gratuit</p>
+                    <p className={`text-xs mt-1 opacity-100 font-medium`}>Retrait immédiat en boutique — Gratuit</p>
                   </div>
                   {deliveryType === 'click_collect' && <CheckCircle2 className="absolute top-6 right-6 w-5 h-5 text-black" />}
                 </button>
@@ -337,7 +337,7 @@ export default function Checkout() {
                   <Truck className={`w-8 h-8 ${deliveryType === 'delivery' ? 'text-black' : 'text-green-neon'}`} />
                   <div>
                     <p className="text-sm font-semibold uppercase tracking-wider">Livraison Standard</p>
-                    <p className={`text-xs mt-1 opacity-60 font-medium`}>Expédition prioritaire à domicile</p>
+                    <p className={`text-xs mt-1 opacity-100 font-medium`}>Expédition prioritaire à domicile</p>
                   </div>
                   {deliveryType === 'delivery' && <CheckCircle2 className="absolute top-6 right-6 w-5 h-5 text-black" />}
                 </button>

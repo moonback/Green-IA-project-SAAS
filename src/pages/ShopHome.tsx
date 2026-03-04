@@ -126,7 +126,7 @@ export default function ShopHome() {
                                                 <img
                                                     src={cat.image_url}
                                                     alt={cat.name}
-                                                    className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-60 group-hover:scale-110 transition-all duration-700"
+                                                    className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700"
                                                 />
                                             )}
                                             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />

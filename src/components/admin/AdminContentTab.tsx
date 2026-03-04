@@ -377,7 +377,7 @@ export default function AdminContentTab() {
                         <button
                             onClick={handleSave}
                             disabled={isSaving}
-                            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider bg-blue-500 hover:bg-blue-400 text-white transition-all disabled:opacity-60"
+                            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider bg-blue-500 hover:bg-blue-400 text-white transition-all disabled:opacity-100"
                         >
                             {saveSuccess ? <Check className="w-4 h-4" /> : <Save className="w-4 h-4" />}
                             {isSaving ? 'Enregistrement...' : saveSuccess ? 'Sauvegardé !' : 'Sauvegarder'}
@@ -483,7 +483,7 @@ export default function AdminContentTab() {
                 <button
                     onClick={handleSave}
                     disabled={isSaving}
-                    className="flex items-center gap-2 px-8 py-3.5 rounded-2xl text-sm font-black text-white bg-blue-600 hover:bg-blue-500 transition-all hover:opacity-90 active:scale-95 disabled:opacity-60 shadow-[0_4px_20px_rgba(59,130,246,0.3)]"
+                    className="flex items-center gap-2 px-8 py-3.5 rounded-2xl text-sm font-black text-white bg-blue-600 hover:bg-blue-500 transition-all hover:opacity-90 active:scale-95 disabled:opacity-100 shadow-[0_4px_20px_rgba(59,130,246,0.3)]"
                 >
                     {saveSuccess ? <Check className="w-4 h-4" /> : <Save className="w-4 h-4" />}
                     {isSaving ? 'Enregistrement…' : saveSuccess ? 'Textes sauvegardés !' : 'Sauvegarder les textes'}
