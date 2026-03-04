@@ -15,6 +15,15 @@
   --color-brand-900: #0d111a;
   --color-brand-800: #121826;
   --color-brand-700: #1b2437;
+
+  /* ── Shop Dynamic Theme ── */
+  --color-primary: var(--shop-primary, #39ff14);
+  --color-primary-rgb: var(--shop-primary-rgb, 57, 255, 20);
+  --color-secondary: var(--shop-secondary, #ffffff);
+  --color-accent: var(--shop-accent, #a3e635);
+  --color-bg-shop: var(--shop-bg, #09090b);
+  --color-text-shop: var(--shop-text, #f4f4f5);
+  --font-shop: var(--shop-font, "Inter");
 }
 
 @layer base {

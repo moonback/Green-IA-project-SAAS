@@ -66,50 +66,65 @@ export default function FrequentlyBoughtTogether({ productId, categoryId, curren
   };
 
   return (
-    <div className="bg-white/[0.02] border border-white/[0.06] rounded-2xl p-6 md:p-8 space-y-6">
-      <div className="flex items-center gap-3">
-        <div className="w-8 h-8 rounded-xl bg-green-neon/10 border border-green-neon/20 flex items-center justify-center">
-          <Sparkles className="w-4 h-4 text-green-neon" />
+    <div className="bg-white/[0.03] backdrop-blur-3xl border border-white/[0.08] rounded-[2.5rem] p-8 md:p-10 space-y-8 relative overflow-hidden">
+      <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 blur-3xl -mr-16 -mt-16" />
+
+      <div className="flex items-center justify-between relative z-10">
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center">
+            <Sparkles className="w-6 h-6 text-primary" />
+          </div>
+          <div className="space-y-1">
+            <h3 className="text-sm font-black uppercase tracking-[0.2em] text-white">Synergie Moléculaire</h3>
+            <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest italic">Souvent sélectionnés ensemble</p>
+          </div>
         </div>
-        <h3 className="text-sm font-bold uppercase tracking-wider text-white">Souvent achetés ensemble</h3>
+        <div className="hidden sm:flex items-center gap-2 px-4 py-2 bg-white/5 rounded-full border border-white/10 text-[9px] font-black uppercase tracking-widest text-zinc-400">
+          <Plus className="w-3 h-3" /> Bundle Optimal
+        </div>
       </div>
 
-      <div className="flex items-center gap-3 flex-wrap">
+      <div className="flex flex-wrap items-center gap-6 relative z-10">
         {products.map((product, idx) => (
-          <div key={product.id} className="flex items-center gap-3">
-            {idx > 0 && <Plus className="w-4 h-4 text-zinc-600 flex-shrink-0" />}
+          <div key={product.id} className="flex items-center gap-6">
+            {idx > 0 && (
+              <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0">
+                <Plus className="w-4 h-4 text-zinc-600" />
+              </div>
+            )}
             <motion.button
-              whileTap={{ scale: 0.97 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => toggleProduct(product.id)}
-              className={`flex items-center gap-3 p-3 rounded-xl border transition-all ${selected.has(product.id)
-                ? 'bg-white/[0.05] border-green-neon/30'
-                : 'bg-white/[0.02] border-white/[0.06] opacity-50'
+              className={`group flex items-center gap-4 p-4 rounded-2xl border transition-all duration-500 max-w-[280px] ${selected.has(product.id)
+                ? 'bg-white/[0.08] border-primary/40 shadow-xl shadow-black/20'
+                : 'bg-white/[0.01] border-white/[0.06] opacity-40 hover:opacity-100'
                 }`}
             >
-              <div className="w-12 h-12 rounded-lg overflow-hidden bg-zinc-800 flex-shrink-0">
+              <div className="relative w-16 h-16 rounded-xl overflow-hidden bg-zinc-900 border border-white/10 flex-shrink-0">
                 <img
                   src={product.image_url ?? FALLBACK_IMG}
                   alt={product.name}
                   loading="lazy"
-                  onError={(e) => {
-                    const t = e.currentTarget;
-                    if (t.src !== FALLBACK_IMG) t.src = FALLBACK_IMG;
-                  }}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover transition-transform group-hover:scale-110"
                 />
               </div>
-              <div className="text-left min-w-0">
-                <p className="text-xs font-semibold text-white line-clamp-1">{product.name}</p>
-                <p className="text-xs text-green-neon font-bold">{product.price.toFixed(2)} €</p>
+              <div className="text-left min-w-0 flex-1 space-y-1">
+                <p className="text-xs font-black text-white uppercase tracking-tight line-clamp-1 group-hover:text-primary transition-colors">{product.name}</p>
+                <div className="flex items-center gap-2">
+                  <p className="text-sm font-black text-white">{product.price.toFixed(2)}€</p>
+                  {product.cbd_percentage && <span className="text-[8px] font-bold text-primary/60">{product.cbd_percentage}% CBD</span>}
+                </div>
               </div>
-              <div className={`w-5 h-5 rounded-md border flex-shrink-0 flex items-center justify-center ${selected.has(product.id)
-                ? 'bg-green-neon border-green-neon text-black'
-                : 'border-white/20'
+              <div className={`w-6 h-6 rounded-lg border flex-shrink-0 flex items-center justify-center transition-all ${selected.has(product.id)
+                ? 'bg-primary border-primary text-black shadow-lg shadow-primary/20 rotate-0'
+                : 'border-white/20 -rotate-12'
                 }`}>
-                {selected.has(product.id) && (
-                  <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                {selected.has(product.id) ? (
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
+                ) : (
+                  <Plus className="w-3 h-3" />
                 )}
               </div>
             </motion.button>
@@ -118,19 +133,33 @@ export default function FrequentlyBoughtTogether({ productId, categoryId, curren
       </div>
 
       {selectedProducts.length > 0 && (
-        <div className="flex items-center justify-between pt-4 border-t border-white/[0.06]">
-          <div>
-            <p className="text-xs text-zinc-500 uppercase tracking-wider">Total combiné</p>
-            <p className="text-xl font-serif font-bold text-white">
-              {bundleTotal.toFixed(2)}<span className="text-sm text-zinc-500 ml-1">€</span>
-            </p>
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-8 pt-8 border-t border-white/10 relative z-10">
+          <div className="flex items-center gap-6">
+            <div className="space-y-1 text-center sm:text-left">
+              <p className="text-[10px] text-zinc-500 font-black uppercase tracking-[0.2em]">Valeur de la Collection</p>
+              <div className="flex items-baseline gap-1">
+                <span className="text-4xl font-black text-white tracking-tighter">
+                  {bundleTotal.toFixed(2)}
+                </span>
+                <span className="text-lg font-bold text-zinc-500">€</span>
+              </div>
+            </div>
+            {selectedProducts.length > 1 && (
+              <div className="h-10 w-px bg-white/10 hidden sm:block" />
+            )}
+            {selectedProducts.length > 1 && (
+              <p className="text-[9px] font-black uppercase tracking-[0.2em] text-primary bg-primary/10 px-4 py-2 rounded-full border border-primary/20 hidden sm:block">
+                Optimisation Confirmée
+              </p>
+            )}
           </div>
+
           <button
             onClick={handleAddBundle}
-            className="flex items-center gap-2 bg-green-neon text-black font-semibold uppercase tracking-wider text-sm px-6 py-3 rounded-xl hover:shadow-[0_0_20px_rgba(57,255,20,0.3)] active:scale-[0.98] transition-all"
+            className="w-full sm:w-auto flex items-center justify-center gap-4 bg-white text-black font-black uppercase tracking-[0.2em] text-[10px] px-12 py-6 rounded-2xl hover:bg-primary hover:shadow-[0_20px_40px_rgba(var(--color-primary-rgb),0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all"
           >
-            <ShoppingCart className="w-4 h-4" />
-            Ajouter {selectedProducts.length} article{selectedProducts.length > 1 ? 's' : ''}
+            <ShoppingCart className="w-5 h-5" />
+            Ajouter au Panier ({selectedProducts.length + 1})
           </button>
         </div>
       )}

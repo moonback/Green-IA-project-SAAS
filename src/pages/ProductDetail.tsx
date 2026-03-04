@@ -249,7 +249,7 @@ export default function ProductDetail() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-green-primary border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -266,7 +266,7 @@ export default function ProductDetail() {
       <div className="page-block">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-4 text-xs uppercase tracking-wider text-zinc-600 mb-12">
-          <Link to={sp('/catalogue')} className="flex items-center gap-2 hover:text-green-neon transition-colors">
+          <Link to={sp('/catalogue')} className="flex items-center gap-2 hover:text-primary transition-colors">
             <ArrowLeft className="w-4 h-4" />
             Archives
           </Link>
@@ -288,7 +288,7 @@ export default function ProductDetail() {
             className="relative group lg:sticky lg:top-28"
           >
             {/* Decorative Glow */}
-            <div className="absolute inset-0 bg-green-neon/5 blur-[120px] -z-10 group-hover:bg-green-neon/10 transition-all duration-1000" />
+            <div className="absolute inset-0 bg-primary/5 blur-[120px] -z-10 group-hover:bg-primary/10 transition-all duration-1000" />
 
             {/* Badges */}
             <div className="absolute top-6 left-6 z-20 flex flex-col gap-2">
@@ -299,7 +299,7 @@ export default function ProductDetail() {
                 </div>
               )}
               {product.is_featured && !product.is_bundle && (
-                <div className="flex items-center gap-2 bg-green-neon px-4 py-2 rounded-xl text-xs font-semibold uppercase tracking-wider text-black shadow-2xl">
+                <div className="flex items-center gap-2 bg-primary px-4 py-2 rounded-xl text-xs font-semibold uppercase tracking-wider text-black shadow-2xl">
                   <Star className="w-3 h-3 fill-current" />
                   Sélection Maître
                 </div>
@@ -330,7 +330,7 @@ export default function ProductDetail() {
                     key={idx}
                     onClick={() => setActiveImageIndex(idx)}
                     className={`w-16 h-16 rounded-xl overflow-hidden border-2 transition-all ${idx === activeImageIndex
-                      ? 'border-green-neon shadow-[0_0_12px_rgba(57,255,20,0.3)]'
+                      ? 'border-primary shadow-[0_0_12px_rgba(var(--color-primary-rgb),0.3)]'
                       : 'border-white/[0.08] opacity-60 hover:opacity-100'
                       }`}
                   >
@@ -345,7 +345,7 @@ export default function ProductDetail() {
               {product.cbd_percentage != null && (
                 <div className="bg-zinc-900 border border-white/10 rounded-3xl p-6 shadow-2xl backdrop-blur-xl">
                   <p className="text-xs text-zinc-500 font-medium uppercase mb-1">Concentration</p>
-                  <p className="text-3xl font-serif font-bold text-green-neon leading-none">{product.cbd_percentage}% <span className="text-xs uppercase font-sans tracking-tight">CBD</span></p>
+                  <p className="text-3xl font-serif font-bold text-primary leading-none">{product.cbd_percentage}% <span className="text-xs uppercase font-sans tracking-tight">CBD</span></p>
                 </div>
               )}
             </div>
@@ -359,7 +359,7 @@ export default function ProductDetail() {
           >
             <div className="space-y-4">
               {product.category && (
-                <p className="text-xs text-green-neon uppercase tracking-wider font-medium">{product.category.name.toUpperCase()}</p>
+                <p className="text-xs text-primary uppercase tracking-wider font-medium">{product.category.name.toUpperCase()}</p>
               )}
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold tracking-tight leading-[0.9] uppercase italic grayscale hover:grayscale-0 transition-all duration-1000">
                 {product.name}.
@@ -386,11 +386,11 @@ export default function ProductDetail() {
                 {(product.attributes?.benefits || []).length > 0 && (
                   <div className="space-y-3">
                     <p className="text-xs text-zinc-500 font-medium flex items-center gap-2">
-                      <span className="w-1 h-1 bg-green-neon rounded-full" /> EFFETS RECHERCHÉS
+                      <span className="w-1 h-1 bg-primary rounded-full" /> EFFETS RECHERCHÉS
                     </p>
                     <div className="flex flex-wrap gap-2">
                       {product.attributes.benefits!.map(b => (
-                        <span key={b} className="text-xs font-semibold uppercase tracking-wider text-zinc-400 border border-white/10 px-3 py-1.5 rounded-full hover:border-green-neon/50 transition-colors">
+                        <span key={b} className="text-xs font-semibold uppercase tracking-wider text-zinc-400 border border-white/10 px-3 py-1.5 rounded-full hover:border-primary/50 transition-colors">
                           {b}
                         </span>
                       ))}
@@ -401,19 +401,19 @@ export default function ProductDetail() {
             </div>
 
             <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-6 md:p-8 space-y-10 relative overflow-hidden group/panel">
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-green-neon/20 to-transparent" />
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
 
               <div className="flex items-start justify-between">
                 <div className="flex flex-wrap gap-8">
                   <div className="space-y-1">
                     <p className="text-[10px] text-zinc-500 font-black uppercase tracking-widest">Prix au gramme</p>
-                    <p className="text-2xl font-serif font-bold text-green-neon leading-none">
+                    <p className="text-2xl font-serif font-bold text-primary leading-none">
                       {product.price.toFixed(2)}<span className="text-sm ml-1 italic font-sans uppercase tracking-widest text-zinc-500">€/g</span>
                     </p>
                   </div>
                   <div className="w-px h-10 bg-white/10 hidden sm:block" />
                   <div className="space-y-1">
-                    <p className="text-[10px] text-green-neon/60 font-black uppercase tracking-widest">Total Sélectionné ({quantity}g)</p>
+                    <p className="text-[10px] text-primary/60 font-black uppercase tracking-widest">Total Sélectionné ({quantity}g)</p>
                     <p className="text-4xl font-serif font-bold text-white leading-none">
                       {(product.price * quantity).toFixed(2)}<span className="text-xl ml-2 italic font-sans uppercase tracking-widest text-zinc-500">€</span>
                     </p>
@@ -431,7 +431,7 @@ export default function ProductDetail() {
                           key={weight}
                           onClick={() => setQuantity(Math.min(weight, product.stock_quantity))}
                           className={`px-4 py-2 rounded-xl text-xs font-black border transition-all ${quantity === weight
-                            ? 'bg-green-neon border-green-neon text-black shadow-[0_0_15px_rgba(57,255,20,0.3)]'
+                            ? 'bg-primary border-primary text-black shadow-[0_0_15px_rgba(var(--color-primary-rgb),0.3)]'
                             : 'bg-white/5 border-white/10 text-zinc-500 hover:text-white hover:border-white/20'
                             }`}
                         >
@@ -458,7 +458,7 @@ export default function ProductDetail() {
                       </div>
                       <button
                         onClick={handleAddToCart}
-                        className="flex-1 w-full bg-green-neon text-black font-semibold uppercase tracking-wider py-4 rounded-2xl hover:shadow-[0_0_20px_rgba(57,255,20,0.3)] active:scale-[0.98] transition-all shadow-2xl group flex items-center justify-center gap-4"
+                        className="flex-1 w-full bg-primary text-black font-semibold uppercase tracking-wider py-4 rounded-2xl hover:shadow-[0_0_20px_rgba(var(--color-primary-rgb),0.3)] active:scale-[0.98] transition-all shadow-2xl group flex items-center justify-center gap-4"
                       >
                         <ShoppingCart className="w-5 h-5 group-hover:scale-110 transition-transform" />
                         {addedFeedback ? 'DÉPOSÉ AU PANIER' : 'ACQUÉRIR MAINTENANT'}
@@ -467,7 +467,7 @@ export default function ProductDetail() {
                   </div>
 
                   <div className="flex items-center gap-4 text-xs text-zinc-500 font-medium uppercase justify-center">
-                    <span className="flex items-center gap-1.5"><CheckCircle className="w-3 h-3 text-green-neon" /> LIVRAISON DISCRÈTE</span>
+                    <span className="flex items-center gap-1.5"><CheckCircle className="w-3 h-3 text-primary" /> LIVRAISON DISCRÈTE</span>
                     <div className="w-1 h-1 bg-white/10 rounded-full" />
                     <span className="flex items-center gap-1.5"><Shield className="w-3 h-3 text-zinc-500" /> PAIEMENT SÉCURISÉ</span>
                   </div>
@@ -504,7 +504,7 @@ export default function ProductDetail() {
                       <div className="flex-1 min-w-0">
                         <Link
                           to={`/catalogue/${item.product?.slug}`}
-                          className="text-sm font-bold uppercase tracking-wider text-white hover:text-green-neon transition-colors line-clamp-1"
+                          className="text-sm font-bold uppercase tracking-wider text-white hover:text-primary transition-colors line-clamp-1"
                         >
                           {item.quantity > 1 && <span className="text-green-neon mr-2">{item.quantity}×</span>}
                           {item.product?.name}
@@ -521,9 +521,9 @@ export default function ProductDetail() {
 
             {/* Subscription Card */}
             {settings.subscriptions_enabled && product.is_subscribable && !subSuccess && (
-              <div className="bg-gradient-to-br from-green-neon/5 to-transparent border border-green-neon/20 rounded-2xl p-6 md:p-8 space-y-8 relative overflow-hidden">
+              <div className="bg-gradient-to-br from-primary/5 to-transparent border border-primary/20 rounded-2xl p-6 md:p-8 space-y-8 relative overflow-hidden">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-green-neon/10 flex items-center justify-center text-green-neon">
+                  <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
                     <RefreshCw className="w-6 h-6" />
                   </div>
                   <div>
@@ -541,7 +541,7 @@ export default function ProductDetail() {
                           key={freq}
                           onClick={() => setSubFrequency(freq)}
                           className={`px-6 py-3 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all ${subFrequency === freq
-                            ? 'bg-green-neon text-black shadow-lg shadow-green-neon/20'
+                            ? 'bg-primary text-black shadow-lg shadow-primary/20'
                             : 'bg-white/5 border border-white/[0.06] text-zinc-500 hover:border-white/10'
                             }`}
                         >
@@ -554,7 +554,7 @@ export default function ProductDetail() {
                   <button
                     onClick={handleSubscribe}
                     disabled={subLoading}
-                    className="w-full flex items-center justify-center gap-4 bg-zinc-900 border border-white/10 hover:border-green-neon/50 text-white font-bold uppercase tracking-wider py-5 rounded-2xl transition-all"
+                    className="w-full flex items-center justify-center gap-4 bg-zinc-900 border border-white/10 hover:border-primary/50 text-white font-bold uppercase tracking-wider py-5 rounded-2xl transition-all"
                   >
                     {subLoading ? (
                       <svg className="animate-spin h-4 w-4 text-white" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
@@ -576,7 +576,7 @@ export default function ProductDetail() {
                   <p className="text-green-400 font-semibold">Abonnement créé !</p>
                   <p className="text-sm text-zinc-400 mt-0.5">
                     Gérez vos livraisons depuis{' '}
-                    <Link to="/compte/abonnements" className="text-green-neon hover:underline">
+                    <Link to="/compte/abonnements" className="text-primary hover:underline">
                       Mon compte
                     </Link>.
                   </p>
@@ -626,14 +626,14 @@ export default function ProductDetail() {
               animate={{ opacity: 1, scale: 1 }}
               className="bg-green-neon/5 border border-dashed border-green-neon/20 rounded-2xl p-6 md:p-8 text-center space-y-6"
             >
-              <MessageSquare className="w-12 h-12 mx-auto text-green-neon/40" />
+              <MessageSquare className="w-12 h-12 mx-auto text-primary/40" />
               <div className="space-y-2">
                 <p className="font-serif text-2xl font-bold text-white">Partagez votre voyage sensoriel.</p>
                 <p className="text-zinc-500 text-sm max-w-sm mx-auto italic">Votre expertise contribue à l'excellence de notre catalogue.</p>
               </div>
               <button
                 onClick={() => setShowReviewForm(true)}
-                className="bg-green-neon text-black font-semibold uppercase tracking-wider px-8 py-4 rounded-2xl hover:shadow-[0_0_20px_rgba(57,255,20,0.3)] active:scale-[0.98] transition-all"
+                className="bg-primary text-black font-semibold uppercase tracking-wider px-8 py-4 rounded-2xl hover:shadow-[0_0_20px_rgba(var(--color-primary-rgb),0.3)] active:scale-[0.98] transition-all"
               >
                 Rédiger mon Impression
               </button>
@@ -642,8 +642,8 @@ export default function ProductDetail() {
 
           {/* Review success message */}
           {reviewSuccess && (
-            <div className="bg-green-neon/5 border border-green-neon/20 rounded-2xl p-6 md:p-8 flex items-center gap-6">
-              <div className="w-12 h-12 rounded-full bg-green-neon/20 flex items-center justify-center text-green-neon">
+            <div className="bg-primary/5 border border-primary/20 rounded-2xl p-6 md:p-8 flex items-center gap-6">
+              <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary">
                 <CheckCircle className="w-6 h-6" />
               </div>
               <div>
@@ -679,7 +679,7 @@ export default function ProductDetail() {
                     onChange={(e) => setReviewComment(e.target.value)}
                     rows={5}
                     placeholder="Décrivez les nuances, l'arôme, et l'expérience vécue..."
-                    className="w-full bg-white/5 border border-white/[0.06] rounded-2xl px-5 py-4 text-lg font-serif italic text-white placeholder:text-zinc-800 focus:outline-none focus:border-green-neon transition-all resize-none"
+                    className="w-full bg-white/5 border border-white/[0.06] rounded-2xl px-5 py-4 text-lg font-serif italic text-white placeholder:text-zinc-800 focus:outline-none focus:border-primary transition-all resize-none"
                   />
                 </div>
 
@@ -691,7 +691,7 @@ export default function ProductDetail() {
                   <button
                     onClick={handleSubmitReview}
                     disabled={isSubmittingReview}
-                    className="flex-1 bg-green-neon text-black font-semibold uppercase tracking-wider py-5 rounded-2xl hover:shadow-[0_0_20px_rgba(57,255,20,0.3)] active:scale-[0.98] transition-all flex items-center justify-center gap-3 shadow-2xl"
+                    className="flex-1 bg-primary text-black font-semibold uppercase tracking-wider py-5 rounded-2xl hover:shadow-[0_0_20px_rgba(var(--color-primary-rgb),0.3)] active:scale-[0.98] transition-all flex items-center justify-center gap-3 shadow-2xl"
                   >
                     <Send className="w-4 h-4" />
                     {isSubmittingReview ? 'TRANSMISSION...' : 'TRANSMETTRE'}
@@ -734,7 +734,7 @@ export default function ProductDetail() {
                     className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-6 md:p-8 hover:bg-white/[0.04] transition-all group"
                   >
                     <div className="flex flex-col md:flex-row gap-8">
-                      <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/10 flex items-center justify-center text-green-neon font-bold text-xs tracking-wider shrink-0">
+                      <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/10 flex items-center justify-center text-primary font-bold text-xs tracking-wider shrink-0">
                         {initials}
                       </div>
                       <div className="flex-1 space-y-6">
@@ -744,7 +744,7 @@ export default function ProductDetail() {
                             <div className="flex items-center gap-4">
                               <StarRating rating={review.rating} size="sm" />
                               {review.is_verified && (
-                                <span className="text-xs font-semibold uppercase tracking-wider text-green-neon px-2 py-1 bg-green-neon/5 rounded-full">ACHAT CERTIFIÉ</span>
+                                <span className="text-xs font-semibold uppercase tracking-wider text-primary px-2 py-1 bg-primary/5 rounded-full">ACHAT CERTIFIÉ</span>
                               )}
                             </div>
                           </div>

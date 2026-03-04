@@ -120,18 +120,26 @@ export default function RelatedProducts({
     if (products.length === 0) return null;
 
     return (
-        <section className="mt-20">
-            {/* Header */}
-            <div className="flex items-center gap-3 mb-6">
-                <div className="w-8 h-8 rounded-xl bg-green-neon/10 border border-green-neon/20 flex items-center justify-center flex-shrink-0">
-                    <Sparkles className="w-4 h-4 text-green-neon" />
+        <section className="mt-40">
+            {/* Elegant Header */}
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12 px-2">
+                <div className="space-y-4">
+                    <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0">
+                            <Sparkles className="w-5 h-5 text-primary" />
+                        </div>
+                        <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-500">Curations Supplémentaires</h2>
+                    </div>
+                    <h3 className="text-4xl md:text-5xl font-serif font-black tracking-tighter uppercase text-white">{title}</h3>
                 </div>
-                <h2 className="font-serif text-2xl font-bold">{title}</h2>
-                <div className="flex-1 h-px bg-gradient-to-r from-zinc-700 to-transparent ml-2" />
+                <div className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent hidden sm:block mb-4 mx-8" />
+                <div className="flex items-center gap-2 px-6 py-3 bg-white/5 rounded-full border border-white/10 text-[10px] font-black uppercase tracking-widest text-zinc-400">
+                    <Package className="w-3.5 h-3.5" /> Sélection Élite
+                </div>
             </div>
 
             {/* Cards grid */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                 {products.map((product, i) => {
                     const savings =
                         product.is_bundle && product.original_value && product.original_value > product.price
@@ -141,58 +149,72 @@ export default function RelatedProducts({
                     return (
                         <motion.div
                             key={product.id}
-                            initial={{ opacity: 0, y: 16 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: i * 0.07 }}
-                            className="group relative bg-zinc-900/50 rounded-2xl border border-white/[0.06] overflow-hidden hover:border-green-neon/20 transition-all duration-300 flex flex-col"
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: i * 0.1, duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
+                            className="group relative bg-white/[0.03] backdrop-blur-3xl rounded-[2.5rem] border border-white/[0.08] overflow-hidden hover:border-primary/40 hover:bg-white/[0.05] transition-all duration-700 flex flex-col shadow-2xl shadow-black/40"
                         >
-                            {/* Badge */}
-                            {product.is_bundle ? (
-                                <span className="absolute top-2 left-2 z-10 flex items-center gap-1 bg-purple-600 px-2 py-0.5 rounded-full text-xs font-bold text-white">
-                                    <Package className="w-3 h-3" />
-                                    Pack
-                                </span>
-                            ) : product.is_featured ? (
-                                <span className="absolute top-2 left-2 z-10 flex items-center gap-1 bg-green-neon px-2 py-0.5 rounded-full text-xs font-bold text-black">
-                                    <Star className="w-3 h-3" />
-                                    Top
-                                </span>
-                            ) : null}
+                            {/* Badges Overlay */}
+                            <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
+                                {product.is_bundle && (
+                                    <span className="flex items-center gap-2 bg-purple-600/90 backdrop-blur-md px-3 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest text-white shadow-lg">
+                                        <Package className="w-3 h-3" /> Pack
+                                    </span>
+                                )}
+                                {product.is_featured && (
+                                    <span className="flex items-center gap-2 bg-primary px-3 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest text-black shadow-lg">
+                                        <Star className="w-3 h-3" /> Top
+                                    </span>
+                                )}
+                            </div>
 
-                            {/* Image */}
-                            <Link to={sp(`/catalogue/${product.slug}`)} className="block aspect-[4/5] overflow-hidden bg-zinc-800/50">
+                            {/* Premium Image Container */}
+                            <Link to={sp(`/catalogue/${product.slug}`)} className="block aspect-[4/5] overflow-hidden bg-zinc-950 relative">
                                 <img
                                     src={product.image_url ?? 'https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=400'}
                                     alt={product.name}
-                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                    className="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000"
                                     onError={(e) => {
                                         (e.target as HTMLImageElement).src = 'https://images.pexels.com/photos/6588619/pexels-photo-6588619.jpeg?auto=compress&cs=tinysrgb&w=400';
                                     }}
                                 />
+                                <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent opacity-40 group-hover:opacity-20 transition-opacity" />
                             </Link>
 
-                            {/* Info */}
-                            <div className="p-3 flex flex-col flex-1">
-                                <Link
-                                    to={sp(`/catalogue/${product.slug}`)}
-                                    className="font-semibold text-sm text-white hover:text-green-neon transition-colors line-clamp-2 flex-1"
-                                >
-                                    {product.name}
-                                </Link>
+                            {/* Refined Content */}
+                            <div className="p-6 flex flex-col flex-1 space-y-4">
+                                <div className="space-y-1">
+                                    <Link
+                                        to={sp(`/catalogue/${product.slug}`)}
+                                        className="text-xs font-black text-white uppercase tracking-tight group-hover:text-primary transition-colors line-clamp-1 block"
+                                    >
+                                        {product.name}
+                                    </Link>
+                                    <div className="flex items-center justify-between">
+                                        {product.cbd_percentage != null ? (
+                                            <span className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">{product.cbd_percentage}% CBD</span>
+                                        ) : (
+                                            <span className="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">{product.category?.name || 'Molécule'}</span>
+                                        )}
+                                        {product.is_available && (
+                                            <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                                        )}
+                                    </div>
+                                </div>
 
-                                {product.cbd_percentage != null && (
-                                    <p className="text-xs text-zinc-500 mt-1">CBD {product.cbd_percentage}%</p>
-                                )}
-
-                                {/* Price + CTA */}
-                                <div className="flex items-end justify-between mt-3 gap-2">
-                                    <div>
-                                        <span className="text-base font-bold text-green-neon">
-                                            {Number(product.price).toFixed(2)} €
-                                        </span>
+                                {/* Minimal Price + CTA */}
+                                <div className="flex items-center justify-between mt-auto pt-4 border-t border-white/5">
+                                    <div className="space-y-0.5">
+                                        <div className="flex items-baseline gap-1">
+                                            <span className="text-xl font-black text-white tracking-tighter">
+                                                {Number(product.price).toFixed(2)}
+                                            </span>
+                                            <span className="text-xs font-bold text-zinc-500">€</span>
+                                        </div>
                                         {savings && (
-                                            <span className="block text-xs font-bold text-purple-400">
-                                                −{savings.toFixed(2)} €
+                                            <span className="block text-[8px] font-black uppercase tracking-widest text-purple-400">
+                                                Economie {savings.toFixed(2)}€
                                             </span>
                                         )}
                                     </div>
@@ -200,9 +222,9 @@ export default function RelatedProducts({
                                         onClick={(e) => handleAdd(e, product)}
                                         disabled={!product.is_available || product.stock_quantity === 0}
                                         aria-label={`Ajouter ${product.name} au panier`}
-                                        className="w-8 h-8 flex items-center justify-center rounded-xl bg-green-neon hover:bg-green-400 disabled:opacity-40 disabled:cursor-not-allowed text-black transition-all hover:scale-110 flex-shrink-0"
+                                        className="w-12 h-12 flex items-center justify-center rounded-2xl bg-white text-black hover:bg-primary disabled:opacity-20 disabled:cursor-not-allowed transition-all hover:scale-110 active:scale-90 shadow-xl shadow-black/20"
                                     >
-                                        <ShoppingCart className="w-4 h-4" />
+                                        <ShoppingCart className="w-5 h-5" />
                                     </button>
                                 </div>
                             </div>
