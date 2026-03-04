@@ -1035,10 +1035,10 @@ export default function Admin() {
       </AnimatePresence>
 
       {/* ── Sidebar + Page Layout ─────────────────────────────────────────── */}
-      <div className="flex min-h-screen">
+      <div className="flex min-h-screen bg-linear-to-b from-zinc-950 via-zinc-900/95 to-zinc-950">
         {/* Sidebar — desktop only */}
         {tab !== 'pos' && (
-          <aside className="hidden lg:flex flex-col w-64 shrink-0 bg-zinc-950 border-r border-zinc-800">
+          <aside className="hidden lg:flex flex-col w-64 shrink-0 border-r border-white/10 bg-black/35 backdrop-blur-2xl">
             {/* Brand */}
             <div className="px-4 py-4 border-b border-zinc-800/60">
               <div className="flex items-center gap-3">
@@ -1117,8 +1117,8 @@ export default function Admin() {
                       key={key}
                       onClick={() => setTab(key)}
                       className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all mb-0.5 ${tab === key
-                        ? 'bg-green-neon/10 text-green-neon border border-green-neon/20 [text-shadow:0_0_8px_rgba(57,255,20,0.5)]'
-                        : 'text-zinc-400 hover:text-white hover:bg-zinc-800/80'
+                        ? 'bg-emerald-300/15 text-emerald-200 border border-emerald-200/30 shadow-[0_0_20px_rgba(52,211,153,0.18)]'
+                        : 'text-zinc-400 hover:text-white hover:bg-white/[0.06]'
                         }`}
                     >
                       <Icon className="w-4 h-4 shrink-0" />
@@ -1158,7 +1158,7 @@ export default function Admin() {
         <div className={`flex-1 flex flex-col min-w-0 ${tab === 'pos' ? 'h-screen' : 'min-h-screen'}`}>
           {/* Top header bar */}
           {tab !== 'pos' && (
-            <div className="bg-zinc-950 border-b border-zinc-800 px-4 sm:px-6 py-4 flex items-center gap-4 shrink-0">
+            <div className="border-b border-white/10 bg-black/30 px-4 py-4 sm:px-6 flex items-center gap-4 shrink-0 backdrop-blur-xl">
               <div className="lg:hidden w-9 h-9 bg-green-neon/10 border border-green-neon/25 rounded-xl flex items-center justify-center" style={{ boxShadow: '0 0 8px rgba(57,255,20,0.2)' }}>
                 <Store className="w-4 h-4 text-green-neon" />
               </div>
@@ -1200,7 +1200,7 @@ export default function Admin() {
 
           {/* Mobile tab bar */}
           {tab !== 'pos' && (
-            <div className="lg:hidden flex gap-1 px-3 py-2 bg-zinc-950 border-b border-zinc-800 overflow-x-auto shrink-0">
+            <div className="lg:hidden flex gap-1 px-3 py-2 bg-black/25 border-b border-white/10 overflow-x-auto shrink-0 backdrop-blur-xl">
               {tabs.map(({ key, label, icon: Icon }) => (
                 <button
                   key={key}
@@ -1218,7 +1218,7 @@ export default function Admin() {
           )}
 
           {/* Content */}
-          <main className="flex-1 p-4 sm:p-6 overflow-auto bg-black/20">
+          <main className="flex-1 overflow-auto p-4 sm:p-6 bg-black/10">
             {isLoading ? (
               <div className="flex items-center justify-center py-24">
                 <div className="w-8 h-8 border-2 border-green-primary border-t-transparent rounded-full animate-spin" />
@@ -1270,7 +1270,7 @@ export default function Admin() {
                       ].map(({ label, value, sub, color, accent, iconBg, icon: Icon }) => (
                         <div
                           key={label}
-                          className="relative bg-zinc-900 rounded-2xl p-5 border border-zinc-800 hover:border-zinc-700 transition-colors overflow-hidden"
+                          className="relative glass-panel rounded-2xl p-5 hover:border-white/25 transition-colors overflow-hidden"
                         >
                           <div className={`absolute left-0 top-4 bottom-4 w-1 rounded-r-full ${accent}`} />
                           <div className="pl-3">
@@ -1316,7 +1316,7 @@ export default function Admin() {
                     )}
 
                     {/* Recent orders */}
-                    <div className="bg-zinc-900 rounded-2xl border border-zinc-800 overflow-hidden">
+                    <div className="glass-panel rounded-2xl overflow-hidden">
                       <div className="px-6 py-4 border-b border-zinc-800 flex items-center justify-between">
                         <div>
                           <h2 className="font-serif font-semibold text-lg">Dernières commandes</h2>
@@ -1394,7 +1394,7 @@ export default function Admin() {
 
                     </div>
 
-                    <div className="bg-zinc-900 rounded-2xl border border-zinc-800 overflow-hidden">
+                    <div className="glass-panel rounded-2xl overflow-hidden">
                       <div className="overflow-x-auto">
                         <table className="w-full">
                           <thead>
@@ -1574,7 +1574,7 @@ export default function Admin() {
                           key={cat.id}
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
-                          className="bg-zinc-900 rounded-2xl border border-zinc-800 overflow-hidden"
+                          className="glass-panel rounded-2xl overflow-hidden"
                         >
                           {cat.image_url && (
                             <div className="relative h-36 overflow-hidden">
@@ -1668,7 +1668,7 @@ export default function Admin() {
                             key={order.id}
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            className="bg-zinc-900 rounded-2xl border border-zinc-800 overflow-hidden"
+                            className="glass-panel rounded-2xl overflow-hidden"
                           >
                             <button
                               onClick={() => setExpandedOrder(isExpanded ? null : order.id)}
@@ -1942,7 +1942,7 @@ export default function Admin() {
                     </AnimatePresence>
 
                     {/* All products stock levels */}
-                    <div className="bg-zinc-900 rounded-2xl border border-zinc-800 overflow-hidden">
+                    <div className="glass-panel rounded-2xl overflow-hidden">
                       <div className="px-5 py-4 border-b border-zinc-800">
                         <h2 className="font-serif font-semibold">Niveaux de stock</h2>
                       </div>
@@ -1996,7 +1996,7 @@ export default function Admin() {
                     </div>
 
                     {/* Movements history */}
-                    <div className="bg-zinc-900 rounded-2xl border border-zinc-800 overflow-hidden">
+                    <div className="glass-panel rounded-2xl overflow-hidden">
                       <div className="px-5 py-4 border-b border-zinc-800">
                         <h2 className="font-serif font-semibold">Historique des mouvements</h2>
                       </div>
@@ -2075,7 +2075,7 @@ export default function Admin() {
                       </span>
                     </div>
 
-                    <div className="bg-zinc-900 rounded-2xl border border-zinc-800 overflow-hidden">
+                    <div className="glass-panel rounded-2xl overflow-hidden">
                       <div className="overflow-x-auto">
                         <table className="w-full">
                           <thead>

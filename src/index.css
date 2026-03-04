@@ -106,6 +106,57 @@
   .btn-secondary {
     @apply inline-flex items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/[0.03] px-6 py-3.5 text-[11px] font-bold uppercase tracking-[0.14em] text-zinc-100 transition hover:border-white/30 hover:bg-white/[0.08];
   }
+
+  .glass-panel {
+    @apply rounded-3xl border border-white/10 bg-linear-to-br from-white/[0.08] via-white/[0.03] to-transparent backdrop-blur-2xl shadow-[0_20px_40px_rgba(0,0,0,0.35)] relative overflow-hidden;
+  }
+
+  .glass-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, rgba(255, 255, 255, 0.09), transparent 40%);
+    pointer-events: none;
+  }
+
+  .glass-button {
+    @apply inline-flex items-center justify-center gap-2 rounded-2xl px-6 py-3.5 text-[11px] font-black uppercase tracking-[0.16em] transition-all duration-500 relative overflow-hidden;
+  }
+
+  .glass-button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 120%;
+    height: 100%;
+    background: linear-gradient(110deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+    transition: left 0.7s ease;
+  }
+
+  .glass-button:hover::after {
+    left: 120%;
+  }
+
+  .glass-button-primary {
+    @apply bg-emerald-300 text-zinc-950 shadow-[0_18px_35px_rgba(16,185,129,0.3)] hover:bg-emerald-200;
+  }
+
+  .glass-button-secondary {
+    @apply border border-white/20 bg-white/[0.04] text-white hover:border-white/35 hover:bg-white/[0.1];
+  }
+
+  .glass-button-ghost {
+    @apply border border-white/10 bg-transparent text-zinc-300 hover:border-emerald-200/50 hover:text-white;
+  }
+
+  .glass-input {
+    @apply w-full rounded-2xl border border-white/15 bg-zinc-900/40 px-4 py-3 text-sm text-zinc-100 placeholder:text-zinc-500 transition-all duration-300 focus:border-emerald-200/80 focus:shadow-[0_0_0_4px_rgba(110,231,183,0.16)] focus:bg-zinc-900/75;
+  }
+
+  .glass-badge {
+    @apply inline-flex items-center gap-1 rounded-full border border-white/15 bg-white/[0.06] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-zinc-200 backdrop-blur-xl;
+  }
 }
 
 @layer utilities {

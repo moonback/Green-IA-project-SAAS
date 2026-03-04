@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { ArrowRight, Leaf, ShoppingBag, Star, Sparkles, Package } from 'lucide-react';
+import { GlassButton } from '../components/ui/GlassPrimitives';
 import { useShopStore } from '../store/shopStore';
 import { useShopPath } from '../hooks/useShopPath';
 import { useShopContent } from '../hooks/useShopContent';
@@ -55,7 +56,7 @@ export default function ShopHome() {
                                 initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.8 }}
-                                className="space-y-6"
+                                className="space-y-6 glass-panel p-8 md:p-12"
                             >
                                 {currentShop?.logo_url && (
                                     <img
@@ -79,20 +80,16 @@ export default function ShopHome() {
                                 </p>
 
                                 <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-                                    <Link
-                                        to={shopPath('/catalogue')}
-                                        className="inline-flex items-center gap-3 px-10 py-5 font-black rounded-2xl text-black transition-transform hover:scale-105 shadow-xl"
-                                        style={{ backgroundColor: primaryColor }}
-                                    >
-                                        <ShoppingBag className="w-5 h-5" />
-                                        {content.home.cta_primary}
-                                        <ArrowRight className="w-5 h-5" />
+                                    <Link to={shopPath('/catalogue')}>
+                                        <GlassButton icon={<ShoppingBag className="w-5 h-5" />} style={{ backgroundColor: primaryColor }} className="px-10 py-5 text-black">
+                                            {content.home.cta_primary}
+                                            <ArrowRight className="w-5 h-5" />
+                                        </GlassButton>
                                     </Link>
-                                    <Link
-                                        to={shopPath('/boutique')}
-                                        className="inline-flex items-center gap-3 px-10 py-5 font-bold rounded-2xl bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-all"
-                                    >
-                                        {content.home.cta_secondary}
+                                    <Link to={shopPath('/boutique')}>
+                                        <GlassButton variant="secondary" className="px-10 py-5">
+                                            {content.home.cta_secondary}
+                                        </GlassButton>
                                     </Link>
                                 </div>
                             </motion.div>
@@ -251,7 +248,7 @@ export default function ShopHome() {
                                 initial={{ opacity: 0, scale: 0.95 }}
                                 whileInView={{ opacity: 1, scale: 1 }}
                                 viewport={{ once: true }}
-                                className="p-12 rounded-[3rem] border border-white/10 bg-gradient-to-br from-zinc-900 to-zinc-950 relative overflow-hidden"
+                                className="glass-panel p-12 rounded-[3rem] relative overflow-hidden"
                             >
                                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full blur-[150px] opacity-10" style={{ background: primaryColor }} />
                                 <div className="relative z-10 space-y-6">
@@ -326,7 +323,7 @@ export default function ShopHome() {
     if (!currentShop) return null;
 
     return (
-        <div className="min-h-screen bg-brand-950 text-white pb-20">
+        <div className="min-h-screen bg-linear-to-b from-zinc-950 via-zinc-900 to-zinc-950 text-white pb-20">
             <SEO
                 title={`${currentShop.name} — Boutique CBD`}
                 description={`Découvrez la sélection premium de ${currentShop.name}. Produits CBD de qualité, conseils IA personnalisés.`}
