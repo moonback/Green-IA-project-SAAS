@@ -86,8 +86,8 @@ export default function Layout() {
       {/* Cart Sidebar */}
       <CartSidebar />
 
-      {/* BudTender IA Widget */}
-      {settings.budtender_enabled && user && isRegisteredToShop && <BudTender />}
+      {/* BudTender IA Widget - Uniquement en contexte boutique */}
+      {isShopContext && settings.budtender_enabled && user && isRegisteredToShop && <BudTender />}
 
       {/* Toast Notifications */}
       <ToastContainer />
