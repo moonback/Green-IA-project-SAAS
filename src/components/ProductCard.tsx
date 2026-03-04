@@ -1,13 +1,12 @@
 import type { MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingCart, Star, Package, RefreshCw, Heart, ArrowUpRight, Search } from 'lucide-react';
+import { ShoppingCart, Star, Package, ArrowUpRight, Search, Heart, ShieldCheck, Sparkles, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Product } from '../lib/types';
 import { useCartStore } from '../store/cartStore';
 import { useToastStore } from '../store/toastStore';
 import { useWishlistStore } from '../store/wishlistStore';
 import StockBadge from './StockBadge';
-import StarRating from './StarRating';
 import { useShopPath } from '../hooks/useShopPath';
 
 const FALLBACK_IMG = 'https://images.pexels.com/photos/4041392/pexels-photo-4041392.jpeg?auto=compress&cs=tinysrgb&w=800';
@@ -40,164 +39,122 @@ export default function ProductCard({ product }: ProductCardProps) {
     addToast({ message: `${product.name} ajouté au panier`, type: 'success' });
   };
 
-  const tags: { label: string; variant: 'spec' | 'benefit' | 'aroma' }[] = [];
-  if (product.cbd_percentage != null) tags.push({ label: `${product.cbd_percentage}% CBD`, variant: 'spec' });
-  if (product.weight_grams != null && tags.length < 2) tags.push({ label: `${product.weight_grams}g`, variant: 'spec' });
-  for (const b of (product.attributes?.benefits || []).slice(0, 1)) {
-    if (tags.length < 2) tags.push({ label: b, variant: 'benefit' });
-  }
-
-  const tagStyles = {
-    spec: 'bg-white/[0.04] text-zinc-400 border border-white/[0.06]',
-    benefit: 'bg-primary/5 text-primary border border-primary/20',
-    aroma: 'bg-white/[0.04] text-zinc-400 border border-white/[0.06]',
-  };
-
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.98 }}
+      initial={{ opacity: 0, scale: 0.95 }}
       whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true, margin: "-20px" }}
-      className="group relative flex flex-col h-full bg-white/[0.02] backdrop-blur-3xl rounded-[2.5rem] border border-white/[0.06] overflow-hidden transition-all duration-700 hover:border-primary/30 hover:shadow-[0_20px_40px_rgba(0,0,0,0.5)]"
+      viewport={{ once: true, margin: "-50px" }}
+      whileHover={{ y: -8 }}
+      className="group relative bg-zinc-900/30 backdrop-blur-xl border border-white/5 rounded-[2.5rem] overflow-hidden flex flex-col h-full transition-all duration-500 hover:border-emerald-500/30 hover:shadow-[0_40px_80px_rgba(0,0,0,0.5)] active:scale-[0.98]"
     >
       {/* ─── Media Section ─── */}
-      <div className="relative aspect-[4/5] overflow-hidden">
-        {/* Overlay Gradients */}
-        <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-zinc-950/40 opacity-20 z-10" />
-
-        {/* Top Badges */}
-        <div className="absolute top-5 left-5 z-30 flex flex-col gap-2">
+      <div className="relative aspect-[1/1.2] overflow-hidden">
+        {/* Badges on Media */}
+        <div className="absolute top-5 left-5 z-20 flex flex-col gap-2">
+          <StockBadge stock={product.stock_quantity} />
           {product.is_featured && (
-            <motion.div
-              initial={{ x: -20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              className="flex items-center gap-2 bg-primary/90 px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-[0.2em] text-black shadow-lg shadow-primary/20"
-            >
-              <Star className="w-2.5 h-2.5 fill-current" />
-              Édition Élite
-            </motion.div>
-          )}
-          {product.is_bundle && (
-            <div className="flex items-center gap-2 bg-zinc-900/80 backdrop-blur-xl border border-white/10 px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-[0.2em] text-white">
-              <Package className="w-2.5 h-2.5" />
-              Collection Pack
+            <div className="px-3 py-1.5 rounded-xl bg-emerald-500/10 backdrop-blur-md border border-emerald-500/20 text-emerald-400 text-label flex items-center gap-2 shadow-xl lowercase">
+              <Sparkles className="w-3 h-3 animate-pulse" />
+              <span className="uppercase tracking-[0.4em]">Exceptionnel</span>
             </div>
           )}
         </div>
 
-        {/* Quick Actions (Floating) */}
-        <div className="absolute top-5 right-5 z-30 flex flex-col gap-2 translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-500">
-          <button
-            onClick={handleToggleWishlist}
-            className={`w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-2xl border transition-all duration-300 ${isWished
-              ? 'bg-red-500 border-red-400 text-white shadow-lg'
-              : 'bg-black/40 border-white/10 text-white/60 hover:text-white hover:bg-black/60'
-              }`}
+        {/* Favorite Button */}
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={handleToggleWishlist}
+          className={`absolute top-5 right-5 z-20 w-11 h-11 rounded-2xl flex items-center justify-center backdrop-blur-2xl border transition-all duration-500 ${isWished
+            ? 'bg-emerald-500 border-emerald-400 text-black'
+            : 'bg-black/40 border-white/10 text-white/70 hover:bg-emerald-500/20 hover:text-emerald-400 hover:border-emerald-500/30 shadow-2xl'
+            }`}
+        >
+          <Heart className={`w-4 h-4 ${isWished ? 'fill-current' : ''}`} />
+        </motion.button>
+
+        {/* Floating Add to Cart (Quick Action) */}
+        <div className="absolute bottom-6 left-6 right-6 z-30 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={handleAddToCart}
+            disabled={!product.is_available || product.stock_quantity === 0}
+            className="w-full bg-emerald-500 text-black py-4 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] shadow-2xl shadow-emerald-500/20 flex items-center justify-center gap-3 relative overflow-hidden group/btn"
           >
-            <Heart className={`w-4 h-4 ${isWished ? 'fill-current' : ''}`} />
-          </button>
-          <button
-            className="w-10 h-10 rounded-full flex items-center justify-center bg-black/40 backdrop-blur-2xl border border-white/10 text-white/60 hover:text-white hover:bg-black/60 transition-all"
-          >
-            <ArrowUpRight className="w-4 h-4" />
-          </button>
+            <div className="absolute inset-0 bg-white/20 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-500" />
+            <ShoppingCart className="w-4 h-4 relative z-10" />
+            <span className="relative z-10 italic">Ajouter au Panier</span>
+          </motion.button>
         </div>
 
-        {/* Image Link */}
-        <Link
-          to={sp(`/catalogue/${product.slug}`)}
-          className="block h-full group/img"
-        >
+        <Link to={sp(`/catalogue/${product.slug}`)} className="block h-full overflow-hidden">
           <img
             src={product.image_url ?? FALLBACK_IMG}
             alt={product.name}
-            className="w-full h-full object-cover transition-transform duration-1000 scale-100 group-hover/img:scale-110"
+            className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
           />
-
-          {/* Hover Specs Overlay */}
-          <div className="absolute inset-0 bg-zinc-950/60 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col items-center justify-center p-6 text-center z-20">
-            <div className="space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-primary/20 border border-primary/20 flex items-center justify-center mx-auto mb-2">
-                <Search className="w-6 h-6 text-primary" />
-              </div>
-              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Explorer l'échantillon</p>
-              <div className="flex gap-4 justify-center">
-                {product.attributes?.benefits?.slice(0, 2).map(b => (
-                  <div key={b} className="text-[9px] uppercase tracking-widest text-zinc-300 border-b border-primary/30 pb-1">{b}</div>
-                ))}
-              </div>
-            </div>
-          </div>
+          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-700" />
         </Link>
       </div>
 
-      {/* ─── Content Section ─── */}
-      <div className="flex flex-col flex-1 p-7 space-y-6">
+      {/* ─── Info Section ─── */}
+      <div className="p-8 flex flex-col flex-1 space-y-6 relative">
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-[9px] font-black uppercase tracking-[0.3em] text-zinc-500">Ref: #{product.id.slice(0, 5).toUpperCase()}</span>
-            {product.cbd_percentage != null && (
-              <span className="text-[10px] font-black text-primary bg-primary/10 px-2 py-0.5 rounded-md">
-                {product.cbd_percentage}% CBD
-              </span>
-            )}
+            <span className="text-label text-emerald-500/80">
+              {product.category?.name || 'Exceptionnel'}
+            </span>
+            <div className="flex gap-2">
+              {product.cbd_percentage != null && (
+                <span className="text-label text-zinc-500 px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 lowercase tracking-widest">
+                  <span className="uppercase">{product.cbd_percentage}% CBD</span>
+                </span>
+              )}
+            </div>
           </div>
-
-          <Link to={sp(`/catalogue/${product.slug}`)} className="block group/title">
-            <h3 className="font-serif font-bold text-2xl text-white leading-tight group-hover/title:translate-x-1 transition-transform">
+          <Link to={sp(`/catalogue/${product.slug}`)}>
+            <h3 className="text-2xl font-black text-white italic tracking-tighter uppercase group-hover:text-emerald-400 transition-colors leading-none">
               {product.name}
             </h3>
           </Link>
         </div>
 
-        <div className="flex items-center justify-between">
-          {product.avg_rating ? (
-            <div className="flex items-center gap-1.5">
-              <Star className="w-3 h-3 text-primary fill-current" />
-              <span className="text-xs font-bold text-white">{product.avg_rating.toFixed(1)}</span>
-              <span className="text-xs text-zinc-600">({product.review_count})</span>
-            </div>
-          ) : (
-            <div className="flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-zinc-700" />
-              <span className="text-[10px] font-black uppercase tracking-widest text-zinc-600">Premium Grade</span>
-            </div>
-          )}
-          <StockBadge stock={product.stock_quantity} />
+        <div className="flex items-center gap-5 text-label text-zinc-600">
+          <div className="flex items-center gap-1.5 group/stat">
+            <Star className="w-3.5 h-3.5 text-emerald-500 fill-emerald-500 shadow-emerald-500/50" />
+            <span className="text-zinc-300">{product.avg_rating?.toFixed(1) || '5.0'}</span>
+          </div>
+          <div className="w-1 h-1 rounded-full bg-zinc-800" />
+          <div className="flex items-center gap-1.5">
+            <Package className="w-3.5 h-3.5 text-zinc-700" />
+            <span>{product.weight_grams ? `${product.weight_grams}g` : 'Premium'}</span>
+          </div>
         </div>
 
-        <div className="h-px bg-gradient-to-r from-white/[0.08] to-transparent" />
-
-        <div className="flex items-center justify-between gap-6 pt-2">
+        <div className="pt-6 mt-auto flex items-center justify-between border-t border-white/5">
           <div className="flex flex-col">
-            <div className="flex items-baseline gap-1">
-              <span className="text-2xl font-black text-white tracking-tighter">
-                {Number(product.price).toFixed(2)}
-              </span>
-              <span className="text-sm font-bold text-zinc-400">€</span>
-            </div>
+            <span className="text-3xl font-black text-white italic tracking-tighter">
+              {Number(product.price).toFixed(2)}<span className="text-emerald-500 text-sm not-italic ml-0.5">€</span>
+            </span>
             {product.original_value && product.original_value > product.price && (
-              <span className="text-[10px] text-zinc-600 line-through">
+              <span className="text-label text-zinc-700 line-through px-1">
                 {product.original_value.toFixed(2)}€
               </span>
             )}
           </div>
 
-          <button
-            onClick={handleAddToCart}
-            disabled={!product.is_available || product.stock_quantity === 0}
-            className="relative group/btn flex items-center justify-center w-14 h-14 bg-white text-black rounded-2xl transition-all duration-500 overflow-hidden hover:w-32 active:scale-95 disabled:opacity-20 disabled:grayscale"
+          <Link
+            to={sp(`/catalogue/${product.slug}`)}
+            className="w-12 h-12 flex items-center justify-center rounded-2xl bg-white/5 border border-white/10 text-zinc-400 hover:text-white hover:bg-emerald-500 hover:border-emerald-500 transition-all duration-500 group/link shadow-xl"
           >
-            <div className="absolute inset-0 bg-primary opacity-0 group-hover/btn:opacity-100 transition-opacity" />
-            <div className="relative z-10 flex items-center gap-3">
-              <ShoppingCart className="w-5 h-5" />
-              <span className="text-[10px] font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                Prendre
-              </span>
-            </div>
-          </button>
+            <ChevronRight className="w-6 h-6 group-hover:translate-x-0.5 transition-transform" />
+          </Link>
         </div>
       </div>
+
+      {/* Background Accent */}
+      <div className="absolute -bottom-12 -right-12 w-32 h-32 bg-emerald-500/5 blur-[40px] rounded-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
     </motion.div>
   );
 }

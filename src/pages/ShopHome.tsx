@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { ArrowRight, Leaf, ShoppingBag, Star, Sparkles, Package } from 'lucide-react';
+import { ArrowRight, Leaf, ShoppingBag, Star, Sparkles, Package, ChevronRight } from 'lucide-react';
 import { useShopStore } from '../store/shopStore';
 import { useShopPath } from '../hooks/useShopPath';
 import { useShopContent } from '../hooks/useShopContent';
@@ -34,66 +34,75 @@ export default function ShopHome() {
         switch (section.type) {
             case 'hero':
                 return (
-                    <section key={section.id} className="relative min-h-[60vh] flex items-center justify-center pt-24 px-4 overflow-hidden">
+                    <section key={section.id} className="relative min-h-[90vh] flex items-center justify-center pt-24 px-4 overflow-hidden">
                         <div className="absolute inset-0 z-0">
                             {(section.settings?.image_url || currentShop?.settings?.theme?.hero_image_url) && (
                                 <img
                                     src={section.settings?.image_url || currentShop.settings.theme.hero_image_url}
-                                    className="w-full h-full object-cover opacity-30"
+                                    className="w-full h-full object-cover opacity-20 scale-105 blur-sm"
                                     alt=""
                                 />
                             )}
-                            <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/40 via-zinc-950/80 to-zinc-950" />
+                            <div className="absolute inset-0 bg-zinc-950" />
+                            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-zinc-950/50 to-zinc-950" />
+
+                            {/* Dynamic Glows */}
                             <div
-                                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[200px] opacity-15"
+                                className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[180px] opacity-20 animate-pulse-slow"
+                                style={{ background: primaryColor }}
+                            />
+                            <div
+                                className="absolute bottom-0 right-1/4 w-[500px] h-[500px] rounded-full blur-[150px] opacity-10"
                                 style={{ background: primaryColor }}
                             />
                         </div>
 
-                        <div className="relative z-10 max-w-5xl mx-auto text-center space-y-8">
+                        <div className="relative z-10 max-w-7xl mx-auto px-4">
                             <motion.div
-                                initial={{ opacity: 0, y: 30 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.8 }}
-                                className="space-y-6"
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                                className="relative bg-white/[0.03] backdrop-blur-3xl border border-white/10 rounded-[4rem] p-12 md:p-20 text-center space-y-12 shadow-2xl overflow-hidden"
                             >
-                                {currentShop?.logo_url && (
-                                    <img
-                                        src={currentShop.logo_url}
-                                        alt={currentShop.name}
-                                        className="w-20 h-20 rounded-2xl mx-auto shadow-2xl border border-white/10"
-                                    />
-                                )}
+                                <div className="absolute -inset-10 bg-gradient-to-br from-white/5 to-transparent opacity-50" />
 
-                                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-xl text-xs font-black uppercase tracking-[0.3em]" style={{ color: primaryColor }}>
-                                    <Leaf className="w-4 h-4" />
-                                    {section.settings?.badge || content.home.badge}
-                                </div>
+                                <div className="relative space-y-8">
+                                    <div className="inline-flex items-center gap-4 px-6 py-2.5 rounded-2xl bg-black/40 border border-white/5 backdrop-blur-xl text-label mb-4">
+                                        <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: primaryColor }} />
+                                        <span className="text-zinc-400">{section.settings?.badge || content.home.badge}</span>
+                                    </div>
 
-                                <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold tracking-tighter leading-none">
-                                    {section.settings?.title || currentShop?.name.toUpperCase()}
-                                </h1>
+                                    <h1 className="text-display">
+                                        <span className="block text-white mb-2">{section.settings?.title?.split(' ')[0] || currentShop?.name.toUpperCase().split(' ')[0]}</span>
+                                        <span className="block font-light not-italic" style={{ color: primaryColor }}>{section.settings?.title?.split(' ').slice(1).join(' ') || currentShop?.name.toUpperCase().split(' ').slice(1).join(' ')}</span>
+                                    </h1>
 
-                                <p className="text-xl text-zinc-400 max-w-2xl mx-auto font-light leading-relaxed">
-                                    {section.settings?.subtitle || content.home.hero_subtitle}
-                                </p>
+                                    <p className="text-premium-body max-w-3xl mx-auto border-l-2 border-white/5 pl-8">
+                                        {section.settings?.subtitle || content.home.hero_subtitle}
+                                    </p>
 
-                                <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-                                    <Link
-                                        to={shopPath('/catalogue')}
-                                        className="inline-flex items-center gap-3 px-10 py-5 font-black rounded-2xl text-black transition-transform hover:scale-105 shadow-xl"
-                                        style={{ backgroundColor: primaryColor }}
-                                    >
-                                        <ShoppingBag className="w-5 h-5" />
-                                        {content.home.cta_primary}
-                                        <ArrowRight className="w-5 h-5" />
-                                    </Link>
-                                    <Link
-                                        to={shopPath('/boutique')}
-                                        className="inline-flex items-center gap-3 px-10 py-5 font-bold rounded-2xl bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-all"
-                                    >
-                                        {content.home.cta_secondary}
-                                    </Link>
+                                    <div className="flex flex-col sm:flex-row gap-6 justify-center pt-8">
+                                        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                                            <Link
+                                                to={shopPath('/catalogue')}
+                                                className="inline-flex items-center gap-4 px-12 py-6 font-black rounded-[2rem] text-black transition-all shadow-2xl relative overflow-hidden group/btn"
+                                                style={{ backgroundColor: primaryColor }}
+                                            >
+                                                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-500" />
+                                                <ShoppingBag className="w-5 h-5 relative z-10" />
+                                                <span className="relative z-10 uppercase tracking-widest italic">{content.home.cta_primary}</span>
+                                                <ArrowRight className="w-5 h-5 relative z-10" />
+                                            </Link>
+                                        </motion.div>
+                                        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                                            <Link
+                                                to={shopPath('/boutique')}
+                                                className="inline-flex items-center gap-4 px-12 py-6 font-black rounded-[2rem] bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-all backdrop-blur-xl uppercase tracking-widest italic"
+                                            >
+                                                {content.home.cta_secondary}
+                                            </Link>
+                                        </motion.div>
+                                    </div>
                                 </div>
                             </motion.div>
                         </div>
@@ -102,42 +111,54 @@ export default function ShopHome() {
 
             case 'categories':
                 return categories.length > 0 && (
-                    <section key={section.id} className="py-20">
-                        <div className="page-block">
-                            <div className="text-center mb-16 space-y-3">
-                                <h2 className="text-4xl md:text-5xl font-serif font-black">{content.home.section_categories_title.split(' ').slice(0, -1).join(' ')} <span style={{ color: primaryColor }}>{content.home.section_categories_title.split(' ').slice(-1)}</span></h2>
-                                <p className="text-zinc-500 text-lg">{content.home.section_categories_subtitle}</p>
+                    <section key={section.id} className="py-40 relative">
+                        <div className="page-block relative z-10">
+                            <div className="flex flex-col md:flex-row md:items-end justify-between gap-12 mb-24 border-b border-white/5 pb-10">
+                                <div className="space-y-6">
+                                    <h2 className="text-label text-zinc-600">Parcourir la Collection</h2>
+                                    <p className="text-display scale-50 origin-left">
+                                        {content.home.section_categories_title.split(' ').slice(0, -1).join(' ')} <span className="font-light not-italic" style={{ color: primaryColor }}>{content.home.section_categories_title.split(' ').slice(-1)}</span>
+                                    </p>
+                                </div>
+                                <p className="text-premium-body max-w-sm">
+                                    {content.home.section_categories_subtitle}
+                                </p>
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                                 {categories.map((cat, i) => (
                                     <motion.div
                                         key={cat.id}
-                                        initial={{ opacity: 0, y: 20 }}
-                                        whileInView={{ opacity: 1, y: 0 }}
+                                        initial={{ opacity: 0, scale: 0.98 }}
+                                        whileInView={{ opacity: 1, scale: 1 }}
                                         viewport={{ once: true }}
                                         transition={{ delay: i * 0.1 }}
                                     >
                                         <Link
                                             to={shopPath(`/catalogue?cat=${cat.slug}`)}
-                                            className="group block relative h-48 rounded-3xl overflow-hidden border border-white/5 hover:border-white/20 transition-all"
+                                            className="group block relative h-[450px] rounded-[3rem] overflow-hidden border border-white/10 hover:border-white/30 transition-all duration-700 shadow-2xl"
                                         >
                                             {cat.image_url && (
                                                 <img
                                                     src={cat.image_url}
                                                     alt={cat.name}
-                                                    className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-60 group-hover:scale-110 transition-all duration-700"
+                                                    className="absolute inset-0 w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000"
                                                 />
                                             )}
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-                                            <div className="absolute bottom-0 left-0 p-8">
-                                                <h3 className="text-2xl font-black text-white">{cat.name}</h3>
+                                            <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent" />
+                                            <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-700" />
+
+                                            <div className="absolute bottom-0 left-0 right-0 p-10 space-y-4">
+                                                <div className="w-12 h-[1px] bg-emerald-500 group-hover:w-full transition-all duration-1000" style={{ backgroundColor: primaryColor }} />
+                                                <h3 className="text-4xl font-black text-white italic uppercase tracking-tighter">{cat.name}</h3>
                                                 {cat.description && (
-                                                    <p className="text-sm text-zinc-400 mt-1 line-clamp-1">{cat.description}</p>
+                                                    <p className="text-zinc-400 text-sm italic font-medium opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 line-clamp-2">
+                                                        {cat.description}
+                                                    </p>
                                                 )}
-                                            </div>
-                                            <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                                <ArrowRight className="w-5 h-5 text-white" />
+                                                <div className="pt-4 flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.3em] text-white opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100">
+                                                    Découvrir <ArrowRight className="w-4 h-4" />
+                                                </div>
                                             </div>
                                         </Link>
                                     </motion.div>
@@ -149,72 +170,93 @@ export default function ShopHome() {
 
             case 'featured_products':
                 return (
-                    <section key={section.id} className="py-20 bg-zinc-900/30">
-                        <div className="page-block">
-                            <div className="flex items-center justify-between mb-12">
-                                <div className="space-y-2">
-                                    <h2 className="text-4xl font-serif font-black text-white">
-                                        <Star className="inline w-8 h-8 mr-2" style={{ color: primaryColor }} />
-                                        {content.home.section_featured_title}
-                                    </h2>
-                                    <p className="text-zinc-500">{content.home.section_featured_subtitle}</p>
+                    <section key={section.id} className="py-40 relative overflow-hidden">
+                        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+
+                        <div className="page-block relative z-10">
+                            <div className="flex flex-col md:flex-row md:items-end justify-between gap-12 mb-24 border-b border-white/5 pb-10 relative">
+                                <div className="absolute -bottom-[1px] left-0 w-32 h-[1px] shadow-[0_0_10px_rgba(16,185,129,0.5)]" style={{ backgroundColor: primaryColor }} />
+                                <div className="space-y-6">
+                                    <h2 className="text-label text-zinc-600">Sélection d'Excellence</h2>
+                                    <p className="text-display scale-50 origin-left">
+                                        {content.home.section_featured_title.split(' ').slice(0, -1).join(' ')} <span className="font-light not-italic" style={{ color: primaryColor }}>{content.home.section_featured_title.split(' ').slice(-1)}</span>
+                                    </p>
                                 </div>
-                                <Link
-                                    to={shopPath('/catalogue')}
-                                    className="hidden md:flex items-center gap-2 text-sm font-bold hover:underline transition-colors"
-                                    style={{ color: primaryColor }}
-                                >
-                                    Tout voir
-                                    <ArrowRight className="w-4 h-4" />
-                                </Link>
+                                <div className="flex flex-col md:items-end gap-6">
+                                    <p className="text-premium-body">{content.home.section_featured_subtitle}</p>
+                                    <Link
+                                        to={shopPath('/catalogue')}
+                                        className="inline-flex items-center gap-4 text-label text-white hover:text-emerald-400 transition-all group"
+                                    >
+                                        Voir toute la collection
+                                        <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-white/10 transition-colors">
+                                            <ArrowRight className="w-4 h-4" />
+                                        </div>
+                                    </Link>
+                                </div>
                             </div>
 
                             {isLoading ? (
-                                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
                                     {Array.from({ length: 4 }).map((_, i) => (
-                                        <div key={i} className="bg-zinc-800/20 rounded-3xl h-72 animate-pulse" />
+                                        <div key={i} className="bg-zinc-900/40 rounded-[2.5rem] h-[450px] animate-pulse border border-white/5" />
                                     ))}
                                 </div>
                             ) : featuredProducts.length > 0 ? (
-                                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
                                     {featuredProducts.map((product, i) => (
                                         <motion.div
                                             key={product.id}
-                                            initial={{ opacity: 0, y: 20 }}
-                                            whileInView={{ opacity: 1, y: 0 }}
+                                            initial={{ opacity: 0, scale: 0.98 }}
+                                            whileInView={{ opacity: 1, scale: 1 }}
                                             viewport={{ once: true }}
                                             transition={{ delay: i * 0.05 }}
                                         >
                                             <Link
                                                 to={shopPath(`/catalogue/${product.slug}`)}
-                                                className="group block bg-zinc-900/60 border border-zinc-800 rounded-3xl overflow-hidden hover:border-zinc-600 transition-all"
+                                                className="group block relative bg-zinc-900/40 backdrop-blur-xl border border-white/5 rounded-[2.5rem] overflow-hidden hover:border-white/20 transition-all duration-700 shadow-2xl"
                                             >
-                                                <div className="aspect-square bg-zinc-800 overflow-hidden relative">
+                                                <div className="aspect-[4/5] bg-zinc-950 overflow-hidden relative">
                                                     {product.image_url ? (
                                                         <img
                                                             src={product.image_url}
                                                             alt={product.name}
-                                                            onError={(e) => {
-                                                                (e.target as HTMLImageElement).src = 'https://images.pexels.com/photos/6588619/pexels-photo-6588619.jpeg?auto=compress&cs=tinysrgb&w=800';
-                                                            }}
-                                                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 grayscale-[0.2] group-hover:grayscale-0"
                                                         />
                                                     ) : (
                                                         <div className="w-full h-full flex items-center justify-center">
-                                                            <Package className="w-12 h-12 text-zinc-700" />
+                                                            <Package className="w-16 h-16 text-zinc-800" />
                                                         </div>
                                                     )}
-                                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                                                    <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent opacity-60" />
+
+                                                    {/* Overlays */}
+                                                    <div className="absolute top-6 right-6">
+                                                        <div className="px-4 py-2 rounded-xl bg-black/60 backdrop-blur-md border border-white/10 text-label text-white italic">
+                                                            Prestige
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div className="p-5">
-                                                    <h3 className="font-bold text-white text-sm truncate">{product.name}</h3>
-                                                    <div className="flex items-center justify-between mt-2">
-                                                        {product.cbd_percentage && (
-                                                            <span className="text-xs text-zinc-500 font-bold">CBD {product.cbd_percentage}%</span>
-                                                        )}
-                                                        <span className="text-lg font-black" style={{ color: primaryColor }}>
-                                                            {product.price.toFixed(2)} €
+
+                                                <div className="p-8 space-y-4">
+                                                    <div className="space-y-1">
+                                                        <h3 className="text-xl font-black text-white italic tracking-tighter uppercase truncate">{product.name}</h3>
+                                                        <div className="flex items-center gap-3">
+                                                            {product.cbd_percentage && (
+                                                                <span className="text-[9px] font-black uppercase tracking-[0.2em] text-zinc-500">CBD {product.cbd_percentage}%</span>
+                                                            )}
+                                                            <div className="w-[1px] h-3 bg-white/10" />
+                                                            <span className="text-[9px] font-black uppercase tracking-[0.2em] text-emerald-500/60 transition-colors" style={{ color: `${primaryColor}99` }}>Édition Limitée</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="pt-4 border-t border-white/5 flex items-center justify-between">
+                                                        <span className="text-2xl font-black italic tracking-tighter text-white">
+                                                            {product.price.toFixed(2)}<span className="text-xs ml-1 opacity-40">€</span>
                                                         </span>
+                                                        <div className="w-10 h-10 rounded-2xl bg-white/5 flex items-center justify-center group-hover:bg-emerald-500 transition-all duration-500 group-hover:text-black">
+                                                            <ArrowRight className="w-5 h-5 translate-x-[-2px] group-hover:translate-x-0 transition-transform" />
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </Link>
@@ -222,51 +264,100 @@ export default function ShopHome() {
                                     ))}
                                 </div>
                             ) : (
-                                <div className="flex flex-col items-center justify-center py-20 text-zinc-600">
-                                    <Sparkles className="w-12 h-12 mb-4 opacity-20" />
-                                    <p className="text-sm font-bold uppercase tracking-widest">Catalogue en préparation</p>
-                                    <p className="text-xs text-zinc-700 mt-1">Les produits arrivent bientôt !</p>
+                                <div className="flex flex-col items-center justify-center py-40 bg-zinc-900/20 border-2 border-dashed border-white/5 rounded-[4rem] text-zinc-600">
+                                    <Sparkles className="w-16 h-16 mb-8 opacity-20" />
+                                    <p className="text-[10px] font-black uppercase tracking-[0.5em] italic">Collection en Devenir</p>
+                                    <p className="text-xs text-zinc-700 mt-4 italic font-medium">Les créations d'exception arrivent bientôt.</p>
                                 </div>
                             )}
-
-                            <div className="mt-8 text-center md:hidden">
-                                <Link
-                                    to={shopPath('/catalogue')}
-                                    className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-black text-sm"
-                                    style={{ backgroundColor: primaryColor }}
-                                >
-                                    Voir tout le catalogue
-                                    <ArrowRight className="w-4 h-4" />
-                                </Link>
-                            </div>
                         </div>
                     </section>
                 );
 
             case 'ai_promo':
                 return currentShop?.settings?.ai_enabled && (
-                    <section key={section.id} className="py-20">
-                        <div className="max-w-4xl mx-auto px-4 text-center">
+                    <section key={section.id} className="py-40 relative">
+                        <div className="max-w-6xl mx-auto px-4">
                             <motion.div
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                whileInView={{ opacity: 1, scale: 1 }}
+                                initial={{ opacity: 0, y: 40 }}
+                                whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
-                                className="p-12 rounded-[3rem] border border-white/10 bg-gradient-to-br from-zinc-900 to-zinc-950 relative overflow-hidden"
+                                transition={{ duration: 1 }}
+                                className="relative rounded-[4rem] border border-white/10 bg-zinc-950 p-12 md:p-24 overflow-hidden group/ai shadow-[0_0_100px_rgba(0,0,0,0.5)]"
                             >
-                                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full blur-[150px] opacity-10" style={{ background: primaryColor }} />
-                                <div className="relative z-10 space-y-6">
-                                    <div className="w-16 h-16 rounded-2xl mx-auto flex items-center justify-center border border-white/10" style={{ backgroundColor: `${primaryColor}15` }}>
-                                        <Sparkles className="w-8 h-8" style={{ color: primaryColor }} />
+                                {/* Futuristic Background */}
+                                <div className="absolute inset-0 bg-zinc-900/20 backdrop-blur-3xl" />
+                                <div className="absolute top-0 right-0 w-[800px] h-[800px] rounded-full blur-[200px] opacity-10 animate-pulse-slow" style={{ background: primaryColor }} />
+                                <div className="absolute -bottom-[20%] -left-[10%] w-[600px] h-[600px] rounded-full blur-[150px] opacity-10" style={{ background: primaryColor }} />
+
+                                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-5 pointer-events-none" />
+
+                                <div className="relative z-10 grid lg:grid-cols-2 gap-20 items-center">
+                                    <div className="space-y-12 text-center lg:text-left">
+                                        <div className="inline-flex items-center gap-4 px-6 py-2 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-label" style={{ color: primaryColor, backgroundColor: `${primaryColor}10`, borderColor: `${primaryColor}20` }}>
+                                            <Sparkles className="w-5 h-5 animate-pulse" />
+                                            {currentShop.name} Intelligence
+                                        </div>
+
+                                        <div className="space-y-6">
+                                            <h3 className="text-section">
+                                                {content.home.section_ai_title}
+                                            </h3>
+                                            <p className="text-premium-body border-l-2 border-white/5 pl-8 max-w-xl mx-auto lg:mx-0">
+                                                {content.home.section_ai_subtitle}
+                                            </p>
+                                        </div>
+
+                                        <div className="pt-8 flex flex-col sm:flex-row items-center gap-8 justify-center lg:justify-start">
+                                            <motion.button
+                                                whileHover={{ scale: 1.05 }}
+                                                whileTap={{ scale: 0.95 }}
+                                                className="px-12 py-6 bg-white text-black font-black uppercase tracking-widest italic rounded-[2rem] shadow-2xl relative overflow-hidden group/btn"
+                                            >
+                                                <div className="absolute inset-0 bg-emerald-500 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-500" style={{ backgroundColor: primaryColor }} />
+                                                <span className="relative z-10">{content.home.section_ai_cta}</span>
+                                            </motion.button>
+
+                                            <div className="flex -space-x-4">
+                                                {[1, 2, 3, 4].map(i => (
+                                                    <div key={i} className="w-12 h-12 rounded-full border-2 border-zinc-950 bg-zinc-900 overflow-hidden">
+                                                        <img src={`https://i.pravatar.cc/100?u=${i + currentShop.id}`} alt="" />
+                                                    </div>
+                                                ))}
+                                                <div className="w-12 h-12 rounded-full border-2 border-zinc-950 bg-emerald-500 flex items-center justify-center text-[10px] font-black text-black" style={{ backgroundColor: primaryColor }}>
+                                                    +2k
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <h3 className="text-3xl md:text-4xl font-serif font-black">
-                                        {content.home.section_ai_title}
-                                    </h3>
-                                    <p className="text-zinc-400 text-lg max-w-xl mx-auto leading-relaxed">
-                                        {content.home.section_ai_subtitle}
-                                    </p>
-                                    <p className="text-sm font-bold uppercase tracking-widest" style={{ color: primaryColor }}>
-                                        {content.home.section_ai_cta}
-                                    </p>
+
+                                    <div className="relative group-hover/ai:scale-105 transition-transform duration-1000 hidden lg:block">
+                                        <div className="absolute -inset-1 rounded-[3rem] bg-gradient-to-tr from-emerald-500/40 via-transparent to-white/20 blur-xl opacity-50" />
+                                        <div className="relative bg-black/60 backdrop-blur-3xl border border-white/10 rounded-[3rem] p-8 space-y-10 shadow-3xl">
+                                            <div className="flex items-center gap-4 border-b border-white/5 pb-6">
+                                                <div className="w-3 h-3 rounded-full bg-red-500/50" />
+                                                <div className="w-3 h-3 rounded-full bg-yellow-500/50" />
+                                                <div className="w-3 h-3 rounded-full bg-green-500/50" />
+                                                <div className="px-4 py-1 rounded-full bg-white/5 border border-white/10 text-[8px] font-black text-zinc-500 uppercase ml-auto">BudTender v4.0.2</div>
+                                            </div>
+                                            <div className="space-y-6">
+                                                <div className="flex gap-4">
+                                                    <div className="w-10 h-10 rounded-2xl bg-zinc-800 shrink-0" />
+                                                    <div className="bg-zinc-900 border border-white/5 rounded-[1.5rem] rounded-tl-none p-4 text-sm text-zinc-400 italic">
+                                                        Je recherche quelque chose pour me détendre en fin de journée, sans effet trop puissant...
+                                                    </div>
+                                                </div>
+                                                <div className="flex gap-4 justify-end">
+                                                    <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-[1.5rem] rounded-tr-none p-4 text-sm text-white italic" style={{ backgroundColor: `${primaryColor}15`, borderColor: `${primaryColor}30` }}>
+                                                        Je vous suggère la Zen Collection. Son profil terpénique privilégie le Myrcène pour un apaisement profond et naturel.
+                                                    </div>
+                                                    <div className="w-10 h-10 rounded-2xl bg-emerald-500 shadow-2xl shrink-0 flex items-center justify-center text-black" style={{ backgroundColor: primaryColor }}>
+                                                        <Sparkles className="w-5 h-5" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </motion.div>
                         </div>

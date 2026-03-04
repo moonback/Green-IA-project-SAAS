@@ -21,95 +21,97 @@ import { Link } from "react-router-dom";
 export default function SolutionSaaS() {
     const features = [
         {
-            title: "Conseiller client automatique",
-            description: "Un assistant qui répond aux questions de vos clients et les aide à choisir plus facilement.",
-            icon: <Cpu className="w-8 h-8 text-green-neon" />,
-            tag: "Innovation"
+            title: "BudTender Augmenté",
+            description: "Un moteur sémantique qui guide vos clients à travers les nuances moléculaires de votre catalogue.",
+            icon: <Cpu className="w-8 h-8 text-emerald-500" />,
+            tag: "Intelligence"
         },
         {
-            title: "Gestion de plusieurs boutiques",
-            description: "Si vous gérez plusieurs points de vente, vous gardez une vue claire et séparée de chaque boutique.",
-            icon: <Lock className="w-8 h-8 text-green-neon" />,
-            tag: "Sécurité"
+            title: "Infrastructure Multi-Tenance",
+            description: "Chaque shop bénéficie d'une instance isolée et sécurisée, garantissant une intégrité totale des données.",
+            icon: <Lock className="w-8 h-8 text-emerald-500" />,
+            tag: "Architecture"
         },
         {
-            title: "Boutique + caisse connectées",
-            description: "Vos stocks sont synchronisés entre la boutique en ligne et la caisse, sans double saisie.",
-            icon: <Globe className="w-8 h-8 text-green-neon" />,
+            title: "Omnicanalité Totale",
+            description: "Synchronisation atomique entre vos points de vente physiques et votre déploiement digital.",
+            icon: <Globe className="w-8 h-8 text-emerald-500" />,
+            tag: "Souveraineté"
+        },
+        {
+            title: "Analytics Prédictifs",
+            description: "Transformez vos flux de ventes en insights stratégiques pour piloter votre croissance réelle.",
+            icon: <BarChart3 className="w-8 h-8 text-emerald-500" />,
             tag: "Performance"
-        },
-        {
-            title: "Suivi des ventes",
-            description: "Suivez simplement les produits qui marchent le mieux et prenez de meilleures décisions.",
-            icon: <BarChart3 className="w-8 h-8 text-green-neon" />,
-            tag: "Growth"
         }
     ];
 
     return (
-        <div className="min-h-screen bg-brand-950 text-white overflow-hidden">
+        <div className="min-h-screen bg-zinc-950 text-white overflow-hidden pb-40 selection:bg-emerald-500 selection:text-black">
             <SEO
                 title="Solution SaaS | Green IA Infrastructure Cloud"
                 description="Découvrez l'infrastructure la plus avancée du marché pour le retail CBD. Centralisez votre gestion, automatisez vos ventes avec l'IA."
             />
 
-            {/* ─── Hero Section ─── */}
-            <section className="app-section relative pt-28 sm:pt-32 overflow-hidden">
-                <div className="absolute inset-0 pointer-events-none">
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-green-neon/5 blur-[120px] rounded-full opacity-30" />
-                    <div className="absolute top-20 right-0 w-96 h-96 bg-emerald-500/10 blur-[100px] rounded-full" />
+            {/* ─── Elegant Hero Section ─── */}
+            <section className="relative pt-60 pb-32 px-6 overflow-hidden">
+                <div className="absolute inset-0 z-0">
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[600px] bg-emerald-500/5 rounded-full blur-[150px] animate-pulse-slow" />
+                    <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-[0.02] mix-blend-overlay" />
                 </div>
 
-                <div className="relative z-10 page-block text-center space-y-8">
+                <div className="max-w-7xl mx-auto text-center space-y-12 relative z-10">
                     <motion.div
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.04] border border-white/[0.08] backdrop-blur-xl mb-4"
+                        className="inline-flex items-center gap-4 px-6 py-2.5 rounded-2xl bg-white/[0.03] border border-white/10 backdrop-blur-xl text-emerald-500 text-label"
                     >
-                        <Zap className="w-4 h-4 text-green-neon fill-green-neon" />
-                        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400">Une solution pensée pour les boutiques CBD</span>
+                        <Zap className="w-4 h-4 animate-pulse" />
+                        L'INFRASTRUCTURE DE RÉFÉRENCE POUR LE RETAIL CBD
                     </motion.div>
 
                     <motion.h1
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="text-5xl md:text-8xl font-serif font-black tracking-tighter leading-[0.9] mb-10"
+                        className="text-display"
                     >
-                        UNE SOLUTION <br />
-                        <span className="text-green-neon italic glow-green">SIMPLE ET EFFICACE.</span>
+                        SOUVERAINETÉ <br />
+                        <span className="text-emerald-500 font-light not-italic">TECHNOLOGIQUE.</span>
                     </motion.h1>
 
                     <motion.p
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.1 }}
-                        className="text-zinc-400 text-lg md:text-xl max-w-3xl mx-auto font-light leading-relaxed"
+                        className="text-premium-body text-zinc-500 max-w-4xl mx-auto border-l-2 border-white/5 pl-10"
                     >
-                        Green IA vous aide à vendre plus, gagner du temps et mieux suivre votre activité, que vous ayez une seule boutique ou plusieurs.
+                        Green IA forge les standards de demain : automatisation, gestion multi-nodes et intelligence moléculaire pour les acteurs majeurs du CBD.
                     </motion.p>
                 </div>
             </section>
 
-            {/* ─── Tout ce qu'il faut pour gérer votre boutique CBD ─── */}
-            <section className="py-32 px-5">
+            {/* ─── Pillars Section ─── */}
+            <section className="py-40 px-6">
                 <div className="max-w-7xl mx-auto">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pb-20 border-b border-white/[0.06]">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 pb-32">
                         {features.map((feature, i) => (
                             <motion.div
                                 key={i}
-                                initial={{ opacity: 0, y: 20 }}
+                                initial={{ opacity: 0, y: 30 }}
                                 whileInView={{ opacity: 1, y: 0 }}
-                                transition={{ delay: i * 0.1 }}
+                                transition={{ delay: i * 0.1, duration: 0.8 }}
                                 viewport={{ once: true }}
-                                className="group p-8 rounded-[2.5rem] bg-white/[0.02] border border-white/[0.05] hover:bg-white/[0.04] hover:border-green-neon/30 transition-all duration-500"
+                                className="group p-12 rounded-[3.5rem] bg-white/[0.02] border border-white/5 hover:border-emerald-500/20 transition-all duration-700 relative overflow-hidden"
                             >
-                                <div className="mb-8 p-4 w-16 h-16 rounded-2xl bg-zinc-900 border border-white/[0.06] group-hover:scale-110 group-hover:-rotate-6 transition-transform">
+                                <div className="absolute -inset-10 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+
+                                <div className="mb-10 w-20 h-20 rounded-[2rem] bg-zinc-950 border border-white/5 flex items-center justify-center group-hover:scale-110 group-hover:border-emerald-500/30 transition-all duration-700 shadow-2xl relative z-10">
                                     {feature.icon}
                                 </div>
-                                <div className="space-y-4">
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-zinc-600">{feature.tag}</span>
-                                    <h3 className="text-xl font-bold text-white">{feature.title}</h3>
-                                    <p className="text-sm text-zinc-500 leading-relaxed font-light">{feature.description}</p>
+                                <div className="space-y-4 relative z-10">
+                                    <span className="text-label text-zinc-700">{feature.tag}</span>
+                                    <h3 className="text-2xl font-black italic tracking-tight uppercase text-white group-hover:text-emerald-500 transition-colors">{feature.title}</h3>
+                                    <p className="text-xs text-zinc-600 leading-relaxed font-medium italic">{feature.description}</p>
                                 </div>
                             </motion.div>
                         ))}
@@ -117,39 +119,41 @@ export default function SolutionSaaS() {
                 </div>
             </section>
 
-            {/* ─── AI Deep Dive ─── */}
-            <section className="py-32 px-5 bg-zinc-900/20">
-                <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
+            {/* ─── AI Interface Deep Dive ─── */}
+            <section className="py-60 px-6 bg-zinc-900/10 relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/5 to-transparent" />
+
+                <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-32 items-center">
                     <div className="relative">
-                        <div className="absolute -inset-20 bg-green-neon/10 blur-[150px] rounded-full opacity-50" />
-                        <div className="relative bg-zinc-950 border border-white/[0.1] rounded-[3rem] p-10 overflow-hidden shadow-2xl">
-                            <div className="flex items-center gap-3 mb-10">
-                                <div className="w-3 h-3 rounded-full bg-red-500/20" />
-                                <div className="w-3 h-3 rounded-full bg-yellow-500/20" />
-                                <div className="w-3 h-3 rounded-full bg-green-500/20" />
-                                <div className="ml-auto px-3 py-1 bg-green-neon/10 rounded-full text-[10px] text-green-neon font-black tracking-widest uppercase">Mode Expert</div>
+                        <div className="absolute -inset-40 bg-emerald-500/10 blur-[150px] rounded-full opacity-30 animate-pulse" />
+                        <div className="relative bg-zinc-950/80 backdrop-blur-3xl border border-white/10 rounded-[4rem] p-12 lg:p-16 overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,0.8)]">
+                            <div className="flex items-center gap-4 mb-12">
+                                <div className="w-3 h-3 rounded-full bg-emerald-500/60" />
+                                <div className="w-3 h-3 rounded-full bg-emerald-500/30" />
+                                <div className="w-3 h-3 rounded-full bg-emerald-500/10" />
+                                <div className="ml-auto px-6 py-2 bg-emerald-500/10 rounded-xl text-label text-emerald-500 border border-emerald-500/20">Protocol Active</div>
                             </div>
 
-                            <div className="space-y-6">
-                                <div className="p-5 bg-white/[0.03] rounded-2xl rounded-tl-none border border-white/5 text-sm text-zinc-400 font-light">
-                                    "Bonjour, je cherche un profil terpénique apaisant mais qui me permet de rester concentré."
+                            <div className="space-y-10">
+                                <div className="p-8 bg-white/[0.02] rounded-[2rem] rounded-tl-none border border-white/5 text-base text-zinc-500 italic font-medium">
+                                    "Je cherche une solution pour mes troubles du sommeil, sans effet léthargique au réveil."
                                 </div>
-                                <div className="p-5 bg-green-neon/5 rounded-2xl rounded-tr-none border border-green-neon/20 text-sm text-white font-medium ml-12">
-                                    <div className="flex items-center gap-2 mb-2 text-green-neon uppercase text-[10px] font-black tracking-widest">
-                                        <Sparkles className="w-3 h-3" /> BudTender Engine v4
+                                <div className="p-8 bg-emerald-500/5 rounded-[2rem] rounded-tr-none border border-emerald-500/10 text-base text-white font-medium ml-12 shadow-inner">
+                                    <div className="flex items-center gap-3 mb-4 text-emerald-500 text-label">
+                                        <Sparkles className="w-4 h-4" /> BUDTENDER ENGINE v6.0
                                     </div>
-                                    "Pour une relaxation consciente, je vous oriente vers la **Lemon Haze High-CBD**. Son profil riche en Limonène booste la concentration tandis que le CBD calme le système nerveux."
+                                    "Pour une régulation circadienne optimale, je suggère la **CBN Deep Sleep Oil**. Sa concentration en Cannabinol interagit avec les récepteurs CB1 pour induire un repos profond, dissipé naturellement à l'aube."
                                 </div>
                             </div>
 
-                            <div className="mt-12 flex justify-center">
-                                <div className="flex gap-2">
-                                    {[1, 2, 3, 4, 5].map((_, i) => (
+                            <div className="mt-16 flex justify-center">
+                                <div className="flex gap-4">
+                                    {[1, 2, 3, 4, 5, 4, 3, 2, 1].map((_, i) => (
                                         <motion.div
                                             key={i}
-                                            animate={{ height: [12, 32, 12] }}
-                                            transition={{ duration: 1, repeat: Infinity, delay: i * 0.1 }}
-                                            className="w-1.5 bg-green-neon/40 rounded-full"
+                                            animate={{ height: [12, 48, 12] }}
+                                            transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.1 }}
+                                            className="w-2 bg-emerald-500/40 rounded-full"
                                         />
                                     ))}
                                 </div>
@@ -157,96 +161,121 @@ export default function SolutionSaaS() {
                         </div>
                     </div>
 
-                    <div className="space-y-10">
-                        <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-black leading-tight text-white uppercase italic">
-                            VOTRE <span className="text-green-neon">IA</span>, <br />
-                            VOS <span className="text-white glow-green">RÈGLES.</span>
-                        </h2>
-                        <p className="text-zinc-500 text-lg leading-relaxed font-light">
-                            L'IA BudTender n'est pas un simple chatbot. C'est un moteur de recommandations
-                            entraîné sur des milliers de fiches produits CBD, capable de comprendre
-                            les nuances moléculaires et de conseiller vos clients selon l'usage recherché.
-                        </p>
-                        <div className="space-y-4">
+                    <div className="space-y-12">
+                        <div className="space-y-6">
+                            <h2 className="text-section">
+                                VOTRE <span className="text-emerald-500 font-light not-italic">INTELLIGENCE</span>, <br />
+                                VOS <span className="text-white opacity-40">STANDARDS.</span>
+                            </h2>
+                            <p className="text-premium-body border-l-2 border-white/5 pl-10 max-w-xl">
+                                L'IA BudTender est un noyau décisionnel entraîné sur des banques de données génétiques, capable d'un conseil d'expert 24/7.
+                            </p>
+                        </div>
+
+                        <div className="space-y-6">
                             {[
-                                { t: "Configurable à 100%", d: "Ajustez le ton (expert, amical, médical) selon votre image de marque." },
-                                { t: "Synchronisation Catalogue", d: "L'IA connaît vos stocks et ne recommande que ce qui est disponible." },
-                                { t: "Collecte de Data", d: "Comprenez ce que vos clients cherchent vraiment (sommeil, anxiété, plaisir)." }
+                                { t: "Orchestration Neutre", d: "Ajustez le ton et les priorités de recommandation selon votre positionnement d'élite." },
+                                { t: "Intégrité des Flux", d: "Une connaissance absolue de vos inventaires pour des recommandations uniquement actionnables." },
+                                { t: "Excavation de Data", d: "Captez les tendances de consommation moléculaires pour anticiper vos prochains stocks." }
                             ].map((item, i) => (
-                                <div key={i} className="flex items-start gap-4 p-6 bg-white/[0.02] border border-white/[0.04] rounded-3xl hover:border-green-neon/20 transition-all group">
-                                    <div className="mt-1 w-2 h-2 rounded-full bg-green-neon shadow-[0_0_8px_rgba(57,255,20,0.8)] group-hover:scale-150 transition-transform" />
-                                    <div>
-                                        <h4 className="text-white font-bold text-sm mb-1">{item.t}</h4>
-                                        <p className="text-zinc-500 text-xs leading-relaxed font-light">{item.d}</p>
+                                <motion.div
+                                    key={i}
+                                    initial={{ opacity: 0, x: 20 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: i * 0.2 }}
+                                    className="flex items-start gap-8 p-10 bg-white/[0.02] border border-white/5 rounded-[3rem] hover:border-emerald-500/20 transition-all group duration-700 shadow-2xl"
+                                >
+                                    <div className="mt-1.5 w-3 h-3 rounded-full bg-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.5)] group-hover:scale-125 transition-transform" />
+                                    <div className="space-y-2">
+                                        <h4 className="text-white font-black uppercase text-sm tracking-widest italic group-hover:text-emerald-500 transition-colors">{item.t}</h4>
+                                        <p className="text-zinc-500 text-xs leading-relaxed font-medium italic">{item.d}</p>
                                     </div>
-                                </div>
+                                </motion.div>
                             ))}
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* ─── Scalability & Multi-Tenant ─── */}
-            <section className="py-40 px-5 text-center">
-                <div className="max-w-4xl mx-auto space-y-12">
-                    <h2 className="text-5xl md:text-7xl font-serif font-black tracking-tighter text-white uppercase italic">
-                        DÉPLOYEZ EN <span className="text-green-neon">QUELQUES CLICS.</span>
+            {/* ─── Global Scalability ─── */}
+            <section className="py-60 px-6 text-center relative">
+                <div className="max-w-5xl mx-auto space-y-16">
+                    <h2 className="text-display scale-75">
+                        DÉPLOIEMENT <br /> <span className="text-emerald-500 font-light not-italic">INSTANTANÉ.</span>
                     </h2>
-                    <p className="text-zinc-500 text-xl font-light">
-                        Oubliez les installations complexes. Chaque boutique Green IA est
-                        automatiquement isolée dans son propre environnement sécurisé,
-                        permettant une scalabilité infinie.
+                    <p className="text-premium-body max-w-3xl mx-auto">
+                        Oubliez la complexité. Chaque instance Green IA est isolée virtuellement, garantissant une montée en charge fluide et sécurisée.
                     </p>
 
-                    <div className="relative py-20">
-                        <div className="absolute inset-0 flex items-center justify-center opacity-20 overflow-hidden pointer-events-none">
-                            <div className="w-[120%] h-px bg-gradient-to-r from-transparent via-green-neon to-transparent" />
-                            <div className="w-[120%] h-px bg-gradient-to-r from-transparent via-green-neon to-transparent rotate-12" />
-                            <div className="w-[120%] h-px bg-gradient-to-r from-transparent via-green-neon to-transparent -rotate-12" />
+                    <div className="relative py-32">
+                        <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex items-center justify-center opacity-10 overflow-hidden pointer-events-none">
+                            <div className="w-[150%] h-[1px] bg-gradient-to-r from-transparent via-emerald-500 to-transparent" />
+                            <div className="w-[150%] h-[1px] bg-gradient-to-r from-transparent via-emerald-500 to-transparent rotate-12" />
+                            <div className="w-[150%] h-[1px] bg-gradient-to-r from-transparent via-emerald-500 to-transparent -rotate-12" />
                         </div>
-                        <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-16">
                             {[
-                                { icon: <Database />, title: "Isolément Données", label: "Multi-tenant logic" },
-                                { icon: <ShieldCheck />, title: "Données protégées", label: "Protection renforcée" },
-                                { icon: <Smartphone />, title: "POS Natif", label: "Magasin piloté Cloud" }
+                                { icon: <Database />, title: "Isolation Atomique", label: "Multi-tenant logic" },
+                                { icon: <ShieldCheck />, title: "Cryptage Militaire", label: "Protocoles AES-256" },
+                                { icon: <Smartphone />, title: "Omnicanalité", label: "SaaS & POS Hybrid" }
                             ].map((item, i) => (
-                                <div key={i} className="flex flex-col items-center gap-4">
-                                    <div className="w-20 h-20 rounded-3xl bg-zinc-900 border border-white/5 flex items-center justify-center text-green-neon shadow-2xl">
+                                <motion.div
+                                    key={i}
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    whileInView={{ opacity: 1, scale: 1 }}
+                                    transition={{ delay: i * 0.2 }}
+                                    className="flex flex-col items-center gap-8 group"
+                                >
+                                    <div className="w-24 h-24 rounded-[2.5rem] bg-zinc-950 border border-white/5 flex items-center justify-center text-zinc-500 group-hover:text-emerald-500 group-hover:border-emerald-500/30 group-hover:scale-110 transition-all duration-700 shadow-2xl group-hover:shadow-emerald-500/10">
                                         {item.icon}
                                     </div>
-                                    <div>
-                                        <h4 className="text-white font-black uppercase text-sm tracking-widest">{item.title}</h4>
-                                        <p className="text-zinc-600 text-[10px] font-bold uppercase tracking-[0.2em]">{item.label}</p>
+                                    <div className="space-y-2">
+                                        <h4 className="text-white font-black uppercase text-sm tracking-[0.3em] italic">{item.title}</h4>
+                                        <p className="text-label text-zinc-700">{item.label}</p>
                                     </div>
-                                </div>
+                                </motion.div>
                             ))}
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* ─── Final CTA ─── */}
-            <section className="py-32 px-5">
-                <div className="max-w-5xl mx-auto px-10 py-20 bg-green-neon rounded-[3rem] text-black text-center relative overflow-hidden">
-                    <div className="absolute top-0 right-0 w-64 h-64 bg-black/10 blur-[100px] rounded-full" />
-                    <h2 className="text-4xl md:text-6xl font-serif font-black tracking-tight mb-8">
-                        PRÊT À RÉVOLUTIONNER <br /> VOTRE RETAIL ?
-                    </h2>
-                    <div className="flex flex-col sm:flex-row gap-5 justify-center items-center">
-                        <Link
-                            to="/ouvrir-boutique"
-                            className="px-12 py-5 bg-black text-white font-black uppercase tracking-widest text-sm rounded-2xl hover:scale-105 transition-transform shadow-2xl"
-                        >
-                            Démarrer l'essai gratuit
-                        </Link>
-                        <Link
-                            to="/contact"
-                            className="px-12 py-5 border-2 border-black text-black font-black uppercase tracking-widest text-sm rounded-2xl hover:bg-black hover:text-white transition-all"
-                        >
-                            Demander une démo
-                        </Link>
+            {/* ─── Grand Finale CTA ─── */}
+            <section className="py-40 px-6">
+                <motion.div
+                    initial={{ opacity: 0, y: 50 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="max-w-7xl mx-auto p-16 md:p-32 bg-white text-black rounded-[5rem] text-center relative overflow-hidden group shadow-[0_100px_200px_rgba(255,255,255,0.05)]"
+                >
+                    <div className="absolute inset-0 bg-emerald-500 translate-y-full group-hover:translate-y-0 transition-transform duration-1000 ease-in-out" />
+                    <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-white/20 blur-[150px] rounded-full -mr-300 -mt-300 pointer-events-none" />
+
+                    <div className="relative z-10 space-y-16">
+                        <h2 className="text-display scale-75 text-black">
+                            REJOIGNEZ <br /> <span className="font-light not-italic">L'ÉLITE DU CBD.</span>
+                        </h2>
+                        <div className="flex flex-col sm:flex-row gap-10 justify-center items-center">
+                            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                                <Link
+                                    to="/ouvrir-boutique"
+                                    className="px-20 py-10 bg-black text-white font-black uppercase tracking-[0.4em] text-xs rounded-[2.5rem] shadow-3xl flex items-center gap-4 hover:gap-8 transition-all"
+                                >
+                                    ACTIVER L'ESSAI <ArrowRight className="w-5 h-5" />
+                                </Link>
+                            </motion.div>
+                            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                                <Link
+                                    to="/contact"
+                                    className="px-20 py-10 border-2 border-black/10 text-black font-black uppercase tracking-[0.4em] text-xs rounded-[2.5rem] hover:bg-black hover:text-white transition-all italic"
+                                >
+                                    DEMANDER UNE SESSION
+                                </Link>
+                            </motion.div>
+                        </div>
                     </div>
-                </div>
+                </motion.div>
             </section>
         </div>
     );

@@ -16,6 +16,9 @@ import {
   Package,
   Tag,
   Shield,
+  ChevronRight,
+  Quote,
+  Sparkles,
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { Product, Review, SubscriptionFrequency, BundleItem } from '../lib/types';
@@ -257,27 +260,33 @@ export default function ProductDetail() {
   if (!product) return null;
 
   return (
-    <div className="min-h-screen bg-brand-950 text-white pt-24 pb-32">
+    <div className="min-h-screen bg-zinc-950 text-white pt-32 pb-32 selection:bg-emerald-500/30">
       <SEO
-        title={`${product.name} — Excellence Green IA`}
+        title={`${product.name} — Green IA Excellence`}
         description={product.description ?? `Découvrez ${product.name} par Green IA. L'excellence du CBD.`}
       />
 
-      <div className="page-block">
+      {/* Background Orbs */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-emerald-500/5 blur-[120px] rounded-full animate-pulse" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-emerald-500/5 blur-[120px] rounded-full" />
+      </div>
+
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-12 relative">
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-4 text-xs uppercase tracking-wider text-zinc-600 mb-12">
-          <Link to={sp('/catalogue')} className="flex items-center gap-2 hover:text-primary transition-colors">
-            <ArrowLeft className="w-4 h-4" />
-            Archives
+        <nav className="flex items-center gap-6 text-label text-zinc-600 mb-16">
+          <Link to={sp('/catalogue')} className="group flex items-center gap-3 hover:text-emerald-400 transition-colors">
+            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+            <span className="italic">Catalogue</span>
           </Link>
+          <span className="w-1 h-1 rounded-full bg-zinc-800" />
           {product.category && (
             <>
-              <span className="opacity-30">/</span>
-              <span className="hover:text-white cursor-default">{product.category.name}</span>
+              <span className="text-zinc-500">{product.category.name}</span>
+              <span className="w-1 h-1 rounded-full bg-zinc-800" />
             </>
           )}
-          <span className="opacity-30">/</span>
-          <span className="text-zinc-400">{product.name}</span>
+          <span className="text-emerald-500/80">{product.name}</span>
         </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 xl:gap-24 items-start">
@@ -355,42 +364,45 @@ export default function ProductDetail() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="space-y-10"
+            className="space-y-12"
           >
-            <div className="space-y-4">
+            <div className="space-y-6">
               {product.category && (
-                <p className="text-xs text-primary uppercase tracking-wider font-medium">{product.category.name.toUpperCase()}</p>
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">
+                  <span className="text-label text-emerald-400">{product.category.name}</span>
+                </div>
               )}
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold tracking-tight leading-[0.9] uppercase italic grayscale hover:grayscale-0 transition-all duration-1000">
-                {product.name}.
+              <h1 className="text-display scale-75 origin-left">
+                {product.name}<span className="text-emerald-500 font-light not-italic">.</span>
               </h1>
 
               {reviews.length > 0 && (
-                <div className="flex items-center gap-4 py-2">
-                  <div className="flex text-yellow-500">
+                <div className="flex items-center gap-6">
+                  <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md">
                     <StarRating rating={avgRating} size="sm" />
+                    <span className="text-label text-white ml-1">{avgRating.toFixed(1)}</span>
                   </div>
-                  <span className="text-xs text-zinc-500 font-medium">
-                    EXPÉRIENCE CLIENT : {avgRating.toFixed(1)}/5 — {reviews.length} TÉMOIGNAGES
+                  <span className="text-label text-zinc-500">
+                    {reviews.length} Témoignages vérifiés
                   </span>
                 </div>
               )}
             </div>
 
-            <div className="space-y-6">
-              <p className="text-zinc-400 font-serif text-xl italic leading-relaxed max-w-xl">
+            <div className="space-y-8">
+              <p className="text-premium-body">
                 {product.description || "Une création singulière, élaborée avec la plus grande exigence pour une expérience sensorielle hors du temps."}
               </p>
 
               <div className="flex flex-wrap gap-8">
                 {(product.attributes?.benefits || []).length > 0 && (
-                  <div className="space-y-3">
-                    <p className="text-xs text-zinc-500 font-medium flex items-center gap-2">
-                      <span className="w-1 h-1 bg-primary rounded-full" /> EFFETS RECHERCHÉS
+                  <div className="space-y-4">
+                    <p className="text-label text-zinc-700 flex items-center gap-3">
+                      <span className="w-10 h-[1px] bg-emerald-500/30" /> Effets Principaux
                     </p>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-3">
                       {product.attributes.benefits!.map(b => (
-                        <span key={b} className="text-xs font-semibold uppercase tracking-wider text-zinc-400 border border-white/10 px-3 py-1.5 rounded-full hover:border-primary/50 transition-colors">
+                        <span key={b} className="text-label text-zinc-400 bg-white/5 border border-white/10 px-4 py-2 rounded-xl hover:border-emerald-500/30 transition-all cursor-default">
                           {b}
                         </span>
                       ))}
@@ -400,119 +412,134 @@ export default function ProductDetail() {
               </div>
             </div>
 
-            <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] rounded-2xl p-6 md:p-8 space-y-10 relative overflow-hidden group/panel">
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
-
-              <div className="flex items-start justify-between">
-                <div className="flex flex-wrap gap-8">
-                  <div className="space-y-1">
-                    <p className="text-[10px] text-zinc-500 font-black uppercase tracking-widest">Prix au gramme</p>
-                    <p className="text-2xl font-serif font-bold text-primary leading-none">
-                      {product.price.toFixed(2)}<span className="text-sm ml-1 italic font-sans uppercase tracking-widest text-zinc-500">€/g</span>
-                    </p>
-                  </div>
-                  <div className="w-px h-10 bg-white/10 hidden sm:block" />
-                  <div className="space-y-1">
-                    <p className="text-[10px] text-primary/60 font-black uppercase tracking-widest">Total Sélectionné ({quantity}g)</p>
-                    <p className="text-4xl font-serif font-bold text-white leading-none">
-                      {(product.price * quantity).toFixed(2)}<span className="text-xl ml-2 italic font-sans uppercase tracking-widest text-zinc-500">€</span>
-                    </p>
-                  </div>
-                </div>
-                <StockBadge stock={product.stock_quantity} />
-              </div>
-
-              {product.is_available && product.stock_quantity > 0 ? (
-                <div className="space-y-6">
-                  <div className="flex-1 space-y-4">
-                    <div className="flex flex-wrap gap-2">
-                      {[1, 5, 10, 30, 50, 100].map((weight) => (
-                        <button
-                          key={weight}
-                          onClick={() => setQuantity(Math.min(weight, product.stock_quantity))}
-                          className={`px-4 py-2 rounded-xl text-xs font-black border transition-all ${quantity === weight
-                            ? 'bg-primary border-primary text-black shadow-[0_0_15px_rgba(var(--color-primary-rgb),0.3)]'
-                            : 'bg-white/5 border-white/10 text-zinc-500 hover:text-white hover:border-white/20'
-                            }`}
-                        >
-                          {weight}g
-                        </button>
-                      ))}
+            <div className="relative group/panel">
+              <div className="absolute -inset-4 bg-emerald-500/5 blur-3xl rounded-[3rem] opacity-0 group-hover/panel:opacity-100 transition-opacity duration-1000" />
+              <div className="relative bg-zinc-900/40 backdrop-blur-2xl border border-white/5 rounded-[2.5rem] p-8 md:p-10 space-y-12 overflow-hidden shadow-2xl">
+                <div className="flex flex-wrap items-end justify-between gap-8">
+                  <div className="flex flex-wrap gap-12">
+                    <div className="space-y-2">
+                      <p className="text-label text-zinc-700">Prix Unitaire</p>
+                      <p className="text-section text-emerald-400 leading-none">
+                        {product.price.toFixed(2)}<span className="text-lg opacity-60 ml-1">€</span><span className="text-label text-zinc-500 ml-1">/ g</span>
+                      </p>
                     </div>
+                    <div className="w-[1px] h-12 bg-white/5 hidden sm:block" />
+                    <div className="space-y-2">
+                      <p className="text-label text-emerald-500/60">Estimation Total ({quantity}g)</p>
+                      <p className="text-section text-white leading-none">
+                        {(product.price * quantity).toFixed(2)}<span className="text-2xl text-emerald-500 ml-2">€</span>
+                      </p>
+                    </div>
+                  </div>
+                  <StockBadge stock={product.stock_quantity} />
+                </div>
 
-                    <div className="flex flex-col md:flex-row items-center gap-4">
-                      <div className="bg-white/5 border border-white/[0.06] rounded-2xl p-2 flex items-center">
-                        <div className="flex items-center gap-1.5 px-3">
-                          <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">Poids:</span>
-                          <input
-                            type="number"
-                            step="1"
-                            min="1"
-                            max={product.stock_quantity}
-                            value={quantity}
-                            onChange={handleQuantityChange}
-                            className="w-12 bg-transparent text-sm font-black text-white text-center focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                          />
-                          <span className="text-[10px] text-zinc-500 font-bold">g</span>
-                        </div>
+                {product.is_available && product.stock_quantity > 0 ? (
+                  <div className="space-y-10">
+                    <div className="space-y-6">
+                      <div className="flex flex-wrap gap-3">
+                        {[1, 5, 10, 30, 50, 100].map((weight) => (
+                          <motion.button
+                            key={weight}
+                            whileHover={{ y: -2 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => setQuantity(Math.min(weight, product.stock_quantity))}
+                            className={`px-6 py-3 rounded-2xl text-label transition-all duration-500 ${quantity === weight
+                              ? 'bg-emerald-500 border-emerald-400 text-black shadow-[0_20px_40px_rgba(16,185,129,0.2)]'
+                              : 'bg-white/5 border-white/10 text-zinc-500 hover:text-white hover:bg-white/10 hover:border-white/20'
+                              }`}
+                          >
+                            {weight}g
+                          </motion.button>
+                        ))}
                       </div>
-                      <button
-                        onClick={handleAddToCart}
-                        className="flex-1 w-full bg-primary text-black font-semibold uppercase tracking-wider py-4 rounded-2xl hover:shadow-[0_0_20px_rgba(var(--color-primary-rgb),0.3)] active:scale-[0.98] transition-all shadow-2xl group flex items-center justify-center gap-4"
-                      >
-                        <ShoppingCart className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                        {addedFeedback ? 'DÉPOSÉ AU PANIER' : 'ACQUÉRIR MAINTENANT'}
-                      </button>
+
+                      <div className="flex flex-col md:flex-row items-stretch gap-4">
+                        <div className="bg-black/40 border border-white/5 rounded-2xl p-4 flex items-center backdrop-blur-md shadow-inner">
+                          <div className="flex items-center gap-4 px-2">
+                            <span className="text-label text-zinc-700">Poids:</span>
+                            <input
+                              type="number"
+                              step="1"
+                              min="1"
+                              max={product.stock_quantity}
+                              value={quantity}
+                              onChange={handleQuantityChange}
+                              className="w-16 bg-transparent text-xl font-black text-white text-center focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none italic leading-none"
+                            />
+                            <span className="text-label text-zinc-500 uppercase">Grammes</span>
+                          </div>
+                        </div>
+                        <motion.button
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          onClick={handleAddToCart}
+                          className="flex-1 bg-emerald-500 text-black font-black uppercase tracking-[0.2em] py-5 rounded-2xl shadow-2xl shadow-emerald-500/20 flex items-center justify-center gap-4 relative overflow-hidden group/btn"
+                        >
+                          <div className="absolute inset-0 bg-white/20 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-500" />
+                          <ShoppingCart className="w-5 h-5 relative z-10" />
+                          <span className="relative z-10 italic">{addedFeedback ? 'Ajouté avec succès' : 'Ajouter au Panier'}</span>
+                        </motion.button>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-6 text-label text-zinc-700 justify-center pt-6 border-t border-white/5">
+                      <span className="flex items-center gap-2 decoration-emerald-500/30 underline underline-offset-4"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500/50" /> Livraison Discrète</span>
+                      <span className="flex items-center gap-2 decoration-zinc-500/30 underline underline-offset-4"><span className="w-1.5 h-1.5 rounded-full bg-zinc-700" /> Paiement Sécurisé</span>
                     </div>
                   </div>
-
-                  <div className="flex items-center gap-4 text-xs text-zinc-500 font-medium uppercase justify-center">
-                    <span className="flex items-center gap-1.5"><CheckCircle className="w-3 h-3 text-primary" /> LIVRAISON DISCRÈTE</span>
-                    <div className="w-1 h-1 bg-white/10 rounded-full" />
-                    <span className="flex items-center gap-1.5"><Shield className="w-3 h-3 text-zinc-500" /> PAIEMENT SÉCURISÉ</span>
+                ) : (
+                  <div className="py-12 border-2 border-dashed border-white/5 rounded-[2rem] text-center bg-white/[0.02]">
+                    <p className="text-label text-zinc-700">Édition Temporairement Épuisée</p>
                   </div>
-                </div>
-              ) : (
-                <div className="py-6 border-2 border-dashed border-white/[0.06] rounded-2xl text-center">
-                  <p className="text-xs text-zinc-500 font-medium uppercase tracking-wider">ÉDITION TEMPORAIREMENT ÉPUISÉE</p>
-                </div>
-              )}
+                )}
+              </div>
             </div>
 
             {/* Bundle Content */}
             {product.is_bundle && bundleItems.length > 0 && (
-              <div className="space-y-6">
-                <h3 className="text-xs text-zinc-500 font-medium uppercase tracking-wider px-2 flex items-center gap-3">
-                  <Package className="w-3 h-3 text-purple-500" /> COMPOSITION DE L'ÉCRIN
-                </h3>
+              <div className="space-y-8">
+                <div className="flex items-center gap-4 px-2">
+                  <div className="w-10 h-10 rounded-2xl bg-purple-500/10 flex items-center justify-center text-purple-400">
+                    <Package className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-label text-zinc-500">Composition de l'Écrin</h3>
+                    <p className="text-xs font-black text-purple-400 italic">Prestige Sélection</p>
+                  </div>
+                </div>
                 <div className="grid gap-4">
                   {bundleItems.map((item) => (
                     <motion.div
                       key={item.id}
-                      whileHover={{ x: 5 }}
-                      className="flex items-center gap-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl p-4 group/item"
+                      whileHover={{ x: 8 }}
+                      className="flex items-center gap-6 bg-zinc-900/30 backdrop-blur-md border border-white/5 rounded-[2rem] p-5 group/item transition-all duration-500"
                     >
                       {item.product?.image_url && (
-                        <div className="w-16 h-16 rounded-2xl overflow-hidden border border-white/[0.06] bg-zinc-900">
+                        <div className="w-20 h-20 rounded-2xl overflow-hidden border border-white/5 bg-zinc-950 shadow-2xl">
                           <img
                             src={item.product.image_url}
                             alt={item.product?.name}
-                            className="w-full h-full object-cover group-hover/item:scale-110 transition-transform duration-700"
+                            className="w-full h-full object-cover group-hover/item:scale-110 transition-transform duration-1000"
                           />
                         </div>
                       )}
                       <div className="flex-1 min-w-0">
                         <Link
                           to={`/catalogue/${item.product?.slug}`}
-                          className="text-sm font-bold uppercase tracking-wider text-white hover:text-primary transition-colors line-clamp-1"
+                          className="text-lg font-black italic uppercase tracking-tighter text-white hover:text-emerald-400 transition-colors line-clamp-1 leading-none"
                         >
-                          {item.quantity > 1 && <span className="text-green-neon mr-2">{item.quantity}×</span>}
+                          {item.quantity > 1 && <span className="text-emerald-500 mr-2">{item.quantity}×</span>}
                           {item.product?.name}
                         </Link>
                         {item.product?.cbd_percentage && (
-                          <p className="text-xs text-zinc-500 font-medium uppercase mt-1">CONCENTRATION : {item.product.cbd_percentage}%</p>
+                          <div className="flex items-center gap-2 mt-1">
+                            <span className="text-label text-zinc-700 scale-75 origin-left">Concentration :</span>
+                            <span className="text-label text-emerald-500/80 scale-75 origin-left">{item.product.cbd_percentage}% CBD</span>
+                          </div>
                         )}
                       </div>
+                      <ChevronRight className="w-5 h-5 text-zinc-700 group-hover/item:text-emerald-500 transition-colors" />
                     </motion.div>
                   ))}
                 </div>
@@ -521,50 +548,55 @@ export default function ProductDetail() {
 
             {/* Subscription Card */}
             {settings.subscriptions_enabled && product.is_subscribable && !subSuccess && (
-              <div className="bg-gradient-to-br from-primary/5 to-transparent border border-primary/20 rounded-2xl p-6 md:p-8 space-y-8 relative overflow-hidden">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
-                    <RefreshCw className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <h3 className="font-serif text-xl font-bold uppercase italic text-white tracking-tight">Rituel d'Excellence.</h3>
-                    <p className="text-xs text-zinc-500 font-medium uppercase tracking-wider mt-1">Abonnement Automatisé</p>
-                  </div>
-                </div>
-
-                <div className="space-y-6">
-                  <div>
-                    <p className="text-xs text-zinc-500 font-medium mb-4 uppercase tracking-wider">FRÉQUENCE DE LIVRAISON</p>
-                    <div className="flex flex-wrap gap-2">
-                      {(Object.keys(FREQUENCY_LABELS) as SubscriptionFrequency[]).map((freq) => (
-                        <button
-                          key={freq}
-                          onClick={() => setSubFrequency(freq)}
-                          className={`px-6 py-3 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all ${subFrequency === freq
-                            ? 'bg-primary text-black shadow-lg shadow-primary/20'
-                            : 'bg-white/5 border border-white/[0.06] text-zinc-500 hover:border-white/10'
-                            }`}
-                        >
-                          {FREQUENCY_LABELS[freq]}
-                        </button>
-                      ))}
+              <div className="relative group/ritual overflow-hidden">
+                <div className="absolute inset-0 bg-emerald-500/5 blur-3xl rounded-[3rem] opacity-0 group-hover/ritual:opacity-100 transition-opacity duration-1000" />
+                <div className="relative bg-gradient-to-br from-emerald-500/10 via-zinc-900/40 to-transparent border border-emerald-500/20 rounded-[2.5rem] p-8 md:p-10 space-y-10 backdrop-blur-2xl">
+                  <div className="flex items-center gap-6">
+                    <div className="w-14 h-14 rounded-2xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 shadow-2xl shadow-emerald-500/10">
+                      <RefreshCw className="w-7 h-7 animate-spin-slow" />
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-black text-white italic tracking-tighter uppercase leading-none">Rituel d'Excellence<span className="text-emerald-500">.</span></h3>
+                      <p className="text-[10px] text-zinc-500 font-black uppercase tracking-[0.3em] mt-2">Abonnement Privilège Automatisé</p>
                     </div>
                   </div>
 
-                  <button
-                    onClick={handleSubscribe}
-                    disabled={subLoading}
-                    className="w-full flex items-center justify-center gap-4 bg-zinc-900 border border-white/10 hover:border-primary/50 text-white font-bold uppercase tracking-wider py-5 rounded-2xl transition-all"
-                  >
-                    {subLoading ? (
-                      <svg className="animate-spin h-4 w-4 text-white" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                    ) : (
-                      <>
-                        <RefreshCw className="w-4 h-4" />
-                        INITIER LE RITUEL
-                      </>
-                    )}
-                  </button>
+                  <div className="space-y-8">
+                    <div className="space-y-4">
+                      <p className="text-label text-zinc-700">Fréquence de Livraison</p>
+                      <div className="flex flex-wrap gap-3">
+                        {(Object.keys(FREQUENCY_LABELS) as SubscriptionFrequency[]).map((freq) => (
+                          <button
+                            key={freq}
+                            onClick={() => setSubFrequency(freq)}
+                            className={`px-6 py-3 rounded-2xl text-label transition-all duration-500 ${subFrequency === freq
+                              ? 'bg-emerald-500 text-black shadow-xl shadow-emerald-500/20'
+                              : 'bg-white/5 border border-white/10 text-zinc-500 hover:text-white hover:border-white/20'
+                              }`}
+                          >
+                            {FREQUENCY_LABELS[freq]}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={handleSubscribe}
+                      disabled={subLoading}
+                      className="w-full flex items-center justify-center gap-4 bg-zinc-950/80 border border-emerald-500/30 hover:border-emerald-500 hover:bg-emerald-500 hover:text-black text-white font-black uppercase tracking-[0.2em] py-6 rounded-[2rem] transition-all duration-700 shadow-2xl group/ritual-btn"
+                    >
+                      {subLoading ? (
+                        <RefreshCw className="w-5 h-5 animate-spin" />
+                      ) : (
+                        <>
+                          <Sparkles className="w-5 h-5 group-hover/ritual-btn:animate-pulse" />
+                          <span className="italic">Initier le Rituel</span>
+                        </>
+                      )}
+                    </motion.button>
+                  </div>
                 </div>
               </div>
             )}
@@ -585,10 +617,12 @@ export default function ProductDetail() {
             )}
 
             {/* Legal */}
-            <p className="text-xs text-zinc-600 leading-relaxed">
-              Produit contenant moins de 0,3% de THC. Conforme à la réglementation française (décret n°2021-1282).
-              Vente réservée aux personnes âgées de 18 ans et plus.
-            </p>
+            <div className="pt-8 border-t border-white/5">
+              <p className="text-label text-zinc-700 leading-loose">
+                Produit contenant moins de 0,3% de THC. Conforme à la réglementation française.
+                <br />Vente strictement réservée aux personnes majeures.
+              </p>
+            </div>
           </motion.div>
         </div>
 
@@ -604,17 +638,24 @@ export default function ProductDetail() {
         )}
 
         {/* Reviews Section */}
-        <div className="mt-32 space-y-16">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-white/[0.06] pb-8">
-            <div className="space-y-4">
-              <h2 className="text-xs text-zinc-500 font-medium uppercase tracking-wider">EXPÉRIENCE & TÉMOIGNAGES</h2>
-              <p className="text-2xl md:text-3xl font-serif font-bold italic text-white uppercase tracking-tight">L'Expression de nos Membres.</p>
+        <div className="mt-40 space-y-20">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-12 border-b border-white/5 pb-10 relative">
+            <div className="absolute -bottom-[1px] left-0 w-32 h-[1px] bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
+            <div className="space-y-6">
+              <h2 className="text-label text-zinc-700">Expérience & Témoignages</h2>
+              <p className="text-section text-white">L'Expression de nos Membres<span className="text-emerald-500 font-light not-italic">.</span></p>
             </div>
             {reviews.length > 0 && (
-              <div className="flex items-center gap-6 bg-white/5 border border-white/[0.06] px-8 py-4 rounded-2xl backdrop-blur-xl">
-                <StarRating rating={avgRating} size="sm" />
-                <div className="w-px h-6 bg-white/10" />
-                <span className="text-sm font-bold text-white">{avgRating.toFixed(1)} <span className="text-xs text-zinc-500 ml-1">/ 5.0</span></span>
+              <div className="flex items-center gap-8 bg-black/40 border border-white/5 px-10 py-5 rounded-[2rem] backdrop-blur-xl shadow-2xl">
+                <div className="flex flex-col items-center">
+                  <StarRating rating={avgRating} size="sm" />
+                  <p className="text-label text-zinc-700 mt-2">Satisfaction</p>
+                </div>
+                <div className="w-[1px] h-10 bg-white/10" />
+                <div className="flex flex-col items-center">
+                  <span className="text-2xl font-black text-white italic tracking-tighter leading-none">{avgRating.toFixed(1)}</span>
+                  <p className="text-label text-emerald-500 mt-2">Score</p>
+                </div>
               </div>
             )}
           </div>
@@ -622,33 +663,40 @@ export default function ProductDetail() {
           {/* Can review CTA */}
           {canReview && !reviewSuccess && !showReviewForm && (
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="bg-green-neon/5 border border-dashed border-green-neon/20 rounded-2xl p-6 md:p-8 text-center space-y-6"
+              className="relative group/cta overflow-hidden"
             >
-              <MessageSquare className="w-12 h-12 mx-auto text-primary/40" />
-              <div className="space-y-2">
-                <p className="font-serif text-2xl font-bold text-white">Partagez votre voyage sensoriel.</p>
-                <p className="text-zinc-500 text-sm max-w-sm mx-auto italic">Votre expertise contribue à l'excellence de notre catalogue.</p>
+              <div className="absolute inset-0 bg-emerald-500/5 blur-3xl opacity-0 group-hover/cta:opacity-100 transition-opacity duration-1000" />
+              <div className="relative bg-zinc-900/40 border-2 border-dashed border-emerald-500/20 rounded-[2.5rem] p-12 text-center space-y-8 backdrop-blur-xl">
+                <div className="w-20 h-20 mx-auto rounded-3xl bg-emerald-500/10 flex items-center justify-center text-emerald-400">
+                  <MessageSquare className="w-10 h-10" />
+                </div>
+                <div className="space-y-3">
+                  <p className="text-section text-white">Partagez votre voyage sensoriel<span className="text-emerald-500 font-light not-italic">.</span></p>
+                  <p className="text-premium-body max-w-md mx-auto">Votre expertise est la pierre angulaire de notre quête d'excellence.</p>
+                </div>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setShowReviewForm(true)}
+                  className="bg-emerald-500 text-black font-black uppercase tracking-[0.2em] px-10 py-5 rounded-2xl shadow-2xl shadow-emerald-500/20 transition-all"
+                >
+                  Rédiger mon Impression
+                </motion.button>
               </div>
-              <button
-                onClick={() => setShowReviewForm(true)}
-                className="bg-primary text-black font-semibold uppercase tracking-wider px-8 py-4 rounded-2xl hover:shadow-[0_0_20px_rgba(var(--color-primary-rgb),0.3)] active:scale-[0.98] transition-all"
-              >
-                Rédiger mon Impression
-              </button>
             </motion.div>
           )}
 
           {/* Review success message */}
           {reviewSuccess && (
-            <div className="bg-primary/5 border border-primary/20 rounded-2xl p-6 md:p-8 flex items-center gap-6">
-              <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary">
-                <CheckCircle className="w-6 h-6" />
+            <div className="bg-emerald-500/5 border border-emerald-500/20 rounded-[2rem] p-8 flex items-center gap-8 backdrop-blur-xl">
+              <div className="w-16 h-16 rounded-2xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 shadow-xl">
+                <CheckCircle className="w-8 h-8" />
               </div>
-              <div>
-                <p className="text-white font-semibold uppercase tracking-wider text-xs">Impression Transmise</p>
-                <p className="text-zinc-500 text-sm italic mt-1 font-serif">Votre témoignage est en cours de modération par notre comité d'excellence.</p>
+              <div className="space-y-1">
+                <p className="text-label text-emerald-400">Impression Transmise</p>
+                <p className="text-premium-body text-zinc-500 italic max-w-xl">Votre témoignage est en cours de modération par notre comité d'excellence.</p>
               </div>
             </div>
           )}
@@ -673,13 +721,13 @@ export default function ProductDetail() {
                 </div>
 
                 <div className="space-y-4">
-                  <p className="text-xs text-zinc-500 font-medium uppercase tracking-wider">VOTRE TÉMOIGNAGE</p>
+                  <p className="text-label text-zinc-700">VOTRE TÉMOIGNAGE</p>
                   <textarea
                     value={reviewComment}
                     onChange={(e) => setReviewComment(e.target.value)}
                     rows={5}
                     placeholder="Décrivez les nuances, l'arôme, et l'expérience vécue..."
-                    className="w-full bg-white/5 border border-white/[0.06] rounded-2xl px-5 py-4 text-lg font-serif italic text-white placeholder:text-zinc-800 focus:outline-none focus:border-primary transition-all resize-none"
+                    className="w-full bg-black/40 border border-white/5 rounded-2xl px-8 py-6 text-white placeholder-zinc-800 focus:outline-none focus:border-emerald-500/40 focus:bg-black/60 transition-all italic font-medium resize-none shadow-inner"
                   />
                 </div>
 
@@ -709,15 +757,17 @@ export default function ProductDetail() {
 
           {/* Reviews list */}
           {reviews.length === 0 ? (
-            <div className="py-24 text-center space-y-6 bg-white/[0.01] border border-dashed border-white/[0.06] rounded-2xl">
-              <MessageSquare className="w-16 h-16 mx-auto text-zinc-800" />
-              <div className="space-y-2">
-                <p className="font-serif text-2xl font-bold text-white italic">Silence Éloquent.</p>
-                <p className="text-zinc-600 text-sm max-w-xs mx-auto font-serif">Aucune impression n'a encore été consignée pour cette édition.</p>
+            <div className="py-32 text-center space-y-8 bg-zinc-900/20 border-2 border-dashed border-white/5 rounded-[3rem] backdrop-blur-md">
+              <div className="w-24 h-24 mx-auto rounded-full bg-white/5 flex items-center justify-center text-zinc-800">
+                <MessageSquare className="w-10 h-10" />
+              </div>
+              <div className="space-y-3">
+                <p className="text-4xl font-black text-zinc-800 italic uppercase tracking-tighter leading-none">Silence Éloquent<span className="text-zinc-900">.</span></p>
+                <p className="text-zinc-700 text-sm max-w-xs mx-auto italic font-medium">Aucune impression n'a encore été consignée pour cette édition.</p>
               </div>
             </div>
           ) : (
-            <div className="grid gap-8">
+            <div className="grid gap-10">
               {reviews.map((review, i) => {
                 const initials = (review.profile?.full_name ?? 'C L')
                   .split(' ')
@@ -728,39 +778,52 @@ export default function ProductDetail() {
                 return (
                   <motion.div
                     key={review.id}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.1 }}
-                    className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-6 md:p-8 hover:bg-white/[0.04] transition-all group"
+                    initial={{ opacity: 0, scale: 0.98 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    className="relative group/review"
                   >
-                    <div className="flex flex-col md:flex-row gap-8">
-                      <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/10 flex items-center justify-center text-primary font-bold text-xs tracking-wider shrink-0">
-                        {initials}
-                      </div>
-                      <div className="flex-1 space-y-6">
-                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                          <div className="space-y-1">
-                            <p className="text-sm font-bold uppercase tracking-wider text-white">{review.profile?.full_name ?? 'Membre Anonyme'}</p>
-                            <div className="flex items-center gap-4">
-                              <StarRating rating={review.rating} size="sm" />
-                              {review.is_verified && (
-                                <span className="text-xs font-semibold uppercase tracking-wider text-primary px-2 py-1 bg-primary/5 rounded-full">ACHAT CERTIFIÉ</span>
-                              )}
+                    <div className="absolute inset-0 bg-white/[0.02] blur-2xl rounded-[2.5rem] opacity-0 group-hover/review:opacity-100 transition-opacity duration-700" />
+                    <div className="relative bg-zinc-900/30 backdrop-blur-md border border-white/5 rounded-[2.5rem] p-8 md:p-10 hover:border-emerald-500/20 transition-all duration-500">
+                      <div className="flex flex-col md:flex-row gap-10">
+                        <div className="w-20 h-20 rounded-3xl bg-zinc-950 border border-white/5 flex items-center justify-center text-emerald-500 font-black text-lg tracking-[0.2em] shadow-inner relative shrink-0">
+                          <div className="absolute inset-2 border border-emerald-500/10 rounded-2xl" />
+                          {initials}
+                        </div>
+                        <div className="flex-1 space-y-8">
+                          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                            <div className="space-y-2">
+                              <p className="text-xl font-black text-white italic uppercase tracking-tighter">{review.profile?.full_name ?? 'Membre Anonyme'}</p>
+                              <div className="flex items-center gap-5">
+                                <StarRating rating={review.rating} size="sm" />
+                                {review.is_verified && (
+                                  <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
+                                    <Shield className="w-3 h-3 text-emerald-400" />
+                                    <span className="text-label text-emerald-400 scale-75 origin-left">Achat Certifié</span>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                            <div className="flex flex-col md:items-end">
+                              <p className="text-label text-zinc-700">Archivé le</p>
+                              <p className="text-label text-zinc-400 mt-1">
+                                {new Date(review.created_at).toLocaleDateString('fr-FR', {
+                                  day: 'numeric',
+                                  month: 'long',
+                                  year: 'numeric',
+                                })}
+                              </p>
                             </div>
                           </div>
-                          <p className="text-xs text-zinc-500 font-medium uppercase">
-                            ARCHIVÉ LE {new Date(review.created_at).toLocaleDateString('fr-FR', {
-                              day: 'numeric',
-                              month: 'long',
-                              year: 'numeric',
-                            }).toUpperCase()}
-                          </p>
+                          {review.comment && (
+                            <div className="relative">
+                              <Quote className="absolute -top-4 -left-4 w-10 h-10 text-emerald-500/5 rotate-12" />
+                              <p className="text-premium-body border-l-2 border-emerald-500/20 pl-8">
+                                "{review.comment.trim()}"
+                              </p>
+                            </div>
+                          )}
                         </div>
-                        {review.comment && (
-                          <p className="text-zinc-400 font-serif italic text-lg leading-relaxed border-l border-white/10 pl-8">
-                            "{review.comment}"
-                          </p>
-                        )}
                       </div>
                     </div>
                   </motion.div>
@@ -771,45 +834,47 @@ export default function ProductDetail() {
         </div>
 
         {/* Related Products Section */}
-        <div className="mt-20 pt-12 border-t border-white/[0.06]">
-          <div className="mb-16 space-y-4">
-            <h2 className="text-xs text-zinc-500 font-medium uppercase tracking-wider">VOUS POURRIEZ AUSSI APPRÉCIER</h2>
-            <p className="text-2xl md:text-3xl font-serif font-bold italic text-white uppercase tracking-tight">Suite de l'Odyssée.</p>
+        <div className="mt-40 pt-20 border-t border-white/5 relative">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-[2px] bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent" />
+          <div className="mb-20 space-y-6 text-center">
+            <h2 className="text-label text-zinc-700">Découvertes Similaires</h2>
+            <p className="text-section text-white">Poursuivre l'Odyssée<span className="text-emerald-500 font-light not-italic">.</span></p>
           </div>
           <RelatedProducts productId={product.id} categoryId={product.category_id} />
         </div>
 
         {/* Legal Footer */}
-        <div className="mt-32 pt-16 border-t border-white/[0.06] text-center">
-          <p className="text-xs text-zinc-700 uppercase tracking-wider leading-loose max-w-2xl mx-auto">
+        <div className="mt-40 pt-20 border-t border-white/5 text-center">
+          <p className="text-label text-zinc-800 leading-loose max-w-3xl mx-auto opacity-40">
             LES PRODUITS PRÉSENTÉS SONT CONFORMES AUX DÉCRETS N°2021-1282. TAUX DE THC INFÉRIEUR À 0.3%.
-            DESTINÉS EXCLUSIVEMENT À UN PUBLIC MAJEUR ET AVERTI.
+            DESTINÉS EXCLUSIVEMENT À UN PUBLIC MAJEUR ET AVERTI. TOUS DROITS RÉSERVÉS GREEN IA.
           </p>
         </div>
       </div>
 
       {/* Sticky Mobile Add to Cart Bar */}
-      {product.is_available && product.stock_quantity > 0 && (
-        <div className="fixed bottom-0 inset-x-0 z-40 lg:hidden">
-          <div className="bg-zinc-950/95 backdrop-blur-xl border-t border-white/[0.08] px-4 py-3 flex items-center gap-3">
-            <div className="flex-shrink-0">
-              <p className="text-lg font-serif font-bold text-white leading-none">
-                {product.price.toFixed(2)}<span className="text-xs text-zinc-500 ml-1">€</span>
-              </p>
-              {product.stock_quantity <= 5 && (
-                <p className="text-[10px] text-orange-400 font-medium mt-0.5">Plus que {product.stock_quantity} en stock</p>
-              )}
+      {
+        product.is_available && product.stock_quantity > 0 && (
+          <div className="fixed bottom-0 inset-x-0 z-50 lg:hidden px-4 pb-8 pointer-events-none">
+            <div className="bg-zinc-900/60 backdrop-blur-2xl border border-white/10 p-4 rounded-[2rem] flex items-center gap-4 shadow-2xl pointer-events-auto">
+              <div className="px-4 border-r border-white/10">
+                <p className="text-section text-white scale-75 origin-left">
+                  {product.price.toFixed(2)}<span className="text-sm text-emerald-500 ml-1">€</span>
+                </p>
+                <p className="text-label text-zinc-700 scale-75 origin-left -mt-1">TTC/g</p>
+              </div>
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={handleAddToCart}
+                className="flex-1 bg-emerald-500 text-black font-black uppercase tracking-[0.2em] py-4 rounded-2xl flex items-center justify-center gap-3 shadow-xl"
+              >
+                <ShoppingCart className="w-4 h-4" />
+                <span className="text-label">{addedFeedback ? 'DÉPOSÉ' : 'AJOUTER'}</span>
+              </motion.button>
             </div>
-            <button
-              onClick={handleAddToCart}
-              className="flex-1 bg-green-neon text-black font-semibold uppercase tracking-wider py-3.5 rounded-xl hover:shadow-[0_0_20px_rgba(57,255,20,0.3)] active:scale-[0.98] transition-all flex items-center justify-center gap-3"
-            >
-              <ShoppingCart className="w-4 h-4" />
-              {addedFeedback ? 'AJOUTÉ' : 'AJOUTER AU PANIER'}
-            </button>
           </div>
-        </div>
-      )}
+        )
+      }
     </div>
   );
 }

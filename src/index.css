@@ -8,31 +8,47 @@
     serif;
   --font-script: "Dancing Script", cursive;
 
+  /* ── Palette Zen & Premium ── */
   --color-green-neon: #39ff14;
   --color-green-dark: #0a2e15;
   --color-green-primary: #15803d;
-  --color-brand-950: #07090f;
-  --color-brand-900: #0d111a;
-  --color-brand-800: #121826;
-  --color-brand-700: #1b2437;
+
+  --color-emerald-500: #10b981;
+  --color-emerald-600: #059669;
+  --color-emerald-900: #064e3b;
+
+  --color-sage-50: #f4f7f5;
+  --color-sage-100: #e2e9e3;
+  --color-sage-500: #8ba88e;
+  --color-sage-600: #6b8e6f;
+  --color-sage-900: #2d3a2e;
+
+  --color-brand-950: #050505;
+  --color-brand-900: #0a0a0a;
+  --color-brand-800: #121212;
+  --color-brand-700: #1a1a1a;
 
   /* ── Shop Dynamic Theme ── */
-  --color-primary: var(--shop-primary, #39ff14);
-  --color-primary-rgb: var(--shop-primary-rgb, 57, 255, 20);
+  --color-primary: var(--shop-primary, #10b981);
+  --color-primary-rgb: var(--shop-primary-rgb, 16, 185, 129);
   --color-secondary: var(--shop-secondary, #ffffff);
-  --color-accent: var(--shop-accent, #a3e635);
-  --color-bg-shop: var(--shop-bg, #09090b);
+  --color-accent: var(--shop-accent, #8ba88e);
+  --color-bg-shop: var(--shop-bg, #050505);
   --color-text-shop: var(--shop-text, #f4f4f5);
   --font-shop: var(--shop-font, "Inter");
 }
 
 @layer base {
   html {
-    font-size: 80%;
+    font-size: 85%;
   }
 
   body {
-    @apply bg-brand-950 text-zinc-100 font-sans antialiased selection:bg-green-neon selection:text-black;
+    @apply bg-brand-950 text-zinc-100 font-sans antialiased selection:bg-emerald-500 selection:text-white;
+    background-image:
+      radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.05) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(139, 168, 142, 0.05) 0px, transparent 50%);
+    background-attachment: fixed;
   }
 
   h1,
@@ -41,106 +57,99 @@
   h4,
   h5,
   h6 {
-    @apply font-serif;
+    @apply font-sans font-black tracking-tighter uppercase;
+  }
+
+  p {
+    @apply leading-relaxed;
   }
 
   *:focus-visible {
-    outline: 2px solid rgba(57, 255, 20, 0.6);
+    outline: 2px solid var(--color-emerald-500);
     outline-offset: 2px;
-    border-radius: 8px;
-  }
-
-  input,
-  select,
-  textarea {
-    @apply rounded-xl border border-white/12 bg-white/[0.03] text-zinc-100 placeholder:text-zinc-500;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-      scroll-behavior: auto !important;
-    }
   }
 }
 
 @layer components {
-  .app-section {
-    @apply px-4 sm:px-6 lg:px-10 py-20 md:py-28;
+
+  /* ── Typography Scale ── */
+  .text-display {
+    @apply text-6xl md:text-8xl lg:text-[10rem] font-black tracking-tighter leading-[0.8] uppercase italic;
   }
 
-  .content-wrap,
-  .page-block {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  .text-section {
+    @apply text-4xl md:text-6xl lg:text-7xl font-black tracking-tighter uppercase italic;
   }
 
-  .page-content-shell {
-    @apply pb-12;
+  .text-label {
+    @apply text-[10px] font-black uppercase tracking-[0.4em] text-zinc-500;
   }
 
-  .section-kicker {
-    @apply text-xs font-black uppercase tracking-[0.22em] text-green-neon;
+  .text-premium-body {
+    @apply text-base md:text-lg font-medium leading-relaxed italic text-zinc-400;
   }
 
-  .section-title {
-    @apply text-3xl sm:text-5xl lg:text-6xl font-serif font-black leading-[0.95] tracking-tight text-white;
+  .glass-panel {
+    @apply bg-white/[0.03] backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0, 0, 0, 0.37)];
   }
 
-  .section-copy {
-    @apply text-sm sm:text-base text-zinc-400 leading-relaxed;
+  .glass-card {
+    @apply bg-white/[0.02] backdrop-blur-md border border-white/5 hover:border-white/10 transition-all duration-300;
   }
 
-  .ui-card,
-  .surface-panel {
-    @apply rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-md shadow-[0_15px_40px_rgba(0,0,0,0.25)];
+  .btn-premium {
+    @apply relative overflow-hidden inline-flex items-center justify-center gap-2 rounded-xl px-8 py-4 text-xs font-bold uppercase tracking-widest transition-all duration-500 active:scale-95;
   }
 
-  .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-2xl bg-green-neon px-6 py-3.5 text-[11px] font-black uppercase tracking-[0.16em] text-black transition hover:scale-[1.02] hover:shadow-[0_18px_35px_rgba(57,255,20,0.25)] active:scale-[0.98];
+  .btn-premium-primary {
+    @apply btn-premium bg-emerald-600 text-white shadow-[0_0_20px_rgba(16, 185, 129, 0.3)] hover:bg-emerald-500 hover:shadow-[0_0_30px_rgba(16, 185, 129, 0.5)];
   }
 
-  .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/[0.03] px-6 py-3.5 text-[11px] font-bold uppercase tracking-[0.14em] text-zinc-100 transition hover:border-white/30 hover:bg-white/[0.08];
+  .btn-premium-outline {
+    @apply btn-premium border border-white/10 bg-white/5 text-white hover:bg-white/10 hover:border-white/20;
+  }
+
+  .input-premium {
+    @apply w-full bg-white/[0.03] border border-white/10 rounded-xl px-5 py-4 focus:outline-none focus:border-emerald-500/50 focus:ring-4 focus:ring-emerald-500/10 transition-all placeholder:text-zinc-600;
+  }
+
+  .badge-glass {
+    @apply px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-white/5 border border-white/10 backdrop-blur-sm text-zinc-300;
   }
 }
 
 @layer utilities {
-  .glow-green {
-    text-shadow:
-      0 0 8px rgba(57, 255, 20, 0.6),
-      0 0 24px rgba(57, 255, 20, 0.25);
+  .glow-emerald {
+    text-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
   }
 
-  .glow-box-green {
-    box-shadow:
-      0 0 12px rgba(57, 255, 20, 0.35),
-      0 0 24px rgba(57, 255, 20, 0.15),
-      inset 0 0 0 1px rgba(57, 255, 20, 0.12);
+  .glow-border {
+    @apply border-emerald-500/30 shadow-[0_0_15px_rgba(16, 185, 129, 0.1)];
   }
 
-  .font-script {
-    font-family: var(--font-script);
+  .shiny-effect {
+    position: relative;
+    overflow: hidden;
   }
 
-  .scrollbar-thin {
-    scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+  .shiny-effect::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg,
+        transparent,
+        rgba(255, 255, 255, 0.03),
+        transparent);
+    transform: rotate(45deg);
+    transition: 0.5s;
+    pointer-events: none;
   }
 
-  .scrollbar-thin::-webkit-scrollbar {
-    width: 4px;
-  }
-
-  .scrollbar-thin::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  .scrollbar-thin::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 9999px;
+  .shiny-effect:hover::after {
+    left: 100%;
+    top: 100%;
   }
 }
