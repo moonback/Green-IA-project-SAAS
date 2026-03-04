@@ -603,7 +603,7 @@ export function useGeminiLiveVoice({
                                         query_embedding: embedding,
                                         match_threshold: 0.1,
                                         match_count: 10,
-                                        p_shop_id: currentShop?.id // Pass shop_id to RPC
+                                        p_shop_id: currentShop?.id ?? null
                                     });
 
                                     if (rpcError) throw rpcError;

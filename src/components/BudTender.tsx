@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { RefreshCw, Sparkles, RotateCcw } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { Product } from '../lib/types';
 import { getBudTenderSettings, BUDTENDER_DEFAULTS } from '../lib/budtenderSettings';
@@ -28,6 +28,7 @@ import { BudTenderHistory } from './budtender/BudTenderHistory';
 
 export default function BudTender() {
     const navigate = useNavigate();
+    const { shopSlug } = useParams<{ shopSlug: string }>();
     const [isOpen, setIsOpen] = useState(false);
     const [products, setProducts] = useState<Product[]>([]);
     const [pulse, setPulse] = useState(false);
@@ -246,8 +247,16 @@ export default function BudTender() {
                 onClose={() => { setIsVoiceOpen(false); setIsShrink(false); }}
                 onHangup={() => setIsShrink(true)}
                 onAddItem={(p, q) => { addItem(p, q); openSidebar(); setIsShrink(true); }}
-                onViewProduct={(p) => { navigate(`/catalogue/${p.slug}`); setIsShrink(true); }}
-                onNavigate={(path) => { navigate(path); setIsShrink(false); }}
+                onViewProduct={(p) => {
+                    const path = shopSlug ? `/${shopSlug}/catalogue/${p.slug}` : `/catalogue/${p.slug}`;
+                    navigate(path);
+                    setIsShrink(true);
+                }}
+                onNavigate={(path) => {
+                    const fullPath = shopSlug ? `/${shopSlug}${path}` : path;
+                    navigate(fullPath);
+                    setIsShrink(false);
+                }}
                 showUI={isOpen}
             />
 
@@ -294,7 +303,11 @@ export default function BudTender() {
                                 handleSendMessage={handleSendMessage}
                                 handleAnswer={quizHook.handleAnswer}
                                 scrollRef={chatHook.scrollRef}
-                                onProductClick={(p) => { navigate(`/catalogue/${p.slug}`); setIsShrink(true); }}
+                                onProductClick={(p) => {
+                                    const path = shopSlug ? `/${shopSlug}/catalogue/${p.slug}` : `/catalogue/${p.slug}`;
+                                    navigate(path);
+                                    setIsShrink(true);
+                                }}
                                 onAddToCart={(p) => { addItem(p); openSidebar(); setIsShrink(true); }}
                                 onShare={handleShare}
                                 onCopyPromo={copyPromoCode}
