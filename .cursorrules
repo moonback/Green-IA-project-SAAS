@@ -1,11 +1,11 @@
-# 🎯 .cursorrules — Green Moon SaaS (Configuration IA)
+# 🎯 .cursorrules — Green IA SaaS (Configuration IA)
 
-Ce fichier définit les règles strictes pour le développement assisté par IA (Cursor/Claude) sur le projet Green Moon.
+Ce fichier définit les règles strictes pour le développement assisté par IA (Cursor/Claude) sur le projet Green IA.
 
 ---
 
 ## 🏛 Project Context
-Green Moon est une plateforme SaaS multi-tenant pour l'industrie du CBD. 
+Green IA est une plateforme SaaS multi-tenant pour l'industrie du CBD. 
 - **BtoB** : Les marchands créent et gèrent leur boutique (`/:shopSlug`).
 - **BtoC** : Les clients achètent via une interface premium avec un "Budtender" IA (Gemini).
 - **Backend** : Architecture Serverless via Supabase (Auth, DB, RLS, Storage).

@@ -1,6 +1,6 @@
-# 🤝 Guide de Contribution — Green Moon SaaS
+# 🤝 Guide de Contribution — Green IA SaaS
 
-Merci de l'intérêt que vous portez à Green Moon ! Ce document vous aidera à démarrer votre contribution au projet.
+Merci de l'intérêt que vous portez à Green IA ! Ce document vous aidera à démarrer votre contribution au projet.
 
 ---
 
@@ -65,7 +65,7 @@ Toutes les PR seront revues par les mainteneurs principaux. Nous vérifions :
 
 ## 📜 Code de Conduite
 
-Soyez respectueux, constructif et professionnel. Nous encourageons la diversité et l'entraide au sein de la communauté Green Moon.
+Soyez respectueux, constructif et professionnel. Nous encourageons la diversité et l'entraide au sein de la communauté Green IA.
 
 ---
 

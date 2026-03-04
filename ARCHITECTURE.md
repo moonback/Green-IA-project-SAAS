@@ -1,4 +1,4 @@
-# 🏛 Architecture Système — Green Moon SaaS
+# 🏛 Architecture Système — Green IA SaaS
 
 Ce document détaille l'organisation technique, les choix architecturaux et le flux de données de l'application.
 

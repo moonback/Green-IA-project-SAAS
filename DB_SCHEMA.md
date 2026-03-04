@@ -1,4 +1,4 @@
-# 🗄️ Schéma de Base de Données — Green Moon SaaS
+# 🗄️ Schéma de Base de Données — Green IA SaaS
 
 Ce document fournit une référence complète du schéma PostgreSQL hébergé sur Supabase.
 
@@ -94,4 +94,4 @@ erDiagram
 ---
 
 > [!NOTE]
-> Le schéma complet consolidé est disponible dans [supabase/schema_complet.sql](file:///c:/Users/Mayss/Documents/GitHub/Green-Moon-project%20-%20SAAS/supabase/schema_complet.sql).
+> Le schéma complet consolidé est disponible dans [supabase/schema_complet.sql](file:///c:/Users/Mayss/Documents/GitHub/Green-IA-project%20-%20SAAS/supabase/schema_complet.sql).

@@ -1,4 +1,4 @@
-# 🔗 Référence API (Supabase / PostgREST) — Green Moon SaaS
+# 🔗 Référence API (Supabase / PostgREST) — Green IA SaaS
 
 L'application interagit principalement via l'API générée par **Supabase**. Les requêtes sont authentifiées par la clé `anon_key` (client) ou le token JWT (utilisateur connecté).
 

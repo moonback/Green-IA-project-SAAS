@@ -1,6 +1,6 @@
-# 🗺️ Feuille de Route — Green Moon SaaS
+# 🗺️ Feuille de Route — Green IA SaaS
 
-Ce document présente l'évolution prévue de la plateforme Green Moon, du MVP à la vision long terme.
+Ce document présente l'évolution prévue de la plateforme Green IA, du MVP à la vision long terme.
 
 ---
 

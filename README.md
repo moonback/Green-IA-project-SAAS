@@ -1,7 +1,7 @@
-# 🌿 Green Moon SaaS — Plateforme Multi-Tenant E-commerce CBD
+# 🌿 Green IA SaaS — Plateforme Multi-Tenant E-commerce CBD
 
 ### Pitch
-Green Moon est une solution SaaS premium "tout-en-un" conçue pour l'industrie du CBD. Elle permet aux commerçants de lancer leur boutique personnalisée en quelques minutes, intégrant une gestion de stock avancée, un programme de fidélité intelligent et un conseiller IA (Budtender) basé sur Gemini.
+Green IA est une solution SaaS premium "tout-en-un" conçue pour l'industrie du CBD. Elle permet aux commerçants de lancer leur boutique personnalisée en quelques minutes, intégrant une gestion de stock avancée, un programme de fidélité intelligent et un conseiller IA (Budtender) basé sur Gemini.
 
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
 ![Version](https://img.shields.io/badge/version-1.0.0-blue)
@@ -49,8 +49,8 @@ Green Moon est une solution SaaS premium "tout-en-un" conçue pour l'industrie d
 ### Étapes
 1. **Cloner le projet**
    ```bash
-   git clone https://github.com/votre-repo/green-moon-saas.git
-   cd green-moon-saas
+   git clone https://github.com/votre-repo/green-IA-saas.git
+   cd green-IA-saas
    ```
 
 2. **Installer les dépendances**
@@ -77,7 +77,7 @@ Green Moon est une solution SaaS premium "tout-en-un" conçue pour l'industrie d
 | `VITE_SUPABASE_ANON_KEY` | Clé anonyme Supabase | `eyJhbG...` | ✅ |
 | `VITE_GEMINI_API_KEY` | Clé pour le conseiller IA | `AIzaSy...` | ✅ |
 | `VITE_VIVA_WALLET_BASE_URL` | URL API Viva Wallet | `https://demo.vivapayments.com` | ✅ |
-| `APP_URL` | URL de déploiement de l'app | `https://green-moon.io` | ✅ |
+| `APP_URL` | URL de déploiement de l'app | `https://green-IA.io` | ✅ |
 
 ---
 
@@ -116,7 +116,7 @@ npm run preview
 ---
 
 ## 🤝 Contribuer
-Veuillez lire [CONTRIBUTING.md](file:///c:/Users/Mayss/Documents/GitHub/Green-Moon-project%20-%20SAAS/CONTRIBUTING.md) pour les détails sur notre code de conduite et le processus de soumission des pull requests.
+Veuillez lire [CONTRIBUTING.md](file:///c:/Users/Mayss/Documents/GitHub/Green-IA-project%20-%20SAAS/CONTRIBUTING.md) pour les détails sur notre code de conduite et le processus de soumission des pull requests.
 
 ---
 
