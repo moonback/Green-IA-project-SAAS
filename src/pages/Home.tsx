@@ -158,9 +158,9 @@ export default function Home() {
               <Link to="/ouvrir-boutique" className="bg-green-neon text-black font-semibold px-8 py-4 rounded-full flex items-center justify-center gap-2 group hover:bg-white transition-colors text-sm sm:text-base">
                 Démarrer gratuitement <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Link>
-              <button className="bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold px-8 py-4 rounded-full flex items-center justify-center gap-2 transition-colors backdrop-blur-md text-sm sm:text-base">
+              {/* <button className="bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold px-8 py-4 rounded-full flex items-center justify-center gap-2 transition-colors backdrop-blur-md text-sm sm:text-base">
                 <PlayCircle className="h-5 w-5 opacity-70" /> Voir une démo (45s)
-              </button>
+              </button> */}
             </div>
           </motion.div>
         </div>

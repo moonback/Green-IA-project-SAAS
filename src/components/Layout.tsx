@@ -272,20 +272,19 @@ export default function Layout() {
                   </AnimatePresence>
                 </div>
               ) : (
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2 md:gap-3">
                   <Link
                     to="/connexion"
-                    className="hidden md:block text-[10px] font-black uppercase tracking-[0.25em] text-zinc-400 hover:text-white transition-all px-4 py-2.5 hover:bg-white/[0.04] rounded-xl border border-transparent hover:border-white/[0.08] active:scale-95"
+                    className="hidden md:flex items-center px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-zinc-400 hover:text-white hover:bg-white/5 rounded-full transition-colors"
                   >
                     Connexion
                   </Link>
                   <Link
                     to="/ouvrir-boutique"
-                    className="group relative flex items-center gap-2.5 px-5 md:px-6 py-2.5 md:py-3 bg-green-neon rounded-xl md:rounded-2xl transition-all hover:scale-[1.05] active:scale-95 shadow-[0_10px_30px_rgba(57,255,20,0.2)] overflow-hidden"
+                    className="group flex items-center gap-2 px-4 md:px-5 py-2 md:py-2.5 bg-green-neon rounded-full hover:bg-white transition-all hover:scale-105 shadow-[0_0_15px_rgba(57,255,20,0.1)]"
                   >
-                    <div className="absolute inset-0 bg-white/30 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 ease-in-out skew-x-[-45deg]" />
-                    <Store className="w-3.5 h-3.5 text-black relative z-10" />
-                    <span className="text-[10px] font-black uppercase tracking-[0.15em] text-black relative z-10">Ouvrir un Shop</span>
+                    <Store className="w-3.5 h-3.5 text-black" strokeWidth={2} />
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-black">Ouvrir un Shop</span>
                   </Link>
                 </div>
               )}

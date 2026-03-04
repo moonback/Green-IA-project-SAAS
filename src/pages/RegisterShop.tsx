@@ -90,12 +90,13 @@ export default function RegisterShop() {
             {/* Background Image & Cinematic Overlays */}
             <div className="absolute inset-0 z-0">
                 <img
-                    src="/images/hero-bg.png"
+                    src="/images/register-hero-bg.png"
+                    onError={(e) => { e.currentTarget.src = "/images/hero-bg.png"; }}
                     alt="Green IA Business"
-                    className="w-full h-full object-cover opacity-100 scale-105"
+                    className="w-full h-full object-cover opacity-80 scale-105 grayscale-[0.2]"
                 />
-                <div className="absolute inset-0 bg-gradient-to-b from-brand-950/90 via-brand-950/40 to-brand-950" />
-                <div className="absolute inset-0 bg-radial-gradient from-transparent to-brand-950/80" />
+                <div className="absolute inset-0 bg-gradient-to-b from-brand-950/95 via-brand-950/60 to-brand-950" />
+                <div className="absolute inset-0 bg-radial-gradient from-transparent to-brand-950/90" />
             </div>
 
             <div className="relative z-10 max-w-8xl mx-auto px-6 py-12 lg:py-20 grid lg:grid-cols-2 gap-16 items-center">
