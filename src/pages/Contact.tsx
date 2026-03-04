@@ -12,45 +12,45 @@ export default function Contact() {
       />
 
       {/* ────────── Hero Section ────────── */}
-      <section className="relative min-h-[70vh] flex items-center overflow-hidden">
+      <section className="relative min-h-[90vh] flex items-center overflow-hidden">
         {/* Background Image & Cinematic Overlays */}
         <div className="absolute inset-0 z-0">
           <img
-            src="/images/hero-bg.png"
+            src="/images/contact-hero-bg.png"
             alt="Support Green IA"
-            className="w-full h-full object-cover opacity-30 scale-110"
+            className="w-full h-full object-cover opacity-60 scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/90 via-zinc-950/40 to-zinc-950" />
-          <div className="absolute inset-0 bg-radial-gradient from-transparent to-zinc-950/80" />
+          <div className="absolute inset-0 bg-gradient-to-b from-brand-950/90 via-brand-950/40 to-brand-950" />
+          <div className="absolute inset-0 bg-radial-gradient from-transparent to-brand-950/80" />
         </div>
 
-        <div className="max-w-7xl mx-auto text-center space-y-8 relative z-20 w-full px-4 pt-10">
+        <div className="content-wrap relative z-10 w-full pt-20">
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md text-green-neon text-[10px] font-black uppercase tracking-[0.24em]"
-          >
-            <Sparkles className="w-4 h-4" />
-            VOTRE RÉUSSITE EST NOTRE PRIORITÉ
-          </motion.div>
-
-          <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-5xl md:text-8xl font-serif font-black tracking-tighter leading-none mb-8"
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="max-w-4xl mx-auto text-center flex flex-col items-center"
           >
-            PARLONS DE VOTRE <br />
-            <span className="text-green-neon italic glow-green">BOUTIQUE CBD.</span>
-          </motion.h1>
+            <motion.span
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.03] border border-white/10 backdrop-blur-md mb-8 text-[10px] font-black uppercase tracking-[0.24em] text-zinc-300"
+            >
+              <span className="h-1.5 w-1.5 rounded-full bg-green-neon animate-pulse" />
+              VOTRE RÉUSSITE EST NOTRE PRIORITÉ
+            </motion.span>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-xl text-zinc-400 max-w-2xl mx-auto font-light leading-relaxed mb-6"
-          >
-            Nous vous montrons comment Green IA peut simplifier votre quotidien et augmenter vos ventes, étape par étape.
-          </motion.p>
+            <h1 className="section-title text-4xl sm:text-6xl lg:text-7xl">
+              Parlons de votre
+              <br />
+              <span className="glow-green italic text-green-neon">boutique CBD.</span>
+            </h1>
+
+            <p className="mt-8 max-w-2xl text-lg sm:text-xl font-light text-zinc-400 leading-relaxed mb-10">
+              Nous vous montrons comment Green IA peut simplifier votre quotidien et augmenter vos ventes, étape par étape.
+            </p>
+          </motion.div>
         </div>
       </section>
 

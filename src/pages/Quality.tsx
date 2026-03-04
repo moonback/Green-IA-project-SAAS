@@ -47,45 +47,50 @@ export default function Quality() {
     switch (section.type) {
       case 'hero':
         return (
-          <section key={section.id} className="relative min-h-[80vh] flex items-center overflow-hidden">
+          <section key={section.id} className="relative min-h-[90vh] flex items-center overflow-hidden">
             {/* Background Image & Cinematic Overlays */}
             <div className="absolute inset-0 z-0">
               <img
                 src="/images/quality-hero-bg.png"
                 alt="Infrastructure Qualité Green IA"
-                className="w-full h-full object-cover opacity-40 scale-105"
+                className="w-full h-full object-cover opacity-60 scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-b from-brand-950/90 via-brand-950/40 to-brand-950" />
               <div className="absolute inset-0 bg-radial-gradient from-transparent to-brand-950/80" />
             </div>
 
-            <div className="max-w-7xl mx-auto text-center relative z-10 w-full pt-20 px-4">
+            <div className="content-wrap relative z-10 w-full pt-20">
               <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md text-green-neon text-[10px] font-black uppercase tracking-[0.24em] mb-10"
-                style={{ color: primaryColor, borderColor: `${primaryColor}33`, backgroundColor: `${primaryColor}1a` }}
-              >
-                <Terminal className="w-4 h-4" />
-                {section.settings?.badge || content.quality.badge}
-              </motion.div>
-
-              <motion.h1
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-5xl md:text-8xl font-serif font-black tracking-tighter leading-none mb-10"
+                transition={{ duration: 0.8, ease: "easeOut" }}
+                className="max-w-4xl mx-auto text-center flex flex-col items-center"
               >
-                {section.settings?.title ? section.settings.title : <>{content.quality.hero_title_line1} <br /> <span className="italic glow-green" style={{ color: primaryColor }}>{content.quality.hero_title_line2}</span></>}
-              </motion.h1>
+                <motion.span
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.03] border border-white/10 backdrop-blur-md mb-8 text-[10px] font-black uppercase tracking-[0.24em] text-zinc-300"
+                  style={{ color: primaryColor, borderColor: `${primaryColor}33`, backgroundColor: `${primaryColor}1a` }}
+                >
+                  <span className="h-1.5 w-1.5 rounded-full bg-green-neon animate-pulse" style={{ backgroundColor: primaryColor }} />
+                  {section.settings?.badge || content.quality.badge}
+                </motion.span>
 
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="text-xl md:text-2xl text-zinc-400 max-w-3xl mx-auto font-light leading-relaxed"
-              >
-                {section.settings?.subtitle || content.quality.hero_subtitle}
-              </motion.p>
+                <h1 className="section-title text-4xl sm:text-6xl lg:text-7xl">
+                  {section.settings?.title ? section.settings.title : (
+                    <>
+                      {content.quality.hero_title_line1}
+                      <br />
+                      <span className="glow-green italic text-green-neon" style={{ color: primaryColor }}>{content.quality.hero_title_line2}</span>
+                    </>
+                  )}
+                </h1>
+
+                <p className="mt-8 max-w-2xl text-lg sm:text-xl font-light text-zinc-400 leading-relaxed mb-10">
+                  {section.settings?.subtitle || content.quality.hero_subtitle}
+                </p>
+              </motion.div>
             </div>
           </section>
         );

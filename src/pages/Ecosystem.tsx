@@ -61,40 +61,53 @@ export default function Ecosystem() {
             />
 
             {/* ─── Hero Section ─── */}
-            <section className="relative min-h-[80vh] flex items-center justify-center pt-32 pb-40 px-4">
-                {/* Background Visuals */}
+            <section className="relative min-h-[90vh] flex items-center overflow-hidden">
+                {/* Background Image & Cinematic Overlays */}
                 <div className="absolute inset-0 z-0">
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-green-neon/5 rounded-full blur-[200px] animate-pulse" />
-                    <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10 pointer-events-none" />
+                    <img
+                        src="/images/ecosystem-hero-bg.png"
+                        alt="Infrastructure Cloud CBD"
+                        className="w-full h-full object-cover opacity-60 scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-b from-brand-950/90 via-brand-950/40 to-brand-950" />
+                    <div className="absolute inset-0 bg-radial-gradient from-transparent to-brand-950/80" />
                 </div>
 
-                <div className="max-w-7xl mx-auto text-center relative z-10 space-y-12">
+                <div className="content-wrap relative z-10 w-full pt-20">
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-white/[0.03] border border-white/10 backdrop-blur-xl mb-6"
-                    >
-                        <Share2 className="w-4 h-4 text-green-neon" />
-                        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-300">Architecture Ouverte & Connectée</span>
-                    </motion.div>
-
-                    <motion.h1
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="text-6xl md:text-8xl lg:text-9xl font-serif font-black tracking-tighter leading-[0.85] uppercase"
+                        transition={{ duration: 0.8, ease: "easeOut" }}
+                        className="max-w-4xl mx-auto text-center flex flex-col items-center"
                     >
-                        UN UNIVERS <br />
-                        <span className="text-green-neon italic glow-green">SYNCHRONISÉ.</span>
-                    </motion.h1>
+                        <motion.span
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.2 }}
+                            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.03] border border-white/10 backdrop-blur-md mb-8 text-[10px] font-black uppercase tracking-[0.24em] text-zinc-300"
+                        >
+                            <span className="h-1.5 w-1.5 rounded-full bg-green-neon animate-pulse" />
+                            Architecture Ouverte & Connectée
+                        </motion.span>
 
-                    <motion.p
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2 }}
-                        className="max-w-3xl mx-auto text-lg md:text-2xl text-zinc-400 font-light leading-relaxed"
-                    >
-                        De l'encaissement physique aux ventes digitales, Green IA connecte chaque aspect de votre retail CBD dans une infrastructure unifiée et évolutive.
-                    </motion.p>
+                        <h1 className="section-title text-4xl sm:text-6xl lg:text-7xl">
+                            Un univers retail
+                            <br />
+                            <span className="glow-green italic text-green-neon">synchronisé.</span>
+                        </h1>
+                        <p className="mt-8 max-w-2xl text-lg sm:text-xl font-light text-zinc-400 leading-relaxed mb-10">
+                            De l'encaissement physique aux ventes digitales, Green IA connecte chaque aspect de votre business dans une infrastructure unifiée et évolutive.
+                        </p>
+
+                        <div className="flex flex-col sm:flex-row items-stretch justify-center gap-4 w-full sm:w-auto">
+                            <Link to="/ouvrir-boutique" className="btn-primary px-10 py-5 text-base flex items-center justify-center gap-2 group">
+                                Devenir Partenaire <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                            </Link>
+                            <Link to="/contact" className="btn-secondary px-10 py-5 text-base flex items-center justify-center">
+                                Documentation API
+                            </Link>
+                        </div>
+                    </motion.div>
                 </div>
             </section>
 
