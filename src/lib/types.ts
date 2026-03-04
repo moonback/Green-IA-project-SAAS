@@ -100,6 +100,7 @@ export interface Shop {
       hero_image_url: string | null;
       logo_position: 'left' | 'center';
       show_banner: boolean;
+      banner_text: string | null;
       banner_color: string;
       banner_text_color: string;
       dark_mode: boolean;
