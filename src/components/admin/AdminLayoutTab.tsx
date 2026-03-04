@@ -27,14 +27,17 @@ import {
     X,
     ChevronRight,
     Type,
-    Image as ImageIcon
+    Image as ImageIcon,
+    Megaphone,
+    Zap,
+    Globe
 } from 'lucide-react';
 import { useShopStore } from '../../store/shopStore';
 import { supabase } from '../../lib/supabase';
 import ImageUpload from './ImageUpload';
 import { DEFAULT_HOME_LAYOUT, DEFAULT_ABOUT_LAYOUT, DEFAULT_QUALITY_LAYOUT, PageSection } from '../../hooks/useShopLayout';
 
-type PageKey = 'home' | 'about' | 'quality';
+type PageKey = 'home' | 'about' | 'quality' | 'global';
 
 export default function AdminLayoutTab() {
     const { currentShop, setShop } = useShopStore();
@@ -49,6 +52,7 @@ export default function AdminLayoutTab() {
         if (page === 'home') return DEFAULT_HOME_LAYOUT;
         if (page === 'about') return DEFAULT_ABOUT_LAYOUT;
         if (page === 'quality') return DEFAULT_QUALITY_LAYOUT;
+        if (page === 'global') return [];
         return [];
     };
 
@@ -143,7 +147,11 @@ export default function AdminLayoutTab() {
         testimonials: 'Avis Clients',
         faq: 'Questions Fréquentes (FAQ)',
         features_grid: 'Grille Points Forts',
-        instagram_feed: 'Flux Instagram'
+        instagram_feed: 'Flux Instagram',
+        announcement: 'Bannière d\'annonce',
+        trust_badges: 'Badges de confiance',
+        quick_contact: 'Contact Rapide',
+        reassurance: 'Bannière Réassurance'
     };
 
     const genericSections = [
@@ -151,7 +159,11 @@ export default function AdminLayoutTab() {
         { type: 'testimonials', label: 'Avis Clients', icon: MessageSquare },
         { type: 'faq', label: 'FAQ', icon: HelpCircle },
         { type: 'features_grid', label: 'Points Forts', icon: ListChecks },
-        { type: 'instagram_feed', label: 'Flux Instagram', icon: Instagram }
+        { type: 'instagram_feed', label: 'Flux Instagram', icon: Instagram },
+        { type: 'announcement', label: 'Annonce', icon: Megaphone },
+        { type: 'trust_badges', label: 'Confiance', icon: ShieldCheck },
+        { type: 'quick_contact', label: 'Contact', icon: Phone },
+        { type: 'reassurance', label: 'Zen / Réassurance', icon: Zap }
     ];
 
     const specificSectionsByPage: Record<PageKey, { type: string; label: string; icon: any }[]> = {
@@ -172,13 +184,15 @@ export default function AdminLayoutTab() {
             { type: 'isolation', label: 'Isolation Données', icon: ShieldCheck },
             { type: 'ai_excellence', label: 'Excellence IA', icon: ShieldCheck },
             { type: 'trust_banner', label: 'Bannière Confiance', icon: ShieldCheck }
-        ]
+        ],
+        global: []
     };
 
     const pages = [
         { key: 'home', label: 'Accueil', icon: Home },
         { key: 'about', label: 'À Propos', icon: Info },
-        { key: 'quality', label: 'Qualité', icon: ShieldCheck }
+        { key: 'quality', label: 'Qualité', icon: ShieldCheck },
+        { key: 'global', label: 'Partout (Global)', icon: Globe }
     ];
 
     if (!currentShop) return null;

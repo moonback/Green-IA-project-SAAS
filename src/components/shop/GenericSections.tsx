@@ -219,3 +219,93 @@ export function InstagramFeedSection({ primaryColor, settings }: { primaryColor:
         </section>
     );
 }
+
+// --- ANNOUNCEMENT BAR ---
+export function AnnouncementBar({ primaryColor, settings }: { primaryColor: string; settings?: any }) {
+    if (!settings?.text && !settings?.title) {
+        settings = { ...settings, title: "Livraison offerte dès 50€ d'achat !" };
+    }
+    return (
+        <div className="py-3 px-4 text-center relative overflow-hidden group" style={{ backgroundColor: primaryColor }}>
+            <div className="absolute inset-0 bg-black/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 ease-in-out" />
+            <p className="text-[11px] font-black uppercase tracking-[0.2em] text-black relative z-10">
+                {settings?.title || settings?.text}
+            </p>
+        </div>
+    );
+}
+
+// --- TRUST BADGES ---
+export function TrustBadgesSection({ primaryColor, settings }: { primaryColor: string; settings?: any }) {
+    const badges = settings?.badges || [
+        { icon: ShieldCheck, label: "Paiement Sécurisé", desc: "SSL & 3D Secure" },
+        { icon: Zap, label: "Livraison 48H", desc: "Suivi en temps réel" },
+        { icon: Star, label: "Qualité Labo", desc: "Certifié 100% légal" },
+        { icon: Heart, label: "Eco-Responsable", desc: "Emballage durable" }
+    ];
+
+    return (
+        <div className="py-12 border-y border-white/5 bg-zinc-950/50 backdrop-blur-sm">
+            <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8">
+                {badges.map((badge: any, idx: number) => {
+                    const Icon = badge.icon;
+                    return (
+                        <div key={idx} className="flex items-center gap-4 group">
+                            <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center shrink-0 border border-white/5 group-hover:border-green-neon/30 transition-all">
+                                <Icon className="w-6 h-6" style={{ color: primaryColor }} />
+                            </div>
+                            <div>
+                                <h4 className="text-[10px] font-black uppercase tracking-widest text-white">{badge.label}</h4>
+                                <p className="text-[10px] text-zinc-500 font-bold uppercase">{badge.desc}</p>
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
+        </div>
+    );
+}
+
+// --- QUICK CONTACT ---
+export function QuickContactSection({ primaryColor, settings }: { primaryColor: string; settings?: any }) {
+    return (
+        <section className="py-24 px-4">
+            <div className="max-w-5xl mx-auto p-12 rounded-[3.5rem] bg-zinc-900/40 border border-white/5 flex flex-col md:flex-row items-center justify-between gap-12">
+                <div className="space-y-4 text-center md:text-left">
+                    <h2 className="text-4xl font-serif font-black">{settings?.title || <>Besoin d'un <span style={{ color: primaryColor }}>conseil ?</span></>}</h2>
+                    <p className="text-zinc-500 max-w-sm">{settings?.subtitle || "Nos experts BudTender sont disponibles pour vous accompagner dans votre choix."}</p>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-4">
+                    <a href={`tel:${settings?.phone || "0102030405"}`} className="px-8 py-4 rounded-2xl bg-white/5 border border-white/10 font-bold hover:bg-white/10 transition-all flex items-center gap-3">
+                        <Send className="w-4 h-4" style={{ color: primaryColor }} />
+                        Par Téléphone
+                    </a>
+                    <a href={`mailto:${settings?.email || "hello@greenmoon.ia"}`} className="px-8 py-4 rounded-2xl font-black text-black hover:scale-105 transition-all flex items-center gap-3" style={{ backgroundColor: primaryColor }}>
+                        <Mail className="w-4 h-4" />
+                        Nous Écrire
+                    </a>
+                </div>
+            </div>
+        </section>
+    );
+}
+
+// --- REASSURANCE SECTION ---
+export function ReassuranceSection({ primaryColor, settings }: { primaryColor: string; settings?: any }) {
+    return (
+        <section className="py-12 bg-black overflow-hidden relative">
+            <div className="flex whitespace-nowrap animate-marquee items-center gap-12">
+                {Array.from({ length: 10 }).map((_, i) => (
+                    <div key={i} className="flex items-center gap-4 text-[13px] font-black uppercase tracking-[0.3em] text-zinc-700 italic">
+                        <Zap className="w-4 h-4" style={{ color: primaryColor }} />
+                        <span>Culture 100% Bio</span>
+                        <Star className="w-4 h-4 text-zinc-800" />
+                        <span>Laboratoire Indépendant</span>
+                        <Zap className="w-4 h-4" style={{ color: primaryColor }} />
+                        <span>Green Moon IA Premium</span>
+                    </div>
+                ))}
+            </div>
+        </section>
+    );
+}

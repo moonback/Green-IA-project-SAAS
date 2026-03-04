@@ -58,9 +58,19 @@ export function useShopLayout() {
         return DEFAULT_QUALITY_LAYOUT;
     }, [currentShop]);
 
+    const globalSections = useMemo(() => {
+        // @ts-ignore
+        if (currentShop?.settings?.layout?.global?.sections) {
+            // @ts-ignore
+            return currentShop.settings.layout.global.sections as PageSection[];
+        }
+        return [];
+    }, [currentShop]);
+
     return {
         homeSections,
         aboutSections,
-        qualitySections
+        qualitySections,
+        globalSections
     };
 }

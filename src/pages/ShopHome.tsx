@@ -14,14 +14,18 @@ import {
     TestimonialsSection,
     FAQSection,
     FeaturesGridSection,
-    InstagramFeedSection
+    InstagramFeedSection,
+    AnnouncementBar,
+    TrustBadgesSection,
+    QuickContactSection,
+    ReassuranceSection
 } from '../components/shop/GenericSections';
 
 export default function ShopHome() {
     const { currentShop } = useShopStore();
     const shopPath = useShopPath();
     const content = useShopContent();
-    const { homeSections } = useShopLayout();
+    const { homeSections, globalSections } = useShopLayout();
     const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -283,6 +287,14 @@ export default function ShopHome() {
                 return <FeaturesGridSection key={section.id} primaryColor={primaryColor} settings={section.settings} />;
             case 'instagram_feed':
                 return <InstagramFeedSection key={section.id} primaryColor={primaryColor} settings={section.settings} />;
+            case 'announcement':
+                return <AnnouncementBar key={section.id} primaryColor={primaryColor} settings={section.settings} />;
+            case 'trust_badges':
+                return <TrustBadgesSection key={section.id} primaryColor={primaryColor} settings={section.settings} />;
+            case 'quick_contact':
+                return <QuickContactSection key={section.id} primaryColor={primaryColor} settings={section.settings} />;
+            case 'reassurance':
+                return <ReassuranceSection key={section.id} primaryColor={primaryColor} settings={section.settings} />;
 
             default:
                 return null;
@@ -332,7 +344,9 @@ export default function ShopHome() {
                 description={`Découvrez la sélection premium de ${currentShop.name}. Produits CBD de qualité, conseils IA personnalisés.`}
             />
 
+            {globalSections.filter(s => s.type === 'announcement' || s.type === 'reassurance').map(renderSection)}
             {homeSections.map(renderSection)}
+            {globalSections.filter(s => s.type !== 'announcement' && s.type !== 'reassurance').map(renderSection)}
         </div>
     );
 }
