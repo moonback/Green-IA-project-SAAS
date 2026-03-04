@@ -103,8 +103,7 @@ export default function Layout() {
           >
             <div className="px-4 py-2.5 text-xs font-bold uppercase tracking-[0.2em] text-center w-full max-w-7xl mx-auto pr-10">
               <span className="inline-block animate-pulse mr-2">✦</span>
-              CE PROJET EST EN VENTE : CONTACTEZ-NOUS POUR PLUS D'INFORMATIONS
-              <span className="inline-block animate-pulse ml-2">✦</span>
+              Green IA centralise votre boutique en ligne               <span className="inline-block animate-pulse ml-2">✦</span>
             </div>
             <button
               onClick={() => setIsBannerVisible(false)}
