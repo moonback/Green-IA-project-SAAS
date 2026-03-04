@@ -19,6 +19,8 @@ import {
 } from "lucide-react";
 import FAQ from "../components/FAQ";
 import SEO from "../components/SEO";
+import AiSimulator from "../components/AiSimulator";
+import PricingSection from "../components/PricingSection";
 
 export default function Home() {
   const stats = [
@@ -175,21 +177,8 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="ui-card rounded-[2rem] p-5 sm:p-6">
-            <div className="mb-4 flex items-center justify-between border-b border-white/10 pb-4">
-              <p className="text-[10px] font-black uppercase tracking-[0.18em] text-zinc-400">Simulation conversation</p>
-              <span className="rounded-full bg-green-neon/15 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-green-neon">
-                En ligne
-              </span>
-            </div>
-            <div className="space-y-3 text-sm">
-              <div className="max-w-[85%] rounded-2xl rounded-tl-none bg-zinc-900 p-3 text-zinc-300">
-                Je veux une suggestion douce pour mes invités qui découvrent le produit.
-              </div>
-              <div className="ml-auto max-w-[85%] rounded-2xl rounded-tr-none border border-green-neon/20 bg-green-neon/10 p-3 text-zinc-100">
-                Je recommande un starter pack équilibré, orienté détente, avec dosage progressif et fiche explicative QR.
-              </div>
-            </div>
+          <div className="flex justify-center items-center">
+            <AiSimulator />
           </div>
         </div>
       </section>
@@ -247,6 +236,7 @@ export default function Home() {
         </div>
       </section>
 
+      <PricingSection />
       <FAQ />
     </div>
   );
