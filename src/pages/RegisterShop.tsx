@@ -87,7 +87,7 @@ export default function RegisterShop() {
         <div className="min-h-screen bg-black text-white selection:bg-green-neon selection:text-black">
             <SEO title="Ouvrir ma boutique — Green IA SaaS" description="Rejoignez la plateforme SaaS CBD n°1 et lancez votre boutique avec IA." />
 
-            <div className="max-w-6xl mx-auto px-6 py-12 lg:py-20 grid lg:grid-cols-2 gap-16 items-center">
+            <div className="max-w-8xl mx-auto px-6 py-12 lg:py-20 grid lg:grid-cols-2 gap-16 items-center">
 
                 {/* Left Side: Marketing */}
                 <div className="space-y-8">

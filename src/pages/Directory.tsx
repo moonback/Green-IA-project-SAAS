@@ -44,54 +44,65 @@ export default function Directory() {
             />
 
             {/* Hero Header */}
-            <section className="relative pt-32 pb-20 px-4 md:px-8 max-w-7xl mx-auto">
-                <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-green-neon/10 rounded-full blur-[120px] pointer-events-none" />
+            <section className="relative min-h-[60vh] flex items-center overflow-hidden">
+                {/* Background Image & Overlays */}
+                <div className="absolute inset-0 z-0">
+                    <img
+                        src="/images/directory-hero-bg.png"
+                        alt="Ecosystème Green IA"
+                        className="w-full h-full object-cover opacity-40 scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/90 via-zinc-950/40 to-zinc-950" />
+                    <div className="absolute inset-0 bg-radial-gradient from-transparent to-zinc-950/80" />
+                </div>
 
-                <div className="relative z-10 text-center max-w-3xl mx-auto space-y-6">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-green-neon text-xs font-black uppercase tracking-widest"
-                    >
-                        <Globe className="w-4 h-4" />
-                        <span className="mt-0.5">Réseau Global</span>
-                    </motion.div>
+                <div className="content-wrap relative z-10 w-full pt-20 max-w-7xl mx-auto px-4 md:px-8">
+                    <div className="text-center max-w-3xl mx-auto space-y-8">
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md text-green-neon text-[10px] font-black uppercase tracking-[0.24em]"
+                        >
+                            <Globe className="w-4 h-4" />
+                            <span className="mt-0.5">Réseau Global Green IA</span>
+                        </motion.div>
 
-                    <motion.h1
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.1 }}
-                        className="text-4xl md:text-6xl font-serif font-black"
-                    >
-                        Annuaire des <span className="text-green-neon italic">Boutiques</span>
-                    </motion.h1>
+                        <motion.h1
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="text-5xl md:text-8xl font-serif font-black leading-none"
+                        >
+                            L'Annuaire des <br />
+                            <span className="text-green-neon italic glow-green">Boutiques.</span>
+                        </motion.h1>
 
-                    <motion.p
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2 }}
-                        className="text-lg text-zinc-400 font-light"
-                    >
-                        Découvrez nos marchands certifiés et accédez à leur catalogue exclusif.
-                    </motion.p>
+                        <motion.p
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.2 }}
+                            className="text-xl text-zinc-400 font-light leading-relaxed max-w-2xl mx-auto"
+                        >
+                            Explorez l'écosystème Green IA et découvrez nos marchands certifiés à travers toute l'Europe.
+                        </motion.p>
 
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.3 }}
-                        className="relative max-w-xl mx-auto mt-10"
-                    >
-                        <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
-                            <Search className="h-5 w-5 text-zinc-500" />
-                        </div>
-                        <input
-                            type="text"
-                            placeholder="Rechercher une boutique, une ville..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-full pl-12 pr-4 py-4 bg-white/5 border border-white/10 rounded-2xl focus:border-green-neon/50 focus:ring-1 focus:ring-green-neon/50 text-white placeholder:text-zinc-600 outline-none transition-all"
-                        />
-                    </motion.div>
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.3 }}
+                            className="relative max-w-xl mx-auto mt-12"
+                        >
+                            <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none">
+                                <Search className="h-5 w-5 text-zinc-500" />
+                            </div>
+                            <input
+                                type="text"
+                                placeholder="Rechercher une boutique, une ville..."
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                className="w-full pl-14 pr-6 py-5 bg-white/[0.03] border border-white/10 rounded-2xl focus:border-green-neon/50 focus:ring-1 focus:ring-green-neon/50 text-white placeholder:text-zinc-600 outline-none backdrop-blur-sm transition-all shadow-2xl"
+                            />
+                        </motion.div>
+                    </div>
                 </div>
             </section>
 

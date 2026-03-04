@@ -54,36 +54,42 @@ export default function SolutionSaaS() {
             />
 
             {/* ─── Hero Section ─── */}
-            <section className="app-section relative pb-16 pt-24 sm:pt-28 md:pt-36">
-                <div className="pointer-events-none absolute inset-0">
-                    <div className="absolute left-1/2 top-0 h-[550px] w-[720px] -translate-x-1/2 rounded-full bg-green-neon/10 blur-[130px]" />
-                    <div className="absolute right-[-12%] top-[18%] h-[280px] w-[280px] rounded-full bg-emerald-400/10 blur-[120px]" />
+            <section className="relative min-h-[85vh] flex items-center overflow-hidden">
+                {/* Background Image & Cinematic Overlays */}
+                <div className="absolute inset-0 z-0">
+                    <img
+                        src="/images/solution-hero-bg.png"
+                        alt="Infrastructure Cloud CBD"
+                        className="w-full h-full object-cover opacity-50 scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-b from-brand-950/90 via-brand-950/40 to-brand-950" />
+                    <div className="absolute inset-0 bg-radial-gradient from-transparent to-brand-950/80" />
                 </div>
 
-                <div className="content-wrap relative z-10">
+                <div className="content-wrap relative z-10 w-full pt-20">
                     <motion.div
                         initial={{ opacity: 0, y: 18 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
+                        transition={{ duration: 0.8, ease: "easeOut" }}
                         className="mx-auto flex max-w-4xl flex-col items-center text-center"
                     >
-                        <span className="ui-card mb-8 inline-flex items-center gap-2 px-4 py-2 text-[10px] font-black uppercase tracking-[0.24em] text-zinc-300">
+                        <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.03] border border-white/10 backdrop-blur-md mb-8 text-[10px] font-black uppercase tracking-[0.24em] text-zinc-300">
                             <span className="h-1.5 w-1.5 rounded-full bg-green-neon animate-pulse" />
                             L'écosystème ultime pour le retail CBD
                         </span>
 
-                        <h1 className="section-title text-5xl sm:text-7xl lg:text-7xl">
+                        <h1 className="section-title text-5xl sm:text-7xl lg:text-8xl leading-none">
                             Propulsez votre business avec <span className="glow-green italic text-green-neon">l'IA native</span>
                         </h1>
-                        <p className="section-copy mt-8 max-w-2xl text-lg sm:text-xl font-light text-zinc-400">
+                        <p className="mt-8 max-w-2xl text-lg sm:text-xl font-light text-zinc-400 leading-relaxed">
                             De la gestion des stocks à l'assistant client intelligent, Green IA est la plateforme tout-en-un conçue pour scaler votre empire CBD en toute simplicité.
                         </p>
 
                         <div className="mt-12 flex w-full flex-col items-stretch justify-center gap-4 sm:w-auto sm:flex-row">
-                            <Link to="/ouvrir-boutique" className="btn-primary px-10 py-4 text-base">
-                                Demander une démo <ArrowRight className="h-5 w-5" />
+                            <Link to="/ouvrir-boutique" className="btn-primary px-10 py-5 text-base flex items-center justify-center gap-2 group">
+                                Demander une démo <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
                             </Link>
-                            <Link to="/solution" className="btn-secondary px-10 py-4 text-base">
+                            <Link to="/solution" className="btn-secondary px-10 py-5 text-base flex items-center justify-center">
                                 Explorer l'écosystème
                             </Link>
                         </div>

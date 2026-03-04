@@ -59,54 +59,69 @@ export default function Home() {
         description="Propulsez votre entreprise CBD avec le premier SaaS IA-Native. BudTender intelligent, gestion multi-boutique, POS intégré et sécurité bancaire."
       />
 
-      <section className="app-section relative pb-16 pt-24 sm:pt-28 md:pt-36">
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute left-1/2 top-0 h-[550px] w-[720px] -translate-x-1/2 rounded-full bg-green-neon/10 blur-[130px]" />
-          <div className="absolute right-[-12%] top-[18%] h-[280px] w-[280px] rounded-full bg-emerald-400/10 blur-[120px]" />
+      <section className="relative min-h-[90vh] flex items-center overflow-hidden">
+        {/* Background Image & Overlays */}
+        <div className="absolute inset-0 z-0">
+          <img
+            src="/images/hero-bg.png"
+            alt="Zen CBD Backdrop"
+            className="w-full h-full object-cover opacity-60"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-brand-950/80 via-brand-950/20 to-brand-950" />
+          <div className="absolute inset-0 bg-gradient-to-r from-brand-950 via-transparent to-brand-950/40" />
         </div>
 
-        <div className="content-wrap relative z-10">
+        <div className="content-wrap relative z-10 w-full">
           <motion.div
-            initial={{ opacity: 0, y: 18 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="mx-auto flex max-w-4xl flex-col items-center text-center"
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="max-w-4xl"
           >
-            <span className="ui-card mb-8 inline-flex items-center gap-2 px-4 py-2 text-[10px] font-black uppercase tracking-[0.24em] text-zinc-300">
-              <span className="h-1.5 w-1.5 rounded-full bg-green-neon" />
-              La solution simple pour toutes les boutiques CBD
-            </span>
+            <motion.span
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-neon/10 border border-green-neon/20 text-[11px] font-black uppercase tracking-[0.3em] text-green-neon mb-8"
+            >
+              <span className="h-1.5 w-1.5 rounded-full bg-green-neon animate-pulse" />
+              L'Elite du SaaS CBD — Propulsé par l'IA
+            </motion.span>
 
-            <h1 className="section-title text-4xl sm:text-6xl lg:text-7xl">
-              Le SaaS CBD qui vous aide à <span className="glow-green italic text-green-neon">vendre plus</span>
+            <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black leading-[0.95] tracking-tight text-white mb-8">
+              L'INTELLIGENCE <br />
+              AU SERVICE DE <br />
+              <span className="glow-green italic text-green-neon">VOTRE CROISSANCE.</span>
             </h1>
-            <p className="section-copy mt-6 max-w-2xl text-base sm:text-lg">
-              Green IA centralise votre boutique en ligne, vos ventes en magasin et votre relation client dans un seul outil facile à piloter.
+
+            <p className="section-copy text-lg sm:text-xl max-w-2xl text-zinc-300 mb-10 leading-relaxed font-light">
+              Green IA est la première plateforme "AI-Native" conçue exclusivement pour l'industrie du CBD.
+              Automatisez vos conseils, optimisez vos stocks et scalez votre business sans limites.
             </p>
 
-            <div className="mt-10 flex w-full flex-col items-stretch justify-center gap-3 sm:w-auto sm:flex-row">
-              <Link to="/ouvrir-boutique" className="btn-primary">
-                Demander une démo <ArrowRight className="h-4 w-4" />
+            <div className="flex flex-col sm:flex-row items-stretch gap-4">
+              <Link to="/ouvrir-boutique" className="btn-primary px-10 py-5 text-base flex items-center justify-center gap-2 group">
+                Commencer l'expérience <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Link>
-              <Link to="/solution" className="btn-secondary">
-                Voir comment ça marche
+              <Link to="/solution" className="btn-secondary px-10 py-5 text-base flex items-center justify-center">
+                Découvrir la plateforme
               </Link>
             </div>
           </motion.div>
 
-          <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {/* Floating Stats or subtle element if needed */}
+          <div className="mt-24 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl">
             {stats.map((stat, index) => (
               <motion.div
                 key={stat.label}
-                initial={{ opacity: 0, y: 18 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.08 }}
-                className="ui-card rounded-2xl p-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 + index * 0.1 }}
+                className="p-6 rounded-3xl bg-white/[0.03] border border-white/10 backdrop-blur-xl"
               >
-                <div className="mb-2 inline-flex rounded-xl bg-green-neon/10 p-2 text-green-neon">{stat.icon}</div>
-                <p className="text-2xl font-black text-white">{stat.value}</p>
-                <p className="text-xs uppercase tracking-[0.18em] text-zinc-400">{stat.label}</p>
+                <div className="mb-3 text-green-neon">{stat.icon}</div>
+                <p className="text-3xl font-black text-white">{stat.value}</p>
+                <p className="text-[10px] uppercase tracking-widest text-zinc-500 font-bold">{stat.label}</p>
               </motion.div>
             ))}
           </div>

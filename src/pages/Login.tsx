@@ -110,14 +110,15 @@ export default function Login() {
 
       <div className="min-h-screen bg-black flex overflow-hidden font-sans">
         {/* Left Side: Brand & Visuals (Hidden on mobile) */}
-        <div className="hidden lg:flex lg:w-1/2 relative flex-col justify-between p-12 overflow-hidden bg-zinc-900">
+        <div className="hidden lg:flex lg:w-1/2 relative flex-col justify-between p-12 overflow-hidden bg-zinc-950">
           <div className="absolute inset-0 z-0">
             <img
-              src="/cbd_saas_login_bg_1772555110205.png"
-              alt="CBD Premium"
-              className="w-full h-full object-cover opacity-60 scale-110 blur-[1px]"
+              src="/images/hero-premium.png"
+              alt="Elite CBD Experience"
+              className="w-full h-full object-cover opacity-50 scale-105"
             />
-            <div className="absolute inset-0 bg-gradient-to-br from-zinc-950/80 via-transparent to-zinc-950/80" />
+            <div className="absolute inset-0 bg-gradient-to-br from-zinc-950/90 via-zinc-950/20 to-zinc-950/90" />
+            <div className="absolute inset-0 bg-radial-gradient from-transparent to-zinc-950/40" />
           </div>
 
           <motion.div

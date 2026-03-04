@@ -12,16 +12,23 @@ export default function Contact() {
       />
 
       {/* ────────── Hero Section ────────── */}
-      <section className="relative pt-48 pb-24 px-4 overflow-hidden">
+      <section className="relative min-h-[70vh] flex items-center overflow-hidden">
+        {/* Background Image & Cinematic Overlays */}
         <div className="absolute inset-0 z-0">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-6xl h-[400px] bg-green-neon/5 rounded-full blur-[120px]" />
+          <img
+            src="/images/hero-bg.png"
+            alt="Support Green IA"
+            className="w-full h-full object-cover opacity-30 scale-110"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/90 via-zinc-950/40 to-zinc-950" />
+          <div className="absolute inset-0 bg-radial-gradient from-transparent to-zinc-950/80" />
         </div>
 
-        <div className="max-w-7xl mx-auto text-center space-y-8 relative z-20">
+        <div className="max-w-7xl mx-auto text-center space-y-8 relative z-20 w-full px-4 pt-10">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-neon/10 border border-green-neon/20 text-green-neon text-xs font-black uppercase tracking-[0.2em]"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md text-green-neon text-[10px] font-black uppercase tracking-[0.24em]"
           >
             <Sparkles className="w-4 h-4" />
             VOTRE RÉUSSITE EST NOTRE PRIORITÉ
@@ -40,7 +47,7 @@ export default function Contact() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-xl text-zinc-400 max-w-2xl mx-auto font-light leading-relaxed"
+            className="text-xl text-zinc-400 max-w-2xl mx-auto font-light leading-relaxed mb-6"
           >
             Nous vous montrons comment Green IA peut simplifier votre quotidien et augmenter vos ventes, étape par étape.
           </motion.p>

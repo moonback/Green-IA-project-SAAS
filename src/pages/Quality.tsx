@@ -47,17 +47,23 @@ export default function Quality() {
     switch (section.type) {
       case 'hero':
         return (
-          <section key={section.id} className="relative pt-48 pb-32 px-4 overflow-hidden">
+          <section key={section.id} className="relative min-h-[80vh] flex items-center overflow-hidden">
+            {/* Background Image & Cinematic Overlays */}
             <div className="absolute inset-0 z-0">
-              <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-green-neon/5 blur-[120px] rounded-full" />
-              <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-500/5 blur-[100px] rounded-full" />
+              <img
+                src="/images/quality-hero-bg.png"
+                alt="Infrastructure Qualité Green IA"
+                className="w-full h-full object-cover opacity-40 scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/90 via-zinc-950/40 to-zinc-950" />
+              <div className="absolute inset-0 bg-radial-gradient from-transparent to-zinc-950/80" />
             </div>
 
-            <div className="max-w-7xl mx-auto text-center relative z-10">
+            <div className="max-w-7xl mx-auto text-center relative z-10 w-full pt-20 px-4">
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-neon/10 border border-green-neon/20 text-green-neon text-xs font-black uppercase tracking-widest mb-10"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md text-green-neon text-[10px] font-black uppercase tracking-[0.24em] mb-10"
                 style={{ color: primaryColor, borderColor: `${primaryColor}33`, backgroundColor: `${primaryColor}1a` }}
               >
                 <Terminal className="w-4 h-4" />
@@ -76,7 +82,7 @@ export default function Quality() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="text-xl md:text-2xl text-zinc-400 max-w-3xl mx-auto font-light leading-relaxed mb-12"
+                className="text-xl md:text-2xl text-zinc-400 max-w-3xl mx-auto font-light leading-relaxed"
               >
                 {section.settings?.subtitle || content.quality.hero_subtitle}
               </motion.p>
