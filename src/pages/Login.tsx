@@ -29,7 +29,7 @@ export default function Login() {
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
-        options: { redirectTo: window.location.origin + (shopSlug ? `/${shopSlug}/compte` : '/admin') }
+        options: { redirectTo: window.location.origin + (shopSlug ? `/${shopSlug}/compte` : '/compte') }
       });
       if (error) throw error;
     } catch (err: unknown) {
@@ -65,7 +65,7 @@ export default function Login() {
         if (shopSlug) {
           navigate(`/${shopSlug}/compte`);
         } else {
-          navigate('/admin');
+          navigate('/compte');
         }
       } else {
         if (!isShopAuth) {
@@ -218,11 +218,10 @@ export default function Login() {
             </div>
 
             <div
-              className={`backdrop-blur-xl rounded-3xl p-8 border shadow-2xl overflow-hidden relative group ${
-                isShopAuth
-                  ? 'bg-gradient-to-b from-zinc-900/90 to-zinc-950 border-green-neon/30 shadow-[0_0_40px_rgba(20,229,148,0.08)]'
-                  : 'bg-zinc-900/50 border-zinc-800'
-              }`}
+              className={`backdrop-blur-xl rounded-3xl p-8 border shadow-2xl overflow-hidden relative group ${isShopAuth
+                ? 'bg-gradient-to-b from-zinc-900/90 to-zinc-950 border-green-neon/30 shadow-[0_0_40px_rgba(20,229,148,0.08)]'
+                : 'bg-zinc-900/50 border-zinc-800'
+                }`}
             >
               {/* Animated corner accent */}
               <div className={`absolute top-0 right-0 w-24 h-24 blur-2xl transition-all duration-700 ${isShopAuth ? 'bg-green-neon/20 group-hover:bg-green-neon/30' : 'bg-green-neon/10 group-hover:bg-green-neon/20'}`} />
@@ -283,7 +282,7 @@ export default function Login() {
                 )}
 
                 <div>
-                    <label className="block text-[11px] uppercase tracking-widest font-bold text-zinc-500 mb-2 ml-1">{isShopAuth ? 'Email client' : 'Email'}</label>
+                  <label className="block text-[11px] uppercase tracking-widest font-bold text-zinc-500 mb-2 ml-1">{isShopAuth ? 'Email client' : 'Email'}</label>
                   <div className="relative group">
                     <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600 group-focus-within:text-green-neon transition-colors" />
                     <input
