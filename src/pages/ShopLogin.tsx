@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { Mail, Lock, Eye, EyeOff, ArrowRight, ArrowLeft, Store, UserPlus } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, ArrowRight, ArrowLeft, Store, UserPlus, Sparkles } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
 import { useShopStore } from '../store/shopStore';
+import { useShopPath } from '../hooks/useShopPath';
 import SEO from '../components/SEO';
 
 export default function ShopLogin() {
@@ -12,6 +13,7 @@ export default function ShopLogin() {
   const { shopSlug } = useParams<{ shopSlug: string }>();
   const { currentShop } = useShopStore();
   const { signIn, resetPassword } = useAuthStore();
+  const sp = useShopPath();
 
   const [isForgotMode, setIsForgotMode] = useState(false);
   const [email, setEmail] = useState('');
@@ -73,7 +75,7 @@ export default function ShopLogin() {
         throw new Error('Ce compte client n’est pas autorisé pour cette boutique.');
       }
 
-      navigate(`/${shopSlug}/compte`);
+      navigate(sp('/compte'));
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Une erreur est survenue.';
       if (msg.includes('Invalid login credentials')) {
@@ -97,24 +99,24 @@ export default function ShopLogin() {
         <div className="w-full max-w-xl bg-gradient-to-b from-zinc-900 to-zinc-950 border border-green-neon/30 rounded-3xl p-8 shadow-[0_0_40px_rgba(20,229,148,0.08)] relative overflow-hidden">
           <div className="absolute top-0 right-0 w-24 h-24 bg-green-neon/20 blur-2xl" />
 
-          <div className="mb-6 flex items-center justify-between">
-            <Link to={`/${shopSlug}`} className="text-xs text-zinc-400 hover:text-white inline-flex items-center gap-2">
-              <ArrowLeft className="w-4 h-4" /> Retour boutique
+          <div className="mb-8 flex items-center justify-between">
+            <Link to={sp('/')} className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 hover:text-white inline-flex items-center gap-2 transition-colors">
+              <ArrowLeft className="w-3.5 h-3.5" /> Retour Boutique
             </Link>
-            <span className="text-[10px] px-3 py-1 rounded-full border border-green-neon/30 bg-green-neon/10 text-green-neon uppercase tracking-widest font-black">
-              Espace client
-            </span>
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-green-neon/30 bg-green-neon/10 text-green-neon text-[9px] font-black uppercase tracking-[0.2em]">
+              <Sparkles className="w-3 h-3" />
+              Espace Client
+            </div>
           </div>
 
-          <div className="rounded-2xl border border-zinc-800 bg-black/30 p-4 mb-6">
-            <p className="text-[10px] uppercase tracking-widest text-zinc-500">Votre boutique</p>
-            <p className="text-lg font-bold mt-1">{currentShop?.name ?? shopSlug}</p>
-            <p className="text-xs text-zinc-500 mt-1">/{shopSlug}</p>
+          <div className="space-y-2 mb-10">
+            <h1 className="text-4xl md:text-5xl font-serif font-bold text-white tracking-tight">
+              CONNEXION<span className="text-green-neon italic">.</span>
+            </h1>
+            <p className="text-zinc-500 text-sm font-medium uppercase tracking-widest">
+              Accédez à vos privilèges {currentShop?.name}
+            </p>
           </div>
-
-          <h1 className="text-3xl font-serif font-bold mb-2">Connexion</h1>
-          <p className="text-zinc-400 text-sm mb-3">Accédez à vos commandes, abonnements et favoris.</p>
-          <p className="text-xs text-zinc-500 mb-6">Espace réservé aux clients de cette boutique pour acheter et suivre leurs commandes.</p>
 
           {isForgotMode && (
             <button
@@ -159,8 +161,8 @@ export default function ShopLogin() {
           </form>
 
           <div className="mt-8 pt-6 border-t border-zinc-800">
-            <Link to={`/${shopSlug}/inscription`} className="w-full inline-flex items-center justify-center gap-2 bg-zinc-800 hover:bg-zinc-700 rounded-2xl py-3.5 text-sm font-bold">
-              <UserPlus className="w-4 h-4" /> Créer un compte boutique
+            <Link to={sp('/inscription')} className="w-full inline-flex items-center justify-center gap-3 bg-white/5 border border-white/10 hover:bg-white/10 rounded-2xl py-4 text-xs font-black uppercase tracking-widest transition-all">
+              <UserPlus className="w-4 h-4" /> Créer mon compte
             </Link>
           </div>
         </div>
