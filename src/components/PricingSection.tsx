@@ -9,9 +9,9 @@ const PLANS = [
         description: "Parfait pour lancer votre boutique CBD physique.",
         features: [
             "Logiciel de Caisse (POS)",
-            "Gestion d'inventaire",
-            "Rapports de ventes basiques",
-            "Support par email",
+            "Gestion d'inventaire CBD",
+            "Boutique en ligne basique",
+            "Support humain inclus",
             "1 Point de vente"
         ],
         cta: "Commencer gratuitement",
@@ -20,14 +20,14 @@ const PLANS = [
     {
         name: "Croissance IA",
         price: "129",
-        description: "Le pack ultime pour l'omnichannel et la conversion.",
+        description: "Pour les boutiques qui veulent automatiser et scaler.",
         features: [
-            "Tout le pack Starter",
-            "BudTender IA illimité",
-            "Boutique E-commerce native",
-            "Synchronisation Stocks en temps réel",
-            "Programme Fidélité IA",
-            "Jusqu'à 3 points de vente"
+            "IA Conseiller (BudTender)",
+            "Multi-boutiques synchronisé",
+            "Analytics avancés",
+            "Programme fidélité IA",
+            "Support prioritaire CBD",
+            "Support humain inclus",
         ],
         cta: "Essayer la puissance IA",
         highlight: true
@@ -42,7 +42,7 @@ const PLANS = [
             "API de personnalisation",
             "Account Manager dédié",
             "Infrastructure dédiée (High Priority)",
-            "Formation BudTender personnalisée"
+            "Support humain inclus"
         ],
         cta: "Contacter le service Pro",
         highlight: false
@@ -61,7 +61,7 @@ export default function PricingSection() {
                         whileInView={{ opacity: 1 }}
                         className="text-green-neon font-black uppercase text-[10px] tracking-[0.4em]"
                     >
-                        Tarification transparente
+                        Sans engagement – Résiliation en 1 clic
                     </motion.span>
                     <motion.h2
                         initial={{ opacity: 0, y: 20 }}
@@ -81,8 +81,8 @@ export default function PricingSection() {
                             transition={{ delay: idx * 0.1 }}
                             viewport={{ once: true }}
                             className={`relative p-10 rounded-[3rem] border transition-all duration-500 group ${plan.highlight
-                                    ? "bg-zinc-900 border-green-neon/40 shadow-[0_0_50px_rgba(57,255,20,0.1)] scale-105 z-10"
-                                    : "bg-zinc-950/50 border-white/10 hover:border-white/20"
+                                ? "bg-zinc-900 border-green-neon/40 shadow-[0_0_50px_rgba(57,255,20,0.1)] scale-105 z-10"
+                                : "bg-zinc-950/50 border-white/10 hover:border-white/20"
                                 }`}
                         >
                             {plan.highlight && (
@@ -114,8 +114,8 @@ export default function PricingSection() {
                             <Link
                                 to={plan.name === "Empire Retail" ? "/contact" : "/ouvrir-boutique"}
                                 className={`w-full py-5 rounded-2xl font-black uppercase tracking-widest text-xs transition-all duration-300 flex items-center justify-center gap-2 ${plan.highlight
-                                        ? "bg-green-neon text-black hover:scale-[1.02] shadow-2xl"
-                                        : "bg-white/5 border border-white/10 text-white hover:bg-white/10"
+                                    ? "bg-green-neon text-black hover:scale-[1.02] shadow-2xl"
+                                    : "bg-white/5 border border-white/10 text-white hover:bg-white/10"
                                     }`}
                             >
                                 {plan.cta}

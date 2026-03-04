@@ -4,24 +4,20 @@ import { ChevronDown } from 'lucide-react';
 
 const faqs = [
   {
-    question: "Qu'est-ce que le CBD ?",
-    answer: "Le CBD (cannabidiol) est une molécule naturellement présente dans le chanvre. Contrairement au THC, il n'a pas d'effet psychotrope et ne provoque pas d'addiction. Il est reconnu pour ses propriétés relaxantes et apaisantes."
+    question: "Est-ce conforme à la législation française ?",
+    answer: "Oui, notre plateforme intègre nativement les contraintes légales. Les taux de THC sont vérifiables en cas de contrôle, les factures sont conformes, et les mentions légales obligatoires (avertissements) sont gérées automatiquement sur votre boutique en ligne."
   },
   {
-    question: "Le CBD est-il légal en France ?",
-    answer: "Oui, le CBD est 100% légal en France et en Europe, à condition que les produits finis (fleurs, huiles, résines) contiennent moins de 0.3% de THC, conformément à la législation en vigueur."
+    question: "L'IA peut-elle faire des recommandations médicales ?",
+    answer: "Non, et c'est une sécurité essentielle pour vous. L'IA BudTender est strictement bridée pour ne jamais émettre d'avis médical ou de promesse thérapeutique. Elle s'oriente uniquement sur le bien-être, les profils terpéniques et les effets ressentis, vous protégeant ainsi légalement."
   },
   {
-    question: "Quels sont les effets du CBD ?",
-    answer: "Le CBD interagit avec notre système endocannabinoïde. Nos clients l'utilisent principalement pour favoriser la détente, améliorer la qualité du sommeil, ou encore soulager certains inconforts physiques. Notez que le CBD n'est pas un médicament."
+    question: "Puis-je l'utiliser en magasin sans connexion ?",
+    answer: "Le POS (logiciel de caisse) nécessite une connexion internet pour synchroniser vos stocks et vos ventes en temps réel avec votre e-commerce et votre base client. Cependant, il est conçu pour être extrêmement léger et fonctionne parfaitement avec un simple partage de connexion 4G/5G."
   },
   {
-    question: "Proposez-vous la livraison à domicile ?",
-    answer: "Actuellement, pour vous garantir le meilleur conseil personnalisé, nos produits sont disponibles exclusivement dans notre boutique physique. Venez nous rencontrer !"
-  },
-  {
-    question: "Comment choisir le bon produit ?",
-    answer: "Le choix dépend de vos besoins (sommeil, détente, récupération) et de vos préférences de consommation (infusion, huile sublinguale, vaporisation). Nos experts en boutique sont là pour vous guider vers le produit le plus adapté."
+    question: "Puis-je importer mon catalogue existant (Shopify, Prestashop) ?",
+    answer: "Absolument. Vous pouvez importer facilement l'intégralité de votre catalogue (produits, variantes, prix, stocks) depuis un fichier CSV ou Excel. Notre équipe support basée en France est également disponible pour vous assister gratuitement lors de cette migration."
   }
 ];
 
