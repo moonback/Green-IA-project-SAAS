@@ -9,10 +9,12 @@ import { useAuthStore } from '../store/authStore';
 import { useSettingsStore } from '../store/settingsStore';
 import { useShopStore } from '../store/shopStore';
 import SEO from '../components/SEO';
+import { useShopPath } from '../hooks/useShopPath';
 import PromoCodeInput, { AppliedPromo } from '../components/PromoCodeInput';
 
 export default function Checkout() {
   const navigate = useNavigate();
+  const sp = useShopPath();
   const { user, profile, fetchProfile } = useAuthStore();
   const {
     items,
@@ -244,8 +246,7 @@ export default function Checkout() {
       }
 
       clearCart();
-      const confirmationPath = currentShop ? `/${currentShop.slug}/commande/confirmation` : '/commande/confirmation';
-      navigate(`${confirmationPath}?id=${order.id}`);
+      navigate(`${sp("/commande/confirmation")}?id=${order.id}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Une erreur est survenue. Veuillez réessayer.');
     } finally {
@@ -254,8 +255,7 @@ export default function Checkout() {
   };
 
   if (items.length === 0) {
-    const cartPath = currentShop ? `/${currentShop.slug}/panier` : '/panier';
-    navigate(cartPath);
+    navigate(sp("/panier"));
     return null;
   }
 
@@ -266,7 +266,7 @@ export default function Checkout() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-10">
           <div className="space-y-4">
-            <Link to={currentShop ? `/${currentShop.slug}/panier` : "/panier"} className="inline-flex items-center gap-2 text-zinc-500 hover:text-green-neon text-xs font-semibold uppercase tracking-wider transition-colors mb-2">
+            <Link to={sp("/panier")} className="inline-flex items-center gap-2 text-zinc-500 hover:text-green-neon text-xs font-semibold uppercase tracking-wider transition-colors mb-2">
               <ArrowLeft className="w-4 h-4" />
               Retour au Panier
             </Link>

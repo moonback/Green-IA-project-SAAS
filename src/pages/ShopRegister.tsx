@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Mail, Lock, User, Store } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import { useShopStore } from '../store/shopStore';
+import { useShopPath } from '../hooks/useShopPath';
 import SEO from '../components/SEO';
 
 export default function ShopRegister() {
@@ -11,6 +12,7 @@ export default function ShopRegister() {
   const { shopSlug } = useParams<{ shopSlug: string }>();
   const { currentShop } = useShopStore();
   const { signUp } = useAuthStore();
+  const sp = useShopPath();
 
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
@@ -28,7 +30,7 @@ export default function ShopRegister() {
     try {
       await signUp(email, password, fullName);
       setSuccess('Compte créé ! Vérifiez votre email pour confirmer votre inscription.');
-      setTimeout(() => navigate(`/${shopSlug}/connexion`), 1200);
+      setTimeout(() => navigate(sp('/connexion')), 1200);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Une erreur est survenue.';
       if (msg.includes('User already registered')) {
@@ -50,7 +52,7 @@ export default function ShopRegister() {
           <div className="absolute top-0 right-0 w-24 h-24 bg-green-neon/20 blur-2xl" />
 
           <div className="mb-6 flex items-center justify-between">
-            <Link to={`/${shopSlug}/connexion`} className="text-xs text-zinc-400 hover:text-white inline-flex items-center gap-2">
+            <Link to={sp('/connexion')} className="text-xs text-zinc-400 hover:text-white inline-flex items-center gap-2">
               <ArrowLeft className="w-4 h-4" /> Déjà client ? Connexion
             </Link>
             <span className="text-[10px] px-3 py-1 rounded-full border border-green-neon/30 bg-green-neon/10 text-green-neon uppercase tracking-widest font-black">
@@ -102,7 +104,7 @@ export default function ShopRegister() {
           </form>
 
           <div className="mt-8 pt-6 border-t border-zinc-800">
-            <Link to={`/${shopSlug}`} className="w-full inline-flex items-center justify-center gap-2 bg-zinc-800 hover:bg-zinc-700 rounded-2xl py-3.5 text-sm font-bold">
+            <Link to={sp('/')} className="w-full inline-flex items-center justify-center gap-2 bg-zinc-800 hover:bg-zinc-700 rounded-2xl py-3.5 text-sm font-bold">
               <Store className="w-4 h-4" /> Retour à la boutique
             </Link>
           </div>

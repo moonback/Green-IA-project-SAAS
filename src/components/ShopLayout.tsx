@@ -14,6 +14,8 @@ import { useShopTheme } from "../hooks/useShopTheme";
 import { ShopHeader } from "./shop/ShopHeader";
 import { ShopMobileMenu } from "./shop/ShopMobileMenu";
 import { ShopFooter } from "./shop/ShopFooter";
+import PromoBanner from "./PromoBanner";
+import LoyaltyWidget from "./LoyaltyWidget";
 
 /**
  * ShopLayout — Layout dédié aux boutiques.
@@ -65,12 +67,22 @@ export default function ShopLayout() {
                 fontFamily: shopFont,
             }}
         >
+            {/* Promo Banner */}
+            {currentShop?.settings?.theme?.show_banner && currentShop.settings.theme.banner_text && (
+                <PromoBanner
+                    text={currentShop.settings.theme.banner_text}
+                    bgColor={currentShop.settings.theme.banner_color || primaryColor}
+                    textColor={currentShop.settings.theme.banner_text_color || '#000000'}
+                />
+            )}
+
             <AgeGate />
             <CartSidebar />
             {settings.budtender_enabled && user && isRegisteredToShop && <BudTender />}
+            {user && isRegisteredToShop && (
+                <LoyaltyWidget primaryColor={primaryColor} />
+            )}
             <ToastContainer />
-
-
 
             <ShopHeader
                 currentShop={currentShop}

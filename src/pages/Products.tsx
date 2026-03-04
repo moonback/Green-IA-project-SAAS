@@ -14,8 +14,16 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import SEO from "../components/SEO";
+import { useShopPath } from "../hooks/useShopPath";
+import { useShopStore } from "../store/shopStore";
+import { useShopContent } from "../hooks/useShopContent";
 
 export default function Products() {
+  const sp = useShopPath();
+  const content = useShopContent();
+  const { currentShop } = useShopStore();
+  const primaryColor = currentShop?.settings?.primary_color || "#39ff14";
+
   const productsSchema = {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -35,9 +43,9 @@ export default function Products() {
   const categories = [
     {
       id: "n10",
-      title: "Molécule N10 Exclusive",
+      title: "Gamme N10 Exclusive",
       subtitle: "L'Innovation Moléculaire",
-      icon: <Zap className="h-6 w-6 text-green-neon" />,
+      icon: <Zap className="h-6 w-6" style={{ color: primaryColor }} />,
       description: "Le N10 est un dérivé du THC, avec une teneur en tétrahydrocannabinol plus faible. Cette molécule est plus puissante et plus intense que le CBNO.",
       image: "/images/presentation-cbd.png",
       tag: "Advanced Cannabinoids",
@@ -96,10 +104,10 @@ export default function Products() {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: "easeOut" }}
-            className="text-5xl md:text-7xl lg:text-8xl font-serif font-black tracking-tighter leading-[0.85] uppercase"
+            className="text-6xl md:text-8xl lg:text-9xl font-serif font-black tracking-tighter leading-[0.85] uppercase"
           >
             L'APOGÉE <br />
-            <span className="text-green-neon italic glow-green-strong">N10.</span>
+            <span className="italic glow-strong" style={{ color: primaryColor }}>N10.</span>
           </motion.h1>
 
           <motion.div
@@ -123,8 +131,9 @@ export default function Products() {
             className="pt-12"
           >
             <Link
-              to="/catalogue?search=N10"
-              className="px-12 py-6 bg-white text-black font-black rounded-2xl hover:bg-green-neon transition-all hover:scale-110 shadow-2xl uppercase tracking-widest text-xs"
+              to={sp("/catalogue?search=N10")}
+              className="px-12 py-6 bg-white text-black font-black rounded-2xl hover:scale-110 shadow-2xl uppercase tracking-widest text-[10px] transition-all"
+              style={{ "--hover-bg": primaryColor } as any}
             >
               Découvrir la Gamme N10
             </Link>
@@ -182,14 +191,14 @@ export default function Products() {
                 {/* Text Content */}
                 <div className="w-full lg:w-[55%] space-y-10">
                   <div className="space-y-4">
-                    <div className="inline-flex items-center gap-4 text-green-neon">
+                    <div className="inline-flex items-center gap-4" style={{ color: primaryColor }}>
                       {cat.icon}
-                      <span className="font-bold tracking-[0.2em] uppercase text-sm">{cat.subtitle}</span>
+                      <span className="font-bold tracking-[0.3em] uppercase text-xs">{cat.subtitle}</span>
                     </div>
-                    <h2 className="text-5xl md:text-6xl font-serif font-black text-white">
+                    <h2 className="text-5xl md:text-7xl font-serif font-black text-white">
                       {cat.title}
                     </h2>
-                    <p className="text-xl text-zinc-400 leading-relaxed font-light font-sans">
+                    <p className="text-xl text-zinc-500 leading-relaxed font-light font-sans max-w-2xl">
                       {cat.description}
                     </p>
                   </div>
@@ -205,26 +214,28 @@ export default function Products() {
                   </div>
 
                   {/* Gamme Preview */}
-                  <div className="bg-zinc-900/40 backdrop-blur-sm border border-white/5 rounded-[2.5rem] p-10 space-y-6">
-                    <h3 className="text-zinc-500 font-black text-xs uppercase tracking-[0.3em] flex items-center gap-3">
-                      <div className="w-8 h-[1px] bg-green-neon" />
+                  <div className="bg-zinc-900/40 backdrop-blur-xl border border-white/5 rounded-[3rem] p-12 space-y-8 relative overflow-hidden group/list">
+                    <div className="absolute top-0 right-0 w-32 h-32 blur-[60px] opacity-10" style={{ background: primaryColor }} />
+                    <h3 className="text-zinc-600 font-black text-[10px] uppercase tracking-[0.4em] flex items-center gap-4">
+                      <div className="w-12 h-[1px]" style={{ backgroundColor: primaryColor }} />
                       Les incontournables
                     </h3>
-                    <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-4 gap-x-6">
+                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-5 gap-x-8">
                       {cat.items.map((item, i) => (
-                        <li key={i} className="flex items-center gap-3 text-white group cursor-default">
-                          <div className="w-1.5 h-1.5 rounded-full bg-green-neon transition-transform group-hover:scale-150" />
-                          <span className="font-medium text-sm lg:text-base group-hover:text-green-neon transition-colors">{item}</span>
+                        <li key={i} className="flex items-center gap-4 text-white group/item cursor-default">
+                          <div className="w-1.5 h-1.5 rounded-full transition-all group-hover/item:scale-150" style={{ backgroundColor: primaryColor }} />
+                          <span className="font-medium text-sm group-hover:text-white transition-colors">{item}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
 
                   <Link
-                    to={`/catalogue?category=${cat.id}`}
-                    className="inline-flex items-center gap-4 bg-white text-black px-10 py-5 rounded-2xl font-black hover:bg-green-neon transition-all group"
+                    to={sp(`/catalogue?category=${cat.id}`)}
+                    className="inline-flex items-center gap-6 px-12 py-6 rounded-2xl font-black text-black transition-all group shadow-xl"
+                    style={{ backgroundColor: primaryColor }}
                   >
-                    Acheter cette gamme
+                    <span className="uppercase tracking-widest text-xs">Acheter cette gamme</span>
                     <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-2" />
                   </Link>
                 </div>
@@ -236,17 +247,19 @@ export default function Products() {
 
       {/* Global Commitment Bar */}
       <section className="mt-40 py-20 bg-zinc-900/30 border-y border-white/5">
-        <div className="page-block flex flex-wrap justify-around gap-8 text-center">
+        <div className="page-block flex flex-wrap justify-around gap-12 text-center">
           {[
-            { icon: <ShieldCheck className="w-8 h-8 text-green-neon mx-auto mb-4" />, title: "Légalité", text: "Taux THC < 0.3%" },
-            { icon: <Leaf className="h-8 w-8 text-green-neon mx-auto mb-4" />, title: "Naturel", text: "Culture organique" },
-            { icon: <Droplet className="h-8 w-8 text-green-neon mx-auto mb-4" />, title: "Pureté", text: "Sans additifs" },
-            { icon: <Info className="h-8 w-8 text-green-neon mx-auto mb-4" />, title: "Conseil", text: "Expertise locale" },
+            { icon: <ShieldCheck className="w-10 h-10 mx-auto mb-6" />, title: "Légalité", text: "Taux THC < 0.3%" },
+            { icon: <Leaf className="h-10 w-10 mx-auto mb-6" />, title: "Naturel", text: "Culture organique" },
+            { icon: <Droplet className="h-10 w-10 mx-auto mb-6" />, title: "Pureté", text: "Sans additifs" },
+            { icon: <Info className="h-10 w-10 mx-auto mb-6" />, title: "Conseil", text: "Expertise locale" },
           ].map((item, i) => (
-            <div key={i} className="space-y-1">
-              {item.icon}
-              <p className="font-bold text-white text-lg">{item.title}</p>
-              <p className="text-zinc-500 text-sm uppercase tracking-widest">{item.text}</p>
+            <div key={i} className="space-y-2 group">
+              <div className="transition-transform group-hover:scale-110 duration-500" style={{ color: primaryColor }}>
+                {item.icon}
+              </div>
+              <p className="font-black text-white text-xl uppercase tracking-tighter">{item.title}</p>
+              <p className="text-zinc-600 text-[10px] font-bold uppercase tracking-[0.2em]">{item.text}</p>
             </div>
           ))}
         </div>
@@ -265,30 +278,33 @@ export default function Products() {
           <div className="absolute inset-0 bg-gradient-to-br from-green-neon/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
 
           <div className="relative z-10 text-center space-y-10">
-            <ShoppingBag className="w-16 h-16 text-green-neon mx-auto animate-bounce-slow" />
+            <div style={{ color: primaryColor }}>
+              <ShoppingBag className="w-20 h-20 mx-auto animate-bounce-slow" />
+            </div>
             <div className="space-y-4">
-              <h2 className="text-5xl md:text-7xl font-serif font-black text-white italic">
-                L'expérience <br /> Green IA <span className="text-green-neon not-italic font-sans">Online.</span>
+              <h2 className="text-6xl md:text-8xl font-serif font-black text-white italic leading-tight">
+                L'expérience <br /> {currentShop?.id ? currentShop.name : 'Green IA'} <span className="not-italic font-sans" style={{ color: primaryColor }}>Online.</span>
               </h2>
-              <p className="text-xl text-zinc-400 font-light max-w-2xl mx-auto leading-relaxed">
+              <p className="text-xl text-zinc-500 font-light max-w-2xl mx-auto leading-relaxed">
                 Profitez du Click & Collect rapide à Paris ou de la livraison
                 discrète partout en France. Tous nos produits sont expédiés
                 dans des emballages neutres et hermétiques.
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center pt-8">
               <Link
-                to="/catalogue"
-                className="px-12 py-6 bg-green-neon text-black font-black rounded-2xl hover:glow-box-green transition-all transform hover:scale-105"
+                to={sp("/catalogue")}
+                className="px-12 py-7 text-black font-black rounded-2xl transition-all transform hover:scale-105 shadow-2xl shadow-primary/20"
+                style={{ backgroundColor: primaryColor }}
               >
-                Explorer le Catalogue
+                <span className="uppercase tracking-widest text-xs">Explorer le Catalogue</span>
               </Link>
               <Link
-                to="/contact"
-                className="px-12 py-6 bg-white/5 border border-white/20 text-white font-bold rounded-2xl hover:bg-white/10 transition-all flex items-center justify-center gap-3"
+                to={sp("/contact")}
+                className="px-12 py-7 bg-white/5 border border-white/20 text-white font-bold rounded-2xl hover:bg-white/10 transition-all flex items-center justify-center gap-4"
               >
-                Horaires de la Boutique
+                <span className="uppercase tracking-widest text-xs">Horaires de la Boutique</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>

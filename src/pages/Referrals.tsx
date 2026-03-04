@@ -18,8 +18,10 @@ import { useAuthStore } from '../store/authStore';
 import { useSettingsStore } from '../store/settingsStore';
 import { Referral } from '../lib/types';
 import SEO from '../components/SEO';
+import { useShopPath } from '../hooks/useShopPath';
 
 export default function Referrals() {
+    const sp = useShopPath();
     const { profile } = useAuthStore();
     const { settings } = useSettingsStore();
     const [referrals, setReferrals] = useState<Referral[]>([]);
@@ -60,7 +62,7 @@ export default function Referrals() {
         return (
             <div className="min-h-screen bg-zinc-950 text-white pt-24 pb-32 flex flex-col items-center justify-center px-4">
                 <SEO title="Parrainage — Green IA Privilège" description="Le programme de parrainage est temporairement désactivé." />
-                <Link to="/compte" className="inline-flex items-center gap-2 text-zinc-500 hover:text-green-neon text-[10px] font-black uppercase tracking-widest mb-12">
+                <Link to={sp("/compte")} className="inline-flex items-center gap-2 text-zinc-500 hover:text-green-neon text-[10px] font-black uppercase tracking-widest mb-12">
                     <ArrowLeft className="w-4 h-4" />
                     Retour au Compte
                 </Link>
@@ -80,7 +82,7 @@ export default function Referrals() {
             <SEO title="Parrainage — Green IA Privilège" description="Parrainez vos amis et gagnez des Carats." />
 
             <div className="max-w-4xl mx-auto px-4 sm:px-6">
-                <Link to="/compte" className="inline-flex items-center gap-2 text-zinc-500 hover:text-green-neon text-xs font-black uppercase tracking-widest transition-colors mb-12">
+                <Link to={sp("/compte")} className="inline-flex items-center gap-2 text-zinc-500 hover:text-green-neon text-xs font-black uppercase tracking-widest transition-colors mb-12">
                     <ArrowLeft className="w-4 h-4" />
                     Retour au Compte
                 </Link>

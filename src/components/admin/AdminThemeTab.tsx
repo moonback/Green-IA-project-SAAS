@@ -27,6 +27,7 @@ export interface ShopTheme {
     hero_image_url: string | null;
     logo_position: 'left' | 'center';
     show_banner: boolean;
+    banner_text: string;
     banner_color: string;
     banner_text_color: string;
     dark_mode: boolean;
@@ -183,6 +184,7 @@ const DEFAULT_THEME: ShopTheme = {
     hero_image_url: null,
     logo_position: 'left',
     show_banner: true,
+    banner_text: '🚚 Livraison offerte dès 50€ — Profitez-en !',
     banner_color: '#39ff14',
     banner_text_color: '#000000',
     dark_mode: true,
@@ -705,6 +707,27 @@ export default function AdminThemeTab() {
 
                             <div className="pt-2 border-t border-white/[0.05]">
                                 <p className="text-xs font-black uppercase tracking-widest text-zinc-500 mb-3">Bannière promotionnelle</p>
+                                {/* Show/hide toggle */}
+                                <div className="flex items-center justify-between mb-3 p-3 bg-white/[0.03] border border-white/[0.07] rounded-xl">
+                                    <span className="text-sm font-bold text-white">Afficher la bannière</span>
+                                    <button
+                                        onClick={() => updateTheme({ show_banner: !theme.show_banner })}
+                                        className={`w-12 h-6 rounded-full transition-all relative ${theme.show_banner ? 'bg-green-500' : 'bg-zinc-700'}`}
+                                    >
+                                        <div className={`absolute top-1 w-4 h-4 rounded-full bg-white shadow transition-all ${theme.show_banner ? 'left-7' : 'left-1'}`} />
+                                    </button>
+                                </div>
+                                {/* Banner text */}
+                                <div className="mb-3">
+                                    <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500 block mb-1.5">Texte de la bannière</label>
+                                    <input
+                                        type="text"
+                                        value={(theme as any).banner_text || ''}
+                                        onChange={(e) => updateTheme({ banner_text: e.target.value } as any)}
+                                        placeholder="ex: 🚚 Livraison offerte dès 50€ !"
+                                        className="w-full bg-zinc-800/80 border border-white/[0.06] rounded-xl px-4 py-2.5 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-white/20 transition-colors"
+                                    />
+                                </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     <ColorInput
                                         label="Fond bannière"

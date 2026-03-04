@@ -10,6 +10,7 @@ import { useCartStore } from '../store/cartStore';
 import { useBudTenderMemory } from '../hooks/useBudTenderMemory';
 import { useAuthStore } from '../store/authStore';
 import { useShopStore } from '../store/shopStore';
+import { useShopPath } from '../hooks/useShopPath';
 import { BudTenderWidget } from './budtender-ui';
 import VoiceAdvisor from './VoiceAdvisor';
 
@@ -29,6 +30,7 @@ import { BudTenderHistory } from './budtender/BudTenderHistory';
 export default function BudTender() {
     const navigate = useNavigate();
     const { shopSlug } = useParams<{ shopSlug: string }>();
+    const sp = useShopPath();
     const [isOpen, setIsOpen] = useState(false);
     const [products, setProducts] = useState<Product[]>([]);
     const [pulse, setPulse] = useState(false);
@@ -248,13 +250,11 @@ export default function BudTender() {
                 onHangup={() => setIsShrink(true)}
                 onAddItem={(p, q) => { addItem(p, q); openSidebar(); setIsShrink(true); }}
                 onViewProduct={(p) => {
-                    const path = shopSlug ? `/${shopSlug}/catalogue/${p.slug}` : `/catalogue/${p.slug}`;
-                    navigate(path);
+                    navigate(sp(`/catalogue/${p.slug}`));
                     setIsShrink(true);
                 }}
                 onNavigate={(path) => {
-                    const fullPath = shopSlug ? `/${shopSlug}${path}` : path;
-                    navigate(fullPath);
+                    navigate(sp(path));
                     setIsShrink(false);
                 }}
                 showUI={isOpen}
@@ -304,8 +304,7 @@ export default function BudTender() {
                                 handleAnswer={quizHook.handleAnswer}
                                 scrollRef={chatHook.scrollRef}
                                 onProductClick={(p) => {
-                                    const path = shopSlug ? `/${shopSlug}/catalogue/${p.slug}` : `/catalogue/${p.slug}`;
-                                    navigate(path);
+                                    navigate(sp(`/catalogue/${p.slug}`));
                                     setIsShrink(true);
                                 }}
                                 onAddToCart={(p) => { addItem(p); openSidebar(); setIsShrink(true); }}

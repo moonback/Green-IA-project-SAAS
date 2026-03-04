@@ -5,8 +5,10 @@ import { CheckCircle, Package, Truck, Clock, ArrowRight, Coins } from 'lucide-re
 import { supabase } from '../lib/supabase';
 import { Order } from '../lib/types';
 import SEO from '../components/SEO';
+import { useShopPath } from '../hooks/useShopPath';
 
 export default function OrderConfirmation() {
+  const sp = useShopPath();
   const [searchParams] = useSearchParams();
   const orderId = searchParams.get('id');
   const [order, setOrder] = useState<Order | null>(null);
@@ -122,14 +124,14 @@ export default function OrderConfirmation() {
           className="flex flex-col sm:flex-row gap-4 justify-center"
         >
           <Link
-            to="/compte/commandes"
+            to={sp("/compte/commandes")}
             className="flex items-center justify-center gap-2 bg-green-neon hover:bg-green-600 text-white font-semibold px-8 py-3 rounded-2xl transition-colors"
           >
             Mes commandes
             <ArrowRight className="w-4 h-4" />
           </Link>
           <Link
-            to="/catalogue"
+            to={sp("/catalogue")}
             className="flex items-center justify-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-white font-semibold px-8 py-3 rounded-2xl transition-colors"
           >
             Continuer mes achats

@@ -6,8 +6,10 @@ import { useSettingsStore } from '../store/settingsStore';
 import QuantitySelector from '../components/QuantitySelector';
 import SEO from '../components/SEO';
 import FreeShippingGauge from '../components/FreeShippingGauge';
+import { useShopPath } from '../hooks/useShopPath';
 
 export default function Cart() {
+  const sp = useShopPath();
   const {
     items,
     deliveryType,
@@ -48,7 +50,7 @@ export default function Cart() {
             </p>
           </div>
           <Link
-            to="/catalogue"
+            to={sp("/catalogue")}
             className="inline-flex items-center gap-3 bg-green-neon text-black font-semibold px-8 py-4 rounded-2xl hover:shadow-[0_0_20px_rgba(57,255,20,0.3)] transition-all shadow-2xl"
           >
             Découvrir le Catalogue
@@ -67,7 +69,7 @@ export default function Cart() {
         {/* Header Section */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
           <div className="space-y-4 text-center md:text-left">
-            <Link to="/catalogue" className="inline-flex items-center gap-2 text-zinc-500 hover:text-green-neon text-xs font-semibold uppercase tracking-wider transition-colors mb-2">
+            <Link to={sp("/catalogue")} className="inline-flex items-center gap-2 text-zinc-500 hover:text-green-neon text-xs font-semibold uppercase tracking-wider transition-colors mb-2">
               <ArrowLeft className="w-4 h-4" />
               Retour au Catalogue
             </Link>
@@ -108,7 +110,7 @@ export default function Cart() {
                     <div className="flex justify-between items-start">
                       <div className="space-y-1">
                         <Link
-                          to={`/catalogue/${product.slug}`}
+                          to={sp(`/catalogue/${product.slug}`)}
                           className="text-2xl font-serif font-bold hover:text-green-neon transition-colors"
                         >
                           {product.name}
@@ -231,7 +233,7 @@ export default function Cart() {
 
               <div className="space-y-4 pt-4">
                 <Link
-                  to="/commande"
+                  to={sp("/commande")}
                   className="block w-full bg-green-neon text-black text-center font-semibold py-4 rounded-2xl hover:shadow-[0_0_20px_rgba(57,255,20,0.3)] active:scale-[0.98] transition-all shadow-xl shadow-green-neon/10"
                 >
                   Payer la Sélection

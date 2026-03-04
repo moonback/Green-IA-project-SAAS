@@ -3,8 +3,10 @@ import { X, ShoppingCart, Trash2, Package, Truck, ShoppingBag, ArrowRight, Minus
 import { AnimatePresence, motion } from 'motion/react';
 import { useCartStore } from '../store/cartStore';
 import FreeShippingGauge from './FreeShippingGauge';
+import { useShopPath } from '../hooks/useShopPath';
 
 export default function CartSidebar() {
+  const sp = useShopPath();
   const {
     items,
     isOpen,
@@ -206,7 +208,7 @@ export default function CartSidebar() {
                     </div>
 
                     <div className="space-y-4">
-                      <Link to="/commande" onClick={closeSidebar} className="block w-full group">
+                      <Link to={sp("/commande")} onClick={closeSidebar} className="block w-full group">
                         <div className="bg-green-neon text-black font-semibold text-sm py-3.5 hover:shadow-[0_0_16px_rgba(57,255,20,0.3)] active:scale-[0.98] transition-all duration-300 uppercase tracking-wider rounded-xl flex items-center justify-center gap-3">
                           <span>Commander</span>
                           <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

@@ -9,6 +9,7 @@ import { useCartStore } from '../store/cartStore';
 import { useToastStore } from '../store/toastStore';
 import { useShopStore } from '../store/shopStore';
 import SEO from '../components/SEO';
+import { useShopPath } from '../hooks/useShopPath';
 
 const STATUS_LABELS: Record<string, { label: string; color: string }> = {
   pending: { label: 'EN ATTENTE', color: 'text-yellow-400 bg-yellow-400/5 border-yellow-400/20' },
@@ -21,6 +22,7 @@ const STATUS_LABELS: Record<string, { label: string; color: string }> = {
 };
 
 export default function Orders() {
+  const sp = useShopPath();
   const { user } = useAuthStore();
   const { currentShop } = useShopStore();
   const addItem = useCartStore((s) => s.addItem);
@@ -97,7 +99,7 @@ export default function Orders() {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
           <div className="space-y-4">
-            <Link to="/compte" className="inline-flex items-center gap-2 text-zinc-500 hover:text-green-neon text-xs font-black uppercase tracking-widest transition-colors mb-2">
+            <Link to={sp("/compte")} className="inline-flex items-center gap-2 text-zinc-500 hover:text-green-neon text-xs font-black uppercase tracking-widest transition-colors mb-2">
               <ArrowLeft className="w-4 h-4" />
               Retour au Hub
             </Link>
@@ -129,7 +131,7 @@ export default function Orders() {
               </p>
             </div>
             <Link
-              to="/catalogue"
+              to={sp("/catalogue")}
               className="bg-white text-black font-black uppercase tracking-widest px-10 py-5 rounded-2xl hover:bg-green-neon transition-all"
             >
               Découvrir le Catalogue
