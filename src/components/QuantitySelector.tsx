@@ -17,14 +17,14 @@ export default function QuantitySelector({
 }: QuantitySelectorProps) {
   const btnClass =
     size === 'sm'
-      ? 'w-7 h-7 flex items-center justify-center rounded-lg bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.06] transition-all disabled:opacity-50 disabled:cursor-not-allowed'
-      : 'w-9 h-9 flex items-center justify-center rounded-lg bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.06] transition-all disabled:opacity-50 disabled:cursor-not-allowed';
+      ? 'glass-button glass-button-ghost h-7 w-7 rounded-lg px-0 py-0 disabled:opacity-40 disabled:cursor-not-allowed'
+      : 'glass-button glass-button-ghost h-9 w-9 rounded-xl px-0 py-0 disabled:opacity-40 disabled:cursor-not-allowed';
 
   const iconClass = size === 'sm' ? 'w-3 h-3' : 'w-4 h-4';
   const textClass = size === 'sm' ? 'w-6 text-sm' : 'w-8 text-base';
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-1.5 py-1 backdrop-blur-xl">
       <button
         onClick={() => onChange(quantity - 1)}
         disabled={quantity <= min}
