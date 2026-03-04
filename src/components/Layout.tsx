@@ -449,7 +449,7 @@ export default function Layout() {
 
       {/* Footer */}
       <footer className="bg-black border-t border-white/[0.06] pt-24 pb-12">
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
+        <div className="max-w-12xl mx-auto px-5 sm:px-8 lg:px-12">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-16 md:gap-12 mb-20">
             {/* Brand */}
             <div className="space-y-6">
