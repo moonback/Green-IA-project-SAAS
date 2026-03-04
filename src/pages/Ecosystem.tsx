@@ -100,10 +100,10 @@ export default function Ecosystem() {
                         </p>
 
                         <div className="flex flex-col sm:flex-row items-stretch justify-center gap-4 w-full sm:w-auto">
-                            <Link to="/ouvrir-boutique" className="btn-primary px-10 py-5 text-base flex items-center justify-center gap-2 group">
-                                Devenir Partenaire <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                            <Link to="/ouvrir-boutique" className="btn-primary px-8 py-3.5 text-sm flex items-center justify-center gap-2 group">
+                                Devenir Partenaire <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                             </Link>
-                            <Link to="/contact" className="btn-secondary px-10 py-5 text-base flex items-center justify-center">
+                            <Link to="/contact" className="btn-secondary px-8 py-3.5 text-sm flex items-center justify-center">
                                 Documentation API
                             </Link>
                         </div>
