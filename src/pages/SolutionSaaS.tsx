@@ -72,7 +72,7 @@ export default function SolutionSaaS() {
                             L'écosystème ultime pour le retail CBD
                         </span>
 
-                        <h1 className="section-title text-5xl sm:text-7xl lg:text-8xl">
+                        <h1 className="section-title text-5xl sm:text-7xl lg:text-7xl">
                             Propulsez votre business avec <span className="glow-green italic text-green-neon">l'IA native</span>
                         </h1>
                         <p className="section-copy mt-8 max-w-2xl text-lg sm:text-xl font-light text-zinc-400">
