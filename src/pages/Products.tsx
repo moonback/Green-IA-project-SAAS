@@ -14,8 +14,10 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import SEO from "../components/SEO";
+import { useShopPath } from "../hooks/useShopPath";
 
 export default function Products() {
+  const sp = useShopPath();
   const productsSchema = {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -123,7 +125,7 @@ export default function Products() {
             className="pt-12"
           >
             <Link
-              to="/catalogue?search=N10"
+              to={sp("/catalogue?search=N10")}
               className="px-12 py-6 bg-white text-black font-black rounded-2xl hover:bg-green-neon transition-all hover:scale-110 shadow-2xl uppercase tracking-widest text-xs"
             >
               Découvrir la Gamme N10
@@ -221,7 +223,7 @@ export default function Products() {
                   </div>
 
                   <Link
-                    to={`/catalogue?category=${cat.id}`}
+                    to={sp(`/catalogue?category=${cat.id}`)}
                     className="inline-flex items-center gap-4 bg-white text-black px-10 py-5 rounded-2xl font-black hover:bg-green-neon transition-all group"
                   >
                     Acheter cette gamme
@@ -279,13 +281,13 @@ export default function Products() {
 
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <Link
-                to="/catalogue"
+                to={sp("/catalogue")}
                 className="px-12 py-6 bg-green-neon text-black font-black rounded-2xl hover:glow-box-green transition-all transform hover:scale-105"
               >
                 Explorer le Catalogue
               </Link>
               <Link
-                to="/contact"
+                to={sp("/contact")}
                 className="px-12 py-6 bg-white/5 border border-white/20 text-white font-bold rounded-2xl hover:bg-white/10 transition-all flex items-center justify-center gap-3"
               >
                 Horaires de la Boutique
