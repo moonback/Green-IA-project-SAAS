@@ -2,7 +2,7 @@ import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { Mail, Lock, User, Eye, EyeOff, LayoutDashboard, Store, CheckCircle, ArrowRight, Github, ArrowLeft } from 'lucide-react';
+import { Mail, Lock, User, Eye, EyeOff, LayoutDashboard, Store, CheckCircle, ArrowRight, ArrowLeft } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useAuthStore } from '../store/authStore';
 import SEO from '../components/SEO';
@@ -25,17 +25,6 @@ export default function Login() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  const handleSocialLogin = async (provider: 'google' | 'github') => {
-    try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider,
-        options: { redirectTo: window.location.origin + (shopSlug ? `/${shopSlug}/compte` : '/compte') }
-      });
-      if (error) throw error;
-    } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Connexion sociale impossible.');
-    }
-  };
 
   const handleResetPassword = async (e: FormEvent) => {
     e.preventDefault();
@@ -110,29 +99,28 @@ export default function Login() {
 
       <div className="min-h-screen bg-black flex overflow-hidden font-sans">
         {/* Left Side: Brand & Visuals (Hidden on mobile) */}
-        <div className="hidden lg:flex lg:w-1/2 relative flex-col justify-between p-12 overflow-hidden bg-zinc-950">
+        <div className="hidden lg:flex lg:w-1/2 relative flex-col justify-center p-16 lg:p-24 overflow-hidden bg-brand-950">
           <div className="absolute inset-0 z-0">
             <img
               src="/images/hero-premium.png"
               alt="Elite CBD Experience"
-              className="w-full h-full object-cover opacity-50 scale-105"
+              className="w-full h-full object-cover opacity-30 scale-110"
             />
-            <div className="absolute inset-0 bg-gradient-to-br from-zinc-950/90 via-zinc-950/20 to-zinc-950/90" />
-            <div className="absolute inset-0 bg-radial-gradient from-transparent to-zinc-950/40" />
+            <div className="absolute inset-0 bg-gradient-to-br from-brand-950/95 via-brand-950/40 to-brand-950" />
+            <div className="absolute inset-0 bg-radial-gradient from-transparent to-brand-950/60" />
+
+            {/* Texture Overlay */}
+            <div className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
           </div>
 
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="relative z-10"
+            className="absolute top-12 left-16 z-10"
           >
-            <Link to="/" className="flex items-center gap-2">
-              <div className="bg-green-neon p-1.5 rounded-lg shadow-[0_0_15px_rgba(20,229,148,0.4)]">
-                <img src="/logo.png" alt="Logo" className="w-8 h-8 rounded-full" />
-              </div>
-              <span className="text-2xl font-serif font-black text-white tracking-tight">
-                GREEN <span className="text-green-neon">IA</span>
-              </span>
+            <Link to="/" className="inline-flex items-center gap-2 text-zinc-500 hover:text-white transition-colors text-[10px] font-black uppercase tracking-widest group">
+              <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform" />
+              Retour à l'accueil
             </Link>
           </motion.div>
 
@@ -141,7 +129,7 @@ export default function Login() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="text-5xl font-serif font-bold text-white leading-tight mb-6"
+              className="text-6xl font-serif font-black text-white leading-[1.1] mb-6"
             >
               Votre univers <span className="text-green-neon italic">CBD</span>,<br />
               Propulsé par l'IA.
@@ -150,7 +138,7 @@ export default function Login() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="text-zinc-400 text-lg mb-8 leading-relaxed"
+              className="text-zinc-400 text-xl mb-10 leading-relaxed font-light"
             >
               Accédez à vos conseils personnalisés, vos produits favoris et votre programme de fidélité exclusif.
             </motion.p>
@@ -177,17 +165,26 @@ export default function Login() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="relative z-10 pt-8 border-t border-white/10"
+            transition={{ delay: 1 }}
+            className="absolute bottom-12 left-16 z-10 flex items-center gap-6"
           >
-            <p className="text-zinc-500 text-xs">© 2026 Green IA SaaS Platform. Tous droits réservés.</p>
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 rounded bg-white/10 flex items-center justify-center">
+                <img src="/logo.png" className="w-4 h-4 rounded-full opacity-60" alt="" />
+              </div>
+              <span className="text-[9px] font-black uppercase tracking-[0.3em] text-zinc-600">Green IA Secure</span>
+            </div>
+            <div className="h-px w-8 bg-white/10" />
+            <p className="text-zinc-600 text-[9px] uppercase tracking-widest">v4.2.026</p>
           </motion.div>
         </div>
 
         {/* Right Side: Form */}
-        <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-zinc-950 relative overflow-y-auto">
-          {/* Subtle background glow */}
-          <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-green-neon/5 blur-[120px] pointer-events-none" />
-          <div className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-green-neon/5 blur-[80px] pointer-events-none" />
+        <div className="w-full lg:w-1/2 flex items-center justify-center p-12 bg-brand-950 relative overflow-y-auto">
+          {/* Enhanced background glow */}
+          <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-green-neon/5 blur-[180px] pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-green-neon/5 blur-[140px] pointer-events-none" />
+          <div className="absolute inset-0 opacity-[0.02] pointer-events-none mix-blend-overlay bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -195,13 +192,13 @@ export default function Login() {
             className="w-full max-w-md relative z-10"
           >
             {/* Header for mobile only or small screens */}
-            <div className="lg:hidden text-center mb-10">
-              <img src="/logo.png" alt="Logo" className="w-20 h-20 rounded-full mx-auto mb-4 border-2 border-green-neon shadow-[0_0_20px_rgba(20,229,148,0.3)]" />
-              <h1 className="text-3xl font-serif font-bold text-white">Green IA</h1>
+            <div className="lg:hidden text-center mb-6">
+              <img src="/logo.png" alt="Logo" className="w-16 h-16 rounded-full mx-auto mb-3 border-2 border-green-neon shadow-[0_0_20px_rgba(20,229,148,0.3)]" />
+              <h1 className="text-2xl font-serif font-bold text-white">Green IA</h1>
             </div>
 
-            <div className="mb-8">
-              <h2 className="text-3xl font-serif font-bold text-white mb-2">
+            <div className="mb-6">
+              <h2 className="text-2xl font-serif font-bold text-white mb-1">
                 {isForgotMode
                   ? 'Paramètres d\'accès'
                   : (isShopAuth
@@ -219,30 +216,31 @@ export default function Login() {
             </div>
 
             <div
-              className={`backdrop-blur-xl rounded-3xl p-8 border shadow-2xl overflow-hidden relative group ${isShopAuth
-                ? 'bg-gradient-to-b from-zinc-900/90 to-zinc-950 border-green-neon/30 shadow-[0_0_40px_rgba(20,229,148,0.08)]'
-                : 'bg-zinc-900/50 border-zinc-800'
+              className={`backdrop-blur-3xl rounded-[2.5rem] p-10 border shadow-2xl overflow-hidden relative group ${isShopAuth
+                ? 'bg-gradient-to-b from-zinc-900/95 to-zinc-950 border-green-neon/30 shadow-[0_20px_80px_rgba(20,229,148,0.12)]'
+                : 'bg-zinc-900/40 border-white/5 shadow-[0_20px_80px_rgba(0,0,0,0.4)]'
                 }`}
             >
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-green-neon/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               {/* Animated corner accent */}
               <div className={`absolute top-0 right-0 w-24 h-24 blur-2xl transition-all duration-700 ${isShopAuth ? 'bg-green-neon/20 group-hover:bg-green-neon/30' : 'bg-green-neon/10 group-hover:bg-green-neon/20'}`} />
 
               {isShopAuth && !isForgotMode && (
-                <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-green-neon/30 bg-green-neon/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-green-neon">
-                  <Store className="w-3.5 h-3.5" />
+                <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-green-neon/30 bg-green-neon/10 px-3 py-1.5 text-[9px] font-black uppercase tracking-widest text-green-neon">
+                  <Store className="w-3 h-3" />
                   Espace client boutique
                 </div>
               )}
 
               {/* Tabs (Hidden in forgot mode) */}
               {!isForgotMode && isShopAuth && (
-                <div className="flex mb-8 bg-black/50 rounded-2xl p-1.5 border border-green-neon/20">
+                <div className="flex mb-6 bg-black/50 rounded-xl p-1 border border-green-neon/20">
                   {(['login', 'register'] as Mode[]).map((m) => (
                     <button
                       key={m}
                       onClick={() => { setMode(m); setError(''); setSuccess(''); }}
-                      className={`flex-1 py-3 rounded-xl text-sm font-semibold transition-all duration-300 ${mode === m
-                        ? 'bg-green-neon text-black shadow-[0_8px_20px_rgba(20,229,148,0.35)]'
+                      className={`flex-1 py-2.5 rounded-[0.9rem] text-xs font-semibold transition-all duration-300 ${mode === m
+                        ? 'bg-green-neon text-black shadow-[0_4px_12px_rgba(20,229,148,0.2)]'
                         : 'text-zinc-500 hover:text-white hover:bg-white/5'
                         }`}
                     >
@@ -261,13 +259,13 @@ export default function Login() {
                 </button>
               )}
 
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form onSubmit={handleSubmit} className="space-y-4">
                 {mode === 'register' && isShopAuth && (
                   <motion.div
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                   >
-                    <label className="block text-[11px] uppercase tracking-widest font-bold text-zinc-500 mb-2 ml-1">Nom complet</label>
+                    <label className="block text-[10px] uppercase tracking-widest font-bold text-zinc-500 mb-1.5 ml-1">Nom complet</label>
                     <div className="relative group">
                       <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600 group-focus-within:text-green-neon transition-colors" />
                       <input
@@ -275,7 +273,7 @@ export default function Login() {
                         value={fullName}
                         onChange={(e) => setFullName(e.target.value)}
                         placeholder="Jean Dupont"
-                        className="w-full bg-black/40 border border-zinc-800 rounded-2xl pl-12 pr-4 py-4 text-white placeholder-zinc-700 focus:outline-none focus:border-green-neon focus:ring-1 focus:ring-green-neon/20 transition-all outline-none"
+                        className="w-full bg-black/40 border border-zinc-800 rounded-xl pl-11 pr-4 py-3 text-white text-sm placeholder-zinc-700 focus:outline-none focus:border-green-neon focus:ring-1 focus:ring-green-neon/20 transition-all outline-none"
                         required
                       />
                     </div>
@@ -283,7 +281,7 @@ export default function Login() {
                 )}
 
                 <div>
-                  <label className="block text-[11px] uppercase tracking-widest font-bold text-zinc-500 mb-2 ml-1">{isShopAuth ? 'Email client' : 'Email'}</label>
+                  <label className="block text-[10px] uppercase tracking-widest font-bold text-zinc-500 mb-1.5 ml-1">{isShopAuth ? 'Email client' : 'Email'}</label>
                   <div className="relative group">
                     <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-600 group-focus-within:text-green-neon transition-colors" />
                     <input
@@ -291,7 +289,7 @@ export default function Login() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="votre@email.fr"
-                      className="w-full bg-black/40 border border-zinc-800 rounded-2xl pl-12 pr-4 py-4 text-white placeholder-zinc-700 focus:outline-none focus:border-green-neon focus:ring-1 focus:ring-green-neon/20 transition-all outline-none"
+                      className="w-full bg-black/40 border border-zinc-800 rounded-xl pl-11 pr-4 py-3 text-white text-sm placeholder-zinc-700 focus:outline-none focus:border-green-neon focus:ring-1 focus:ring-green-neon/20 transition-all outline-none"
                       required
                     />
                   </div>
@@ -299,13 +297,13 @@ export default function Login() {
 
                 {!isForgotMode && (
                   <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <label className="text-[11px] uppercase tracking-widest font-bold text-zinc-500 ml-1">Mot de passe</label>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <label className="text-[10px] uppercase tracking-widest font-bold text-zinc-500 ml-1">Mot de passe</label>
                       {mode === 'login' && (
                         <button
                           type="button"
                           onClick={() => setIsForgotMode(true)}
-                          className="text-[10px] uppercase font-bold text-zinc-600 hover:text-green-neon transition-colors"
+                          className="text-[9px] uppercase font-bold text-zinc-600 hover:text-green-neon transition-colors"
                         >
                           Oublié ?
                         </button>
@@ -318,7 +316,7 @@ export default function Login() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         placeholder="••••••••"
-                        className="w-full bg-black/40 border border-zinc-800 rounded-2xl pl-12 pr-12 py-4 text-white placeholder-zinc-700 focus:outline-none focus:border-green-neon focus:ring-1 focus:ring-green-neon/20 transition-all outline-none"
+                        className="w-full bg-black/40 border border-zinc-800 rounded-xl pl-11 pr-11 py-3 text-white text-sm placeholder-zinc-700 focus:outline-none focus:border-green-neon focus:ring-1 focus:ring-green-neon/20 transition-all outline-none"
                         required
                         minLength={6}
                       />
@@ -327,7 +325,7 @@ export default function Login() {
                         onClick={() => setShowPassword(!showPassword)}
                         className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-600 hover:text-white transition-colors"
                       >
-                        {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                        {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                       </button>
                     </div>
                   </div>
@@ -350,89 +348,61 @@ export default function Login() {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full bg-white hover:bg-green-neon text-black font-bold py-4 rounded-2xl transition-all duration-300 transform active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2 group"
+                  className="w-full bg-white hover:bg-green-neon text-black font-bold py-3.5 rounded-xl transition-all duration-300 transform active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2 group text-sm"
                 >
                   {isLoading ? (
-                    <span className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin" />
+                    <span className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin" />
                   ) : (
                     <>
                       {isForgotMode
                         ? 'Envoyer le lien'
                         : (mode === 'login'
-                          ? (isShopAuth ? 'Se connecter' : 'Accéder au dashboard SaaS')
-                          : 'Confirmer l\'inscription')}
+                          ? (isShopAuth ? 'Se connecter' : 'Accéder au Dashboard')
+                          : 'Confirmer')}
                       <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </>
                   )}
                 </button>
               </form>
 
-              {/* Social Login Divider */}
-              {!isForgotMode && (
-                <>
-                  <div className="relative my-8 text-center">
-                    <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-zinc-800"></div></div>
-                    <span className="relative z-10 bg-[#161616] px-4 text-[10px] text-zinc-600 uppercase tracking-widest font-bold">Ou continuer avec</span>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-3">
-                    <button
-                      type="button"
-                      onClick={() => handleSocialLogin('google')}
-                      className="flex items-center justify-center gap-3 bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-bold py-3.5 rounded-2xl transition-all group"
-                    >
-                      <img src="https://www.google.com/favicon.ico" className="w-4 h-4 grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100" />
-                      Google
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleSocialLogin('github')}
-                      className="flex items-center justify-center gap-3 bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-bold py-3.5 rounded-2xl transition-all group"
-                    >
-                      <Github className="w-4 h-4 text-zinc-500 group-hover:text-white" />
-                      GitHub
-                    </button>
-                  </div>
-                </>
-              )}
             </div>
 
             {isShopAuth && (
-              <div className="mt-10 pt-8 border-t border-zinc-800">
+              <div className="mt-8 pt-6 border-t border-zinc-900">
                 <Link
                   to="/ouvrir-boutique"
-                  className="bg-gradient-to-r from-green-neon/5 to-transparent border border-green-neon/20 rounded-2xl p-5 flex items-center justify-between group cursor-pointer hover:border-green-neon/40 transition-all w-full text-left"
+                  className="bg-zinc-900/40 border border-white/5 rounded-2xl p-4 flex items-center justify-between group cursor-pointer hover:border-green-neon/20 transition-all w-full text-left"
                 >
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-green-neon/10 flex items-center justify-center text-green-neon">
-                      <Store className="w-5 h-5" />
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-green-neon/10 flex items-center justify-center text-green-neon">
+                      <Store className="w-4 h-4" />
                     </div>
                     <div>
-                      <p className="text-sm font-bold text-white">Vous êtes un professionnel ?</p>
-                      <p className="text-xs text-zinc-500">Ouvrez votre propre boutique SaaS CBD.</p>
+                      <p className="text-xs font-bold text-white leading-none mb-1">Vous êtes un professionnel ?</p>
+                      <p className="text-[10px] text-zinc-500 leading-none">Ouvrez votre propre boutique SaaS CBD.</p>
                     </div>
                   </div>
-                  <ArrowRight className="w-5 h-5 text-zinc-600 group-hover:text-green-neon transition-colors" />
+                  <ArrowRight className="w-4 h-4 text-zinc-700 group-hover:text-green-neon transition-colors" />
                 </Link>
               </div>
             )}
 
             {!isShopAuth && (
-              <div className="mt-10 pt-8 border-t border-zinc-800">
+              <div className="mt-8 pt-6 border-t border-zinc-900">
                 <Link
                   to="/ouvrir-boutique"
-                  className="bg-gradient-to-r from-green-neon/5 to-transparent border border-green-neon/20 rounded-2xl p-5 flex items-center justify-between group cursor-pointer hover:border-green-neon/40 transition-all w-full text-left"
+                  className="bg-zinc-900/40 border border-white/5 rounded-2xl p-4 flex items-center justify-between group cursor-pointer hover:border-green-neon/20 transition-all w-full text-left"
                 >
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-green-neon/10 flex items-center justify-center text-green-neon">
-                      <LayoutDashboard className="w-5 h-5" />
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-green-neon/10 flex items-center justify-center text-green-neon">
+                      <LayoutDashboard className="w-4 h-4" />
                     </div>
                     <div>
-                      <p className="text-sm font-bold text-white">Pas encore de boutique SaaS ?</p>
-                      <p className="text-xs text-zinc-500">Créez votre espace gérant et votre boutique en quelques étapes.</p>
+                      <p className="text-xs font-bold text-white leading-none mb-1">Pas encore de boutique ?</p>
+                      <p className="text-[10px] text-zinc-500 leading-none">Devenez gérant en quelques clics.</p>
                     </div>
                   </div>
-                  <ArrowRight className="w-5 h-5 text-zinc-600 group-hover:text-green-neon transition-colors" />
+                  <ArrowRight className="w-4 h-4 text-zinc-700 group-hover:text-green-neon transition-colors" />
                 </Link>
               </div>
             )}
