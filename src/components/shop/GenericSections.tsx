@@ -194,15 +194,23 @@ export function InstagramFeedSection({ primaryColor, settings }: { primaryColor:
                 </div>
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {[1, 2, 3, 4].map(idx => (
+                    {[
+                        'photo-1596755094514-f87034a2612d',
+                        'photo-1584467541268-b040f83be3fd',
+                        'photo-1623912173595-31633534b868',
+                        'photo-1606813907291-d86efa9b94db'
+                    ].map((photoId, idx) => (
                         <div key={idx} className="relative aspect-square rounded-[2rem] overflow-hidden bg-zinc-900 group">
                             <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity z-10 flex items-center justify-center">
                                 <Instagram className="w-8 h-8 text-white" />
                             </div>
                             <img
-                                src={`https://images.unsplash.com/photo-1611080626919-7cf5a9dcab5b?auto=format&fit=crop&q=80&w=400&h=400&v=${idx}`}
+                                src={`https://images.unsplash.com/${photoId}?auto=format&fit=crop&q=80&w=400&h=400`}
                                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                                 alt="Insta Post"
+                                onError={(e) => {
+                                    (e.target as HTMLImageElement).src = `https://images.pexels.com/photos/6588619/pexels-photo-6588619.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop`;
+                                }}
                             />
                         </div>
                     ))}

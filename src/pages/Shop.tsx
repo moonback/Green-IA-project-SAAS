@@ -65,6 +65,9 @@ export default function Shop() {
             src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop"
             alt="Intérieur de la boutique Green IA"
             className="w-full h-full object-cover opacity-30"
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = "https://images.pexels.com/photos/606506/pexels-photo-606506.jpeg?auto=compress&cs=tinysrgb&w=2000";
+            }}
           />
           <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/20 via-zinc-950/60 to-zinc-950" />
         </div>
@@ -147,6 +150,9 @@ export default function Shop() {
                   src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?q=80&w=2070&auto=format&fit=crop"
                   alt="Détails de notre boutique"
                   className="w-full h-full object-cover grayscale-[20%] hover:grayscale-0 transition-all duration-1000"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = "https://images.pexels.com/photos/3734796/pexels-photo-3734796.jpeg?auto=compress&cs=tinysrgb&w=2000";
+                  }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-tr from-zinc-950/60 via-transparent to-transparent" />
               </div>
