@@ -61,6 +61,7 @@ import ProductImageUpload from '../components/admin/ProductImageUpload';
 import AdminThemeTab from '../components/admin/AdminThemeTab';
 import AdminContentTab from '../components/admin/AdminContentTab';
 import AdminLayoutTab from '../components/admin/AdminLayoutTab';
+import { seedDemoProducts } from '../lib/demoData';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -199,6 +200,9 @@ export default function Admin() {
 
   // ── Stock adjustment ──
   const [stockAdjust, setStockAdjust] = useState<{ id: string; qty: string; note: string } | null>(null);
+
+  // ── Demo Data ──
+  const [isSeeding, setIsSeeding] = useState(false);
 
   // ── Tabs ──
   const tabs: { key: Tab; label: string; icon: ElementType }[] = [
@@ -553,6 +557,24 @@ export default function Admin() {
       alert('Erreur lors de la sauvegarde des paramètres.');
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  const handleSeedDemoProducts = async () => {
+    if (!currentShop) return;
+    if (!confirm('Ajouter 10 produits de démonstration à votre boutique ?')) return;
+
+    setIsSeeding(true);
+    try {
+      await seedDemoProducts(currentShop.id);
+      await loadProducts();
+      await loadCategories();
+      alert('10 produits de démonstration ont été ajoutés avec succès !');
+    } catch (err) {
+      console.error('Error seeding products:', err);
+      alert('Erreur lors de l\'ajout des produits de démonstration.');
+    } finally {
+      setIsSeeding(false);
     }
   };
 
@@ -1286,6 +1308,33 @@ export default function Admin() {
                         </div>
                       ))}
                     </div>
+                    {/* Quick actions for empty stores */}
+                    {products.length === 0 && (
+                      <div className="bg-green-primary/10 border border-green-primary/30 rounded-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-6">
+                        <div className="space-y-2">
+                          <h3 className="text-xl font-serif font-bold text-white">Bienvenue dans votre boutique ! 🌿</h3>
+                          <p className="text-zinc-400 text-sm max-w-lg">
+                            Commencez par ajouter vos premiers produits. Vous pouvez les créer un par un ou ajouter 10 produits de démonstration pertinents pour tester votre catalogue instantanément.
+                          </p>
+                        </div>
+                        <div className="flex gap-4 shrink-0">
+                          <button
+                            onClick={() => { setTab('products'); openProductModal(); }}
+                            className="bg-green-neon hover:bg-green-600 text-white text-sm font-semibold px-6 py-3 rounded-xl transition-colors"
+                          >
+                            Créer un produit
+                          </button>
+                          <button
+                            onClick={handleSeedDemoProducts}
+                            disabled={isSeeding}
+                            className="bg-zinc-800 hover:bg-zinc-700 disabled:opacity-50 text-white text-sm font-semibold px-6 py-3 rounded-xl border border-zinc-700 transition-colors flex items-center gap-2"
+                          >
+                            <RefreshCw className={`w-4 h-4 ${isSeeding ? 'animate-spin' : ''}`} />
+                            {isSeeding ? 'Ajout...' : 'Ajouter 10 produits démo'}
+                          </button>
+                        </div>
+                      </div>
+                    )}
 
                     {/* Stock alerts */}
                     {(stats.productsOutOfStock > 0 || stats.productsLowStock > 0) && (
@@ -1391,7 +1440,14 @@ export default function Admin() {
                         Nouveau produit
                       </button>
 
-
+                      <button
+                        onClick={handleSeedDemoProducts}
+                        disabled={isSeeding}
+                        className="flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 disabled:opacity-50 text-white text-sm font-semibold px-4 py-2.5 rounded-xl border border-zinc-700 transition-colors"
+                      >
+                        <RefreshCw className={`w-4 h-4 ${isSeeding ? 'animate-spin' : ''}`} />
+                        {isSeeding ? 'Ajout en cours...' : 'Ajouter 10 produits démo'}
+                      </button>
                     </div>
 
                     <div className="bg-zinc-900 rounded-2xl border border-zinc-800 overflow-hidden">

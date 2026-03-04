@@ -89,7 +89,7 @@ export default function ProductDetail() {
       query.eq('shop_id', currentShop.id);
     }
 
-    query.single()
+    query.maybeSingle()
       .then(({ data, error }) => {
         if (error || !data) {
           navigate(sp('/catalogue'), { replace: true });
