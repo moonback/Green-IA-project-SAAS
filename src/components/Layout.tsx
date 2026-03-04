@@ -155,7 +155,7 @@ export default function Layout() {
                   <Link
                     key={link.path}
                     to={link.path}
-                    className={`relative px-5 py-2.5 text-xs font-black uppercase tracking-[0.2em] transition-all duration-500 rounded-xl group ${isActive ? "text-black" : "text-zinc-500 hover:text-white"
+                    className={`relative px-5 py-2.5 text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-500 rounded-xl group ${isActive ? "text-black" : "text-zinc-500 hover:text-white"
                       }`}
                   >
                     <span className="relative z-10">{link.name}</span>
@@ -192,12 +192,12 @@ export default function Layout() {
                       )}
                     </div>
                     <div className="hidden md:flex flex-col items-start pr-3">
-                      <span className="text-xs font-black text-white uppercase tracking-tighter mb-0.5 group-hover:text-green-neon transition-colors">
+                      <span className="text-[10px] font-black text-white uppercase tracking-tighter mb-0.5 group-hover:text-green-neon transition-colors">
                         {profile?.full_name?.split(" ")[0] ?? "Profil"}
                       </span>
                       <div className="flex items-center gap-1.5">
                         <span className="w-1 h-1 rounded-full bg-green-neon animate-pulse" />
-                        <span className="text-xs font-bold text-zinc-500 uppercase tracking-widest leading-none">Console</span>
+                        <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest leading-none">Console</span>
                       </div>
                     </div>
                     <ChevronDown className={`hidden md:block w-3 h-3 text-zinc-500 mr-2 transition-transform duration-500 ${isAccountMenuOpen ? 'rotate-180 text-green-neon' : ''}`} />
@@ -212,7 +212,7 @@ export default function Layout() {
                         className="absolute right-0 top-full mt-4 w-72 bg-zinc-900/95 backdrop-blur-3xl border border-white/[0.1] rounded-[2.5rem] shadow-[0_30px_80px_rgba(0,0,0,0.8)] overflow-hidden z-50 p-4"
                       >
                         <div className="px-5 py-5 mb-3 bg-white/[0.03] rounded-3xl border border-white/[0.05]">
-                          <p className="text-xs font-black uppercase tracking-[0.3em] text-zinc-500 mb-2">Cloud Intelligence</p>
+                          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-500 mb-2">Cloud Intelligence</p>
                           <h3 className="text-white font-serif font-black text-xl leading-tight mb-2">{profile?.full_name}</h3>
                           <div className="flex items-center gap-2">
                             {profile?.is_admin && (
