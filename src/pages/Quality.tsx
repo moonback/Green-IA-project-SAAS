@@ -19,7 +19,7 @@ import {
 export default function Quality() {
   const content = useShopContent();
   const { currentShop } = useShopStore();
-  const { qualitySections } = useShopLayout();
+  const { qualitySections, globalSections } = useShopLayout();
   const primaryColor = currentShop?.settings?.primary_color || '#39ff14';
 
   const pillars = [
@@ -293,7 +293,9 @@ export default function Quality() {
         description="Découvrez comment Green IA protège votre activité et vous aide à vendre en confiance."
       />
 
+      {globalSections.filter(s => s.type === 'announcement' || s.type === 'reassurance').map(renderSection)}
       {qualitySections.map(renderSection)}
+      {globalSections.filter(s => s.type !== 'announcement' && s.type !== 'reassurance').map(renderSection)}
     </div>
   );
 }

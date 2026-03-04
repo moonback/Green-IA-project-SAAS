@@ -27,7 +27,7 @@ export default function ShopAbout() {
     const settings = useSettingsStore((s) => s.settings);
     const shopPath = useShopPath();
     const content = useShopContent();
-    const { aboutSections } = useShopLayout();
+    const { aboutSections, globalSections } = useShopLayout();
 
     if (!currentShop) return null;
 
@@ -228,7 +228,9 @@ export default function ShopAbout() {
                 description={`Découvrez l'univers ${shopName}. Nos valeurs, notre histoire et notre engagement pour un CBD de qualité.`}
             />
 
+            {globalSections.filter(s => s.type === 'announcement' || s.type === 'reassurance').map(renderSection)}
             {aboutSections.map(renderSection)}
+            {globalSections.filter(s => s.type !== 'announcement' && s.type !== 'reassurance').map(renderSection)}
         </div>
     );
 }
