@@ -26,6 +26,35 @@ import { BudTenderChat } from './budtender/BudTenderChat';
 import { BudTenderQuiz } from './budtender/BudTenderQuiz';
 import { BudTenderHistory } from './budtender/BudTenderHistory';
 
+
+
+const CONTEXT_THEMES = {
+    sleep: {
+        name: 'Nuit profonde',
+        accent: '#60a5fa',
+        aura: 'rgba(96,165,250,0.25)',
+        bg: 'from-slate-950 via-blue-950/80 to-slate-950',
+    },
+    stress: {
+        name: 'Brume sauge',
+        accent: '#6ee7b7',
+        aura: 'rgba(110,231,183,0.24)',
+        bg: 'from-emerald-950 via-teal-950/70 to-zinc-950',
+    },
+    pain: {
+        name: 'Ambre recovery',
+        accent: '#f59e0b',
+        aura: 'rgba(245,158,11,0.2)',
+        bg: 'from-zinc-950 via-amber-950/60 to-zinc-950',
+    },
+    wellness: {
+        name: 'Zen botanique',
+        accent: '#34d399',
+        aura: 'rgba(52,211,153,0.2)',
+        bg: 'from-zinc-950 via-emerald-950/60 to-zinc-950',
+    },
+} as const;
+
 export default function BudTender() {
     const navigate = useNavigate();
     const { shopSlug } = useParams<{ shopSlug: string }>();
@@ -124,6 +153,9 @@ export default function BudTender() {
         chatHook.addUserMessage,
         generateRecommendations
     );
+
+    const contextGoal = quizHook.answers.goal || memory.savedPrefs?.goal || 'wellness';
+    const currentTheme = CONTEXT_THEMES[(contextGoal as keyof typeof CONTEXT_THEMES)] || CONTEXT_THEMES.wellness;
 
     // ── Side Effects ──
     useEffect(() => {
@@ -266,8 +298,16 @@ export default function BudTender() {
                         initial={{ opacity: 0, scale: 1.05 }}
                         animate={isShrink ? { opacity: 0, scale: 0.8, y: 100, pointerEvents: 'none' } : { opacity: 1, scale: 1, y: 0, pointerEvents: 'auto' }}
                         exit={{ opacity: 0, scale: 1.05 }}
-                        className="fixed inset-0 z-[9999] bg-zinc-950/98 backdrop-blur-3xl flex flex-col overflow-hidden origin-bottom-right"
+                        className={`fixed inset-0 z-[9999] bg-linear-to-br ${currentTheme.bg} backdrop-blur-3xl flex flex-col overflow-hidden origin-bottom-right`}
                     >
+                        <div className="pointer-events-none absolute inset-0">
+                            <div
+                                className="absolute -top-24 right-[-10%] h-[360px] w-[360px] rounded-full blur-[120px]"
+                                style={{ background: currentTheme.aura }}
+                            />
+                        </div>
+
+                        <div className="relative z-10 flex h-full flex-col">
                         <BudTenderHeader
                             isLoggedIn={memory.isLoggedIn}
                             userName={memory.userName}
@@ -328,11 +368,13 @@ export default function BudTender() {
                             {/* CTAs */}
                             <div className="max-w-7xl mx-auto w-full px-5 pointer-events-none">
                                 {showStartButton && (
-                                    <div className="flex justify-center py-10 pointer-events-auto">
+                                    <div className="flex flex-col items-center justify-center gap-3 py-10 pointer-events-auto">
+                                        <span className="glass-badge" style={{ color: currentTheme.accent, borderColor: `${currentTheme.accent}55` }}>Thème actif · {currentTheme.name}</span>
                                         <motion.button
                                             whileHover={{ scale: 1.05 }}
                                             onClick={quizHook.startQuiz}
-                                            className="bg-green-neon text-black font-black px-12 py-5 rounded-2xl flex items-center gap-3 shadow-2xl shadow-green-neon/20"
+                                            className="text-zinc-950 font-black px-12 py-5 rounded-2xl flex items-center gap-3 shadow-2xl"
+                                            style={{ backgroundColor: currentTheme.accent, boxShadow: `0 18px 40px ${currentTheme.aura}` }}
                                         >
                                             <Sparkles className="w-5 h-5" />
                                             Lancer mon diagnostic personnalisé
@@ -350,7 +392,8 @@ export default function BudTender() {
                                                     await generateRecommendations(prefs as any);
                                                 }
                                             }}
-                                            className="bg-green-neon text-black font-black px-8 py-4 rounded-2xl flex items-center gap-2 shadow-xl"
+                                            className="text-zinc-950 font-black px-8 py-4 rounded-2xl flex items-center gap-2 shadow-xl"
+                                            style={{ backgroundColor: currentTheme.accent }}
                                         >
                                             <Sparkles className="w-4 h-4" />
                                             Recommandations rapides
@@ -365,6 +408,7 @@ export default function BudTender() {
                                     </div>
                                 )}
                             </div>
+                        </div>
                         </div>
                     </motion.div>
                 )}

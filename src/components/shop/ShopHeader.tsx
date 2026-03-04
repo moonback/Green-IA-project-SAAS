@@ -49,7 +49,7 @@ export function ShopHeader({
             transition={{ type: "spring", stiffness: 100, damping: 20 }}
             className="sticky top-0 z-[999] w-full"
         >
-            <div className="absolute inset-0 bg-zinc-950/90 backdrop-blur-3xl border-b border-white/[0.04] shadow-[0_8px_32px_rgba(0,0,0,0.5)]" />
+            <div className="absolute inset-0 bg-linear-to-r from-zinc-950/92 via-zinc-900/90 to-zinc-950/92 backdrop-blur-3xl border-b border-white/12 shadow-[0_10px_36px_rgba(0,0,0,0.55)]" />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div className="flex items-center justify-between h-20 md:h-24">
@@ -57,7 +57,7 @@ export function ShopHeader({
                     {/* Mobile Menu Trigger */}
                     <div className="lg:hidden">
                         <button
-                            className="p-2.5 text-zinc-400 hover:text-white bg-white/[0.04] rounded-xl border border-white/[0.08] transition-all active:scale-95"
+                            className="rounded-xl border border-white/12 bg-white/6 p-2.5 text-zinc-300 transition-all hover:border-emerald-200/35 hover:text-emerald-100 active:scale-95"
                             onClick={onMenuToggle}
                             aria-label="Ouvrir le menu"
                         >
@@ -85,14 +85,14 @@ export function ShopHeader({
                             <h1 className="text-lg font-black text-white tracking-tight leading-none group-hover:text-green-400 transition-colors">
                                 {shopName}
                             </h1>
-                            <p className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-500">
+                            <p className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-300">
                                 Boutique CBD
                             </p>
                         </div>
                     </Link>
 
                     {/* Desktop Nav */}
-                    <nav className="hidden lg:flex items-center gap-1.5 px-1.5 py-1 bg-white/[0.03] border border-white/[0.06] rounded-full">
+                    <nav className="hidden lg:flex items-center gap-1.5 rounded-full border border-white/12 bg-black/35 px-1.5 py-1 backdrop-blur-xl">
                         {navLinks.map((link) => {
                             const isActive = location.pathname === link.path ||
                                 (link.path !== sp("/") && location.pathname.startsWith(link.path));
@@ -101,8 +101,8 @@ export function ShopHeader({
                                     key={link.path}
                                     to={link.path}
                                     className={`relative px-5 py-2 text-xs font-black uppercase tracking-[0.2em] transition-all duration-500 rounded-full group ${isActive
-                                        ? "text-black"
-                                        : "text-zinc-500 hover:text-white"
+                                        ? "text-zinc-950"
+                                        : "text-zinc-300 hover:text-emerald-100"
                                         }`}
                                 >
                                     <span className="relative z-10">{link.name}</span>
@@ -115,7 +115,7 @@ export function ShopHeader({
                                         />
                                     )}
                                     {!isActive && (
-                                        <span className="absolute inset-0 rounded-full bg-white/0 group-hover:bg-white/[0.05] transition-colors" />
+                                        <span className="absolute inset-0 rounded-full bg-white/0 group-hover:bg-emerald-200/10 transition-colors" />
                                     )}
                                 </Link>
                             );
@@ -124,13 +124,13 @@ export function ShopHeader({
 
                     {/* Actions */}
                     <div className="flex items-center gap-2 md:gap-4 ml-2">
-                        <button className="hidden md:flex p-2.5 text-zinc-400 hover:text-white transition-colors rounded-xl hover:bg-white/[0.04]">
+                        <button className="hidden md:flex rounded-xl p-2.5 text-zinc-300 transition-colors hover:bg-emerald-200/10 hover:text-emerald-100">
                             <Search className="w-5 h-5" />
                         </button>
 
                         <button
                             onClick={onOpenCart}
-                            className="relative p-2.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-zinc-400 hover:text-white transition-all group overflow-hidden"
+                            className="relative overflow-hidden rounded-xl border border-white/12 bg-white/6 p-2.5 text-zinc-300 transition-all group hover:border-emerald-200/35 hover:text-emerald-100"
                             aria-label="Panier"
                         >
                             <div className="absolute inset-0 bg-white/[0.02] group-hover:bg-white/[0.08] transition-colors" />
@@ -180,19 +180,19 @@ export function ShopHeader({
                                             initial={{ opacity: 0, y: 15, scale: 0.95 }}
                                             animate={{ opacity: 1, y: 0, scale: 1 }}
                                             exit={{ opacity: 0, y: 15, scale: 0.95 }}
-                                            className="absolute right-0 top-full mt-4 w-72 bg-zinc-900/90 backdrop-blur-3xl border border-white/[0.1] rounded-3xl shadow-[0_30px_60px_rgba(0,0,0,0.8)] overflow-hidden z-50 p-3"
+                                            className="absolute right-0 top-full mt-4 w-72 bg-zinc-900/95 backdrop-blur-3xl border border-white/15 rounded-3xl shadow-[0_30px_60px_rgba(0,0,0,0.8)] overflow-hidden z-50 p-3"
                                         >
                                             <div className="px-4 py-4 mb-2 bg-white/[0.03] rounded-2xl border border-white/[0.05]">
-                                                <p className="text-xs font-black uppercase tracking-[0.2em] text-zinc-500 mb-1">Session Magasin</p>
+                                                <p className="text-xs font-black uppercase tracking-[0.2em] text-zinc-300 mb-1">Session Magasin</p>
                                                 <h3 className="text-white font-serif font-black text-lg leading-tight mb-1">{profile?.full_name}</h3>
-                                                <p className="text-xs text-zinc-400 truncate opacity-60">{user.email}</p>
+                                                <p className="text-xs text-zinc-300 truncate opacity-70">{user.email}</p>
                                             </div>
 
                                             <div className="space-y-1">
                                                 <Link
                                                     to={sp("/compte")}
                                                     onClick={() => setIsAccountMenuOpen(false)}
-                                                    className="flex items-center justify-between px-4 py-3 text-xs font-bold text-zinc-400 hover:text-white hover:bg-white/[0.05] rounded-xl transition-all group"
+                                                    className="flex items-center justify-between px-4 py-3 text-xs font-bold text-zinc-300 hover:text-white hover:bg-emerald-200/10 rounded-xl transition-all group"
                                                 >
                                                     <div className="flex items-center gap-3">
                                                         <div className="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -205,7 +205,7 @@ export function ShopHeader({
                                                 <Link
                                                     to={sp("/compte/commandes")}
                                                     onClick={() => setIsAccountMenuOpen(false)}
-                                                    className="flex items-center justify-between px-4 py-3 text-xs font-bold text-zinc-400 hover:text-white hover:bg-white/[0.05] rounded-xl transition-all group"
+                                                    className="flex items-center justify-between px-4 py-3 text-xs font-bold text-zinc-300 hover:text-white hover:bg-emerald-200/10 rounded-xl transition-all group"
                                                 >
                                                     <div className="flex items-center gap-3">
                                                         <div className="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -218,7 +218,7 @@ export function ShopHeader({
                                                 <Link
                                                     to={sp("/compte/favoris")}
                                                     onClick={() => setIsAccountMenuOpen(false)}
-                                                    className="flex items-center justify-between px-4 py-3 text-xs font-bold text-zinc-400 hover:text-white hover:bg-white/[0.05] rounded-xl transition-all group"
+                                                    className="flex items-center justify-between px-4 py-3 text-xs font-bold text-zinc-300 hover:text-white hover:bg-emerald-200/10 rounded-xl transition-all group"
                                                 >
                                                     <div className="flex items-center gap-3">
                                                         <div className="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center group-hover:scale-110 transition-transform">

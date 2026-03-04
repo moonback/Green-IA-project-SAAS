@@ -125,7 +125,7 @@ export default function Layout() {
         className="sticky top-0 z-[999] w-full"
       >
         {/* Header Background with Glassmorphism */}
-        <div className="absolute inset-0 bg-zinc-950/80 backdrop-blur-3xl border-b border-white/[0.04] shadow-[0_8px_32px_rgba(0,0,0,0.5)]" />
+        <div className="absolute inset-0 bg-linear-to-r from-zinc-950/92 via-zinc-900/90 to-zinc-950/92 backdrop-blur-3xl border-b border-emerald-200/15 shadow-[0_10px_40px_rgba(0,0,0,0.55)]" />
 
         <div className="max-w-12xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex items-center justify-between h-20 md:h-24 gap-4 lg:gap-8">
@@ -148,7 +148,7 @@ export default function Layout() {
             </div>
 
             {/* Center: Navigation (Desktop only) */}
-            <nav className="hidden lg:flex items-center gap-1 p-1 bg-white/[0.03] border border-white/[0.06] rounded-2xl backdrop-blur-md shadow-inner">
+            <nav className="hidden lg:flex items-center gap-1 rounded-2xl border border-white/10 bg-black/35 p-1 backdrop-blur-xl shadow-inner">
               {navLinks.map((link) => {
                 const isActive = location.pathname === link.path ||
                   (link.path !== "/" && location.pathname.startsWith(link.path));
@@ -156,18 +156,18 @@ export default function Layout() {
                   <Link
                     key={link.path}
                     to={link.path}
-                    className={`relative px-5 py-2.5 text-xs font-black uppercase tracking-[0.2em] transition-all duration-500 rounded-xl group ${isActive ? "text-black" : "text-zinc-500 hover:text-white"
+                    className={`relative px-5 py-2.5 text-xs font-black uppercase tracking-[0.2em] transition-all duration-500 rounded-xl group ${isActive ? "text-zinc-950" : "text-zinc-300 hover:text-emerald-100"
                       }`}
                   >
                     <span className="relative z-10">{link.name}</span>
                     {isActive ? (
                       <motion.div
                         layoutId="saas-nav-active"
-                        className="absolute inset-0 bg-green-neon rounded-xl shadow-[0_0_20px_rgba(57,255,20,0.3)]"
+                        className="absolute inset-0 rounded-xl bg-linear-to-r from-emerald-300 to-lime-300 shadow-[0_0_24px_rgba(110,231,183,0.35)]"
                         transition={{ type: "spring", stiffness: 400, damping: 30 }}
                       />
                     ) : (
-                      <span className="absolute inset-0 bg-transparent rounded-xl group-hover:bg-white/[0.04] transition-all duration-300" />
+                      <span className="absolute inset-0 bg-transparent rounded-xl group-hover:bg-emerald-200/10 transition-all duration-300" />
                     )}
                   </Link>
                 );
@@ -182,7 +182,7 @@ export default function Layout() {
                     onClick={() => setIsAccountMenuOpen(!isAccountMenuOpen)}
                     className={`flex items-center gap-3 p-1 rounded-full border transition-all duration-500 group ${isAccountMenuOpen
                       ? "border-green-neon/50 bg-green-neon/10"
-                      : "bg-white/[0.04] border-white/[0.08] hover:border-white/20 hover:bg-white/[0.06]"
+                      : "bg-white/[0.05] border-white/15 hover:border-emerald-200/35 hover:bg-emerald-200/10"
                       }`}
                   >
                     <div className="w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center overflow-hidden bg-gradient-to-br from-zinc-800 to-black border border-white/10 group-hover:scale-105 transition-transform">
@@ -198,7 +198,7 @@ export default function Layout() {
                       </span>
                       <div className="flex items-center gap-1.5">
                         <span className="w-1 h-1 rounded-full bg-green-neon animate-pulse" />
-                        <span className="text-[11px] font-bold text-zinc-500 uppercase tracking-widest leading-none">Console</span>
+                        <span className="text-[11px] font-bold text-zinc-300 uppercase tracking-widest leading-none">Console</span>
                       </div>
                     </div>
                     <ChevronDown className={`hidden md:block w-3 h-3 text-zinc-500 mr-2 transition-transform duration-500 ${isAccountMenuOpen ? 'rotate-180 text-green-neon' : ''}`} />
@@ -210,26 +210,26 @@ export default function Layout() {
                         initial={{ opacity: 0, y: 15, scale: 0.95 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 15, scale: 0.95 }}
-                        className="absolute right-0 top-full mt-4 w-72 bg-zinc-900/95 backdrop-blur-3xl border border-white/[0.1] rounded-[2.5rem] shadow-[0_30px_80px_rgba(0,0,0,0.8)] overflow-hidden z-50 p-4"
+                        className="absolute right-0 top-full mt-4 w-72 rounded-[2.5rem] border border-white/15 bg-zinc-900/96 p-4 shadow-[0_30px_80px_rgba(0,0,0,0.8)] backdrop-blur-3xl overflow-hidden z-50"
                       >
                         <div className="px-5 py-5 mb-3 bg-white/[0.03] rounded-3xl border border-white/[0.05]">
-                          <p className="text-xs font-black uppercase tracking-[0.3em] text-zinc-500 mb-2">Cloud Intelligence</p>
+                          <p className="text-xs font-black uppercase tracking-[0.3em] text-zinc-300 mb-2">Cloud Intelligence</p>
                           <h3 className="text-white font-serif font-black text-xl leading-tight mb-2">{profile?.full_name}</h3>
                           <div className="flex items-center gap-2">
                             {profile?.is_admin && (
                               <span className="px-2 py-0.5 bg-green-neon text-black text-[11px] font-black uppercase tracking-widest rounded-md">Admin</span>
                             )}
-                            <span className="text-xs text-zinc-500 font-bold uppercase tracking-widest opacity-60 truncate">{user.email}</span>
+                            <span className="text-xs text-zinc-300 font-bold uppercase tracking-widest opacity-70 truncate">{user.email}</span>
                           </div>
                         </div>
 
                         <div className="space-y-1.5">
                           <Link
                             to={sp("/compte")}
-                            className="flex items-center justify-between px-4 py-4 text-[11px] font-bold text-zinc-400 hover:text-white hover:bg-white/[0.05] rounded-2xl transition-all group"
+                            className="flex items-center justify-between px-4 py-4 text-[11px] font-bold text-zinc-300 hover:text-white hover:bg-emerald-200/10 rounded-2xl transition-all group"
                           >
                             <div className="flex items-center gap-3">
-                              <div className="w-9 h-9 rounded-xl bg-zinc-800 flex items-center justify-center group-hover:scale-110 group-hover:bg-zinc-700 transition-all">
+                              <div className="w-9 h-9 rounded-xl bg-zinc-800/90 border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:bg-zinc-700 transition-all">
                                 <User className="h-4 w-4" />
                               </div>
                               Mon Dashboard
@@ -319,7 +319,7 @@ export default function Layout() {
               <div className="absolute bottom-0 left-0 w-[80%] h-[30%] bg-green-neon/5 blur-[120px] rounded-full translate-y-1/2 -translate-x-1/2 pointer-events-none" />
 
               {/* Mobile header */}
-              <div className="flex items-center justify-between px-6 h-24 relative z-10 border-b border-white/[0.04] bg-zinc-950/40 backdrop-blur-2xl">
+              <div className="relative z-10 flex h-24 items-center justify-between border-b border-emerald-200/10 bg-zinc-950/55 px-6 backdrop-blur-2xl">
                 <Link to={isShopContext ? sp('/') : '/'} className="flex items-center group" onClick={() => setIsMenuOpen(false)}>
                   <div className="relative">
                     <div className="absolute inset-0 blur-2xl bg-green-neon/20 rounded-full scale-150" />

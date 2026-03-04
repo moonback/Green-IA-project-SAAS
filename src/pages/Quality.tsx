@@ -1,276 +1,56 @@
-import { motion } from "motion/react";
-import { ShieldCheck, Cpu, Lock, Globe, Zap, Server, Database, Sparkles, Code, Terminal } from "lucide-react";
-import SEO from "../components/SEO";
-import { useShopContent } from "../hooks/useShopContent";
-import { useShopStore } from "../store/shopStore";
-import { useShopLayout } from "../hooks/useShopLayout";
-import {
-  NewsletterSection,
-  TestimonialsSection,
-  FAQSection,
-  FeaturesGridSection,
-  InstagramFeedSection
-} from '../components/shop/GenericSections';
+import { motion } from 'motion/react';
+import { CheckCircle2, FileCheck2, FlaskConical, ShieldCheck, Sparkles } from 'lucide-react';
+import SEO from '../components/SEO';
+import { GlassBadge, GlassPanel } from '../components/ui/GlassPrimitives';
+
+const guarantees = [
+  { title: 'Traçabilité complète', desc: 'Origine, lots, fournisseurs et historique produit consultables.', icon: FileCheck2 },
+  { title: 'Conformité réglementaire', desc: 'Cadre légal FR/UE et contrôles continus des flux e-commerce.', icon: ShieldCheck },
+  { title: 'Contrôles qualité', desc: 'Protocoles de vérification sur la composition et la stabilité.', icon: FlaskConical },
+];
 
 export default function Quality() {
-  const content = useShopContent();
-  const { currentShop } = useShopStore();
-  const { qualitySections } = useShopLayout();
-  const primaryColor = currentShop?.settings?.primary_color || '#39ff14';
+  return (
+    <div className="min-h-screen overflow-hidden bg-brand-950 text-white">
+      <SEO title="Qualité & Sécurité | Green IA" description="Standards qualité et sécurité pour l’écosystème Green IA." />
 
-  const pillars = [
-    {
-      title: content.quality.pillar_1_title,
-      icon: Lock,
-      detail: content.quality.pillar_1_desc
-    },
-    {
-      title: content.quality.pillar_2_title,
-      icon: Cpu,
-      detail: content.quality.pillar_2_desc
-    },
-    {
-      title: content.quality.pillar_3_title,
-      icon: Globe,
-      detail: content.quality.pillar_3_desc
-    },
-    {
-      title: content.quality.pillar_4_title,
-      icon: ShieldCheck,
-      detail: content.quality.pillar_4_desc
-    },
-  ];
+      <section className="app-section relative pt-28 text-center">
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute right-[10%] top-10 h-80 w-80 rounded-full bg-emerald-300/10 blur-[130px]" />
+        </div>
+        <div className="content-wrap relative z-10">
+          <GlassBadge className="mx-auto mb-6 w-fit text-emerald-100"><Sparkles className="h-3 w-3" /> Qualité & Sécurité</GlassBadge>
+          <h1 className="text-5xl font-black sm:text-7xl">Confiance, conformité et <span className="text-emerald-300">transparence</span></h1>
+          <p className="mx-auto mt-6 max-w-3xl text-zinc-300">Nous appliquons une approche stricte sur la qualité produit, la sécurité des données et la gouvernance multi-tenant.</p>
+        </div>
+      </section>
 
-  const renderSection = (section: any) => {
-    if (!section.enabled) return null;
+      <section className="app-section">
+        <div className="content-wrap grid gap-4 lg:grid-cols-3">
+          {guarantees.map((item, i) => (
+            <motion.div key={item.title} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}>
+              <GlassPanel className="h-full p-7">
+                <item.icon className="mb-4 h-6 w-6 text-emerald-300" />
+                <h2 className="text-xl font-bold">{item.title}</h2>
+                <p className="mt-3 text-zinc-400">{item.desc}</p>
+              </GlassPanel>
+            </motion.div>
+          ))}
+        </div>
+      </section>
 
-    switch (section.type) {
-      case 'hero':
-        return (
-          <section key={section.id} className="relative pt-48 pb-32 px-4 overflow-hidden">
-            <div className="absolute inset-0 z-0">
-              <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-green-neon/5 blur-[120px] rounded-full" />
-              <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-500/5 blur-[100px] rounded-full" />
-            </div>
-
-            <div className="max-w-7xl mx-auto text-center relative z-10">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-neon/10 border border-green-neon/20 text-green-neon text-xs font-black uppercase tracking-widest mb-10"
-                style={{ color: primaryColor, borderColor: `${primaryColor}33`, backgroundColor: `${primaryColor}1a` }}
-              >
-                <Terminal className="w-4 h-4" />
-                {section.settings?.badge || content.quality.badge}
-              </motion.div>
-
-              <motion.h1
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-5xl md:text-8xl font-serif font-black tracking-tighter leading-none mb-10"
-              >
-                {section.settings?.title ? section.settings.title : <>{content.quality.hero_title_line1} <br /> <span className="italic glow-green" style={{ color: primaryColor }}>{content.quality.hero_title_line2}</span></>}
-              </motion.h1>
-
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="text-xl md:text-2xl text-zinc-400 max-w-3xl mx-auto font-light leading-relaxed mb-12"
-              >
-                {section.settings?.subtitle || content.quality.hero_subtitle}
-              </motion.p>
-            </div>
-          </section>
-        );
-
-      case 'pillars':
-        return (
-          <section key={section.id} className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {pillars.map((item, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.1 }}
-                  className="bg-zinc-900/50 border border-zinc-800 p-10 rounded-[2.5rem] hover:border-green-neon/30 transition-all group"
-                >
-                  <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-all duration-500" style={{ backgroundColor: `${primaryColor}1a` }}>
-                    <item.icon className="w-8 h-8" style={{ color: primaryColor }} />
-                  </div>
-                  <h3 className="text-lg font-black uppercase tracking-wider mb-4">{item.title}</h3>
-                  <p className="text-sm text-zinc-500 font-light leading-relaxed">
-                    {item.detail}
-                  </p>
-                </motion.div>
+      <section className="app-section bg-brand-900/40">
+        <div className="content-wrap">
+          <GlassPanel className="p-8">
+            <p className="mb-4 text-sm font-semibold uppercase tracking-[0.14em] text-zinc-400">Engagements opérationnels</p>
+            <div className="grid gap-3 md:grid-cols-2">
+              {['Isolation des données entre boutiques', 'Suivi des accès administrateurs', 'Contrôles de disponibilité service', 'Approche privacy-first'].map((line) => (
+                <p key={line} className="flex items-center gap-2 text-zinc-200"><CheckCircle2 className="h-4 w-4 text-emerald-300" />{line}</p>
               ))}
             </div>
-          </section>
-        );
-
-      case 'isolation':
-        return (
-          <section key={section.id} className="py-32 relative">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
-                <motion.div
-                  initial={{ opacity: 0, x: -40 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  className="space-y-10"
-                >
-                  <div className="space-y-4">
-                    <h2 className="text-4xl md:text-6xl font-serif font-black">{content.quality.data_isolation_title.split(' ').slice(0, -2).join(' ')} <br /> <span className="text-green-neon italic" style={{ color: primaryColor }}>{content.quality.data_isolation_title.split(' ').slice(-2).join(' ')}</span></h2>
-                  </div>
-                  <div className="space-y-8">
-                    <p className="text-lg text-zinc-400 leading-relaxed font-light">
-                      {content.quality.data_isolation_desc}
-                    </p>
-                    <div className="grid gap-6">
-                      <div className="flex gap-5 p-8 bg-zinc-900 border border-zinc-800 rounded-3xl">
-                        <Database className="w-8 h-8 text-green-neon shrink-0" />
-                        <div>
-                          <h4 className="font-bold text-white uppercase tracking-widest text-xs mb-2">Backups Temps-Réel</h4>
-                          <p className="text-sm text-zinc-500 leading-relaxed font-light">
-                            Récupération point-in-time de vos données. Votre inventaire et vos ventes sont sauvegardés à chaque seconde.
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex gap-5 p-8 bg-zinc-900 border border-zinc-800 rounded-3xl">
-                        <Server className="w-8 h-8 text-green-neon shrink-0" />
-                        <div>
-                          <h4 className="font-bold text-white uppercase tracking-widest text-xs mb-2">Plateforme moderne</h4>
-                          <p className="text-sm text-zinc-500 leading-relaxed font-light">
-                            Capacité de montée en charge infinie lors de vos pics de trafic (Soldes, lancements). Performance constante.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  className="relative aspect-square rounded-[3rem] overflow-hidden border border-zinc-800"
-                >
-                  <img
-                    src={content.quality.deep_dive_image}
-                    className="w-full h-full object-cover opacity-90 hover:scale-110 transition-transform duration-700"
-                    alt="Architecture Sécurisée"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent" />
-                </motion.div>
-              </div>
-            </div>
-          </section>
-        );
-
-      case 'ai_excellence':
-        return (
-          <section key={section.id} className="py-32 relative">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  className="relative aspect-[4/5] rounded-[3rem] overflow-hidden border border-zinc-800 lg:order-last bg-zinc-900 p-1 flex items-center justify-center"
-                >
-                  <div className="relative w-full h-full rounded-[2.8rem] bg-black overflow-hidden flex flex-col items-center justify-center p-10">
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-green-neon/5 blur-[80px]" />
-                    <Sparkles className="w-24 h-24 text-green-neon animate-pulse mb-8" />
-                    <h4 className="text-2xl font-serif font-bold text-center mb-4">Neural BudTender Engine v4.0</h4>
-                    <p className="text-zinc-500 text-center text-sm">Fine-tuné sur les terpènes et les interactions cannabinoïdes.</p>
-                    <div className="mt-10 flex gap-4">
-                      <div className="w-2 h-2 rounded-full bg-green-neon animate-bounce" />
-                      <div className="w-2 h-2 rounded-full bg-green-neon animate-bounce [animation-delay:0.2s]" />
-                      <div className="w-2 h-2 rounded-full bg-green-neon animate-bounce [animation-delay:0.4s]" />
-                    </div>
-                  </div>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, x: 40 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  className="space-y-10"
-                >
-                  <div className="space-y-4">
-                    <h2 className="text-4xl md:text-5xl font-serif font-black">{content.quality.ai_excellence_title.split(' ').slice(0, -3).join(' ')} <br /> <span className="text-green-neon italic" style={{ color: primaryColor }}>{content.quality.ai_excellence_title.split(' ').slice(-3).join(' ')}</span></h2>
-                  </div>
-                  <div className="space-y-8">
-                    <p className="text-lg text-zinc-400 leading-relaxed font-light">
-                      {content.quality.ai_excellence_desc}
-                    </p>
-
-                    <div className="bg-zinc-900 border border-zinc-800 p-12 rounded-[3.5rem] relative overflow-hidden group">
-                      <div className="absolute top-0 right-0 w-32 h-32 bg-green-neon/10 blur-[60px]" />
-                      <div className="flex items-center gap-6 mb-8">
-                        <Code className="w-10 h-10 text-green-neon" />
-                        <h3 className="text-xl font-black uppercase tracking-widest text-white">Technologie N10</h3>
-                      </div>
-                      <p className="text-sm text-zinc-500 leading-relaxed font-light mb-10">
-                        Notre algorithme exclusif 'N10' calcule un score de compatibilité entre un profil utilisateur et un produit,
-                        permettant une personnalisation que même le meilleur vendeur en boutique ne pourrait atteindre manuellement.
-                      </p>
-                      <div className="flex flex-wrap gap-4">
-                        {["Conseils automatiques", "Recherche intelligente", "Mise à jour immédiate", "Prêt pour l'évolution"].map(tag => (
-                          <span key={tag} className="px-5 py-2.5 rounded-xl bg-black border border-zinc-800 text-[10px] font-black uppercase tracking-widest text-zinc-400 group-hover:text-green-neon transition-colors">
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              </div>
-            </div>
-          </section>
-        );
-
-      case 'trust_banner':
-        return (
-          <section key={section.id} className="py-32 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="p-16 bg-gradient-to-br from-zinc-900 to-zinc-950 border border-zinc-800 rounded-[4rem] text-center space-y-10 shadow-2xl">
-              <Zap className="w-16 h-16 text-green-neon mx-auto animate-pulse" />
-              <div className="space-y-5">
-                <h3 className="text-3xl md:text-4xl font-serif font-black">{section.settings?.title || content.quality.trust_banner_title}</h3>
-                <p className="text-zinc-400 max-w-2xl mx-auto font-light leading-relaxed text-lg">
-                  {section.settings?.subtitle || content.quality.trust_banner_desc}
-                </p>
-              </div>
-            </div>
-          </section>
-        );
-
-      case 'newsletter':
-        return <NewsletterSection key={section.id} primaryColor={primaryColor} settings={section.settings} />;
-      case 'testimonials':
-        return <TestimonialsSection key={section.id} primaryColor={primaryColor} settings={section.settings} />;
-      case 'faq':
-        return <FAQSection key={section.id} primaryColor={primaryColor} settings={section.settings} />;
-      case 'features_grid':
-        return <FeaturesGridSection key={section.id} primaryColor={primaryColor} settings={section.settings} />;
-      case 'instagram_feed':
-        return <InstagramFeedSection key={section.id} primaryColor={primaryColor} settings={section.settings} />;
-
-      default:
-        return null;
-    }
-  };
-
-  return (
-    <div className="min-h-screen bg-zinc-950 text-white font-sans">
-      <SEO
-        title="Qualité & Sécurité — Green IA SaaS"
-        description="Découvrez comment Green IA protège votre activité et vous aide à vendre en confiance."
-      />
-
-      {qualitySections.map(renderSection)}
+          </GlassPanel>
+        </div>
+      </section>
     </div>
   );
 }

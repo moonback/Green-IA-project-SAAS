@@ -41,7 +41,7 @@ export default function CartSidebar() {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed right-0 top-0 bottom-0 w-full max-w-[420px] z-[60] flex flex-col bg-zinc-950 border-l border-white/[0.08] shadow-2xl overflow-hidden"
+            className="fixed right-0 top-0 bottom-0 z-[60] flex w-full max-w-[420px] flex-col overflow-hidden border-l border-white/10 bg-zinc-950/90 shadow-2xl backdrop-blur-2xl"
           >
             {/* Header */}
             <div className="px-6 pt-8 pb-4 flex items-center justify-between">
@@ -58,7 +58,7 @@ export default function CartSidebar() {
               </div>
               <button
                 onClick={closeSidebar}
-                className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-zinc-400 hover:text-white flex items-center justify-center transition-all group"
+                className="glass-button glass-button-ghost h-10 w-10 rounded-xl px-0 py-0 text-zinc-400 hover:text-white group"
               >
                 <X className="w-4 h-4 group-hover:rotate-90 transition-transform duration-300" />
               </button>
@@ -78,7 +78,7 @@ export default function CartSidebar() {
                   </div>
                   <button
                     onClick={closeSidebar}
-                    className="bg-green-neon text-black font-semibold text-xs px-6 py-3 rounded-xl uppercase tracking-wider transition-all"
+                    className="glass-button glass-button-primary rounded-xl px-6 py-3 text-xs text-zinc-950"
                   >
                     Découvrir
                   </button>
@@ -86,10 +86,10 @@ export default function CartSidebar() {
               ) : (
                 <>
                   <div className="px-6 pb-4 space-y-4">
-                    <div className="relative grid grid-cols-2 gap-1 bg-white/[0.03] border border-white/[0.06] rounded-xl p-1">
+                    <div className="relative grid grid-cols-2 gap-1 rounded-xl border border-white/10 bg-white/[0.05] p-1 backdrop-blur-xl">
                       <motion.div
                         layout
-                        className="absolute inset-y-1 w-[calc(50%-4px)] rounded-lg bg-white"
+                        className="absolute inset-y-1 w-[calc(50%-4px)] rounded-lg bg-emerald-300 shadow-[0_8px_20px_rgba(52,211,153,0.3)]"
                         animate={{ left: deliveryType === 'click_collect' ? 4 : 'calc(50%)' }}
                         transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                       />
@@ -109,7 +109,7 @@ export default function CartSidebar() {
                       </button>
                     </div>
 
-                    <div className="bg-white/[0.02] rounded-2xl p-4 border border-white/5">
+                    <div className="glass-panel rounded-2xl p-4">
                       <FreeShippingGauge variant="compact" />
                     </div>
                   </div>
@@ -187,7 +187,7 @@ export default function CartSidebar() {
                   </div>
 
                   {/* Footer */}
-                  <div className="px-6 py-6 border-t border-white/[0.08] bg-zinc-950 space-y-6">
+                  <div className="space-y-6 border-t border-white/10 bg-black/30 px-6 py-6 backdrop-blur-xl">
                     <div className="space-y-2.5">
                       <div className="flex justify-between text-xs font-medium uppercase tracking-wider text-zinc-500">
                         <span>Sous-total</span>
@@ -207,12 +207,12 @@ export default function CartSidebar() {
 
                     <div className="space-y-4">
                       <Link to="/commande" onClick={closeSidebar} className="block w-full group">
-                        <div className="bg-green-neon text-black font-semibold text-sm py-3.5 hover:shadow-[0_0_16px_rgba(57,255,20,0.3)] active:scale-[0.98] transition-all duration-300 uppercase tracking-wider rounded-xl flex items-center justify-center gap-3">
+                        <div className="glass-button glass-button-primary flex items-center justify-center gap-3 rounded-xl py-3.5 text-sm text-zinc-950">
                           <span>Commander</span>
                           <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                         </div>
                       </Link>
-                      <div className="flex items-center justify-center gap-2 opacity-30">
+                      <div className="flex items-center justify-center gap-2 opacity-60">
                         <ShieldCheck className="w-3 h-3 text-green-neon" />
                         <span className="text-xs font-medium uppercase tracking-wider">Paiement Sécurisé</span>
                       </div>

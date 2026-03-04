@@ -1,234 +1,116 @@
-import { motion } from "motion/react";
-import { Link } from "react-router-dom";
+import { motion } from 'motion/react';
+import { Link } from 'react-router-dom';
 import {
   ArrowRight,
   BarChart3,
+  BrainCircuit,
   CheckCircle2,
-  Cpu,
-  Database,
-  Globe,
-  LayoutDashboard,
+  Leaf,
   LineChart,
   Lock,
   ShieldCheck,
-  Smartphone,
   Sparkles,
   Store,
-  Users,
-  Zap,
-} from "lucide-react";
-import FAQ from "../components/FAQ";
-import SEO from "../components/SEO";
+} from 'lucide-react';
+import FAQ from '../components/FAQ';
+import SEO from '../components/SEO';
+import { GlassBadge, GlassButton, GlassPanel } from '../components/ui/GlassPrimitives';
 
 export default function Home() {
-  const stats = [
-    { value: "+42%", label: "Taux de conversion", icon: <LineChart className="h-4 w-4" /> },
-    { value: "0.2s", label: "Rapidité de la plateforme", icon: <Zap className="h-4 w-4" /> },
-    { value: "100%", label: "Sécurité des données", icon: <ShieldCheck className="h-4 w-4" /> },
-    { value: "Multi-store", label: "Gestion multi-boutique", icon: <Database className="h-4 w-4" /> },
-  ];
-
-  const pillars = [
+  const sections = [
     {
-      title: "Conseiller de vente intelligent",
-      description:
-        "Un assistant qui guide vos clients vers les bons produits et augmente votre panier moyen.",
-      icon: <Sparkles className="h-5 w-5 text-green-neon" />,
-      tag: "Intelligence",
+      id: 'conversion',
+      title: 'Landing SaaS orientée conversion',
+      description: 'Hero premium, preuve sociale et CTA à haut contraste pour transformer les visites en demandes de démo.',
+      icon: <LineChart className="h-5 w-5 text-emerald-300" />,
     },
     {
-      title: "Gestion multi-boutique",
-      description:
-        "Gérez une ou plusieurs boutiques depuis un seul espace, sans complexité technique.",
-      icon: <Database className="h-5 w-5 text-green-neon" />,
-      tag: "Gestion",
+      id: 'tenant',
+      title: 'Storefront multi-tenant personnalisé',
+      description: 'Variables dynamiques de thème par boutique via Supabase pour conserver une identité propre à chaque shop.',
+      icon: <Store className="h-5 w-5 text-emerald-300" />,
     },
     {
-      title: "Ventes en ligne + magasin",
-      description:
-        "Vos stocks, commandes et performances restent synchronisés automatiquement.",
-      icon: <Globe className="h-5 w-5 text-green-neon" />,
-      tag: "Opérations",
+      id: 'admin',
+      title: 'Dashboard Admin glassmorphism',
+      description: 'Cartes analytiques, actions rapides et navigation tabulaire modernisée pour le pilotage quotidien.',
+      icon: <BarChart3 className="h-5 w-5 text-emerald-300" />,
     },
   ];
 
   return (
     <div className="min-h-screen overflow-hidden bg-brand-950 text-white">
       <SEO
-        title="Green IA SaaS | L'Infrastructure Intelligence Artificielle pour le Retail CBD"
-        description="Propulsez votre entreprise CBD avec le premier SaaS IA-Native. BudTender intelligent, gestion multi-boutique, POS intégré et sécurité bancaire."
+        title="Green IA SaaS | Plateforme e-commerce CBD IA-native"
+        description="Refonte premium dark glassmorphism pour les boutiques CBD multi-tenant avec BudTender intelligent et dashboard admin moderne."
       />
 
-      <section className="app-section relative pb-16 pt-24 sm:pt-28 md:pt-36">
+      <section className="app-section relative pt-28">
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute left-1/2 top-0 h-[550px] w-[720px] -translate-x-1/2 rounded-full bg-green-neon/10 blur-[130px]" />
-          <div className="absolute right-[-12%] top-[18%] h-[280px] w-[280px] rounded-full bg-emerald-400/10 blur-[120px]" />
+          <div className="absolute left-[10%] top-10 h-[280px] w-[280px] rounded-full bg-emerald-400/15 blur-[120px]" />
+          <div className="absolute right-[10%] top-28 h-[260px] w-[260px] rounded-full bg-teal-300/10 blur-[140px]" />
         </div>
 
         <div className="content-wrap relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="mx-auto flex max-w-4xl flex-col items-center text-center"
-          >
-            <span className="ui-card mb-8 inline-flex items-center gap-2 px-4 py-2 text-[10px] font-black uppercase tracking-[0.24em] text-zinc-300">
-              <span className="h-1.5 w-1.5 rounded-full bg-green-neon" />
-              La solution simple pour toutes les boutiques CBD
-            </span>
-
-            <h1 className="section-title text-4xl sm:text-6xl lg:text-7xl">
-              Le SaaS CBD qui vous aide à <span className="glow-green italic text-green-neon">vendre plus</span>
+          <motion.div initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} className="mx-auto max-w-5xl text-center">
+            <GlassBadge className="mx-auto mb-6 w-fit text-emerald-100">
+              <Leaf className="h-3 w-3" />
+              UI/UX Overhaul · Premium Zen Conversion
+            </GlassBadge>
+            <h1 className="text-5xl font-black tracking-tight sm:text-7xl">
+              Green IA devient une expérience <span className="text-emerald-300">Dark Glass</span> nouvelle génération
             </h1>
-            <p className="section-copy mt-6 max-w-2xl text-base sm:text-lg">
-              Green IA centralise votre boutique en ligne, vos ventes en magasin et votre relation client dans un seul outil facile à piloter.
+            <p className="mx-auto mt-6 max-w-3xl text-lg text-zinc-300">
+              Une structure claire pour la landing SaaS, la storefront boutique et le dashboard admin avec animations fluides Framer Motion.
             </p>
-
-            <div className="mt-10 flex w-full flex-col items-stretch justify-center gap-3 sm:w-auto sm:flex-row">
-              <Link to="/ouvrir-boutique" className="btn-primary">
-                Demander une démo <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link to="/solution" className="btn-secondary">
-                Voir comment ça marche
-              </Link>
+            <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row">
+              <Link to="/ouvrir-boutique"><GlassButton icon={<ArrowRight className="h-4 w-4" />}>Demander une démo</GlassButton></Link>
+              <Link to="/solution"><GlassButton variant="secondary">Voir l'architecture UI</GlassButton></Link>
             </div>
           </motion.div>
-
-          <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 18 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.08 }}
-                className="ui-card rounded-2xl p-4"
-              >
-                <div className="mb-2 inline-flex rounded-xl bg-green-neon/10 p-2 text-green-neon">{stat.icon}</div>
-                <p className="text-2xl font-black text-white">{stat.value}</p>
-                <p className="text-xs uppercase tracking-[0.18em] text-zinc-400">{stat.label}</p>
-              </motion.div>
-            ))}
-          </div>
         </div>
       </section>
 
-      <section className="app-section bg-brand-900/60">
-        <div className="content-wrap grid gap-6 lg:grid-cols-3">
-          {pillars.map((feature, i) => (
-            <motion.article
-              key={feature.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="ui-card p-6"
-            >
-              <div className="mb-4 inline-flex rounded-xl bg-zinc-900 p-3">{feature.icon}</div>
-              <p className="mb-2 text-[10px] font-black uppercase tracking-[0.18em] text-zinc-500">{feature.tag}</p>
-              <h2 className="mb-2 text-2xl font-bold tracking-tight text-white">{feature.title}</h2>
-              <p className="section-copy">{feature.description}</p>
-            </motion.article>
+      <section className="app-section">
+        <div className="content-wrap grid gap-4 lg:grid-cols-3">
+          {sections.map((section, i) => (
+            <motion.div key={section.id} initial={{ opacity: 0, y: 22 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.12 }}>
+              <GlassPanel className="h-full p-7">
+                <div className="mb-4 inline-flex rounded-xl border border-white/10 bg-black/30 p-3">{section.icon}</div>
+                <h2 className="text-2xl font-bold text-white">{section.title}</h2>
+                <p className="mt-3 text-zinc-400">{section.description}</p>
+              </GlassPanel>
+            </motion.div>
           ))}
         </div>
       </section>
 
-      <section className="app-section">
-        <div className="content-wrap grid items-center gap-8 lg:grid-cols-2">
-          <div>
-            <p className="section-kicker mb-4 inline-flex items-center gap-2">
-              <Cpu className="h-4 w-4" /> BudTender Engine™
-            </p>
-            <h2 className="section-title">
-              Une IA utile, <span className="text-green-neon">sans friction</span>
-            </h2>
-            <p className="section-copy mt-5">
-              Le conseiller conversationnel personnalise l’expérience en direct et transforme les interactions en décisions d’achat.
-            </p>
-
-            <div className="mt-6 space-y-3">
+      <section className="app-section bg-brand-900/40">
+        <div className="content-wrap grid gap-8 lg:grid-cols-2">
+          <GlassPanel className="p-8">
+            <p className="section-kicker">Composants Atomes modernisés</p>
+            <ul className="mt-5 space-y-4 text-sm text-zinc-300">
               {[
-                "Profilage client contextuel et recommandations instantanées",
-                "Suggestions basées sur les terpènes et préférences",
-                "Relances intelligentes pour fidélisation événementielle",
-              ].map((text) => (
-                <div key={text} className="ui-card flex items-start gap-3 rounded-2xl p-4">
-                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-green-neon" />
-                  <p className="text-sm text-zinc-300">{text}</p>
+                'Boutons avec effet de brillance au survol (shimmer).',
+                'Inputs avec halo lumineux sur focus pour guider la saisie.',
+                'Badges vitreux pour signaler le contexte produit, stock et IA.',
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-3"><CheckCircle2 className="mt-0.5 h-4 w-4 text-emerald-300" />{item}</li>
+              ))}
+            </ul>
+          </GlassPanel>
+
+          <GlassPanel className="p-8">
+            <p className="section-kicker">Sécurité & Performance</p>
+            <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {[{ icon: ShieldCheck, text: 'Isolation tenant' }, { icon: Lock, text: 'Règles d’accès strictes' }, { icon: BrainCircuit, text: 'IA contextuelle BudTender' }, { icon: Sparkles, text: 'Animations progressives' }].map((item) => (
+                <div key={item.text} className="rounded-2xl border border-white/10 bg-black/30 p-4 text-sm text-zinc-200">
+                  <item.icon className="mb-2 h-4 w-4 text-emerald-300" />
+                  {item.text}
                 </div>
               ))}
             </div>
-          </div>
-
-          <div className="ui-card rounded-[2rem] p-5 sm:p-6">
-            <div className="mb-4 flex items-center justify-between border-b border-white/10 pb-4">
-              <p className="text-[10px] font-black uppercase tracking-[0.18em] text-zinc-400">Simulation conversation</p>
-              <span className="rounded-full bg-green-neon/15 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-green-neon">
-                En ligne
-              </span>
-            </div>
-            <div className="space-y-3 text-sm">
-              <div className="max-w-[85%] rounded-2xl rounded-tl-none bg-zinc-900 p-3 text-zinc-300">
-                Je veux une suggestion douce pour mes invités qui découvrent le produit.
-              </div>
-              <div className="ml-auto max-w-[85%] rounded-2xl rounded-tr-none border border-green-neon/20 bg-green-neon/10 p-3 text-zinc-100">
-                Je recommande un starter pack équilibré, orienté détente, avec dosage progressif et fiche explicative QR.
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="app-section bg-brand-900/60">
-        <div className="content-wrap grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {[
-              { icon: <ShieldCheck className="h-5 w-5" />, title: "Conformité", desc: "Sécurité des accès et données compartimentées." },
-              { icon: <Lock className="h-5 w-5" />, title: "Isolation", desc: "Protection stricte de chaque boutique." },
-              { icon: <BarChart3 className="h-5 w-5" />, title: "Analytics", desc: "KPIs en temps réel et pilotage rapide." },
-              { icon: <Smartphone className="h-5 w-5" />, title: "POS mobile", desc: "Compatibilité terrain pour événements." },
-            ].map((item) => (
-              <div key={item.title} className="ui-card rounded-2xl p-5">
-                <div className="mb-3 text-green-neon">{item.icon}</div>
-                <h3 className="mb-1 text-lg font-semibold text-white">{item.title}</h3>
-                <p className="text-sm text-zinc-400">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-
-          <div>
-            <p className="section-kicker">Operations suite</p>
-            <h2 className="section-title mt-4">Une plateforme fiable pour votre quotidien</h2>
-            <p className="section-copy mt-5">
-              Tableaux de bord, suivi des interactions et vision unifiée des ventes pour un pilotage fluide sur mobile, tablette et desktop.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              {[LayoutDashboard, Store, Users].map((Icon, idx) => (
-                <span key={idx} className="ui-card inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs uppercase tracking-[0.14em] text-zinc-300">
-                  <Icon className="h-4 w-4 text-green-neon" /> Module actif
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="app-section">
-        <div className="content-wrap ui-card rounded-[2.2rem] p-8 text-center sm:p-12">
-          <h2 className="section-title mx-auto max-w-3xl text-4xl sm:text-6xl">
-            Prêt à faire grandir votre <span className="text-green-neon">boutique CBD</span> ?
-          </h2>
-          <p className="section-copy mx-auto mt-4 max-w-2xl">
-            Lancez rapidement votre espace pro et pilotez vos ventes sans passer par des outils compliqués.
-          </p>
-          <div className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row">
-            <Link to="/ouvrir-boutique" className="btn-primary">
-              Commencer maintenant
-            </Link>
-            <Link to="/contact" className="btn-secondary">
-              Parler à un conseiller
-            </Link>
-          </div>
+          </GlassPanel>
         </div>
       </section>
 

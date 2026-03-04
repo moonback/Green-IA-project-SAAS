@@ -3,15 +3,15 @@ import { CheckCircle, XCircle, Info, X } from 'lucide-react';
 import { useToastStore } from '../store/toastStore';
 
 const ICONS = {
-  success: <CheckCircle className="w-4 h-4 text-green-neon flex-shrink-0" />,
-  error: <XCircle className="w-4 h-4 text-red-400 flex-shrink-0" />,
-  info: <Info className="w-4 h-4 text-blue-400 flex-shrink-0" />,
+  success: <CheckCircle className="h-4 w-4 shrink-0 text-emerald-300" />,
+  error: <XCircle className="h-4 w-4 shrink-0 text-red-300" />,
+  info: <Info className="h-4 w-4 shrink-0 text-sky-300" />,
 };
 
 const BG = {
-  success: 'border-green-neon/20 bg-green-neon/5',
-  error: 'border-red-400/20 bg-red-400/5',
-  info: 'border-blue-400/20 bg-blue-400/5',
+  success: 'border-emerald-300/30 bg-emerald-300/10',
+  error: 'border-red-300/30 bg-red-400/10',
+  info: 'border-sky-300/30 bg-sky-400/10',
 };
 
 export default function ToastContainer() {
@@ -19,7 +19,7 @@ export default function ToastContainer() {
   const removeToast = useToastStore((s) => s.removeToast);
 
   return (
-    <div className="fixed bottom-6 right-6 z-[200] flex flex-col gap-3 pointer-events-none">
+    <div className="pointer-events-none fixed bottom-6 right-6 z-[200] flex max-w-sm flex-col gap-3">
       <AnimatePresence mode="popLayout">
         {toasts.map((toast) => (
           <motion.div
@@ -28,15 +28,15 @@ export default function ToastContainer() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, x: 80, scale: 0.95 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className={`pointer-events-auto flex items-center gap-3 px-5 py-3.5 rounded-2xl border backdrop-blur-xl shadow-2xl max-w-sm ${BG[toast.type]}`}
+            className={`pointer-events-auto glass-panel flex items-center gap-3 rounded-2xl px-5 py-3.5 ${BG[toast.type]}`}
           >
             {ICONS[toast.type]}
-            <p className="text-sm font-medium text-white flex-1">{toast.message}</p>
+            <p className="flex-1 text-sm font-medium text-white">{toast.message}</p>
             <button
               onClick={() => removeToast(toast.id)}
-              className="text-zinc-500 hover:text-white transition-colors p-0.5"
+              className="rounded-md p-1 text-zinc-400 transition hover:bg-white/10 hover:text-white"
             >
-              <X className="w-3.5 h-3.5" />
+              <X className="h-3.5 w-3.5" />
             </button>
           </motion.div>
         ))}
