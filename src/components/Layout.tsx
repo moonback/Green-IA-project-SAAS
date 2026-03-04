@@ -28,7 +28,7 @@ import { useAuthStore } from "../store/authStore";
 import { useSettingsStore } from "../store/settingsStore";
 import { useShopStore } from "../store/shopStore";
 
-const RESERVED_SLUGS = ['admin', 'pos', '404', 'catalogue', 'qualite', 'contact', 'connexion', 'ouvrir-boutique', 'reset-password', 'mentions-legales', 'compte', 'profil', 'commandes', 'favorites', 'parrainage', 'addresses', 'abonnements', 'fidelite', 'avis', 'annuaire'];
+const RESERVED_SLUGS = ['admin', 'pos', '404', 'catalogue', 'qualite', 'contact', 'connexion', 'ouvrir-boutique', 'reset-password', 'mentions-legales', 'compte', 'profil', 'commandes', 'favorites', 'parrainage', 'addresses', 'abonnements', 'fidelite', 'avis', 'annuaire', 'ecosysteme'];
 
 export default function Layout() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -73,6 +73,7 @@ export default function Layout() {
     : [
       { name: "Accueil", path: "/" },
       { name: "Solution SaaS", path: "/solution" },
+      { name: "Écosystème", path: "/ecosysteme" },
       { name: "Annuaire", path: "/annuaire" },
       { name: "Qualité & Sécurité", path: "/qualite" },
       { name: "Contact & Démo", path: "/contact" },
@@ -216,16 +217,16 @@ export default function Layout() {
                           <h3 className="text-white font-serif font-black text-xl leading-tight mb-2">{profile?.full_name}</h3>
                           <div className="flex items-center gap-2">
                             {profile?.is_admin && (
-                              <span className="px-2 py-0.5 bg-green-neon text-black text-xs font-black uppercase tracking-widest rounded-md">Admin</span>
+                              <span className="px-2 py-0.5 bg-green-neon text-black text-[10px] font-black uppercase tracking-widest rounded-md">Admin</span>
                             )}
-                            <span className="text-xs text-zinc-500 font-bold uppercase tracking-widest opacity-60 truncate">{user.email}</span>
+                            <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest opacity-60 truncate">{user.email}</span>
                           </div>
                         </div>
 
                         <div className="space-y-1.5">
                           <Link
                             to={sp("/compte")}
-                            className="flex items-center justify-between px-4 py-4 text-xs font-bold text-zinc-400 hover:text-white hover:bg-white/[0.05] rounded-2xl transition-all group"
+                            className="flex items-center justify-between px-4 py-4 text-[10px] font-bold text-zinc-400 hover:text-white hover:bg-white/[0.05] rounded-2xl transition-all group"
                           >
                             <div className="flex items-center gap-3">
                               <div className="w-9 h-9 rounded-xl bg-zinc-800 flex items-center justify-center group-hover:scale-110 group-hover:bg-zinc-700 transition-all">
@@ -274,17 +275,17 @@ export default function Layout() {
                 <div className="flex items-center gap-4">
                   <Link
                     to="/connexion"
-                    className="hidden md:block text-xs font-black uppercase tracking-[0.25em] text-zinc-400 hover:text-white transition-all px-6 py-3 hover:bg-white/[0.04] rounded-2xl border border-transparent hover:border-white/[0.08] active:scale-95"
+                    className="hidden md:block text-[10px] font-black uppercase tracking-[0.25em] text-zinc-400 hover:text-white transition-all px-4 py-2.5 hover:bg-white/[0.04] rounded-xl border border-transparent hover:border-white/[0.08] active:scale-95"
                   >
                     Connexion
                   </Link>
                   <Link
                     to="/ouvrir-boutique"
-                    className="group relative flex items-center gap-3 px-6 md:px-8 py-3.5 md:py-4 bg-green-neon rounded-2xl md:rounded-[1.25rem] transition-all hover:scale-[1.05] active:scale-95 shadow-[0_15px_40px_rgba(57,255,20,0.25)] overflow-hidden"
+                    className="group relative flex items-center gap-2.5 px-5 md:px-6 py-2.5 md:py-3 bg-green-neon rounded-xl md:rounded-2xl transition-all hover:scale-[1.05] active:scale-95 shadow-[0_10px_30px_rgba(57,255,20,0.2)] overflow-hidden"
                   >
                     <div className="absolute inset-0 bg-white/30 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 ease-in-out skew-x-[-45deg]" />
-                    <Store className="w-4 h-4 text-black relative z-10" />
-                    <span className="text-xs font-black uppercase tracking-[0.15em] text-black relative z-10">Ouvrir un Shop</span>
+                    <Store className="w-3.5 h-3.5 text-black relative z-10" />
+                    <span className="text-[10px] font-black uppercase tracking-[0.15em] text-black relative z-10">Ouvrir un Shop</span>
                   </Link>
                 </div>
               )}
@@ -478,10 +479,10 @@ export default function Layout() {
               <h3 className="text-xs font-black uppercase tracking-[0.2em] text-zinc-200 mb-8 underline decoration-green-neon underline-offset-8">Plateforme</h3>
               <ul className="space-y-4">
                 {[
+                  { name: "Écosystème Global", path: "/ecosysteme" },
                   { name: "IA BudTender", path: sp("/catalogue") },
                   { name: "Gestion Stocks", path: sp("/compte") },
                   { name: "Système POS", path: sp("/admin") },
-                  { name: "Fidélité & Web3", path: sp("/compte/fidelite") }
                 ].map((link) => (
                   <li key={link.name}>
                     <Link to={link.path} className="text-zinc-500 hover:text-white transition-colors text-sm font-light">

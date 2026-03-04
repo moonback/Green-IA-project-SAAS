@@ -19,6 +19,7 @@ const SolutionSaaS = lazy(() => import("./pages/SolutionSaaS"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Directory = lazy(() => import("./pages/Directory"));
+const Ecosystem = lazy(() => import("./pages/Ecosystem"));
 
 // ── Pages Shop (sous /:shopSlug) ──
 const ShopHome = lazy(() => import("./pages/ShopHome"));
@@ -73,6 +74,7 @@ export default function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="solution" element={<SolutionSaaS />} />
+            <Route path="ecosysteme" element={<Ecosystem />} />
             <Route path="annuaire" element={<Directory />} />
             <Route path="catalogue" element={<Catalog />} />
             <Route path="qualite" element={<Quality />} />

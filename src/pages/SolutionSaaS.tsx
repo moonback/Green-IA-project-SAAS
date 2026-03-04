@@ -89,7 +89,7 @@ export default function SolutionSaaS() {
                             <Link to="/ouvrir-boutique" className="btn-primary px-10 py-5 text-base flex items-center justify-center gap-2 group">
                                 Demander une démo <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
                             </Link>
-                            <Link to="/solution" className="btn-secondary px-10 py-5 text-base flex items-center justify-center">
+                            <Link to="/ecosysteme" className="btn-secondary px-10 py-5 text-base flex items-center justify-center">
                                 Explorer l'écosystème
                             </Link>
                         </div>

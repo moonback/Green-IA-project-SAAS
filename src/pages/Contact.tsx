@@ -179,7 +179,7 @@ export default function Contact() {
       </section>
 
       {/* ────────── Trust Links ────────── */}
-      <section className="mt-32 pt-20 border-t border-zinc-800 px-4">
+      {/* <section className="mt-32 pt-20 border-t border-zinc-800 px-4">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12 text-center md:text-left">
           <div className="space-y-2">
             <h4 className="text-xl font-serif font-black flex items-center gap-3 justify-center md:justify-start">
@@ -198,7 +198,7 @@ export default function Contact() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
     </div>
   );
 }
