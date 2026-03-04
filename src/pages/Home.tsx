@@ -62,46 +62,46 @@ export default function Home() {
       />
 
       <section className="relative min-h-[90vh] flex items-center overflow-hidden">
-        {/* Background Image & Overlays */}
+        {/* Background Image & Cinematic Overlays */}
         <div className="absolute inset-0 z-0">
           <img
             src="/images/hero-bg.png"
-            alt="Zen CBD Backdrop"
-            className="w-full h-full object-cover opacity-60"
+            alt="Intelligence Artificielle CBD"
+            className="w-full h-full object-cover opacity-60 scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-brand-950/80 via-brand-950/20 to-brand-950" />
-          <div className="absolute inset-0 bg-gradient-to-r from-brand-950 via-transparent to-brand-950/40" />
+          <div className="absolute inset-0 bg-gradient-to-b from-brand-950/90 via-brand-950/40 to-brand-950" />
+          <div className="absolute inset-0 bg-radial-gradient from-transparent to-brand-950/80" />
         </div>
 
-        <div className="content-wrap relative z-10 w-full">
+        <div className="content-wrap relative z-10 w-full pt-20">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="max-w-4xl"
+            className="max-w-4xl mx-auto text-center flex flex-col items-center"
           >
             <motion.span
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-neon/10 border border-green-neon/20 text-[11px] font-black uppercase tracking-[0.3em] text-green-neon mb-8"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.03] border border-white/10 backdrop-blur-md mb-8 text-[10px] font-black uppercase tracking-[0.24em] text-zinc-300"
             >
               <span className="h-1.5 w-1.5 rounded-full bg-green-neon animate-pulse" />
-              L'Elite du SaaS CBD — Propulsé par l'IA
+              La solution simple pour toutes les boutiques CBD
             </motion.span>
 
-            <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black leading-[0.95] tracking-tight text-white mb-8">
-              L'INTELLIGENCE <br />
-              AU SERVICE DE <br />
-              <span className="glow-green italic text-green-neon">VOTRE CROISSANCE.</span>
+            <h1 className="section-title text-4xl sm:text-6xl lg:text-7xl">
+              Le SaaS CBD qui vous aide
+              <br />
+
+              <span className="glow-green italic text-green-neon">à vendre plus.</span>
             </h1>
 
-            <p className="section-copy text-lg sm:text-xl max-w-2xl text-zinc-300 mb-10 leading-relaxed font-light">
-              Green IA est la première plateforme "AI-Native" conçue exclusivement pour l'industrie du CBD.
-              Automatisez vos conseils, optimisez vos stocks et scalez votre business sans limites.
+            <p className="mt-8 max-w-2xl text-lg sm:text-xl font-light text-zinc-400 leading-relaxed mb-10">
+              Green IA centralise votre boutique en ligne, vos ventes en magasin et votre relation client dans un seul outil facile à piloter.
             </p>
 
-            <div className="flex flex-col sm:flex-row items-stretch gap-4">
+            <div className="flex flex-col sm:flex-row items-stretch justify-center gap-4 w-full sm:w-auto">
               <Link to="/ouvrir-boutique" className="btn-primary px-10 py-5 text-base flex items-center justify-center gap-2 group">
                 Commencer l'expérience <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Link>

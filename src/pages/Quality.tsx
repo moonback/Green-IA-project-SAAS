@@ -55,8 +55,8 @@ export default function Quality() {
                 alt="Infrastructure Qualité Green IA"
                 className="w-full h-full object-cover opacity-40 scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/90 via-zinc-950/40 to-zinc-950" />
-              <div className="absolute inset-0 bg-radial-gradient from-transparent to-zinc-950/80" />
+              <div className="absolute inset-0 bg-gradient-to-b from-brand-950/90 via-brand-950/40 to-brand-950" />
+              <div className="absolute inset-0 bg-radial-gradient from-transparent to-brand-950/80" />
             </div>
 
             <div className="max-w-7xl mx-auto text-center relative z-10 w-full pt-20 px-4">

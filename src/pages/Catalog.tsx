@@ -131,27 +131,28 @@ export default function Catalog() {
       />
 
       {/* ────────── Elegant Hero Section ────────── */}
-      <section className="relative min-h-[85vh] flex items-center pt-20 overflow-hidden">
-        {/* Ambient Visual Layers */}
+      <section className="relative min-h-[85vh] flex items-center overflow-hidden">
+        {/* Background Image & Cinematic Overlays */}
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(var(--color-primary-rgb),0.05),transparent_70%)]" />
-          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-[0.03] mix-blend-overlay" />
-          <div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full blur-[140px] opacity-10 animate-pulse"
-            style={{ background: `radial-gradient(circle, var(--color-primary) 0%, transparent 70%)` }}
+          <img
+            src="/images/hero-premium.png"
+            alt="Catalogue Premium CBD"
+            className="w-full h-full object-cover opacity-50 scale-105"
           />
+          <div className="absolute inset-0 bg-gradient-to-b from-brand-950/90 via-brand-950/40 to-brand-950" />
+          <div className="absolute inset-0 bg-radial-gradient from-transparent to-brand-950/80" />
         </div>
 
-        <div className="max-w-7xl mx-auto px-6 w-full relative z-10">
+        <div className="max-w-7xl mx-auto px-6 w-full relative z-10 pt-20">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
             <div className="lg:col-span-8 space-y-10">
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="inline-flex items-center gap-4 px-5 py-2 rounded-full bg-white/[0.03] border border-white/[0.08] backdrop-blur-xl"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.03] border border-white/10 backdrop-blur-md text-[10px] font-black uppercase tracking-[0.24em] text-zinc-300"
               >
-                <div className="w-2 h-2 rounded-full bg-primary animate-ping" />
-                <span className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-400">Inventory Status: Verified</span>
+                <div className="w-1.5 h-1.5 rounded-full bg-green-neon animate-pulse" />
+                Inventory Status: Verified & 100% Organic
               </motion.div>
 
               <motion.div

@@ -44,7 +44,7 @@ export default function Directory() {
             />
 
             {/* Hero Header */}
-            <section className="relative min-h-[60vh] flex items-center overflow-hidden">
+            <section className="relative min-h-[75vh] flex items-center overflow-hidden">
                 {/* Background Image & Overlays */}
                 <div className="absolute inset-0 z-0">
                     <img
@@ -52,8 +52,8 @@ export default function Directory() {
                         alt="Ecosystème Green IA"
                         className="w-full h-full object-cover opacity-40 scale-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/90 via-zinc-950/40 to-zinc-950" />
-                    <div className="absolute inset-0 bg-radial-gradient from-transparent to-zinc-950/80" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-brand-950/90 via-brand-950/40 to-brand-950" />
+                    <div className="absolute inset-0 bg-radial-gradient from-transparent to-brand-950/80" />
                 </div>
 
                 <div className="content-wrap relative z-10 w-full pt-20 max-w-7xl mx-auto px-4 md:px-8">
